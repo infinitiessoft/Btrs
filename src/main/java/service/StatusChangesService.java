@@ -2,17 +2,21 @@ package service;
 
 import java.util.Collection;
 
-import entity.StatusChanges;
+import sendto.StatusChangesSendto;
 
 public interface StatusChangesService {
 
-	public StatusChanges retrieve(long id);
+	public StatusChangesSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(StatusChanges statusChanges);
+	public StatusChangesSendto save(StatusChangesSendto statusChanges);
 
-	public Collection<StatusChanges> findAll();
+	public Collection<StatusChangesSendto> findAll();
 
-	public void update(long id, StatusChanges statusChanges);
+	public StatusChangesSendto update(long id, StatusChangesSendto statusChanges);
+
+	public StatusChangesSendto reject(long id);
+
+	public StatusChangesSendto permit(long id);
 }

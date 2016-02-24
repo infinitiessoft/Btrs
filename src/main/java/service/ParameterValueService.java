@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.ParameterValue;
+import sendto.ParameterValueSendto;
 
 public interface ParameterValueService {
-	public ParameterValue retrieve(long id);
+
+	public ParameterValueSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(ParameterValue parameterValue);
+	public ParameterValueSendto save(ParameterValueSendto parameterValue);
 
-	public Collection<ParameterValue> findAll();
+	public Collection<ParameterValueSendto> findAll();
 
-	public void update(long id, ParameterValue parameterValue);
+	public ParameterValueSendto update(long id, ParameterValueSendto parameterValue);
 
 }

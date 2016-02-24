@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.Role;
+import sendto.RoleSendto;
 
 public interface RoleService {
 
-	public Role retrieve(long id);
+	public RoleSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(Role role);
+	public RoleSendto save(RoleSendto role);
 
-	public Collection<Role> findAll();
+	public Collection<RoleSendto> findAll();
 
-	public void update(long id, Role role);
+	public RoleSendto update(long id, RoleSendto role);
+
 }

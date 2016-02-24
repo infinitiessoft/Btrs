@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.ExpenseType;
+import sendto.ExpenseTypeSendto;
 
 public interface ExpenseTypeService {
-	public ExpenseType retrieve(long id);
+
+	public ExpenseTypeSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(ExpenseType expenseType);
+	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType);
 
-	public Collection<ExpenseType> findAll();
+	public Collection<ExpenseTypeSendto> findAll();
 
-	public void update(long id, ExpenseType expenseType);
+	public ExpenseTypeSendto update(long id, ExpenseTypeSendto expenseType);
 
 }

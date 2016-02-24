@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.TypeParameter;
+import sendto.TypeParameterSendto;
 
 public interface TypeParameterService {
 
-	public TypeParameter retrieve(long id);
+	public TypeParameterSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(TypeParameter typeParameter);
+	public TypeParameterSendto save(TypeParameterSendto typeParameter);
 
-	public Collection<TypeParameter> findAll();
+	public Collection<TypeParameterSendto> findAll();
 
-	public void update(long id, TypeParameter typeParameter);
+	public TypeParameterSendto update(long id, TypeParameterSendto typeParameter);
+
 }

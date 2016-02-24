@@ -2,17 +2,24 @@ package service;
 
 import java.util.Collection;
 
-import entity.ExpenseCateType;
+import sendto.ExpenseCateTypeSendto;
 
 public interface ExpenseCateTypeService {
 
-	public ExpenseCateType retrieve(long id);
+	public ExpenseCateTypeSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(ExpenseCateType expenseCateType);
+	public ExpenseCateTypeSendto save(ExpenseCateTypeSendto expenseCateType);
 
-	public Collection<ExpenseCateType> findAll();
+	public ExpenseCateTypeSendto update(long id, ExpenseCateTypeSendto expenseCateType);
 
-	public void update(long id, ExpenseCateType expenseCateType);
+	public void revokeCategoryFromType(long categoryId, long typeId);
+
+	public Collection<ExpenseCateTypeSendto> findAll();
+
+	public ExpenseCateTypeSendto findByCategoryIdAndTypeId(long categoryId, long typeId);
+
+	public void grantCategoryToType(long categoryId, long typeId);
+
 }

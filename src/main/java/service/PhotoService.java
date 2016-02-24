@@ -2,18 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.Photo;
+import sendto.PhotoSendto;
 
 public interface PhotoService {
 
-	public Photo retrieve(long id);
+	public PhotoSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(Photo photo);
+	public PhotoSendto save(PhotoSendto photo);
 
-	public Collection<Photo> findAll();
+	public Collection<PhotoSendto> findAll();
 
-	public void update(long id, Photo photo);
+	public PhotoSendto update(long id, PhotoSendto photo);
 
 }

@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.ExpenseCategory;
+import sendto.ExpenseCategorySendto;
 
 public interface ExpenseCategoryService {
 
-	public ExpenseCategory retrieve(long id);
+	public ExpenseCategorySendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(ExpenseCategory expenseCategory);
+	public ExpenseCategorySendto save(ExpenseCategorySendto expenseCategory);
 
-	public Collection<ExpenseCategory> findAll();
+	public Collection<ExpenseCategorySendto> findAll();
 
-	public void update(long id, ExpenseCategory expenseCategory);
+	public ExpenseCategorySendto update(long id, ExpenseCategorySendto expenseCategory);
+
 }

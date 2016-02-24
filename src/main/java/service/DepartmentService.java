@@ -2,18 +2,20 @@ package service;
 
 import java.util.Collection;
 
-import entity.Department;
+import sendto.DepartmentSendto;
 
 public interface DepartmentService {
 
-	public Department retrieve(long id);
+	public DepartmentSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(Department department);
+	public DepartmentSendto findByName(String name);
 
-	public Collection<Department> findAll();
+	public DepartmentSendto save(DepartmentSendto department);
 
-	public void update(long id, Department department);
+	public Collection<DepartmentSendto> findAll();
+
+	public DepartmentSendto update(long id, DepartmentSendto department);
 
 }

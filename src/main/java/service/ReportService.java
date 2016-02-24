@@ -2,17 +2,18 @@ package service;
 
 import java.util.Collection;
 
-import entity.Report;
+import sendto.ReportSendto;
 
 public interface ReportService {
 
-	public Report retrieve(long id);
+	public ReportSendto retrieve(long id);
 
 	public void delete(long id);
 
-	public void save(Report report);
+	public ReportSendto save(ReportSendto report);
 
-	public Collection<Report> findAll();
+	public Collection<ReportSendto> findAll();
 
-	public void update(long id, Report report);
+	public ReportSendto update(long id, ReportSendto report);
+
 }
