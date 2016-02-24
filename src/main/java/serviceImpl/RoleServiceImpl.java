@@ -28,8 +28,10 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	private RoleSendto toRoleSendto(Role role) {
+		RoleSendto ret = new RoleSendto();
+		ret.setId(role.getId());
 
-		return null;
+		return ret;
 	}
 
 	@Override
