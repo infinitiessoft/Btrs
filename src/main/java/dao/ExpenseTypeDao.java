@@ -6,4 +6,6 @@ import entity.ExpenseType;
 
 public interface ExpenseTypeDao extends JpaSpecificationExecutor<ExpenseType> {
 
+	ExpenseType findOne(long typeId);
+
 }
