@@ -30,7 +30,7 @@ public class ExpenseTypePara implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parameter_id", nullable = false)
-	private TypeParameter typeParameter;
+	private ParameterValue typeParameter;
 
 	public ExpenseTypePara() {
 		super();
@@ -53,11 +53,11 @@ public class ExpenseTypePara implements Serializable {
 		this.expenseType = expenseType;
 	}
 
-	public TypeParameter getTypeParameter() {
+	public ParameterValue getTypeParameter() {
 		return typeParameter;
 	}
 
-	public void setTypeParameter(TypeParameter typeParameter) {
+	public void setTypeParameter(ParameterValue typeParameter) {
 		this.typeParameter = typeParameter;
 	}
 
