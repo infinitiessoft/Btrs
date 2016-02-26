@@ -69,7 +69,7 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 
 	@Override
 	public void revokeCategoryFromType(long categoryId, long typeId) {
-		ExpenseCateType expenseCateType = expenseCateTypeDao.findByEmployeeIdAndRoleId(categoryId, typeId);
+		ExpenseCateType expenseCateType = expenseCateTypeDao.findByCategoryIdAndTypeId(categoryId, typeId);
 		if (expenseCateType == null) {
 			throw new ExpenseAssignmentNotFoundException(categoryId, typeId);
 		}
@@ -89,7 +89,7 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 
 	@Override
 	public ExpenseCateTypeSendto findByCategoryIdAndTypeId(long categoryId, long typeId) {
-		ExpenseCateType expenseCateType = expenseCateTypeDao.findByEmployeeIdAndRoleId(categoryId, typeId);
+		ExpenseCateType expenseCateType = expenseCateTypeDao.findByCategoryIdAndTypeId(categoryId, typeId);
 		if (expenseCateType == null) {
 			throw new ExpenseAssignmentNotFoundException(categoryId, typeId);
 		}

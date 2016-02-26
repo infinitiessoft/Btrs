@@ -17,10 +17,10 @@ public interface ExpenseCateTypeDao extends JpaSpecificationExecutor<ExpenseCate
 
 	ExpenseCateType save(ExpenseCateTypeSendto expenseCateType);
 
-	ExpenseCateType findByEmployeeIdAndRoleId(long categoryId, long typeId);
-
 	void delete(ExpenseCateType expenseCateType);
 
 	Collection<ExpenseCateType> findAll();
+
+	ExpenseCateType findByCategoryIdAndTypeId(long categoryId, long typeId);
 
 }

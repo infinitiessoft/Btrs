@@ -17,10 +17,10 @@ public interface ExpenseTypeParaDao extends JpaSpecificationExecutor<ExpenseType
 
 	ExpenseTypePara save(ExpenseTypeParaSendto expenseTypePara);
 
-	ExpenseTypePara findByEmployeeIdAndRoleId(long typeId, long parameterId);
-
 	void delete(ExpenseTypePara expenseTypePara);
 
 	Collection<ExpenseTypePara> findAll();
+
+	ExpenseTypePara findByTypeIdAndParameterId(long typeId, long parameterId);
 
 }

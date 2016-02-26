@@ -69,7 +69,7 @@ public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 
 	@Override
 	public void revokeTypeFromParameter(long typeId, long parameterId) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByEmployeeIdAndRoleId(typeId, parameterId);
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByTypeIdAndParameterId(typeId, parameterId);
 		if (expenseTypePara == null) {
 			throw new TypeAssignmentNotFoundException(parameterId, typeId);
 		}
@@ -88,7 +88,7 @@ public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 
 	@Override
 	public ExpenseTypeParaSendto findByTypeIdAndParameterId(long typeId, long parameterId) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByEmployeeIdAndRoleId(parameterId, typeId);
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByTypeIdAndParameterId(parameterId, typeId);
 		if (expenseTypePara == null) {
 			throw new TypeAssignmentNotFoundException(parameterId, typeId);
 		}

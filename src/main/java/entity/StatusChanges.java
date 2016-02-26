@@ -110,4 +110,9 @@ public class StatusChanges implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+	public void setStatus(StatusEnum reject) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
