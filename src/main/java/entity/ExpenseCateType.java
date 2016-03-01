@@ -14,7 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expenseCateType", uniqueConstraints = @UniqueConstraint(columnNames = { "category_id", "type_id" }) )
+@Table(name = "exp_category_exp_type", uniqueConstraints = @UniqueConstraint(columnNames = { "category_id",
+		"type_id" }) )
 public class ExpenseCateType implements Serializable {
 
 	private static final long serialVersionUID = 7526471155622776147L;

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+			http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<context:annotation-config />
+	
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="btrsPU" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<jpa:repositories base-package="dao" />
+
+	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
+		<constructor-arg ref="departmentDao" />
+	</bean>
+
+	<bean id="roleService" class="serviceImpl.RoleServiceImpl">
+		<constructor-arg ref="roleDao" />
+	</bean>
+	
+	<bean id="expenseCategoryService" class="serviceImpl.ExpenseCategoryServiceImpl">
+	<constructor-arg ref="expenseCategoryDao" />
+	</bean>
+	
+	<bean id="expenseCateTypeService" class="serviceImpl.ExpenseCateTypeServiceImpl">
+	<constructor-arg ref="expenseCategoryDao" />
+	<constructor-arg ref="expenseTypeDao" />
+	<constructor-arg ref="expenseCateTypeDao"  />
+	</bean>
+	
+	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
+	<constructor-arg ref="expenseDao" />
+	</bean>
+	
+	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
+	<constructor-arg ref="expenseTypeDao" />
+	</bean>
+	
+	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
+	<constructor-arg ref="expenseTypeDao"/>
+	<constructor-arg ref="parameterValueDao" />
+	<constructor-arg ref="expenseTypeParaDao" />
+	</bean>
+	
+	<bean id="parameterValueService" class="serviceImpl.ParameterValueServiceImpl">
+	<constructor-arg ref="paramterValueDao" />
+	</bean>
+	
+	<bean id="photoService" class="serviceImpl.PhotoServiceImpl">
+	<constructor-arg ref="photoDao"/>
+	</bean>
+	
+	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
+	<constructor-arg ref="reportDao"/>
+	</bean>
+	
+	<bean id="statuschangesService" class="serviceImpl.StatusChangesServiceImpl">
+	<constructor-arg ref="statusDao"/>
+	</bean>
+	
+	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
+	<constructor-arg ref="typeDao" />
+	</bean>
+	
+	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
+	<constructor-arg ref="userRoleDao" />
+	<constructor-arg ref="userDao" />
+	<constructor-arg ref="roleDao" />
+	</bean>
+	
+	<bean id="userService" class="serviceImpl.UserServiceImpl">
+	<constructor-arg ref="userDao" />
+	</bean>
+	
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="user_sharedPU" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<jpa:repositories base-package="dao" />
+
+	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
+		<constructor-arg ref="userSharedDao" />
+	</bean>
+	</beans>
