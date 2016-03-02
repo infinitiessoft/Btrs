@@ -63,7 +63,7 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 	@Override
 	public ExpenseCategorySendto update(long id, ExpenseCategorySendto expenseCategory) {
 		ExpenseCategory expCat = expenseCategoryDao.findOne(id);
-		if (expenseCategory == null) {
+		if (expCat == null) {
 			throw new ExpenseCategoryNotFoundException(id);
 		}
 		return toExpenseCategorySendto(expenseCategoryDao.save(expenseCategory));

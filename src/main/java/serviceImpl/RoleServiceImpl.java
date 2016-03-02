@@ -60,7 +60,7 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public RoleSendto update(long id, RoleSendto role) {
 		Role roles = roleDao.findOne(id);
-		if (role == null) {
+		if (roles == null) {
 			throw new RoleNotFoundException(id);
 		}
 		return toRoleSendto(roleDao.save(role));
