@@ -16,45 +16,45 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sendto.ExpenseSendto;
-import service.ExpenseService;
+import sendto.ExpenseTypeSendto;
+import service.ExpenseTypeService;
 
-@Path(value = "/expense")
-public class ExpenseResource {
+@Path(value = "/expType")
+public class ExpenseTypeResource {
 	@Autowired
-	private ExpenseService expenseService;
+	private ExpenseTypeService expenseTypeService;
 
 	@GET
 	@Path(value = "{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ExpenseSendto getExpense(@PathParam("id") long id) {
-		return expenseService.retrieve(id);
+	public ExpenseTypeSendto getExpenseType(@PathParam("id") long id) {
+		return expenseTypeService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteExpense(@PathParam("id") long id) {
-		expenseService.delete(id);
+	public Response deleteExpenseType(@PathParam("id") long id) {
+		expenseTypeService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
 	@Path(value = "{id}")
-	public ExpenseSendto updateExpense(@PathParam("id") long id, ExpenseSendto expense) {
-		return expenseService.update(id, expense);
+	public ExpenseTypeSendto updateExpenseType(@PathParam("id") long id, ExpenseTypeSendto expenseType) {
+		return expenseTypeService.update(id, expenseType);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ExpenseSendto saveExpense(ExpenseSendto expense) {
-		return expenseService.save(expense);
+	public ExpenseTypeSendto saveExpenseType(ExpenseTypeSendto expenseType) {
+		return expenseTypeService.save(expenseType);
 	}
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<ExpenseSendto> findallExpense() {
-		return expenseService.findAll();
+	public Collection<ExpenseTypeSendto> findallExpenseType() {
+		return expenseTypeService.findAll();
 	}
 
 }
