@@ -44,7 +44,7 @@ public class DepartmentResourceTest extends JerseyTest {
 
 	@Test
 	public void testGetDepartment() {
-		Response response = target("department").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("/department").path("1").register(JacksonFeature.class).request().get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		DepartmentSendto sendto = response.readEntity(DepartmentSendto.class);
 		assertEquals(1l, sendto.getId().longValue());

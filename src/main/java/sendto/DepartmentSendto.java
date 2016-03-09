@@ -7,12 +7,10 @@ public class DepartmentSendto {
 	private String comment;
 
 	public DepartmentSendto() {
-		super();
 
 	}
 
 	public DepartmentSendto(Long id, String name, String comment) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.comment = comment;
