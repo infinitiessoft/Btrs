@@ -10,9 +10,8 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DefaultDataSet;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.csv.CsvDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
@@ -35,8 +34,7 @@ public class DbUnitUtil {
 
 		FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
 		flatXmlDataSetBuilder.setColumnSensing(true);
-
-		IDataSet dataSet = new DefaultDataSet((ITable) new File("src/main/resource/applicationContext.xml"));
+		IDataSet dataSet = new CsvDataSet(new File("src/test/resource/test-data"));
 		DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 	}
 
