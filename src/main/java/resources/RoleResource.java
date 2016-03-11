@@ -43,7 +43,7 @@ public class RoleResource {
 	@PUT
 	@Path(value = "{id}")
 	public RoleSendto updateRole(@PathParam("id") long id, RoleSendto role) {
-		return roleService.update(id, role);
+		return roleService.update(id);
 	}
 
 	@POST

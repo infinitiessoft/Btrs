@@ -43,7 +43,7 @@ public class StatusChangesResource {
 	@PUT
 	@Path(value = "{id}")
 	public StatusChangesSendto updateStatusChanges(@PathParam("id") long id, StatusChangesSendto status) {
-		return statusChangesService.update(id, status);
+		return statusChangesService.update(id);
 	}
 
 	@POST

@@ -1,22 +1,10 @@
 package dao;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import entity.Expense;
-import sendto.ExpenseSendto;
 
-public interface ExpenseDao extends JpaSpecificationExecutor<Expense> {
-
-	Expense findOne(long id);
-
-	void delete(long id);
-
-	Expense save(Expense exp);
-
-	Collection<Expense> findAll();
-
-	Expense save(ExpenseSendto expense);
+public interface ExpenseDao extends PagingAndSortingRepository<Expense, Long>, JpaSpecificationExecutor<Expense> {
 
 }

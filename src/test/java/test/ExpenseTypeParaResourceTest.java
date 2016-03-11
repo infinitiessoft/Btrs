@@ -6,41 +6,20 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import dao.ExpenseTypeParaDao;
 import resources.ExpenseTypeParaResource;
+import resources.ResourceTest;
 import sendto.ExpenseTypeParaSendto;
-import service.ExpenseTypeParaService;
-import serviceImpl.ExpenseTypeParaServiceImpl;
 
-public class ExpenseTypeParaResourceTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		enable(TestProperties.LOG_TRAFFIC);
-		enable(TestProperties.DUMP_ENTITY);
-
-		ResourceConfig config = new ResourceConfig(ExpenseTypeParaResource.class);
-		config.register(new InjectableProvider());
-		config.register(JacksonFeature.class);
-
-		return config;
-	}
+public class ExpenseTypeParaResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseTypePara() {
@@ -77,7 +56,7 @@ public class ExpenseTypeParaResourceTest extends JerseyTest {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseTypeParaSendto sendto = response.readEntity(ExpenseTypeParaSendto.class);
 		assertEquals(4L, sendto.getId().longValue());
-		assertEquals(expTypePara.getExpType().getId(), sendto.getExpType().getId());
+		assertEquals(expTypePara.getExpenseType().getId(), sendto.getExpenseType().getId());
 		assertEquals(expTypePara.getParameterValue().getId(), sendto.getParameterValue().getId());
 		assertEquals(expTypePara.getId(), sendto.getId());
 	}
@@ -125,18 +104,9 @@ public class ExpenseTypeParaResourceTest extends JerseyTest {
 		}
 	}
 
+	@Override
 	protected Class<?>[] getResource() {
 		return new Class<?>[] { ExpenseTypeParaResource.class };
-	}
-
-	class InjectableProvider extends AbstractBinder {
-
-		@Override
-		protected void configure() {
-			bind(ExpenseTypeParaServiceImpl.class).to(ExpenseTypeParaService.class).in(Singleton.class);
-			bind(ExpenseTypeParaSendto.class).to(ExpenseTypeParaDao.class).in(Singleton.class);
-		}
-
 	}
 
 }

@@ -45,7 +45,7 @@ public class ExpenseCategoryResource {
 	@Path(value = "{id}")
 	public ExpenseCategorySendto updateExpenseCategory(@PathParam("id") long id,
 			ExpenseCategorySendto expenseCategory) {
-		return expenseCategoryService.update(id, expenseCategory);
+		return expenseCategoryService.update(id);
 	}
 
 	@POST

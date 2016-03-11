@@ -1,26 +1,13 @@
 package dao;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import entity.ExpenseTypePara;
-import sendto.ExpenseTypeParaSendto;
 
-public interface ExpenseTypeParaDao extends JpaSpecificationExecutor<ExpenseTypePara> {
+public interface ExpenseTypeParaDao
+		extends PagingAndSortingRepository<ExpenseTypePara, Long>, JpaSpecificationExecutor<ExpenseTypePara> {
 
-	ExpenseTypePara findOne(long id);
-
-	void delete(long id);
-
-	ExpenseTypePara save(ExpenseTypePara typePara);
-
-	ExpenseTypePara save(ExpenseTypeParaSendto expenseTypePara);
-
-	void delete(ExpenseTypePara expenseTypePara);
-
-	Collection<ExpenseTypePara> findAll();
-
-	ExpenseTypePara findByTypeIdAndParameterId(long typeId, long parameterId);
+	ExpenseTypePara findByExpenseTypeIdAndParameterValueId(long parameterValue_id, long expense_id);
 
 }

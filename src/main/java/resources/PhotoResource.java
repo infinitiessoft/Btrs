@@ -43,7 +43,7 @@ public class PhotoResource {
 	@PUT
 	@Path(value = "{id}")
 	public PhotoSendto updatePhoto(@PathParam("id") long id, PhotoSendto photo) {
-		return photoService.update(id, photo);
+		return photoService.update(id);
 	}
 
 	@POST

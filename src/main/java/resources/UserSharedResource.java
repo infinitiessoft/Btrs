@@ -44,7 +44,7 @@ public class UserSharedResource {
 	@Path(value = "{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSharedSendto updateUserShared(@PathParam("id") long id, UserSharedSendto userShared) {
-		return userSharedService.update(id, userShared);
+		return userSharedService.update(id);
 	}
 
 	@POST

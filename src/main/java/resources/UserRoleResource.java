@@ -42,7 +42,7 @@ public class UserRoleResource {
 	@PUT
 	@Path(value = "{id}")
 	public UserRoleSendto updateUserRole(@PathParam("id") long id, UserRoleSendto userRole) {
-		return userRoleService.update(id, userRole);
+		return userRoleService.update(id);
 	}
 
 	@POST
@@ -58,22 +58,22 @@ public class UserRoleResource {
 	}
 
 	@GET
-	@Path(value = "{userid}")
-	public UserRoleSendto findUserRole(@PathParam("id") long id, @PathParam("userid") long userId) {
-		return userRoleService.findByUserIdAndRoleId(id, userId);
+	@Path(value = "{user_id}")
+	public UserRoleSendto findUserRole(@PathParam("id") long id, @PathParam("user_id") long user_id) {
+		return userRoleService.findByUserIdAndRoleId(id, user_id);
 	}
 
 	@PUT
-	@Path(value = "{userid}")
-	public Response assignUserToRole(@PathParam("id") long id, @PathParam("userid") long userId) {
-		userRoleService.grantUserToRole(id, userId);
+	@Path(value = "{user_id}")
+	public Response assignUserToRole(@PathParam("id") long id, @PathParam("user_id") long user_id) {
+		userRoleService.grantUserToRole(id, user_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
 	@Path(value = "{userid}")
-	public Response revokeUserToRole(@PathParam("id") long id, @PathParam("userid") long userId) {
-		userRoleService.revokeUserFromRole(id, userId);
+	public Response revokeUserToRole(@PathParam("id") long id, @PathParam("userid") long user_id) {
+		userRoleService.revokeUserFromRole(id, user_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 }

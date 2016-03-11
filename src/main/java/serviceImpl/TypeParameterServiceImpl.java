@@ -12,15 +12,15 @@ import service.TypeParameterService;
 
 public class TypeParameterServiceImpl implements TypeParameterService {
 
-	private TypeParameterDao typeDao;
+	private TypeParameterDao typeParameterDao;
 
 	public TypeParameterServiceImpl(TypeParameterDao typeDao) {
-		this.typeDao = typeDao;
+		this.typeParameterDao = typeDao;
 	}
 
 	@Override
 	public TypeParameterSendto retrieve(long id) {
-		TypeParameter type = typeDao.findOne(id);
+		TypeParameter type = typeParameterDao.findOne(id);
 		if (type == null) {
 			throw new TypeParameterNotFoundException(id);
 		}
@@ -36,7 +36,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 
 	@Override
 	public void delete(long id) {
-		typeDao.delete(id);
+		typeParameterDao.delete(id);
 
 	}
 
@@ -44,7 +44,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 	public TypeParameterSendto save(TypeParameterSendto typeParameter) {
 		typeParameter.setId(null);
 		TypeParameter type = new TypeParameter();
-		type = typeDao.save(type);
+		type = typeParameterDao.save(type);
 		return toTypeParameterSendto(type);
 
 	}
@@ -52,20 +52,19 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 	@Override
 	public Collection<TypeParameterSendto> findAll() {
 		List<TypeParameterSendto> sendto = new ArrayList<TypeParameterSendto>();
-		Collection<TypeParameter> type = typeDao.findAll();
-		for (TypeParameter typeParameter : type) {
+		for (TypeParameter typeParameter : typeParameterDao.findAll()) {
 			sendto.add(toTypeParameterSendto(typeParameter));
 		}
 		return sendto;
 	}
 
 	@Override
-	public TypeParameterSendto update(long id, TypeParameterSendto typeParameter) {
-		TypeParameter type = typeDao.findOne(id);
+	public TypeParameterSendto update(long id) {
+		TypeParameter type = typeParameterDao.findOne(id);
 		if (type == null) {
 			throw new TypeParameterNotFoundException(id);
 		}
-		return toTypeParameterSendto(typeDao.save(typeParameter));
+		return toTypeParameterSendto(typeParameterDao.save(type));
 	}
 
 }

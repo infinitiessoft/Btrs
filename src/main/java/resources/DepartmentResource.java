@@ -43,7 +43,7 @@ public class DepartmentResource {
 	@PUT
 	@Path(value = "{id}")
 	public DepartmentSendto updateDepartment(@PathParam("id") long id, DepartmentSendto department) {
-		return departmentService.update(id, department);
+		return departmentService.update(id);
 	}
 
 	@POST

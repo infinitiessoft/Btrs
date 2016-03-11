@@ -7,41 +7,20 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import dao.UserSharedDao;
+import resources.ResourceTest;
 import resources.UserSharedResource;
 import sendto.UserSharedSendto;
-import service.UserSharedService;
-import serviceImpl.UserSharedServiceImpl;
 
-public class UserSharedResourceTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		enable(TestProperties.LOG_TRAFFIC);
-		enable(TestProperties.DUMP_ENTITY);
-
-		ResourceConfig config = new ResourceConfig(UserSharedResource.class);
-		config.register(new InjectableProvider());
-		config.register(JacksonFeature.class);
-
-		return config;
-	}
+public class UserSharedResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetUserShared() {
@@ -155,18 +134,9 @@ public class UserSharedResourceTest extends JerseyTest {
 		}
 	}
 
+	@Override
 	protected Class<?>[] getResource() {
 		return new Class<?>[] { UserSharedResource.class };
-	}
-
-	class InjectableProvider extends AbstractBinder {
-
-		@Override
-		protected void configure() {
-			bind(UserSharedServiceImpl.class).to(UserSharedService.class).in(Singleton.class);
-			bind(UserSharedSendto.class).to(UserSharedDao.class).in(Singleton.class);
-		}
-
 	}
 
 }

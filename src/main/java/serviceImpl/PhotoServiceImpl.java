@@ -56,20 +56,19 @@ public class PhotoServiceImpl implements PhotoService {
 	@Override
 	public Collection<PhotoSendto> findAll() {
 		List<PhotoSendto> sendto = new ArrayList<PhotoSendto>();
-		Collection<Photo> photo = photoDao.findAll();
-		for (Photo photos : photo) {
+		for (Photo photos : photoDao.findAll()) {
 			sendto.add(toPhotoSendto(photos));
 		}
 		return sendto;
 	}
 
 	@Override
-	public PhotoSendto update(long id, PhotoSendto photo) {
+	public PhotoSendto update(long id) {
 		Photo pht = photoDao.findOne(id);
 		if (pht == null) {
 			throw new PhotoNotFoundException(id);
 		}
-		return toPhotoSendto(photoDao.save(photo));
+		return toPhotoSendto(photoDao.save(pht));
 	}
 
 }

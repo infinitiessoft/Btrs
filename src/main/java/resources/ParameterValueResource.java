@@ -43,7 +43,7 @@ public class ParameterValueResource {
 	@PUT
 	@Path(value = "{id}")
 	public ParameterValueSendto updateParameterValue(@PathParam("id") long id, ParameterValueSendto parameterValue) {
-		return parameterValueService.update(id, parameterValue);
+		return parameterValueService.update(id);
 	}
 
 	@POST

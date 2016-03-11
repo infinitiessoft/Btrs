@@ -14,8 +14,6 @@ public interface UserService {
 
 	public Collection<UserSendto> findAll();
 
-	public UserSendto update(long id, UserSendto user);
-
-	public UserSendto findByName(String name);
+	public UserSendto update(long id);
 
 }

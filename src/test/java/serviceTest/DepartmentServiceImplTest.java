@@ -69,7 +69,7 @@ public class DepartmentServiceImplTest extends ServiceTest {
 	@Test
 	public void testSave() {
 		final DepartmentSendto newEntry = new DepartmentSendto();
-		newEntry.setName("D_name");
+		newEntry.setName("Demo");
 
 		context.checking(new Expectations() {
 
@@ -95,7 +95,7 @@ public class DepartmentServiceImplTest extends ServiceTest {
 	@Test
 	public void testUpdate() {
 		final DepartmentSendto newEntry = new DepartmentSendto();
-		newEntry.setName("D_name");
+		newEntry.setName("Demo");
 		context.checking(new Expectations() {
 
 			{
@@ -106,7 +106,7 @@ public class DepartmentServiceImplTest extends ServiceTest {
 				will(returnValue(department));
 			}
 		});
-		DepartmentSendto ret = departmentService.update(1l, newEntry);
+		DepartmentSendto ret = departmentService.update(1l);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getName(), ret.getName());
 		assertEquals(newEntry.getComment(), ret.getComment());
@@ -116,9 +116,8 @@ public class DepartmentServiceImplTest extends ServiceTest {
 	public void testFindAll() {
 		final List<Department> departments = new ArrayList<Department>();
 		departments.add(department);
-
 		Collection<DepartmentSendto> rets = departmentService.findAll();
-		assertEquals(1, rets.getClass());
+		assertEquals(1, rets.toString());
 		DepartmentSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(department.getName(), ret.getName());

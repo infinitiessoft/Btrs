@@ -50,15 +50,14 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 	@Override
 	public Collection<ParameterValueSendto> findAll() {
 		List<ParameterValueSendto> sendto = new ArrayList<ParameterValueSendto>();
-		Collection<ParameterValue> parameter = parameterDao.findAll();
-		for (ParameterValue parameterValue : parameter) {
+		for (ParameterValue parameterValue : parameterDao.findAll()) {
 			sendto.add(toParameterValueSendto(parameterValue));
 		}
 		return sendto;
 	}
 
 	@Override
-	public ParameterValueSendto update(long id, ParameterValueSendto parameterValue) {
+	public ParameterValueSendto update(long id) {
 		ParameterValue parameter = parameterDao.findOne(id);
 		if (parameter == null) {
 			throw new ParameterNotFoundException(id);

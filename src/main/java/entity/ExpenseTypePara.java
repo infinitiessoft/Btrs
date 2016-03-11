@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "exp_types_type_parameters", uniqueConstraints = @UniqueConstraint(columnNames = { "type_id",
-		"parameter_id" }) )
+		"parameterValue_id" }) )
 public class ExpenseTypePara implements Serializable {
 
 	private static final long serialVersionUID = 7526471155622776147L;
@@ -30,8 +30,8 @@ public class ExpenseTypePara implements Serializable {
 	private ExpenseType expenseType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "parameter_id", nullable = false)
-	private ParameterValue typeParameter;
+	@JoinColumn(name = "parameterValue_id", nullable = false)
+	private ParameterValue parameterValue;
 
 	public ExpenseTypePara() {
 		super();
@@ -54,12 +54,12 @@ public class ExpenseTypePara implements Serializable {
 		this.expenseType = expenseType;
 	}
 
-	public ParameterValue getTypeParameter() {
-		return typeParameter;
+	public ParameterValue getParameterValue() {
+		return parameterValue;
 	}
 
-	public void setTypeParameter(ParameterValue typeParameter) {
-		this.typeParameter = typeParameter;
+	public void setParameterValue(ParameterValue parameterValue) {
+		this.parameterValue = parameterValue;
 	}
 
 }

@@ -12,8 +12,8 @@ public interface ExpenseCategoryService {
 
 	public ExpenseCategorySendto save(ExpenseCategorySendto expenseCategory);
 
-	public Collection<ExpenseCategorySendto> findAll();
+	public ExpenseCategorySendto update(long id);
 
-	public ExpenseCategorySendto update(long id, ExpenseCategorySendto expenseCategory);
+	public Collection<ExpenseCategorySendto> findAll();
 
 }

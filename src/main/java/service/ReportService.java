@@ -14,6 +14,6 @@ public interface ReportService {
 
 	public Collection<ReportSendto> findAll();
 
-	public ReportSendto update(long id, ReportSendto report);
+	public ReportSendto update(long id);
 
 }

@@ -44,7 +44,7 @@ public class ExpenseTypeParaResource {
 	@Path(value = "{id}")
 	public ExpenseTypeParaSendto updateExpenseTypePara(@PathParam("id") long id,
 			ExpenseTypeParaSendto expenseTypePara) {
-		return expTypeParaService.update(id, expenseTypePara);
+		return expTypeParaService.update(id);
 	}
 
 	@POST
@@ -60,22 +60,24 @@ public class ExpenseTypeParaResource {
 	}
 
 	@GET
-	@Path(value = "{typeid}")
-	public ExpenseTypeParaSendto findExpenseTypePara(@PathParam("id") long id, @PathParam("typeid") long typeId) {
-		return expTypeParaService.findByTypeIdAndParameterId(id, typeId);
+	@Path(value = "{type_id}")
+	public ExpenseTypeParaSendto findExpenseTypePara(@PathParam("id") long id,
+			@PathParam("expense_id") long expense_id) {
+		return expTypeParaService.findByExpenseTypeIdAndParameterValueId(id, expense_id);
 	}
 
 	@PUT
-	@Path(value = "{typeid}")
-	public Response assignTypeToParameter(@PathParam("id") long id, @PathParam("typeid") long typeId) {
-		expTypeParaService.grantTypeToParameter(id, typeId);
+	@Path(value = "{type_id}")
+	public Response assignTypeToParameter(@PathParam("id") long id, @PathParam("expense_id") long expense_id) {
+		expTypeParaService.grantExpenseTypeToParameterValue(id, expense_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
-	@Path(value = "{typeid}")
-	public Response revokeTypeToParameter(@PathParam("id") long id, @PathParam("typeid") long typeId) {
-		expTypeParaService.revokeTypeFromParameter(id, typeId);
+	@Path(value = "{type_id}")
+	public Response revokeExpenseTypeIdAndParameterValueId(@PathParam("id") long id,
+			@PathParam("expense_id") long expense_id) {
+		expTypeParaService.revokeExpenseTypeFromParameterValue(id, expense_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 }

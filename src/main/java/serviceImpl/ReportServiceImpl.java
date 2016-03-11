@@ -59,20 +59,19 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public Collection<ReportSendto> findAll() {
 		List<ReportSendto> sendto = new ArrayList<ReportSendto>();
-		Collection<Report> report = reportDao.findAll();
-		for (Report reports : report) {
+		for (Report reports : reportDao.findAll()) {
 			sendto.add(toReportSendto(reports));
 		}
 		return sendto;
 	}
 
 	@Override
-	public ReportSendto update(long id, ReportSendto report) {
+	public ReportSendto update(long id) {
 		Report rpt = reportDao.findOne(id);
 		if (rpt == null) {
 			throw new ReportNotFoundException(id);
 		}
-		return toReportSendto(reportDao.save(report));
+		return toReportSendto(reportDao.save(rpt));
 
 	}
 }

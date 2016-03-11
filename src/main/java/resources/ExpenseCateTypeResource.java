@@ -44,7 +44,7 @@ public class ExpenseCateTypeResource {
 	@Path(value = "{id}")
 	public ExpenseCateTypeSendto updateExpenseCateType(@PathParam("id") long id,
 			ExpenseCateTypeSendto expenseCateType) {
-		return expCateTypeService.update(id, expenseCateType);
+		return expCateTypeService.update(id);
 	}
 
 	@POST
@@ -60,23 +60,23 @@ public class ExpenseCateTypeResource {
 	}
 
 	@GET
-	@Path(value = "{categoryid}")
+	@Path(value = "{category_id}")
 	public ExpenseCateTypeSendto findExpenseCateType(@PathParam("id") long id,
-			@PathParam("categoryid") long categoryId) {
-		return expCateTypeService.findByCategoryIdAndTypeId(id, categoryId);
+			@PathParam("category_id") long category_id) {
+		return expCateTypeService.findByExpenseCategoryIdAndExpenseTypeId(id, category_id);
 	}
 
 	@PUT
-	@Path(value = "{categoryid}")
-	public Response assignCategoryToType(@PathParam("id") long id, @PathParam("categoryid") long categoryId) {
-		expCateTypeService.grantCategoryToType(id, categoryId);
+	@Path(value = "{category_id}")
+	public Response assignCategoryToType(@PathParam("id") long id, @PathParam("category_id") long category_id) {
+		expCateTypeService.grantExpenseCategoryToExpenseType(id, category_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
-	@Path(value = "{categoryid}")
-	public Response revokeCategoryToType(@PathParam("id") long id, @PathParam("categoryid") long categoryId) {
-		expCateTypeService.revokeCategoryFromType(id, categoryId);
+	@Path(value = "{category_id}")
+	public Response revokeCategoryToType(@PathParam("id") long id, @PathParam("category_id") long category_id) {
+		expCateTypeService.revokeExpenseCategoryFromExpenseType(id, category_id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 }

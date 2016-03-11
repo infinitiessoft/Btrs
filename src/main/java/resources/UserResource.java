@@ -43,8 +43,8 @@ public class UserResource {
 	@PUT
 	@Path(value = "{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
-		return userService.update(id, user);
+	public UserSendto updateUser(@PathParam("id") long id) {
+		return userService.update(id);
 	}
 
 	@POST

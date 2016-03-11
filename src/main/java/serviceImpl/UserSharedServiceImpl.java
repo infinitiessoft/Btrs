@@ -58,20 +58,19 @@ public class UserSharedServiceImpl implements UserSharedService {
 	@Override
 	public Collection<UserSharedSendto> findAll() {
 		List<UserSharedSendto> sendto = new ArrayList<UserSharedSendto>();
-		Collection<UserShared> user = userSharedDao.findAll();
-		for (UserShared userShared : user) {
+		for (UserShared userShared : userSharedDao.findAll()) {
 			sendto.add(toUserSharedSendto(userShared));
 		}
 		return sendto;
 	}
 
 	@Override
-	public UserSharedSendto update(long id, UserSharedSendto userShared) {
+	public UserSharedSendto update(long id) {
 		UserShared user = userSharedDao.findOne(id);
 		if (user == null) {
 			throw new UserSharedNotFoundException(id);
 		}
-		return toUserSharedSendto(userSharedDao.save(userShared));
+		return toUserSharedSendto(userSharedDao.save(user));
 	}
 
 	@Override

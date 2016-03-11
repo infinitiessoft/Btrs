@@ -54,19 +54,18 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public Collection<ExpenseSendto> findAll() {
 		List<ExpenseSendto> sendto = new ArrayList<ExpenseSendto>();
-		Collection<Expense> expense = expenseDao.findAll();
-		for (Expense exp : expense) {
+		for (Expense exp : expenseDao.findAll()) {
 			sendto.add(toExpenseSendto(exp));
 		}
 		return sendto;
 	}
 
 	@Override
-	public ExpenseSendto update(long id, ExpenseSendto expense) {
+	public ExpenseSendto update(long id) {
 		Expense exp = expenseDao.findOne(id);
 		if (exp == null) {
 			throw new ExpenseNotFoundException(id);
 		}
-		return toExpenseSendto(expenseDao.save(expense));
+		return toExpenseSendto(expenseDao.save(exp));
 	}
 }

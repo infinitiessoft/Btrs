@@ -14,6 +14,6 @@ public interface ExpenseTypeService {
 
 	public Collection<ExpenseTypeSendto> findAll();
 
-	public ExpenseTypeSendto update(long id, ExpenseTypeSendto expenseType);
+	public ExpenseTypeSendto update(long id);
 
 }

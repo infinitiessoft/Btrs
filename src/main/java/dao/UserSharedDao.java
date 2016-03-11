@@ -1,23 +1,12 @@
 package dao;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import entity.UserShared;
-import sendto.UserSharedSendto;
 
-public interface UserSharedDao extends JpaSpecificationExecutor<UserShared> {
-
-	UserShared findOne(long id);
-
-	void delete(long id);
-
-	UserShared save(UserShared user);
-
-	Collection<UserShared> findAll();
-
-	UserShared save(UserSharedSendto userShared);
+public interface UserSharedDao
+		extends PagingAndSortingRepository<UserShared, Long>, JpaSpecificationExecutor<UserShared> {
 
 	UserShared findByUsername(String username);
 

@@ -43,7 +43,7 @@ public class ReportResource {
 	@PUT
 	@Path(value = "{id}")
 	public ReportSendto updateReport(@PathParam("id") long id, ReportSendto report) {
-		return reportService.update(id, report);
+		return reportService.update(id);
 	}
 
 	@POST

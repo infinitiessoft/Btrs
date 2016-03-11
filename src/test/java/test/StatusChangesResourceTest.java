@@ -7,41 +7,20 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import dao.StatusChangesDao;
+import resources.ResourceTest;
 import resources.StatusChangesResource;
 import sendto.StatusChangesSendto;
-import service.StatusChangesService;
-import serviceImpl.StatusChangesServiceImpl;
 
-public class StatusChangesResourceTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		enable(TestProperties.LOG_TRAFFIC);
-		enable(TestProperties.DUMP_ENTITY);
-
-		ResourceConfig config = new ResourceConfig(StatusChangesResource.class);
-		config.register(new InjectableProvider());
-		config.register(JacksonFeature.class);
-
-		return config;
-	}
+public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetStatusChanges() {
@@ -127,18 +106,9 @@ public class StatusChangesResourceTest extends JerseyTest {
 		}
 	}
 
+	@Override
 	protected Class<?>[] getResource() {
 		return new Class<?>[] { StatusChangesResource.class };
-	}
-
-	class InjectableProvider extends AbstractBinder {
-
-		@Override
-		protected void configure() {
-			bind(StatusChangesServiceImpl.class).to(StatusChangesService.class).in(Singleton.class);
-			bind(StatusChangesSendto.class).to(StatusChangesDao.class).in(Singleton.class);
-		}
-
 	}
 
 }

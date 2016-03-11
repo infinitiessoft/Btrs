@@ -42,7 +42,7 @@ public class ExpenseTypeResource {
 	@PUT
 	@Path(value = "{id}")
 	public ExpenseTypeSendto updateExpenseType(@PathParam("id") long id, ExpenseTypeSendto expenseType) {
-		return expenseTypeService.update(id, expenseType);
+		return expenseTypeService.update(id);
 	}
 
 	@POST

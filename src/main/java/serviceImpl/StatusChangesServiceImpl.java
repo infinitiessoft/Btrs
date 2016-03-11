@@ -13,15 +13,15 @@ import service.StatusChangesService;
 
 public class StatusChangesServiceImpl implements StatusChangesService {
 
-	private StatusChangesDao statusDao;
+	private StatusChangesDao statusChangesDao;
 
 	public StatusChangesServiceImpl(StatusChangesDao statusDao) {
-		this.statusDao = statusDao;
+		this.statusChangesDao = statusDao;
 	}
 
 	@Override
 	public StatusChangesSendto retrieve(long id) {
-		StatusChanges status = statusDao.findOne(id);
+		StatusChanges status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
@@ -38,7 +38,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 
 	@Override
 	public void delete(long id) {
-		statusDao.delete(id);
+		statusChangesDao.delete(id);
 
 	}
 
@@ -46,48 +46,47 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 	public StatusChangesSendto save(StatusChangesSendto statusChanges) {
 		statusChanges.setId(null);
 		StatusChanges status = new StatusChanges();
-		status = statusDao.save(status);
+		status = statusChangesDao.save(status);
 		return toStatusChangesSendto(status);
 	}
 
 	@Override
 	public Collection<StatusChangesSendto> findAll() {
 		List<StatusChangesSendto> sendto = new ArrayList<StatusChangesSendto>();
-		Collection<StatusChanges> status = statusDao.findAll();
-		for (StatusChanges statusChanges : status) {
+		for (StatusChanges statusChanges : statusChangesDao.findAll()) {
 			sendto.add(toStatusChangesSendto(statusChanges));
 		}
 		return sendto;
 	}
 
 	@Override
-	public StatusChangesSendto update(long id, StatusChangesSendto statusChanges) {
-		StatusChanges status = statusDao.findOne(id);
+	public StatusChangesSendto update(long id) {
+		StatusChanges status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
-		return toStatusChangesSendto(statusDao.save(statusChanges));
+		return toStatusChangesSendto(statusChangesDao.save(status));
 	}
 
 	@Override
 	public StatusChangesSendto reject(long id) {
-		StatusChanges status = statusDao.findOne(id);
+		StatusChanges status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
 		status.setStatus(StatusEnum.reject);
-		status = statusDao.save(status);
+		status = statusChangesDao.save(status);
 		return toStatusChangesSendto(status);
 	}
 
 	@Override
 	public StatusChangesSendto permit(long id) {
-		StatusChanges status = statusDao.findOne(id);
+		StatusChanges status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
 		status.setStatus(StatusEnum.approved);
-		status = statusDao.save(status);
+		status = statusChangesDao.save(status);
 		return toStatusChangesSendto(status);
 	}
 

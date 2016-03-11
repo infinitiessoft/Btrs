@@ -14,8 +14,8 @@ public interface DepartmentService {
 
 	public DepartmentSendto save(DepartmentSendto department);
 
-	public Collection<DepartmentSendto> findAll();
+	public DepartmentSendto update(long id);
 
-	public DepartmentSendto update(long id, DepartmentSendto department);
+	public Collection<DepartmentSendto> findAll();
 
 }

@@ -59,17 +59,18 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 	}
 
 	@Override
-	public ExpenseCateTypeSendto update(long id, ExpenseCateTypeSendto expenseCateType) {
+	public ExpenseCateTypeSendto update(long id) {
 		ExpenseCateType cateType = expenseCateTypeDao.findOne(id);
 		if (cateType == null) {
 			throw new ExpenseCateTypeNotFoundException(id);
 		}
-		return toExpenseCateTypeSendto(expenseCateTypeDao.save(expenseCateType));
+		return toExpenseCateTypeSendto(expenseCateTypeDao.save(cateType));
 	}
 
 	@Override
-	public void revokeCategoryFromType(long categoryId, long typeId) {
-		ExpenseCateType expenseCateType = expenseCateTypeDao.findByCategoryIdAndTypeId(categoryId, typeId);
+	public void revokeExpenseCategoryFromExpenseType(long categoryId, long typeId) {
+		ExpenseCateType expenseCateType = expenseCateTypeDao.findByExpenseCategoryIdAndExpenseTypeId(categoryId,
+				typeId);
 		if (expenseCateType == null) {
 			throw new ExpenseAssignmentNotFoundException(categoryId, typeId);
 		}
@@ -80,31 +81,32 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 	@Override
 	public Collection<ExpenseCateTypeSendto> findAll() {
 		List<ExpenseCateTypeSendto> sendto = new ArrayList<ExpenseCateTypeSendto>();
-		Collection<ExpenseCateType> expenseCateType = expenseCateTypeDao.findAll();
-		for (ExpenseCateType expCateType : expenseCateType) {
+		for (ExpenseCateType expCateType : expenseCateTypeDao.findAll()) {
 			sendto.add(toExpenseCateTypeSendto(expCateType));
 		}
+
 		return sendto;
 	}
 
 	@Override
-	public ExpenseCateTypeSendto findByCategoryIdAndTypeId(long categoryId, long typeId) {
-		ExpenseCateType expenseCateType = expenseCateTypeDao.findByCategoryIdAndTypeId(categoryId, typeId);
+	public ExpenseCateTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long category_id, long type_id) {
+		ExpenseCateType expenseCateType = expenseCateTypeDao.findByExpenseCategoryIdAndExpenseTypeId(category_id,
+				type_id);
 		if (expenseCateType == null) {
-			throw new ExpenseAssignmentNotFoundException(categoryId, typeId);
+			throw new ExpenseAssignmentNotFoundException(category_id, type_id);
 		}
-		return ExpenseCategoryServiceImpl.toExpenseCategorySendto(expenseCateType);
+		return ExpenseCateTypeServiceImpl.toExpenseCateTypeSendto(expenseCateType);
 	}
 
 	@Override
-	public void grantCategoryToType(long categoryId, long typeId) {
-		ExpenseCategory expenseCategory = expenseCategoryDao.findOne(categoryId);
+	public void grantExpenseCategoryToExpenseType(long category_id, long type_id) {
+		ExpenseCategory expenseCategory = expenseCategoryDao.findOne(category_id);
 		if (expenseCategory == null) {
-			throw new ExpenseCategoryNotFoundException(categoryId);
+			throw new ExpenseCategoryNotFoundException(category_id);
 		}
-		ExpenseType expenseType = expenseTypeDao.findOne(typeId);
+		ExpenseType expenseType = expenseTypeDao.findOne(type_id);
 		if (expenseType == null) {
-			throw new ExpenseTypeNotFoundException(typeId);
+			throw new ExpenseTypeNotFoundException(type_id);
 		}
 		ExpenseCateType expenseCateType = new ExpenseCateType();
 		expenseCateType.setExpenseCategory(expenseCategory);

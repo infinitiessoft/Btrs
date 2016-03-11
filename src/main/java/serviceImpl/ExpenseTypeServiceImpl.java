@@ -53,20 +53,19 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 	@Override
 	public Collection<ExpenseTypeSendto> findAll() {
 		List<ExpenseTypeSendto> sendto = new ArrayList<ExpenseTypeSendto>();
-		Collection<ExpenseType> expenseType = expenseTypeDao.findAll();
-		for (ExpenseType type : expenseType) {
+		for (ExpenseType type : expenseTypeDao.findAll()) {
 			sendto.add(toExpenseTypeSendto(type));
 		}
 		return sendto;
 	}
 
 	@Override
-	public ExpenseTypeSendto update(long id, ExpenseTypeSendto expenseType) {
+	public ExpenseTypeSendto update(long id) {
 		ExpenseType type = expenseTypeDao.findOne(id);
 		if (type == null) {
 			throw new ExpenseTypeNotFoundException(id);
 		}
-		return toExpenseTypeSendto(expenseTypeDao.save(expenseType));
+		return toExpenseTypeSendto(expenseTypeDao.save(type));
 	}
 
 	public static ExpenseTypeParaSendto toExpenseTypeSendto(ExpenseTypePara expenseTypePara) {

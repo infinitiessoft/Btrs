@@ -54,25 +54,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Collection<UserSendto> findAll() {
 		List<UserSendto> sendto = new ArrayList<UserSendto>();
-		Collection<User> user = userDao.findAll();
-		for (User usr : user) {
+		for (User usr : userDao.findAll()) {
 			sendto.add(toUserSendto(usr));
 		}
 		return sendto;
 	}
 
 	@Override
-	public UserSendto update(long id, UserSendto user) {
+	public UserSendto update(long id) {
 		User usr = userDao.findOne(id);
 		if (usr == null) {
 			throw new UserNotFoundException(id);
 		}
-		return toUserSendto(userDao.save(user));
-	}
-
-	@Override
-	public UserSendto findByName(String name) {
-		return toUserSendto(userDao.findByName(name));
+		return toUserSendto(userDao.save(usr));
 	}
 
 	public static UserRoleSendto toUserSendto(UserRole userRole) {

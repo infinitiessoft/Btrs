@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import dao.ExpenseCategoryDao;
-import entity.ExpenseCateType;
 import entity.ExpenseCategory;
 import exceptions.ExpenseCategoryNotFoundException;
-import sendto.ExpenseCateTypeSendto;
 import sendto.ExpenseCategorySendto;
 import service.ExpenseCategoryService;
 
@@ -53,25 +51,20 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 	@Override
 	public Collection<ExpenseCategorySendto> findAll() {
 		List<ExpenseCategorySendto> sendto = new ArrayList<ExpenseCategorySendto>();
-		Collection<ExpenseCategory> expenseCategory = expenseCategoryDao.findAll();
-		for (ExpenseCategory expCat : expenseCategory) {
-			sendto.add(toExpenseCategorySendto(expCat));
+		for (ExpenseCategory expCategory : expenseCategoryDao.findAll()) {
+			sendto.add(toExpenseCategorySendto(expCategory));
 		}
+
 		return sendto;
 	}
 
 	@Override
-	public ExpenseCategorySendto update(long id, ExpenseCategorySendto expenseCategory) {
+	public ExpenseCategorySendto update(long id) {
 		ExpenseCategory expCat = expenseCategoryDao.findOne(id);
 		if (expCat == null) {
 			throw new ExpenseCategoryNotFoundException(id);
 		}
-		return toExpenseCategorySendto(expenseCategoryDao.save(expenseCategory));
-	}
-
-	public static ExpenseCateTypeSendto toExpenseCategorySendto(ExpenseCateType expenseCateType) {
-		// TODO Auto-generated method stub
-		return null;
+		return toExpenseCategorySendto(expenseCategoryDao.save(expCat));
 	}
 
 }

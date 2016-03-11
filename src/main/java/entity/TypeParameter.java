@@ -32,7 +32,7 @@ public class TypeParameter implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ParameterEnum value;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parameterValue", cascade = CascadeType.ALL)
 	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)

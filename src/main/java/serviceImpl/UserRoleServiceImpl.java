@@ -59,19 +59,19 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
-	public UserRoleSendto update(long id, UserRoleSendto userRole) {
+	public UserRoleSendto update(long id) {
 		UserRole uRole = userRoleDao.findOne(id);
 		if (uRole == null) {
 			throw new UserRoleNotFoundException(id);
 		}
-		return toUserRoleSendto(userRoleDao.save(userRole));
+		return toUserRoleSendto(userRoleDao.save(uRole));
 	}
 
 	@Override
-	public void revokeUserFromRole(long userId, long roleId) {
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
+	public void revokeUserFromRole(long user_id, long role_id) {
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user_id, role_id);
 		if (userRole == null) {
-			throw new UserAssignmentNotFoundException(userId, roleId);
+			throw new UserAssignmentNotFoundException(user_id, role_id);
 		}
 		userRoleDao.delete(userRole);
 
@@ -80,31 +80,30 @@ public class UserRoleServiceImpl implements UserRoleService {
 	@Override
 	public Collection<UserRoleSendto> findAll() {
 		List<UserRoleSendto> sendto = new ArrayList<UserRoleSendto>();
-		Collection<UserRole> userRole = userRoleDao.findAll();
-		for (UserRole uRole : userRole) {
+		for (UserRole uRole : userRoleDao.findAll()) {
 			sendto.add(toUserRoleSendto(uRole));
 		}
 		return sendto;
 	}
 
 	@Override
-	public UserRoleSendto findByUserIdAndRoleId(long userId, long roleId) {
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
+	public UserRoleSendto findByUserIdAndRoleId(long user_id, long role_id) {
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user_id, role_id);
 		if (userRole == null) {
-			throw new UserAssignmentNotFoundException(userId, roleId);
+			throw new UserAssignmentNotFoundException(user_id, role_id);
 		}
 		return UserServiceImpl.toUserSendto(userRole);
 	}
 
 	@Override
-	public void grantUserToRole(long userId, long roleId) {
-		User user = userDao.findOne(userId);
+	public void grantUserToRole(long user_id, long role_id) {
+		User user = userDao.findOne(user_id);
 		if (user == null) {
-			throw new UserNotFoundException(userId);
+			throw new UserNotFoundException(user_id);
 		}
-		Role role = roleDao.findOne(roleId);
+		Role role = roleDao.findOne(role_id);
 		if (role == null) {
-			throw new RoleNotFoundException(roleId);
+			throw new RoleNotFoundException(role_id);
 		}
 		UserRole userRole = new UserRole();
 		userRole.setUser(user);

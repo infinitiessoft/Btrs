@@ -14,7 +14,7 @@ public interface StatusChangesService {
 
 	public Collection<StatusChangesSendto> findAll();
 
-	public StatusChangesSendto update(long id, StatusChangesSendto statusChanges);
+	public StatusChangesSendto update(long id);
 
 	public StatusChangesSendto reject(long id);
 

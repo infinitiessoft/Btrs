@@ -49,10 +49,11 @@ public class ExpenseTypeParaSendto implements Serializable {
 		public void setValue(String value) {
 			this.value = value;
 		}
+
 	}
 
 	private Long id;
-	private ExpenseType expType;
+	private ExpenseType expenseType;
 	private ParameterValue parameterValue;
 
 	public ExpenseTypeParaSendto() {
@@ -67,12 +68,12 @@ public class ExpenseTypeParaSendto implements Serializable {
 		this.id = id;
 	}
 
-	public ExpenseType getExpType() {
-		return expType;
+	public ExpenseType getExpenseType() {
+		return expenseType;
 	}
 
-	public void setExpType(ExpenseType expType) {
-		this.expType = expType;
+	public void setExpenseType(ExpenseType expenseType) {
+		this.expenseType = expenseType;
 	}
 
 	public ParameterValue getParameterValue() {

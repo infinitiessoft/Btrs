@@ -1,22 +1,10 @@
 package dao;
 
-import java.util.Collection;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import entity.Photo;
-import sendto.PhotoSendto;
 
-public interface PhotoDao extends JpaSpecificationExecutor<Photo> {
-
-	Photo findOne(long id);
-
-	void delete(long id);
-
-	Photo save(Photo pht);
-
-	Collection<Photo> findAll();
-
-	Photo save(PhotoSendto photo);
+public interface PhotoDao extends PagingAndSortingRepository<Photo, Long>, JpaSpecificationExecutor<Photo> {
 
 }

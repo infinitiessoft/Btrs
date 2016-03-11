@@ -6,42 +6,21 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import dao.TypeParameterDao;
+import resources.ResourceTest;
 import resources.TypeParameterResource;
 import sendto.PhotoSendto;
 import sendto.TypeParameterSendto;
-import service.TypeParameterService;
-import serviceImpl.TypeParameterServiceImpl;
 
-public class TypeParameterResourceTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		enable(TestProperties.LOG_TRAFFIC);
-		enable(TestProperties.DUMP_ENTITY);
-
-		ResourceConfig config = new ResourceConfig(TypeParameterResource.class);
-		config.register(new InjectableProvider());
-		config.register(JacksonFeature.class);
-
-		return config;
-	}
+public class TypeParameterResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetTypeParameter() {
@@ -119,18 +98,9 @@ public class TypeParameterResourceTest extends JerseyTest {
 		}
 	}
 
+	@Override
 	protected Class<?>[] getResource() {
 		return new Class<?>[] { TypeParameterResource.class };
-	}
-
-	class InjectableProvider extends AbstractBinder {
-
-		@Override
-		protected void configure() {
-			bind(TypeParameterServiceImpl.class).to(TypeParameterService.class).in(Singleton.class);
-			bind(TypeParameterSendto.class).to(TypeParameterDao.class).in(Singleton.class);
-		}
-
 	}
 
 }

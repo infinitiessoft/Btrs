@@ -14,6 +14,6 @@ public interface ParameterValueService {
 
 	public Collection<ParameterValueSendto> findAll();
 
-	public ParameterValueSendto update(long id, ParameterValueSendto parameterValue);
+	public ParameterValueSendto update(long id);
 
 }

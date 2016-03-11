@@ -69,11 +69,6 @@ public abstract class ResourceTest extends JerseyTest {
 	@Before
 	public void initData() throws HibernateException, DatabaseUnitException, SQLException {
 
-		// // As your project and list of tables grows, specifying
-		// // what tables to load will be more important
-		// dbUtil.createTables(new Class[] { Employee.class });
-
-		// Different functional tests require different data sets
 		dbUtil.loadData();
 	}
 }

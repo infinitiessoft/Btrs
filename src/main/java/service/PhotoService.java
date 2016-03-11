@@ -14,6 +14,6 @@ public interface PhotoService {
 
 	public Collection<PhotoSendto> findAll();
 
-	public PhotoSendto update(long id, PhotoSendto photo);
+	public PhotoSendto update(long id);
 
 }

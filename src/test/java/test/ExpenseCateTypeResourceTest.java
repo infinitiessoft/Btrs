@@ -6,41 +6,20 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import dao.ExpenseCateTypeDao;
 import resources.ExpenseCateTypeResource;
+import resources.ResourceTest;
 import sendto.ExpenseCateTypeSendto;
-import service.ExpenseCateTypeService;
-import serviceImpl.ExpenseCateTypeServiceImpl;
 
-public class ExpenseCateTypeResourceTest extends JerseyTest {
-
-	@Override
-	protected Application configure() {
-
-		enable(TestProperties.LOG_TRAFFIC);
-		enable(TestProperties.DUMP_ENTITY);
-
-		ResourceConfig config = new ResourceConfig(ExpenseCateTypeResource.class);
-		config.register(new InjectableProvider());
-		config.register(JacksonFeature.class);
-
-		return config;
-	}
+public class ExpenseCateTypeResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseCateType() {
@@ -125,18 +104,9 @@ public class ExpenseCateTypeResourceTest extends JerseyTest {
 		}
 	}
 
+	@Override
 	protected Class<?>[] getResource() {
 		return new Class<?>[] { ExpenseCateTypeResource.class };
-	}
-
-	class InjectableProvider extends AbstractBinder {
-
-		@Override
-		protected void configure() {
-			bind(ExpenseCateTypeServiceImpl.class).to(ExpenseCateTypeService.class).in(Singleton.class);
-			bind(ExpenseCateTypeSendto.class).to(ExpenseCateTypeDao.class).in(Singleton.class);
-		}
-
 	}
 
 }

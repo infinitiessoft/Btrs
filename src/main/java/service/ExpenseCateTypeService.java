@@ -12,14 +12,14 @@ public interface ExpenseCateTypeService {
 
 	public ExpenseCateTypeSendto save(ExpenseCateTypeSendto expenseCateType);
 
-	public ExpenseCateTypeSendto update(long id, ExpenseCateTypeSendto expenseCateType);
+	public ExpenseCateTypeSendto update(long id);
 
-	public void revokeCategoryFromType(long categoryId, long typeId);
+	public void revokeExpenseCategoryFromExpenseType(long category_id, long type_id);
+
+	public ExpenseCateTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long category_id, long type_id);
+
+	public void grantExpenseCategoryToExpenseType(long category_id, long type_id);
 
 	public Collection<ExpenseCateTypeSendto> findAll();
-
-	public ExpenseCateTypeSendto findByCategoryIdAndTypeId(long categoryId, long typeId);
-
-	public void grantCategoryToType(long categoryId, long typeId);
 
 }

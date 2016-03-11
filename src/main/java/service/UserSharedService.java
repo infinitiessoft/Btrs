@@ -14,7 +14,7 @@ public interface UserSharedService {
 
 	public Collection<UserSharedSendto> findAll();
 
-	public UserSharedSendto update(long id, UserSharedSendto userShared);
+	public UserSharedSendto update(long id);
 
 	public UserSharedSendto findByUsername(String username);
 

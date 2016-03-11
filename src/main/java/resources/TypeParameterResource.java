@@ -43,7 +43,7 @@ public class TypeParameterResource {
 	@PUT
 	@Path(value = "{id}")
 	public TypeParameterSendto updateTypeParameter(@PathParam("id") long id, TypeParameterSendto type) {
-		return typeParameterService.update(id, type);
+		return typeParameterService.update(id);
 	}
 
 	@POST

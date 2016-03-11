@@ -50,19 +50,18 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Collection<RoleSendto> findAll() {
 		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
-		Collection<Role> role = roleDao.findAll();
-		for (Role roles : role) {
+		for (Role roles : roleDao.findAll()) {
 			sendto.add(toRoleSendto(roles));
 		}
 		return sendto;
 	}
 
 	@Override
-	public RoleSendto update(long id, RoleSendto role) {
+	public RoleSendto update(long id) {
 		Role roles = roleDao.findOne(id);
 		if (roles == null) {
 			throw new RoleNotFoundException(id);
 		}
-		return toRoleSendto(roleDao.save(role));
+		return toRoleSendto(roleDao.save(roles));
 	}
 }

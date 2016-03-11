@@ -12,14 +12,14 @@ public interface ExpenseTypeParaService {
 
 	public ExpenseTypeParaSendto save(ExpenseTypeParaSendto expenseTypePara);
 
-	public ExpenseTypeParaSendto update(long id, ExpenseTypeParaSendto expenseTypePara);
-
-	public void revokeTypeFromParameter(long typeId, long parameterId);
+	public ExpenseTypeParaSendto update(long id);
 
 	public Collection<ExpenseTypeParaSendto> findAll();
 
-	public ExpenseTypeParaSendto findByTypeIdAndParameterId(long typeId, long parameterId);
+	public ExpenseTypeParaSendto findByExpenseTypeIdAndParameterValueId(long expense_id, long parameterValue_id);
 
-	public void grantTypeToParameter(long typeId, long parameterId);
+	public void grantExpenseTypeToParameterValue(long expense_id, long parameterValue_id);
+
+	public void revokeExpenseTypeFromParameterValue(long id, long expense_id);
 
 }

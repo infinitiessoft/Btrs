@@ -14,6 +14,6 @@ public interface RoleService {
 
 	public Collection<RoleSendto> findAll();
 
-	public RoleSendto update(long id, RoleSendto role);
+	public RoleSendto update(long id);
 
 }

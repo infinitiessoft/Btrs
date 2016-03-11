@@ -14,6 +14,6 @@ public interface TypeParameterService {
 
 	public Collection<TypeParameterSendto> findAll();
 
-	public TypeParameterSendto update(long id, TypeParameterSendto typeParameter);
+	public TypeParameterSendto update(long id);
 
 }
