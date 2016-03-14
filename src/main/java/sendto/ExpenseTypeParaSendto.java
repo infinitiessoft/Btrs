@@ -11,6 +11,14 @@ public class ExpenseTypeParaSendto implements Serializable {
 		private Long id;
 		private Double taxPercent;
 
+		public ExpenseType(Long id, Double taxPercent) {
+			this.id = id;
+			this.taxPercent = taxPercent;
+		}
+
+		public ExpenseType() {
+		}
+
 		public Long getId() {
 			return id;
 		}
@@ -33,6 +41,14 @@ public class ExpenseTypeParaSendto implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private Long id;
 		private String value;
+
+		public ParameterValue() {
+		}
+
+		public ParameterValue(Long id, String value) {
+			this.id = id;
+			this.value = value;
+		}
 
 		public Long getId() {
 			return id;
@@ -57,7 +73,13 @@ public class ExpenseTypeParaSendto implements Serializable {
 	private ParameterValue parameterValue;
 
 	public ExpenseTypeParaSendto() {
-		super();
+
+	}
+
+	public ExpenseTypeParaSendto(Long id, ExpenseType expenseType, ParameterValue parameterValue) {
+		this.id = id;
+		this.expenseType = expenseType;
+		this.parameterValue = parameterValue;
 	}
 
 	public Long getId() {

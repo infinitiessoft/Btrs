@@ -19,7 +19,6 @@ public class UserSharedSendto {
 	private Boolean enabled;
 
 	public UserSharedSendto() {
-		super();
 	}
 
 	public UserSharedSendto(Long id, String username, String password, String jobTitle, String email, GenderEnum gender,

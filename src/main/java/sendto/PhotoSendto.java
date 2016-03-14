@@ -16,7 +16,6 @@ public class PhotoSendto {
 	private Report report;
 
 	public PhotoSendto() {
-		super();
 
 	}
 

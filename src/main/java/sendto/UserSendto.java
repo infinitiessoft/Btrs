@@ -9,7 +9,6 @@ public class UserSendto {
 	private Long userSharedId;
 
 	public UserSendto() {
-		super();
 	}
 
 	public UserSendto(Long id, Date lastLogin, Long userSharedId) {

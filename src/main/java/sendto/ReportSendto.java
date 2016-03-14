@@ -16,7 +16,6 @@ public class ReportSendto {
 	private Date lastUpdatedDate;
 
 	public ReportSendto() {
-		super();
 
 	}
 

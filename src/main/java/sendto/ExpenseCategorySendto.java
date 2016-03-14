@@ -7,11 +7,10 @@ public class ExpenseCategorySendto {
 	private String code;
 
 	public ExpenseCategorySendto() {
-		super();
+
 	}
 
 	public ExpenseCategorySendto(Long id, String name, String code) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.code = code;

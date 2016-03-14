@@ -5,7 +5,6 @@ public class RoleSendto {
 	private Long id;
 
 	public RoleSendto() {
-		super();
 	}
 
 	public RoleSendto(Long id) {

@@ -11,6 +11,13 @@ public class UserRoleSendto implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private Long id;
 
+		public Role() {
+		}
+
+		public Role(Long id) {
+			this.id = id;
+		}
+
 		public Long getId() {
 			return id;
 		}
@@ -26,6 +33,15 @@ public class UserRoleSendto implements Serializable {
 		private Long id;
 		private Date lastLogin;
 		private Long userSharedId;
+
+		public User(Long id, Date lastLogin, Long userSharedId) {
+			this.id = id;
+			this.lastLogin = lastLogin;
+			this.userSharedId = userSharedId;
+		}
+
+		public User() {
+		}
 
 		public Long getId() {
 			return id;
@@ -57,6 +73,12 @@ public class UserRoleSendto implements Serializable {
 	private User user;
 	private Role role;
 
+	public UserRoleSendto(Long id, User user, Role role) {
+		this.id = id;
+		this.user = user;
+		this.role = role;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -74,7 +96,6 @@ public class UserRoleSendto implements Serializable {
 	}
 
 	public UserRoleSendto() {
-		super();
 	}
 
 	public Long getId() {
@@ -86,7 +107,6 @@ public class UserRoleSendto implements Serializable {
 	}
 
 	public UserRoleSendto(Long id) {
-		super();
 		this.id = id;
 	}
 

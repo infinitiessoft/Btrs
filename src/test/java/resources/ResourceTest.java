@@ -27,7 +27,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.filter.RequestContextFilter;
 
-import resource.mapper.GenericExceptionMapper;
+import resources.mapper.GenericExceptionMapper;
 
 @ContextConfiguration("file:src/test/resource/test_context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +37,7 @@ import resource.mapper.GenericExceptionMapper;
 public abstract class ResourceTest extends JerseyTest {
 
 	@Autowired
-	protected DbUnitUtil dbUtil;
+	private DbUnitUtil dbUtil;
 
 	@Override
 	protected TestContainerFactory getTestContainerFactory() {
@@ -71,4 +71,5 @@ public abstract class ResourceTest extends JerseyTest {
 
 		dbUtil.loadData();
 	}
+
 }

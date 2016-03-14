@@ -5,7 +5,7 @@ public class ExpenseTypeSendto {
 	private Double taxPercent;
 
 	public ExpenseTypeSendto() {
-		super();
+
 	}
 
 	public Long getId() {

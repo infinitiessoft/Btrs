@@ -13,6 +13,16 @@ public class ExpenseCateTypeSendto implements Serializable {
 		private String name;
 		private String code;
 
+		public ExpenseCategory() {
+
+		}
+
+		public ExpenseCategory(Long id, String name, String code) {
+			this.id = id;
+			this.name = name;
+			this.code = code;
+		}
+
 		public Long getId() {
 			return id;
 		}
@@ -43,6 +53,15 @@ public class ExpenseCateTypeSendto implements Serializable {
 		private Long id;
 		private Double taxPercent;
 
+		public ExpenseType(Long id, Double taxPercent) {
+			this.id = id;
+			this.taxPercent = taxPercent;
+		}
+
+		public ExpenseType() {
+			// TODO Auto-generated constructor stub
+		}
+
 		public Long getId() {
 			return id;
 		}
@@ -64,6 +83,16 @@ public class ExpenseCateTypeSendto implements Serializable {
 	private Long id;
 	private ExpenseCategory expCate;
 	private ExpenseType expType;
+
+	public ExpenseCateTypeSendto() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ExpenseCateTypeSendto(Long id, ExpenseCategory expCate, ExpenseType expType) {
+		this.id = id;
+		this.expCate = expCate;
+		this.expType = expType;
+	}
 
 	public Long getId() {
 		return id;

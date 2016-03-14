@@ -5,7 +5,6 @@ public class TypeParameterSendto {
 	private Long id;
 
 	public TypeParameterSendto() {
-		super();
 	}
 
 	public TypeParameterSendto(Long id) {

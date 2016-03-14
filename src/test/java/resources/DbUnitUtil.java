@@ -34,7 +34,12 @@ public class DbUnitUtil {
 
 		FlatXmlDataSetBuilder flatXmlDataSetBuilder = new FlatXmlDataSetBuilder();
 		flatXmlDataSetBuilder.setColumnSensing(true);
-		IDataSet dataSet = new CsvDataSet(new File("src/test/resource/test-data"));
+		// InputStream dataSet =
+		// Thread.currentThread().getContextClassLoader().getResourceAsStream("test-data.xml");
+		// dataset = flatXmlDataSetBuilder.build(dataSet);
+		// DatabaseOperation.CLEAN_INSERT.execute(connection, dataset);
+
+		IDataSet dataSet = new CsvDataSet(new File("src/test/resource/test-dataset"));
 		DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 	}
 

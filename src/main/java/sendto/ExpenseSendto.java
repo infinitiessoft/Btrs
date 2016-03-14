@@ -11,7 +11,7 @@ public class ExpenseSendto {
 	private Integer taxAmount;
 
 	public ExpenseSendto() {
-		super();
+
 	}
 
 	public ExpenseSendto(Long id, Report report, String comment, Integer totalAmount, Integer taxAmount) {

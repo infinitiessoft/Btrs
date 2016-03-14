@@ -8,11 +8,9 @@ public class StatusChangesSendto {
 	private Date createdDate;
 
 	public StatusChangesSendto() {
-		super();
 	}
 
 	public StatusChangesSendto(Long id, String comment, Date createdDate) {
-		super();
 		this.id = id;
 		this.comment = comment;
 		this.createdDate = createdDate;

@@ -1,4 +1,4 @@
-package resource.mapper;
+package resources.mapper;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
