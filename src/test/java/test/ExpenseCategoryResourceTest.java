@@ -1,10 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -15,15 +11,17 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.ExpenseCategoryResource;
+import entity.PageModel;
 import resources.ResourceTest;
+import resources.Type.ExpenseCategoryResource;
 import sendto.ExpenseCategorySendto;
 
 public class ExpenseCategoryResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseCategory() {
-		Response response = target("expenseCategory").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("expenseCategory").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseCategorySendto sendto = response.readEntity(ExpenseCategorySendto.class);
 		assertEquals(1l, sendto.getId());
@@ -33,19 +31,22 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseCategoryWithNotFoundException() {
-		Response response = target("expenseCategory").path("4").register(JacksonFeature.class).request().get();
+		Response response = target("expenseCategory").path("4").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteExpenseCategory() {
-		Response response = target("expenseCategory").register(JacksonFeature.class).request().delete();
+		Response response = target("expenseCategory").register(JacksonFeature.class).request().header("user", "demo")
+				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteExpenseCategoryWithNotFoundException() {
-		Response response = target("expenseCategory").register(JacksonFeature.class).request().delete();
+		Response response = target("expenseCategory").register(JacksonFeature.class).request().header("user", "demo")
+				.delete();
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -54,7 +55,7 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 		ExpenseCategorySendto admin = new ExpenseCategorySendto();
 		admin.setName("administrator");
 		Response response = target("expenseCategory").path("1").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseCategorySendto sendto = response.readEntity(ExpenseCategorySendto.class);
 		assertEquals(1l, sendto.getId());
@@ -67,7 +68,7 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 		ExpenseCategorySendto admin = new ExpenseCategorySendto();
 		admin.setName("administrator");
 		Response response = target("expenseCategory").path("4").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+				.header("user", "demo").put(Entity.json(admin));
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -75,7 +76,8 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 	public void testSaveExpenseCategory() {
 		ExpenseCategorySendto admin = new ExpenseCategorySendto();
 		admin.setName("administrator");
-		Response response = target("expenseCategory").register(JacksonFeature.class).request().post(Entity.json(admin));
+		Response response = target("expenseCategory").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseCategorySendto sendto = response.readEntity(ExpenseCategorySendto.class);
 		assertEquals(5l, sendto.getId());
@@ -87,22 +89,21 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 	public void testSaveExpenseCategoryWithDuplicateName() {
 		ExpenseCategorySendto admin = new ExpenseCategorySendto();
 		admin.setName("Sales");
-		Response response = target("expenseCategory").register(JacksonFeature.class).request().post(Entity.json(admin));
+		Response response = target("expenseCategory").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
 		AssertUtils.assertBadRequest(response);
 	}
 
 	@Test
 	public void testFindallExpenseCategory() {
-		Response response = target("expenseCategory").register(JacksonFeature.class).request().get();
+		Response response = target("expenseCategory").register(JacksonFeature.class).request().header("user", "demo")
+				.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		Collection<ExpenseCategorySendto> rets = response.readEntity(new GenericType<List<ExpenseCategorySendto>>() {
-		});
-		assertEquals(200, response.getStatus());
-		for (ExpenseCategorySendto expCat : rets) {
-			assertNotNull(expCat.getId());
-			assertNotNull(expCat.getName());
-			assertNotNull(expCat.getCode());
-		}
+		PageModel<ExpenseCategorySendto> rets = response
+				.readEntity(new GenericType<PageModel<ExpenseCategorySendto>>() {
+				});
+		assertEquals(3, rets.getTotalElements());
+
 	}
 
 	@Override

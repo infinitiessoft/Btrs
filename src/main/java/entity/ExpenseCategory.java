@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expense_categories")
-public class ExpenseCategory implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
-
+@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name") )
+public class ExpenseCategory extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +33,7 @@ public class ExpenseCategory implements Serializable {
 	private List<ExpenseCateType> expenseCateType = new ArrayList<ExpenseCateType>(0);
 
 	public ExpenseCategory() {
-
+		super();
 	}
 
 	public Long getId() {
@@ -68,6 +66,31 @@ public class ExpenseCategory implements Serializable {
 
 	public void setExpenseCateType(List<ExpenseCateType> expenseCateType) {
 		this.expenseCateType = expenseCateType;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExpenseCategory other = (ExpenseCategory) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

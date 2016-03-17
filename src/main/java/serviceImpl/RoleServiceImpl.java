@@ -1,8 +1,12 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import dao.RoleDao;
 import entity.Role;
@@ -43,25 +47,34 @@ public class RoleServiceImpl implements RoleService {
 	public RoleSendto save(RoleSendto role) {
 		role.setId(null);
 		Role roles = new Role();
+		setUpRole(role, roles);
 		roles = roleDao.save(roles);
 		return toRoleSendto(roles);
 	}
 
 	@Override
-	public Collection<RoleSendto> findAll() {
+	public Page<RoleSendto> findAll(Specification<Role> spec, Pageable pageable) {
 		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
-		for (Role roles : roleDao.findAll()) {
-			sendto.add(toRoleSendto(roles));
+		Page<Role> roles = roleDao.findAll(spec, pageable);
+		for (Role role : roles) {
+			sendto.add(toRoleSendto(role));
 		}
-		return sendto;
+		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable, roles.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public RoleSendto update(long id) {
+	public RoleSendto update(long id, RoleSendto updated) {
 		Role roles = roleDao.findOne(id);
 		if (roles == null) {
 			throw new RoleNotFoundException(id);
 		}
+		setUpRole(updated, roles);
 		return toRoleSendto(roleDao.save(roles));
+	}
+
+	private void setUpRole(RoleSendto updated, Role roles) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -1,8 +1,12 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import dao.ExpenseCategoryDao;
 import entity.ExpenseCategory;
@@ -44,27 +48,37 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 	public ExpenseCategorySendto save(ExpenseCategorySendto expenseCategory) {
 		expenseCategory.setId(null);
 		ExpenseCategory expCat = new ExpenseCategory();
+		setUpExpenseCategory(expenseCategory, expCat);
 		expCat = expenseCategoryDao.save(expCat);
 		return toExpenseCategorySendto(expCat);
 	}
 
 	@Override
-	public Collection<ExpenseCategorySendto> findAll() {
-		List<ExpenseCategorySendto> sendto = new ArrayList<ExpenseCategorySendto>();
-		for (ExpenseCategory expCategory : expenseCategoryDao.findAll()) {
-			sendto.add(toExpenseCategorySendto(expCategory));
+	public Page<ExpenseCategorySendto> findAll(Specification<ExpenseCategory> spec, Pageable pageable) {
+		List<ExpenseCategorySendto> sendtos = new ArrayList<ExpenseCategorySendto>();
+		Page<ExpenseCategory> expCat = expenseCategoryDao.findAll(spec, pageable);
+		for (ExpenseCategory expenseCategory : expCat) {
+			sendtos.add(toExpenseCategorySendto(expenseCategory));
 		}
-
-		return sendto;
+		Page<ExpenseCategorySendto> rets = new PageImpl<ExpenseCategorySendto>(sendtos, pageable,
+				expCat.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public ExpenseCategorySendto update(long id) {
+	public ExpenseCategorySendto update(long id, ExpenseCategorySendto updated) {
 		ExpenseCategory expCat = expenseCategoryDao.findOne(id);
 		if (expCat == null) {
 			throw new ExpenseCategoryNotFoundException(id);
 		}
+		setUpExpenseCategory(updated, expCat);
 		return toExpenseCategorySendto(expenseCategoryDao.save(expCat));
+	}
+
+	private void setUpExpenseCategory(ExpenseCategorySendto sendto, ExpenseCategory expCat) {
+		if (sendto.isNameSet()) {
+			expCat.setName(sendto.getName());
+		}
 	}
 
 }

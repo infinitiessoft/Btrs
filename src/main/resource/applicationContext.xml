@@ -10,7 +10,9 @@
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
+<context:component-scan base-package="resources" />
 	 <context:annotation-config />
+	 
 	
 	<!-- DATABASE SETUP -->
 

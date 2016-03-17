@@ -2,7 +2,7 @@ package sendto;
 
 import java.util.Date;
 
-import entity.Report;
+import javax.xml.bind.annotation.XmlTransient;
 
 public class PhotoSendto {
 
@@ -15,20 +15,16 @@ public class PhotoSendto {
 	private int size;
 	private Report report;
 
+	private boolean isFileNameSet;
+	private boolean isContentTypeSet;
+	private boolean isUploadDateSet;
+	private boolean isTitleSet;
+	private boolean isDataSet;
+	private boolean isSizeSet;
+	private boolean isReportSet;
+
 	public PhotoSendto() {
-
-	}
-
-	public PhotoSendto(Long id, String fileName, String contentType, Date uploadDate, String title, byte[] data,
-			int size, Report report) {
-		this.id = id;
-		this.fileName = fileName;
-		this.contentType = contentType;
-		this.uploadDate = uploadDate;
-		this.title = title;
-		this.data = data;
-		this.size = size;
-		this.report = report;
+		super();
 	}
 
 	public Long getId() {
@@ -44,6 +40,7 @@ public class PhotoSendto {
 	}
 
 	public void setFileName(String fileName) {
+		isFileNameSet = true;
 		this.fileName = fileName;
 	}
 
@@ -92,7 +89,76 @@ public class PhotoSendto {
 	}
 
 	public void setReport(Report report) {
+		if (report != null) {
+			isReportSet = true;
+		}
 		this.report = report;
+	}
+
+	@XmlTransient
+	public boolean isFileNameSet() {
+		return isFileNameSet;
+	}
+
+	@XmlTransient
+	public boolean isContentTypeSet() {
+		return isContentTypeSet;
+	}
+
+	@XmlTransient
+	public boolean isUploadDateSet() {
+		return isUploadDateSet;
+	}
+
+	@XmlTransient
+	public boolean isTitleSet() {
+		return isTitleSet;
+
+	}
+
+	@XmlTransient
+	public boolean isDataSet() {
+		return isDataSet;
+	}
+
+	@XmlTransient
+	public boolean isSizeSet() {
+		return isSizeSet;
+	}
+
+	@XmlTransient
+	public boolean isReportSet() {
+		return isReportSet;
+	}
+
+	public static class Report {
+		private Long id;
+
+		private boolean isIdSet;
+
+		public Report() {
+			super();
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
 	}
 
 }

@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.RoleSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.RoleSendto;
 import service.RoleService;
 
@@ -43,7 +45,7 @@ public class RoleResource {
 	@PUT
 	@Path(value = "{id}")
 	public RoleSendto updateRole(@PathParam("id") long id, RoleSendto role) {
-		return roleService.update(id);
+		return roleService.update(id, role);
 	}
 
 	@POST
@@ -54,8 +56,8 @@ public class RoleResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<RoleSendto> findallRole() {
-		return roleService.findAll();
+	public Page<RoleSendto> findallRole(@BeanParam SimplePageRequest pageRequest, @BeanParam RoleSpecification spec) {
+		return roleService.findAll(spec, pageRequest);
 	}
 
 }

@@ -1,7 +1,10 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import entity.Report;
 import sendto.ReportSendto;
 
 public interface ReportService {
@@ -12,8 +15,8 @@ public interface ReportService {
 
 	public ReportSendto save(ReportSendto report);
 
-	public Collection<ReportSendto> findAll();
+	public Page<ReportSendto> findAll(Specification<Report> spec, Pageable pageable);
 
-	public ReportSendto update(long id);
+	public ReportSendto update(long id, ReportSendto report);
 
 }

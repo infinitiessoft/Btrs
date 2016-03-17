@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import assertion.AssertUtils;
 import resources.ResourceTest;
-import resources.RoleResource;
+import resources.Type.RoleResource;
 import sendto.RoleSendto;
 
 public class RoleResourceTest extends ResourceTest {

@@ -1,5 +1,7 @@
 package sendto;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 public class DepartmentSendto {
 
 	private Long id;
@@ -29,6 +31,7 @@ public class DepartmentSendto {
 	}
 
 	public void setName(String name) {
+		setNameSet(true);
 		this.name = name;
 	}
 
@@ -38,6 +41,18 @@ public class DepartmentSendto {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public boolean isNameSet;
+
+	@XmlTransient
+	public boolean isNameSet() {
+		return isNameSet;
+	}
+
+	@XmlTransient
+	public void setNameSet(boolean isNameSet) {
+		this.isNameSet = isNameSet;
 	}
 
 }

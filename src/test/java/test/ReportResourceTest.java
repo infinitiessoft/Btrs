@@ -16,8 +16,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.ReportResource;
 import resources.ResourceTest;
+import resources.Type.ReportResource;
 import sendto.ReportSendto;
 
 public class ReportResourceTest extends ResourceTest {

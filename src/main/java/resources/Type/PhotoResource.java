@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.PhotoSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.PhotoSendto;
 import service.PhotoService;
 
@@ -43,7 +45,7 @@ public class PhotoResource {
 	@PUT
 	@Path(value = "{id}")
 	public PhotoSendto updatePhoto(@PathParam("id") long id, PhotoSendto photo) {
-		return photoService.update(id);
+		return photoService.update(id, photo);
 	}
 
 	@POST
@@ -54,8 +56,9 @@ public class PhotoResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<PhotoSendto> findallPhoto() {
-		return photoService.findAll();
+	public Page<PhotoSendto> findallPhoto(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam PhotoSpecification spec) {
+		return photoService.findAll(spec, pageRequest);
 	}
 
 }

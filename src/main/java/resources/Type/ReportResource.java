@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.ReportSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
 import service.ReportService;
 
@@ -43,7 +45,7 @@ public class ReportResource {
 	@PUT
 	@Path(value = "{id}")
 	public ReportSendto updateReport(@PathParam("id") long id, ReportSendto report) {
-		return reportService.update(id);
+		return reportService.update(id, report);
 	}
 
 	@POST
@@ -54,8 +56,9 @@ public class ReportResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<ReportSendto> findallReport() {
-		return reportService.findAll();
+	public Page<ReportSendto> findallReport(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam ReportSpecification spec) {
+		return reportService.findAll(spec, pageRequest);
 	}
 
 }

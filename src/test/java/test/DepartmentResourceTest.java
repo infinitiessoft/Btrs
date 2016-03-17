@@ -1,10 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -15,15 +11,17 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.DepartmentResource;
+import entity.PageModel;
 import resources.ResourceTest;
+import resources.Type.DepartmentResource;
 import sendto.DepartmentSendto;
 
 public class DepartmentResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetDepartment() {
-		Response response = target("/department").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("/department").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		DepartmentSendto sendto = response.readEntity(DepartmentSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
@@ -33,7 +31,8 @@ public class DepartmentResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetDepartmentWithNotFoundException() {
-		Response response = target("department").path("4").register(JacksonFeature.class).request().get();
+		Response response = target("department").path("4").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
@@ -45,7 +44,8 @@ public class DepartmentResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeleteDepartmentWithNotFoundException() {
-		Response response = target("department").register(JacksonFeature.class).request().delete();
+		Response response = target("department").register(JacksonFeature.class).request().header("user", "demo")
+				.delete();
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -97,14 +97,9 @@ public class DepartmentResourceTest extends ResourceTest {
 	public void testFindallDepartment() {
 		Response response = target("department").register(JacksonFeature.class).request().header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		Collection<DepartmentSendto> rets = response.readEntity(new GenericType<List<DepartmentSendto>>() {
+		PageModel<DepartmentSendto> rets = response.readEntity(new GenericType<PageModel<DepartmentSendto>>() {
 		});
-		assertEquals(200, response.getStatus());
-		for (DepartmentSendto department : rets) {
-			assertNotNull(department.getId().toString());
-			assertNotNull(department.getName());
-			assertNotNull(department.getComment());
-		}
+		assertEquals(3, rets.getTotalElements());
 	}
 
 	@Override

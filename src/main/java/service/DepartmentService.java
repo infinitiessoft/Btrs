@@ -1,7 +1,10 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import entity.Department;
 import sendto.DepartmentSendto;
 
 public interface DepartmentService {
@@ -14,8 +17,8 @@ public interface DepartmentService {
 
 	public DepartmentSendto save(DepartmentSendto department);
 
-	public DepartmentSendto update(long id);
+	DepartmentSendto update(long id, DepartmentSendto department);
 
-	public Collection<DepartmentSendto> findAll();
+	Page<DepartmentSendto> findAll(Specification<Department> spec, Pageable pageable);
 
 }

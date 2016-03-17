@@ -1,17 +1,16 @@
 package dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface Dao<T extends Serializable, I> {
+import entity.AbstractEntity;
 
-	static final long serialVersionUID = 7526471155622776147L;
+public interface Dao<T extends AbstractEntity, I> {
 
 	List<T> findAll();
 
 	T find(I id);
 
-	T save(T newStatus);
+	T save(T newEntry);
 
 	void delete(I id);
 

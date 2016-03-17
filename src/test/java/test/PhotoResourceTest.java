@@ -15,8 +15,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.PhotoResource;
 import resources.ResourceTest;
+import resources.Type.PhotoResource;
 import sendto.PhotoSendto;
 
 public class PhotoResourceTest extends ResourceTest {

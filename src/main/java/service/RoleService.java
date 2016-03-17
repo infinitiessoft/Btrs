@@ -1,7 +1,10 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import entity.Role;
 import sendto.RoleSendto;
 
 public interface RoleService {
@@ -12,8 +15,8 @@ public interface RoleService {
 
 	public RoleSendto save(RoleSendto role);
 
-	public Collection<RoleSendto> findAll();
+	public Page<RoleSendto> findAll(Specification<Role> spec, Pageable pageable);
 
-	public RoleSendto update(long id);
+	public RoleSendto update(long id, RoleSendto role);
 
 }

@@ -3,7 +3,6 @@ package serviceTest;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.jmock.Expectations;
@@ -12,9 +11,13 @@ import org.jmock.lib.action.CustomAction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import dao.DepartmentDao;
 import entity.Department;
+import resources.specification.DepartmentSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.DepartmentSendto;
 import serviceImpl.DepartmentServiceImpl;
 
@@ -69,8 +72,7 @@ public class DepartmentServiceImplTest extends ServiceTest {
 	@Test
 	public void testSave() {
 		final DepartmentSendto newEntry = new DepartmentSendto();
-		newEntry.setName("Demo");
-
+		newEntry.setName("Demo_name");
 		context.checking(new Expectations() {
 
 			{
@@ -95,7 +97,8 @@ public class DepartmentServiceImplTest extends ServiceTest {
 	@Test
 	public void testUpdate() {
 		final DepartmentSendto newEntry = new DepartmentSendto();
-		newEntry.setName("Demo");
+		newEntry.setName("Demo_name");
+		newEntry.setComment("Good");
 		context.checking(new Expectations() {
 
 			{
@@ -106,7 +109,7 @@ public class DepartmentServiceImplTest extends ServiceTest {
 				will(returnValue(department));
 			}
 		});
-		DepartmentSendto ret = departmentService.update(1l);
+		DepartmentSendto ret = departmentService.update(1l, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getName(), ret.getName());
 		assertEquals(newEntry.getComment(), ret.getComment());
@@ -114,12 +117,23 @@ public class DepartmentServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testFindAll() {
+		final DepartmentSpecification spec = new DepartmentSpecification();
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
 		final List<Department> departments = new ArrayList<Department>();
 		departments.add(department);
-		Collection<DepartmentSendto> rets = departmentService.findAll();
-		assertEquals(1, rets.toString());
+		final Page<Department> page = new PageImpl<Department>(departments);
+		context.checking(new Expectations() {
+
+			{
+				exactly(1).of(departmentDao).findAll(spec, pageable);
+				will(returnValue(page));
+			}
+		});
+		Page<DepartmentSendto> rets = departmentService.findAll(spec, pageable);
+		assertEquals(1, rets.getTotalElements());
 		DepartmentSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(department.getName(), ret.getName());
+		assertEquals(department.getComment(), ret.getComment());
 	}
 }

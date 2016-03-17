@@ -3,7 +3,6 @@ package serviceTest;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.jmock.Expectations;
@@ -12,9 +11,13 @@ import org.jmock.lib.action.CustomAction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import dao.RoleDao;
 import entity.Role;
+import resources.specification.RoleSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.RoleSendto;
 import serviceImpl.RoleServiceImpl;
 
@@ -99,16 +102,25 @@ public class RoleServiceImplTest extends ServiceTest {
 				will(returnValue(role));
 			}
 		});
-		RoleSendto ret = roleService.update(1l);
+		RoleSendto ret = roleService.update(1l, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 	}
 
 	@Test
 	public void testFindAll() {
+		final RoleSpecification spec = new RoleSpecification();
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
 		final List<Role> roles = new ArrayList<Role>();
 		roles.add(role);
-		Collection<RoleSendto> rets = roleService.findAll();
-		assertEquals(1, rets.toString());
+		final Page<Role> page = new PageImpl<Role>(roles);
+		context.checking(new Expectations() {
+			{
+				exactly(1).of(roleDao).findAll(spec, pageable);
+				will(returnValue(page));
+			}
+		});
+		Page<RoleSendto> rets = roleService.findAll(spec, pageable);
+		assertEquals(1, rets.getTotalElements());
 		RoleSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
 	}

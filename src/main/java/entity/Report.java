@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,19 +24,17 @@ import enumpackage.StatusEnum;
 
 @Entity
 @Table(name = "reports")
-public class Report implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
-
+public class Report extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "maxIdLastMonth", nullable = false)
+	@Column(name = "max_id_last_month", nullable = false)
 	private Long maxIdLastMonth;
 
-	@Column(name = "attendanceRecordId", nullable = false)
+	@Column(name = "attendance_record_id", nullable = false)
 	private Long attendanceRecordId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -70,7 +67,7 @@ public class Report implements Serializable {
 	private Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "lastUpdated_date", nullable = false)
+	@Column(name = "last_updated_date", nullable = false)
 	private Date lastUpdatedDate;
 
 	@Enumerated(EnumType.STRING)
@@ -86,7 +83,7 @@ public class Report implements Serializable {
 	private List<Photo> photos = new ArrayList<Photo>(0);
 
 	public Report() {
-
+		super();
 	}
 
 	@Override
@@ -221,6 +218,31 @@ public class Report implements Serializable {
 
 	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Report other = (Report) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

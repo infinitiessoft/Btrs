@@ -1,8 +1,12 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import dao.DepartmentDao;
 import entity.Department;
@@ -46,28 +50,37 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public DepartmentSendto save(DepartmentSendto department) {
 		department.setId(null);
 		Department dept = new Department();
+		setUpDepartment(department, dept);
 		dept = departmentDao.save(dept);
 		return toDepartmentSendto(dept);
 	}
 
 	@Override
-	public Collection<DepartmentSendto> findAll() {
-		List<DepartmentSendto> sendto = new ArrayList<DepartmentSendto>();
-		// Iterable<Department> department = departmentDao.findAll();
-		for (Department dept : departmentDao.findAll()) {
-			sendto.add(toDepartmentSendto(dept));
+	public Page<DepartmentSendto> findAll(Specification<Department> spec, Pageable pageable) {
+		List<DepartmentSendto> sendtos = new ArrayList<DepartmentSendto>();
+		Page<Department> departments = departmentDao.findAll(spec, pageable);
+		for (Department department : departments) {
+			sendtos.add(toDepartmentSendto(department));
 		}
-		return sendto;
+		Page<DepartmentSendto> rets = new PageImpl<DepartmentSendto>(sendtos, pageable, departments.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public DepartmentSendto update(long id) {
+	public DepartmentSendto update(long id, DepartmentSendto updated) {
 		Department dept = departmentDao.findOne(id);
 		if (dept == null) {
 			throw new DepartmentNotFoundException(id);
 		}
-
+		setUpDepartment(updated, dept);
 		return toDepartmentSendto(departmentDao.save(dept));
+	}
+
+	private void setUpDepartment(DepartmentSendto sendto, Department dept) {
+		if (sendto.isNameSet()) {
+			dept.setName(sendto.getName());
+		}
+
 	}
 
 	private DepartmentSendto toDepartmentSendto(Department department) {

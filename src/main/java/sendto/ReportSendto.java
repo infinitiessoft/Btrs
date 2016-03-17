@@ -2,6 +2,11 @@ package sendto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlTransient;
+
+import entity.User;
+import enumpackage.StatusEnum;
+
 public class ReportSendto {
 
 	private Long id;
@@ -14,23 +19,36 @@ public class ReportSendto {
 	private String comment;
 	private Date createdDate;
 	private Date lastUpdatedDate;
+	private User owner;
+	private User reviewer;
+	private StatusEnum currentStatus;
 
 	public ReportSendto() {
-
+		super();
 	}
 
-	public ReportSendto(Long id, Long maxIdLastMonth, Long attendanceRecordId, String reason, String route,
-			Date startDate, Date endDate, String comment, Date createdDate, Date lastUpdatedDate) {
-		this.id = id;
-		this.maxIdLastMonth = maxIdLastMonth;
-		this.attendanceRecordId = attendanceRecordId;
-		this.reason = reason;
-		this.route = route;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.comment = comment;
-		this.createdDate = createdDate;
-		this.lastUpdatedDate = lastUpdatedDate;
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public User getReviewer() {
+		return reviewer;
+	}
+
+	public void setReviewer(User reviewer) {
+		this.reviewer = reviewer;
+	}
+
+	public StatusEnum getCurrentStatus() {
+		return currentStatus;
+	}
+
+	public void setCurrentStatus(StatusEnum currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 
 	public Long getId() {
@@ -62,7 +80,13 @@ public class ReportSendto {
 	}
 
 	public void setReason(String reason) {
+		setReasonSet(true);
 		this.reason = reason;
+	}
+
+	@XmlTransient
+	public void setReasonSet(boolean isReasonSet) {
+		this.isReasonSet = isReasonSet;
 	}
 
 	public String getRoute() {
@@ -111,6 +135,96 @@ public class ReportSendto {
 
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
+	}
+
+	public boolean isReasonSet;
+
+	@XmlTransient
+	public boolean isReasonSet() {
+		return isReasonSet;
+	}
+
+	private boolean isRouteSet;
+
+	@XmlTransient
+	public boolean isRouteSet() {
+		return isRouteSet;
+	}
+
+	private boolean isStartDateSet;
+
+	@XmlTransient
+	public boolean isStartDateSet() {
+		return isStartDateSet;
+	}
+
+	private boolean isEndDateSet;
+
+	@XmlTransient
+	public boolean isEndDateSet() {
+		return isEndDateSet;
+	}
+
+	private boolean isCommentSet;
+
+	@XmlTransient
+	public boolean isCommentSet() {
+		return isCommentSet;
+	}
+
+	private boolean isCreatedDateSet;
+
+	@XmlTransient
+	public boolean isCreatedDateSet() {
+		return isCreatedDateSet;
+	}
+
+	public boolean isLastUpdatesDateSet;
+
+	@XmlTransient
+	public boolean isLastUpdatesDateSet() {
+		return isLastUpdatesDateSet;
+	}
+
+	private boolean isCurrentStatusSet;
+
+	@XmlTransient
+	public boolean isCurrentStatusSet() {
+		return isCurrentStatusSet;
+	}
+
+	private boolean isUserSet;
+
+	@XmlTransient
+	public boolean isUserSet() {
+		return isUserSet;
+	}
+
+	private boolean isOwnerIdSet;
+	private boolean isReviewerIdSet;
+
+	@XmlTransient
+	public boolean isOwnerIdSet() {
+		return isOwnerIdSet;
+	}
+
+	@XmlTransient
+	public boolean isReviewerIdSet() {
+		return isReviewerIdSet;
+	}
+
+	private boolean isMaxIdLastMonthSet;
+
+	@XmlTransient
+	public boolean isMaxIdLastMonthSet() {
+		return isMaxIdLastMonthSet;
+	}
+
+	private boolean isAttendanceRecordIdSet;
+
+	@XmlTransient
+	public boolean isAttendanceRecordIdSet() {
+		return isAttendanceRecordIdSet;
 	}
 
 }

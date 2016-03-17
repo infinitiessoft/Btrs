@@ -7,7 +7,7 @@ public class ExpenseCategorySendto {
 	private String code;
 
 	public ExpenseCategorySendto() {
-
+		super();
 	}
 
 	public ExpenseCategorySendto(Long id, String name, String code) {
@@ -38,6 +38,11 @@ public class ExpenseCategorySendto {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public boolean isNameSet() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

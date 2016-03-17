@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.DepartmentSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.DepartmentSendto;
 import service.DepartmentService;
 
@@ -43,7 +45,7 @@ public class DepartmentResource {
 	@PUT
 	@Path(value = "{id}")
 	public DepartmentSendto updateDepartment(@PathParam("id") long id, DepartmentSendto department) {
-		return departmentService.update(id);
+		return departmentService.update(id, department);
 	}
 
 	@POST
@@ -54,8 +56,9 @@ public class DepartmentResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<DepartmentSendto> findallDepartment() {
-		return departmentService.findAll();
+	public Page<DepartmentSendto> findallDepartment(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam DepartmentSpecification spec) {
+		return departmentService.findAll(spec, pageRequest);
 	}
 
 }
