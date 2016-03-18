@@ -15,8 +15,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.ExpenseResource;
 import resources.ResourceTest;
+import resources.Type.ExpenseResource;
 import sendto.ExpenseSendto;
 
 public class ExpenseResourceTest extends ResourceTest {

@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.ExpenseSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.ExpenseSendto;
 import service.ExpenseService;
 
@@ -42,7 +44,7 @@ public class ExpenseResource {
 	@PUT
 	@Path(value = "{id}")
 	public ExpenseSendto updateExpense(@PathParam("id") long id, ExpenseSendto expense) {
-		return expenseService.update(id);
+		return expenseService.update(id, expense);
 	}
 
 	@POST
@@ -53,8 +55,9 @@ public class ExpenseResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<ExpenseSendto> findallExpense() {
-		return expenseService.findAll();
+	public Page<ExpenseSendto> findallExpense(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam ExpenseSpecification spec) {
+		return expenseService.findAll(spec, pageRequest);
 	}
 
 }

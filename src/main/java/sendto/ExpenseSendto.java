@@ -1,6 +1,6 @@
 package sendto;
 
-import entity.Report;
+import javax.xml.bind.annotation.XmlTransient;
 
 public class ExpenseSendto {
 
@@ -9,17 +9,27 @@ public class ExpenseSendto {
 	private String comment;
 	private Integer totalAmount;
 	private Integer taxAmount;
+	private ExpenseType expenseType;
+
+	private boolean isCommentSet;
+	private boolean isTotalAmountSet;
+	private boolean isTaxAmountSet;
+	private boolean isReportSet;
+	private boolean isExpenseTypeSet;
 
 	public ExpenseSendto() {
-
+		super();
 	}
 
-	public ExpenseSendto(Long id, Report report, String comment, Integer totalAmount, Integer taxAmount) {
-		this.id = id;
-		this.report = report;
-		this.comment = comment;
-		this.totalAmount = totalAmount;
-		this.taxAmount = taxAmount;
+	public ExpenseType getExpenseType() {
+		return expenseType;
+	}
+
+	public void setExpenseType(ExpenseType expenseType) {
+		if (expenseType != null) {
+			isExpenseTypeSet = true;
+		}
+		this.expenseType = expenseType;
 	}
 
 	public Long getId() {
@@ -35,6 +45,9 @@ public class ExpenseSendto {
 	}
 
 	public void setReport(Report report) {
+		if (report != null) {
+			isReportSet = true;
+		}
 		this.report = report;
 	}
 
@@ -59,7 +72,93 @@ public class ExpenseSendto {
 	}
 
 	public void setTaxAmount(Integer taxAmount) {
+		isTaxAmountSet = true;
 		this.taxAmount = taxAmount;
+	}
+
+	@XmlTransient
+	public boolean isCommentSet() {
+		return isCommentSet;
+	}
+
+	@XmlTransient
+	public boolean isTotalAmountSet() {
+		return isTotalAmountSet;
+	}
+
+	@XmlTransient
+	public boolean isTaxAmountSet() {
+		return isTaxAmountSet;
+	}
+
+	@XmlTransient
+	public boolean isReportSet() {
+		return isReportSet;
+	}
+
+	@XmlTransient
+	public boolean isExpenseTypeSet() {
+		return isExpenseTypeSet;
+	}
+
+	public static class Report {
+		private Long id;
+
+		private boolean isIdSet;
+
+		public Report() {
+			super();
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
+	}
+
+	public static class ExpenseType {
+		private Long id;
+
+		private boolean isIdSet;
+
+		public ExpenseType() {
+			super();
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
 	}
 
 }
