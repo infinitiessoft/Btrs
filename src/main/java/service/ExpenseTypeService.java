@@ -1,7 +1,10 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import entity.ExpenseType;
 import sendto.ExpenseTypeSendto;
 
 public interface ExpenseTypeService {
@@ -12,8 +15,8 @@ public interface ExpenseTypeService {
 
 	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType);
 
-	public Collection<ExpenseTypeSendto> findAll();
+	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec, Pageable pageable);
 
-	public ExpenseTypeSendto update(long id);
+	public ExpenseTypeSendto update(long id, ExpenseTypeSendto expenseType);
 
 }

@@ -1,7 +1,9 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import resources.specification.ParameterValueSpecification;
 import sendto.ParameterValueSendto;
 
 public interface ParameterValueService {
@@ -12,8 +14,10 @@ public interface ParameterValueService {
 
 	public ParameterValueSendto save(ParameterValueSendto parameterValue);
 
-	public Collection<ParameterValueSendto> findAll();
+	public Page<ParameterValueSendto> findAll(ParameterValueSpecification spec, Pageable pageable);
 
-	public ParameterValueSendto update(long id);
+	public ParameterValueSendto update(long id, ParameterValueSendto parameterValue);
+
+	ParameterValueSendto retrieve(ParameterValueSpecification spec);
 
 }

@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +21,8 @@ import enumpackage.ExpenseTypeEnum;
 
 @Entity
 @Table(name = "expense_types")
-public class ExpenseType implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
+public class ExpenseType extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
 	@Column(name = "id")
@@ -37,7 +35,7 @@ public class ExpenseType implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ExpenseTypeEnum value;
 
-	@Column(name = "taxPercent", nullable = false)
+	@Column(name = "tax_percent", nullable = false)
 	private Double taxPercent;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.ALL)
@@ -103,6 +101,31 @@ public class ExpenseType implements Serializable {
 
 	public void setExpenseTypePara(List<ExpenseTypePara> expenseTypePara) {
 		this.expenseTypePara = expenseTypePara;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExpenseType other = (ExpenseType) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

@@ -1,8 +1,12 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import dao.ExpenseTypeDao;
 import entity.ExpenseType;
@@ -46,26 +50,40 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType) {
 		expenseType.setId(null);
 		ExpenseType type = new ExpenseType();
+		setUpExpenseType(expenseType, type);
 		type = expenseTypeDao.save(type);
 		return toExpenseTypeSendto(type);
 	}
 
 	@Override
-	public Collection<ExpenseTypeSendto> findAll() {
+	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec, Pageable pageable) {
 		List<ExpenseTypeSendto> sendto = new ArrayList<ExpenseTypeSendto>();
-		for (ExpenseType type : expenseTypeDao.findAll()) {
-			sendto.add(toExpenseTypeSendto(type));
+		Page<ExpenseType> expType = expenseTypeDao.findAll(spec, pageable);
+		for (ExpenseType expenseType : expType) {
+			sendto.add(toExpenseTypeSendto(expenseType));
 		}
-		return sendto;
+		Page<ExpenseTypeSendto> rets = new PageImpl<ExpenseTypeSendto>(sendto, pageable, expType.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public ExpenseTypeSendto update(long id) {
+	public ExpenseTypeSendto update(long id, ExpenseTypeSendto updated) {
 		ExpenseType type = expenseTypeDao.findOne(id);
 		if (type == null) {
 			throw new ExpenseTypeNotFoundException(id);
 		}
+		setUpExpenseType(updated, type);
 		return toExpenseTypeSendto(expenseTypeDao.save(type));
+	}
+
+	private void setUpExpenseType(ExpenseTypeSendto sendto, ExpenseType newEntry) {
+		if (sendto.isTaxPercentSet()) {
+			newEntry.setTaxPercent(sendto.getTaxPercent());
+		}
+		if (sendto.isValueSet()) {
+			newEntry.setValue(sendto.getValue());
+		}
+
 	}
 
 	public static ExpenseTypeParaSendto toExpenseTypeSendto(ExpenseTypePara expenseTypePara) {

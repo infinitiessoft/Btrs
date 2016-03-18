@@ -15,8 +15,8 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.ParameterValueResource;
 import resources.ResourceTest;
+import resources.Type.ParameterValueResource;
 import sendto.ParameterValueSendto;
 
 public class ParameterValueResourceTest extends ResourceTest {
