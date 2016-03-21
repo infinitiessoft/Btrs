@@ -1,12 +1,17 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import dao.TypeParameterDao;
 import entity.TypeParameter;
 import exceptions.TypeParameterNotFoundException;
+import resources.specification.TypeParameterSpecification;
 import sendto.TypeParameterSendto;
 import service.TypeParameterService;
 
@@ -18,6 +23,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 		this.typeParameterDao = typeDao;
 	}
 
+	@Transactional
 	@Override
 	public TypeParameterSendto retrieve(long id) {
 		TypeParameter type = typeParameterDao.findOne(id);
@@ -34,37 +40,62 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 		return ret;
 	}
 
+	@Transactional
 	@Override
 	public void delete(long id) {
-		typeParameterDao.delete(id);
+		try {
 
+			typeParameterDao.delete(id);
+		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
+			throw new TypeParameterNotFoundException(id);
+		}
 	}
 
+	@Transactional
 	@Override
 	public TypeParameterSendto save(TypeParameterSendto typeParameter) {
 		typeParameter.setId(null);
-		TypeParameter type = new TypeParameter();
-		type = typeParameterDao.save(type);
-		return toTypeParameterSendto(type);
+		TypeParameter newEntry = new TypeParameter();
+		if (typeParameter.getValue() == null) {
+			typeParameter.setValue("value");
+		}
+		setUpTypeParameter(typeParameter, newEntry);
+		return toTypeParameterSendto(typeParameterDao.save(newEntry));
 
 	}
 
+	@Transactional
 	@Override
-	public Collection<TypeParameterSendto> findAll() {
+	public Page<TypeParameterSendto> findAll(TypeParameterSpecification spec, Pageable pageable) {
 		List<TypeParameterSendto> sendto = new ArrayList<TypeParameterSendto>();
-		for (TypeParameter typeParameter : typeParameterDao.findAll()) {
+		Page<TypeParameter> types = typeParameterDao.findAll(spec, pageable);
+		for (TypeParameter typeParameter : types) {
 			sendto.add(toTypeParameterSendto(typeParameter));
 		}
-		return sendto;
+		Page<TypeParameterSendto> rets = new PageImpl<TypeParameterSendto>(sendto, pageable, types.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public TypeParameterSendto update(long id) {
+	public TypeParameterSendto update(long id, TypeParameterSendto updated) {
 		TypeParameter type = typeParameterDao.findOne(id);
 		if (type == null) {
 			throw new TypeParameterNotFoundException(id);
 		}
+
 		return toTypeParameterSendto(typeParameterDao.save(type));
+	}
+
+	private void setUpTypeParameter(TypeParameterSendto sendto, TypeParameter newEntry) {
+		// if (sendto.isValueSet()) {
+		// try {
+		// ParameterEnum.valueOf(sendto.getValue());
+		// } catch (Exception e) {
+		// throw new InvalidValueException(sendto.getValue());
+		// }
+		// newEntry.setValue(sendto.getValue());
+		// }
+
 	}
 
 }

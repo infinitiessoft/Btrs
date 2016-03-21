@@ -1,7 +1,9 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import resources.specification.TypeParameterSpecification;
 import sendto.TypeParameterSendto;
 
 public interface TypeParameterService {
@@ -12,8 +14,8 @@ public interface TypeParameterService {
 
 	public TypeParameterSendto save(TypeParameterSendto typeParameter);
 
-	public Collection<TypeParameterSendto> findAll();
+	public Page<TypeParameterSendto> findAll(TypeParameterSpecification spec, Pageable pageable);
 
-	public TypeParameterSendto update(long id);
+	public TypeParameterSendto update(long id, TypeParameterSendto typeParameter);
 
 }
