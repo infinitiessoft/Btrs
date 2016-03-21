@@ -1,7 +1,9 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import resources.specification.StatusChangesSpecification;
 import sendto.StatusChangesSendto;
 
 public interface StatusChangesService {
@@ -12,9 +14,9 @@ public interface StatusChangesService {
 
 	public StatusChangesSendto save(StatusChangesSendto statusChanges);
 
-	public Collection<StatusChangesSendto> findAll();
+	public Page<StatusChangesSendto> findAll(StatusChangesSpecification spec, Pageable pageable);
 
-	public StatusChangesSendto update(long id);
+	public StatusChangesSendto update(long id, StatusChangesSendto statusChanges);
 
 	public StatusChangesSendto reject(long id);
 

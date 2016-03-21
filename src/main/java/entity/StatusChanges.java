@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,9 +20,8 @@ import enumpackage.StatusEnum;
 
 @Entity
 @Table(name = "status_changes")
-public class StatusChanges implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
+public class StatusChanges extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
 	@Column(name = "id")
@@ -49,11 +47,11 @@ public class StatusChanges implements Serializable {
 	private Date createdDate;
 
 	public StatusChanges() {
+		super();
 
 	}
 
 	public StatusChanges(Long id, User user, StatusEnum value, String comment, Report report, Date createdDate) {
-		super();
 		this.id = id;
 		this.user = user;
 		this.value = value;
@@ -111,8 +109,32 @@ public class StatusChanges implements Serializable {
 	}
 
 	public void setStatus(StatusEnum reject) {
-		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StatusChanges other = (StatusChanges) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }
