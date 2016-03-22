@@ -1,8 +1,11 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import dao.RoleDao;
 import dao.UserDao;
@@ -13,8 +16,8 @@ import entity.UserRole;
 import exceptions.RoleNotFoundException;
 import exceptions.UserAssignmentNotFoundException;
 import exceptions.UserNotFoundException;
-import exceptions.UserRoleNotFoundException;
-import sendto.UserRoleSendto;
+import resources.specification.UserRoleSpecification;
+import sendto.RoleSendto;
 import service.UserRoleService;
 
 public class UserRoleServiceImpl implements UserRoleService {
@@ -30,86 +33,50 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
-	public UserRoleSendto retrieve(long id) {
-		UserRole userRole = userRoleDao.findOne(id);
+	public void revokeRoleFromUser(long roleId, long userId) {
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
 		if (userRole == null) {
-			throw new UserRoleNotFoundException(id);
-		}
-		return toUserRoleSendto(userRole);
-	}
-
-	private UserRoleSendto toUserRoleSendto(UserRole userRole) {
-		UserRoleSendto ret = new UserRoleSendto();
-		ret.setId(userRole.getId());
-		return ret;
-	}
-
-	@Override
-	public void delete(long id) {
-		userRoleDao.delete(id);
-	}
-
-	@Override
-	public UserRoleSendto save(UserRoleSendto userRole) {
-		userRole.setId(null);
-		UserRole uRole = new UserRole();
-		uRole = userRoleDao.save(uRole);
-		return toUserRoleSendto(uRole);
-
-	}
-
-	@Override
-	public UserRoleSendto update(long id) {
-		UserRole uRole = userRoleDao.findOne(id);
-		if (uRole == null) {
-			throw new UserRoleNotFoundException(id);
-		}
-		return toUserRoleSendto(userRoleDao.save(uRole));
-	}
-
-	@Override
-	public void revokeUserFromRole(long user_id, long role_id) {
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user_id, role_id);
-		if (userRole == null) {
-			throw new UserAssignmentNotFoundException(user_id, role_id);
+			throw new UserAssignmentNotFoundException(roleId, userId);
 		}
 		userRoleDao.delete(userRole);
-
 	}
 
 	@Override
-	public Collection<UserRoleSendto> findAll() {
-		List<UserRoleSendto> sendto = new ArrayList<UserRoleSendto>();
-		for (UserRole uRole : userRoleDao.findAll()) {
-			sendto.add(toUserRoleSendto(uRole));
+	public Page<RoleSendto> findAll(UserRoleSpecification spec, Pageable pageable) {
+		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
+		Page<UserRole> userRoles = userRoleDao.findAll(spec, pageable);
+		for (UserRole users : userRoles) {
+			Role role = users.getRole();
+			sendto.add(RoleServiceImpl.toRoleSendto(role));
 		}
-		return sendto;
+		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable, userRoles.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public UserRoleSendto findByUserIdAndRoleId(long user_id, long role_id) {
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user_id, role_id);
+	public RoleSendto findByUserIdAndRoleId(long userId, long roleId) {
+
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
 		if (userRole == null) {
-			throw new UserAssignmentNotFoundException(user_id, role_id);
+			throw new UserAssignmentNotFoundException(userId, roleId);
 		}
-		return UserServiceImpl.toUserSendto(userRole);
+		return RoleServiceImpl.toRoleSendto(userRole.getRole());
 	}
 
 	@Override
-	public void grantUserToRole(long user_id, long role_id) {
-		User user = userDao.findOne(user_id);
+	public void grantRoleToUser(long userId, long roleId) {
+		User user = userDao.findOne(userId);
 		if (user == null) {
-			throw new UserNotFoundException(user_id);
+			throw new UserNotFoundException(userId);
 		}
-		Role role = roleDao.findOne(role_id);
+		Role role = roleDao.findOne(roleId);
 		if (role == null) {
-			throw new RoleNotFoundException(role_id);
+			throw new RoleNotFoundException(roleId);
 		}
 		UserRole userRole = new UserRole();
 		userRole.setUser(user);
 		userRole.setRole(role);
 		userRoleDao.save(userRole);
-
 	}
 
 }

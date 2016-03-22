@@ -2,6 +2,9 @@ package sendto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import enumpackage.GenderEnum;
 
 public class UserSharedSendto {
@@ -18,22 +21,18 @@ public class UserSharedSendto {
 	private Date createdDate;
 	private Boolean enabled;
 
-	public UserSharedSendto() {
-	}
+	private boolean isUsernameSet;
+	private boolean isPasswordSet;
+	private boolean isJobTitleSet;
+	private boolean isEmailSet;
+	private boolean isGenderSet;
+	private boolean isFirstNameSet;
+	private boolean isLastNameSet;
+	private boolean isDateOfBirthSet;
+	private boolean isCreatedDateSet;
 
-	public UserSharedSendto(Long id, String username, String password, String jobTitle, String email, GenderEnum gender,
-			String firstName, String lastName, Date dateOfBirth, Date createdDate, Boolean enabled) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.jobTitle = jobTitle;
-		this.email = email;
-		this.gender = gender;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		this.createdDate = createdDate;
-		this.enabled = enabled;
+	public UserSharedSendto() {
+		super();
 	}
 
 	public Long getId() {
@@ -49,6 +48,7 @@ public class UserSharedSendto {
 	}
 
 	public void setUsername(String username) {
+		isUsernameSet = true;
 		this.username = username;
 	}
 
@@ -122,6 +122,98 @@ public class UserSharedSendto {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@XmlTransient
+	public boolean isUsernameSet() {
+		return isUsernameSet;
+	}
+
+	@XmlTransient
+	public void setUsernameSet(boolean isUsernameSet) {
+
+		this.isUsernameSet = isUsernameSet;
+	}
+
+	@XmlTransient
+	public boolean isPasswordSet() {
+		return isPasswordSet;
+	}
+
+	@XmlElement(name = "password")
+	public void setPasswordSet(boolean isPasswordSet) {
+		isPasswordSet = true;
+		this.isPasswordSet = isPasswordSet;
+	}
+
+	@XmlTransient
+	public boolean isJobTitleSet() {
+		return isJobTitleSet;
+	}
+
+	@XmlTransient
+	public void setJobTitleSet(boolean isJobTitleSet) {
+		this.isJobTitleSet = isJobTitleSet;
+	}
+
+	@XmlTransient
+	public boolean isEmailSet() {
+		return isEmailSet;
+	}
+
+	@XmlTransient
+	public void setEmailSet(boolean isEmailSet) {
+		this.isEmailSet = isEmailSet;
+	}
+
+	@XmlTransient
+	public boolean isGenderSet() {
+		return isGenderSet;
+	}
+
+	@XmlTransient
+	public void setGenderSet(boolean isGenderSet) {
+		this.isGenderSet = isGenderSet;
+	}
+
+	@XmlTransient
+	public boolean isFirstNameSet() {
+		return isFirstNameSet;
+	}
+
+	@XmlTransient
+	public void setFirstNameSet(boolean isFirstNameSet) {
+		this.isFirstNameSet = isFirstNameSet;
+	}
+
+	@XmlTransient
+	public boolean isLastNameSet() {
+		return isLastNameSet;
+	}
+
+	@XmlTransient
+	public void setLastNameSet(boolean isLastNameSet) {
+		this.isLastNameSet = isLastNameSet;
+	}
+
+	@XmlTransient
+	public boolean isDateOfBirthSet() {
+		return isDateOfBirthSet;
+	}
+
+	@XmlTransient
+	public void setDateOfBirthSet(boolean isDateOfBirthSet) {
+		this.isDateOfBirthSet = isDateOfBirthSet;
+	}
+
+	@XmlTransient
+	public boolean isCreatedDateSet() {
+		return isCreatedDateSet;
+	}
+
+	@XmlTransient
+	public void setCreatedDateSet(boolean isCreatedDateSet) {
+		this.isCreatedDateSet = isCreatedDateSet;
 	}
 
 }

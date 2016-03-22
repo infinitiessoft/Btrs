@@ -1,7 +1,9 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import resources.specification.UserSpecification;
 import sendto.UserSendto;
 
 public interface UserService {
@@ -12,8 +14,8 @@ public interface UserService {
 
 	public UserSendto save(UserSendto user);
 
-	public Collection<UserSendto> findAll();
+	public Page<UserSendto> findAll(UserSpecification spec, Pageable pageable);
 
-	public UserSendto update(long id);
+	public UserSendto update(long id, UserSendto user);
 
 }

@@ -1,7 +1,5 @@
 package entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,11 +13,9 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "exp_types_type_parameters", uniqueConstraints = @UniqueConstraint(columnNames = { "type_id",
-		"parameterValue_id" }) )
-public class ExpenseTypePara implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
-
+		"parameter_id" }) )
+public class ExpenseTypePara extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +26,7 @@ public class ExpenseTypePara implements Serializable {
 	private ExpenseType expenseType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "parameterValue_id", nullable = false)
+	@JoinColumn(name = "parameter_id", nullable = false)
 	private ParameterValue parameterValue;
 
 	public ExpenseTypePara() {

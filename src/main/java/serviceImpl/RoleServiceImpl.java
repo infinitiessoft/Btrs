@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
 		return toRoleSendto(role);
 	}
 
-	private RoleSendto toRoleSendto(Role role) {
+	public static RoleSendto toRoleSendto(Role role) {
 		RoleSendto ret = new RoleSendto();
 		ret.setId(role.getId());
 		return ret;

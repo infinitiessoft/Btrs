@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,9 +18,8 @@ import enumpackage.GenderEnum;
 
 @Entity
 @Table(name = "user_shared", uniqueConstraints = @UniqueConstraint(columnNames = "username") )
-public class UserShared implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
+public class UserShared extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
 	@Column(name = "id")
@@ -31,7 +29,7 @@ public class UserShared implements Serializable {
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
-	@Column(name = "jobTitle", nullable = false, length = 20)
+	@Column(name = "job_title", nullable = false, length = 20)
 	private String jobTitle;
 
 	@Enumerated(EnumType.STRING)
@@ -40,21 +38,21 @@ public class UserShared implements Serializable {
 	@Column(name = "password", nullable = false, length = 100)
 	private String password;
 
-	@Column(name = "firstName", unique = true, nullable = false, length = 20)
+	@Column(name = "first_name", unique = true, nullable = false, length = 20)
 	private String firstName;
 
-	@Column(name = "lastName", unique = true, nullable = false, length = 20)
+	@Column(name = "last_name", unique = true, nullable = false, length = 20)
 	private String lastName;
 
 	@Column(name = "email", unique = true, nullable = false, length = 40)
 	private String email;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "dateofBirth", nullable = false, length = 13)
+	@Column(name = "date_of_Birth", nullable = false, length = 13)
 	private Date dateofBirth;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "createdDate", nullable = false, length = 13)
+	@Column(name = "created_date", nullable = false, length = 13)
 	private Date createdDate;
 
 	public UserShared() {

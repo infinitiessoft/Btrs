@@ -1,25 +1,18 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import sendto.UserRoleSendto;
+import resources.specification.UserRoleSpecification;
+import sendto.RoleSendto;
 
 public interface UserRoleService {
 
-	public UserRoleSendto retrieve(long id);
+	public void revokeRoleFromUser(long roleId, long userId);
 
-	public void delete(long id);
+	public Page<RoleSendto> findAll(UserRoleSpecification spec, Pageable pageable);
 
-	public UserRoleSendto save(UserRoleSendto userRole);
+	public RoleSendto findByUserIdAndRoleId(long userId, long roleId);
 
-	public UserRoleSendto update(long id);
-
-	public void revokeUserFromRole(long user_id, long role_id);
-
-	public Collection<UserRoleSendto> findAll();
-
-	public UserRoleSendto findByUserIdAndRoleId(long user_id, long role_id);
-
-	public void grantUserToRole(long user_id, long role_id);
-
+	public void grantRoleToUser(long userId, long roleId);
 }

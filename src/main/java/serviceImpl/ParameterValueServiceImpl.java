@@ -52,7 +52,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		return toParameterValueSendto(parameterValue);
 	}
 
-	private ParameterValueSendto toParameterValueSendto(ParameterValue parameterValue) {
+	public static ParameterValueSendto toParameterValueSendto(ParameterValue parameterValue) {
 		ParameterValueSendto ret = new ParameterValueSendto();
 		ret.setId(parameterValue.getId());
 		ret.setValue(parameterValue.getValue());

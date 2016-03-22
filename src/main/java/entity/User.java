@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +21,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
+public class User extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
 	@Column(name = "id")
@@ -39,8 +37,8 @@ public class User implements Serializable {
 	@Column(name = "last_Login", nullable = false)
 	private Date lastLogin;
 
-	@Column(name = "userSharedId", nullable = false)
-	private Long userSharedId;
+	@Column(name = "user_shared_id", nullable = false)
+	private UserShared userShared;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserRole> userRole;
@@ -55,6 +53,7 @@ public class User implements Serializable {
 	private Set<Report> incomingReports = new HashSet<Report>(0);
 
 	public User() {
+		super();
 
 	}
 
@@ -85,10 +84,9 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", department=" + department + ", lastLogin=" + lastLogin + ", userSharedId="
-				+ userSharedId + ", userRole=" + userRole + ", statusChanges=" + statusChanges + ", outgoingReports="
-				+ outgoingReports + ", incomingReports=" + incomingReports + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+		return "User [id=" + id + ", department=" + department + ", lastLogin=" + lastLogin + ", userShared="
+				+ userShared + ", userRole=" + userRole + ", statusChanges=" + statusChanges + ", outgoingReports="
+				+ outgoingReports + ", incomingReports=" + incomingReports + "]";
 	}
 
 	public Long getId() {
@@ -115,12 +113,12 @@ public class User implements Serializable {
 		this.lastLogin = lastLogin;
 	}
 
-	public Long getUserSharedId() {
-		return userSharedId;
+	public UserShared getUserShared() {
+		return userShared;
 	}
 
-	public void setUserSharedId(Long userSharedId) {
-		this.userSharedId = userSharedId;
+	public void setUserShared(UserShared userShared) {
+		this.userShared = userShared;
 	}
 
 	public List<UserRole> getUserRole() {

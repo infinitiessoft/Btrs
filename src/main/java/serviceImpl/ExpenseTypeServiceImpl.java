@@ -10,9 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import dao.ExpenseTypeDao;
 import entity.ExpenseType;
-import entity.ExpenseTypePara;
 import exceptions.ExpenseTypeNotFoundException;
-import sendto.ExpenseTypeParaSendto;
 import sendto.ExpenseTypeSendto;
 import service.ExpenseTypeService;
 
@@ -33,7 +31,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return toExpenseTypeSendto(expenseType);
 	}
 
-	private ExpenseTypeSendto toExpenseTypeSendto(ExpenseType expenseType) {
+	public static ExpenseTypeSendto toExpenseTypeSendto(ExpenseType expenseType) {
 		ExpenseTypeSendto ret = new ExpenseTypeSendto();
 		ret.setId(expenseType.getId());
 		ret.setTaxPercent(expenseType.getTaxPercent());
@@ -84,11 +82,6 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 			newEntry.setValue(sendto.getValue());
 		}
 
-	}
-
-	public static ExpenseTypeParaSendto toExpenseTypeSendto(ExpenseTypePara expenseTypePara) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

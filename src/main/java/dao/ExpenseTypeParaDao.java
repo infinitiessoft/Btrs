@@ -8,6 +8,6 @@ import entity.ExpenseTypePara;
 public interface ExpenseTypeParaDao
 		extends PagingAndSortingRepository<ExpenseTypePara, Long>, JpaSpecificationExecutor<ExpenseTypePara> {
 
-	ExpenseTypePara findByExpenseTypeIdAndParameterValueId(long parameterValue_id, long expense_id);
+	ExpenseTypePara findByExpenseTypeIdAndParameterValueId(long parameter_id, long expense_id);
 
 }

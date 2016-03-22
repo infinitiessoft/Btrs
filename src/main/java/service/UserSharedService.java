@@ -1,7 +1,9 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import resources.specification.UserSharedSpecification;
 import sendto.UserSharedSendto;
 
 public interface UserSharedService {
@@ -12,9 +14,9 @@ public interface UserSharedService {
 
 	public UserSharedSendto save(UserSharedSendto userShared);
 
-	public Collection<UserSharedSendto> findAll();
+	public Page<UserSharedSendto> findAll(UserSharedSpecification spec, Pageable pageable);
 
-	public UserSharedSendto update(long id);
+	public UserSharedSendto update(long id, UserSharedSendto userShared);
 
 	public UserSharedSendto findByUsername(String username);
 

@@ -1,8 +1,11 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import dao.ExpenseTypeDao;
 import dao.ExpenseTypeParaDao;
@@ -11,107 +14,71 @@ import entity.ExpenseType;
 import entity.ExpenseTypePara;
 import entity.ParameterValue;
 import exceptions.ExpenseTypeNotFoundException;
-import exceptions.ExpenseTypeParaNotFoundException;
 import exceptions.ParameterNotFoundException;
-import exceptions.TypeAssignmentNotFoundException;
-import sendto.ExpenseTypeParaSendto;
+import exceptions.ParameterValueAssignmentNotFoundException;
+import resources.specification.ExpenseTypeParaSpecification;
+import sendto.ParameterValueSendto;
 import service.ExpenseTypeParaService;
 
 public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 
-	private ParameterValueDao parameterDao;
 	private ExpenseTypeDao expenseTypeDao;
+	private ParameterValueDao parameterValueDao;
 	private ExpenseTypeParaDao expenseTypeParaDao;
 
-	public ExpenseTypeParaServiceImpl(ParameterValueDao parameterDao, ExpenseTypeDao expenseTypeDao,
+	public ExpenseTypeParaServiceImpl(ExpenseTypeDao expenseTypeDao, ParameterValueDao parameterValueDao,
 			ExpenseTypeParaDao expenseTypeParaDao) {
-		this.parameterDao = parameterDao;
 		this.expenseTypeDao = expenseTypeDao;
+		this.parameterValueDao = parameterValueDao;
 		this.expenseTypeParaDao = expenseTypeParaDao;
 	}
 
 	@Override
-	public ExpenseTypeParaSendto retrieve(long id) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findOne(id);
-		if (expenseTypePara == null) {
-			throw new ExpenseTypeParaNotFoundException(id);
+	public Page<ParameterValueSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable) {
+		List<ParameterValueSendto> sendto = new ArrayList<ParameterValueSendto>();
+		Page<ExpenseTypePara> expenseTypes = expenseTypeParaDao.findAll(spec, pageable);
+		for (ExpenseTypePara expenseType : expenseTypes) {
+			ParameterValue parameterValue = expenseType.getParameterValue();
+			sendto.add(ParameterValueServiceImpl.toParameterValueSendto(parameterValue));
 		}
-		return toExpenseTypeParaSendto(expenseTypePara);
-	}
-
-	private ExpenseTypeParaSendto toExpenseTypeParaSendto(ExpenseTypePara expenseTypePara) {
-		ExpenseTypeParaSendto ret = new ExpenseTypeParaSendto();
-		ret.setId(expenseTypePara.getId());
-		return ret;
+		Page<ParameterValueSendto> rets = new PageImpl<ParameterValueSendto>(sendto, pageable,
+				expenseTypes.getTotalElements());
+		return rets;
 	}
 
 	@Override
-	public void delete(long id) {
-		expenseTypeParaDao.delete(id);
-	}
-
-	@Override
-	public ExpenseTypeParaSendto save(ExpenseTypeParaSendto expenseTypePara) {
-		expenseTypePara.setId(null);
-		ExpenseTypePara typePara = new ExpenseTypePara();
-		typePara = expenseTypeParaDao.save(typePara);
-		return toExpenseTypeParaSendto(typePara);
-	}
-
-	@Override
-	public ExpenseTypeParaSendto update(long id) {
-		ExpenseTypePara typePara = expenseTypeParaDao.findOne(id);
-		if (typePara == null) {
-			throw new ExpenseTypeParaNotFoundException(id);
-		}
-		return toExpenseTypeParaSendto(expenseTypeParaDao.save(typePara));
-	}
-
-	@Override
-	public void revokeExpenseTypeFromParameterValue(long expense_id, long parameterValue_id) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(parameterValue_id,
-				expense_id);
+	public ParameterValueSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long parameterValueId) {
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(expenseTypeId,
+				parameterValueId);
 		if (expenseTypePara == null) {
-			throw new TypeAssignmentNotFoundException(parameterValue_id, expense_id);
+			throw new ParameterValueAssignmentNotFoundException(expenseTypeId, parameterValueId);
+		}
+		return ParameterValueServiceImpl.toParameterValueSendto(expenseTypePara.getParameterValue());
+	}
+
+	@Override
+	public void revokeParameterValueFromExpenseType(long expenseTypeId, long parameterValueId) {
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(expenseTypeId,
+				parameterValueId);
+		if (expenseTypePara == null) {
+			throw new ParameterValueAssignmentNotFoundException(expenseTypeId, parameterValueId);
 		}
 		expenseTypeParaDao.delete(expenseTypePara);
 	}
 
 	@Override
-	public Collection<ExpenseTypeParaSendto> findAll() {
-		List<ExpenseTypeParaSendto> sendto = new ArrayList<ExpenseTypeParaSendto>();
-		for (ExpenseTypePara typePara : expenseTypeParaDao.findAll()) {
-			sendto.add(toExpenseTypeParaSendto(typePara));
-		}
-		return sendto;
-	}
-
-	@Override
-	public ExpenseTypeParaSendto findByExpenseTypeIdAndParameterValueId(long expense_id, long parameterValue_id) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(parameterValue_id,
-				expense_id);
-		if (expenseTypePara == null) {
-			throw new TypeAssignmentNotFoundException(parameterValue_id, expense_id);
-		}
-		return ExpenseTypeServiceImpl.toExpenseTypeSendto(expenseTypePara);
-
-	}
-
-	@Override
-	public void grantExpenseTypeToParameterValue(long parameterValue_id, long expense_id) {
-		ExpenseType expenseType = expenseTypeDao.findOne(expense_id);
+	public void grantParameterValueToExpenseType(long expenseTypeId, long parameterValueId) {
+		ExpenseType expenseType = expenseTypeDao.findOne(expenseTypeId);
 		if (expenseType == null) {
-			throw new ExpenseTypeNotFoundException(expense_id);
+			throw new ExpenseTypeNotFoundException(expenseTypeId);
 		}
-		ParameterValue typeParameter = parameterDao.findOne(parameterValue_id);
-		if (typeParameter == null) {
-			throw new ParameterNotFoundException(parameterValue_id);
+		ParameterValue parameterValue = parameterValueDao.findOne(parameterValueId);
+		if (parameterValue == null) {
+			throw new ParameterNotFoundException(parameterValueId);
 		}
 		ExpenseTypePara expenseTypePara = new ExpenseTypePara();
 		expenseTypePara.setExpenseType(expenseType);
-		expenseTypePara.setParameterValue(typeParameter);
+		expenseTypePara.setParameterValue(parameterValue);
 		expenseTypeParaDao.save(expenseTypePara);
-
 	}
-
 }

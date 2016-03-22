@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.SimplePageRequest;
+import resources.specification.UserSpecification;
 import sendto.UserSendto;
 import service.UserService;
 
@@ -43,8 +45,8 @@ public class UserResource {
 	@PUT
 	@Path(value = "{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public UserSendto updateUser(@PathParam("id") long id) {
-		return userService.update(id);
+	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
+		return userService.update(id, user);
 	}
 
 	@POST
@@ -55,8 +57,8 @@ public class UserResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<UserSendto> findallUser() {
-		return userService.findAll();
+	public Page<UserSendto> findallUser(@BeanParam SimplePageRequest pageRequest, @BeanParam UserSpecification spec) {
+		return userService.findAll(spec, pageRequest);
 	}
 
 }

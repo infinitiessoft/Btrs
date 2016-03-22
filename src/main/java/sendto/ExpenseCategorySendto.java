@@ -10,12 +10,6 @@ public class ExpenseCategorySendto {
 		super();
 	}
 
-	public ExpenseCategorySendto(Long id, String name, String code) {
-		this.id = id;
-		this.name = name;
-		this.code = code;
-	}
-
 	public long getId() {
 		return id;
 	}

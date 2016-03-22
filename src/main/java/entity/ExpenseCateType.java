@@ -1,7 +1,5 @@
 package entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,9 +14,8 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "exp_category_exp_type", uniqueConstraints = @UniqueConstraint(columnNames = { "category_id",
 		"type_id" }) )
-public class ExpenseCateType implements Serializable {
-
-	private static final long serialVersionUID = 7526471155622776147L;
+public class ExpenseCateType extends AbstractEntity {
+	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
 	@Column(name = "id")

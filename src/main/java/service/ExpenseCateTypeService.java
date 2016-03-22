@@ -1,25 +1,18 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import sendto.ExpenseCateTypeSendto;
+import resources.specification.ExpenseCateTypeSpecification;
+import sendto.ExpenseTypeSendto;
 
 public interface ExpenseCateTypeService {
 
-	public ExpenseCateTypeSendto retrieve(long id);
+	public void revokeExpenseTypeFromExpenseCategory(long expenseTypeId, long expenseCategoryId);
 
-	public void delete(long id);
+	public Page<ExpenseTypeSendto> findAll(ExpenseCateTypeSpecification spec, Pageable pageable);
 
-	public ExpenseCateTypeSendto save(ExpenseCateTypeSendto expenseCateType);
+	public ExpenseTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long expenseTypeId, long expenseCategoryId);
 
-	public ExpenseCateTypeSendto update(long id);
-
-	public void revokeExpenseCategoryFromExpenseType(long category_id, long type_id);
-
-	public ExpenseCateTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long category_id, long type_id);
-
-	public void grantExpenseCategoryToExpenseType(long category_id, long type_id);
-
-	public Collection<ExpenseCateTypeSendto> findAll();
-
+	public void grantExpenseTypeToExpenseCategory(long expenseTypeId, long expenseCategoryId);
 }

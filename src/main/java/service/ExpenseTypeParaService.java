@@ -1,25 +1,18 @@
 package service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import sendto.ExpenseTypeParaSendto;
+import resources.specification.ExpenseTypeParaSpecification;
+import sendto.ParameterValueSendto;
 
 public interface ExpenseTypeParaService {
 
-	public ExpenseTypeParaSendto retrieve(long id);
+	public void revokeParameterValueFromExpenseType(long parameterId, long expenseTypeId);
 
-	public void delete(long id);
+	public ParameterValueSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long parameterId);
 
-	public ExpenseTypeParaSendto save(ExpenseTypeParaSendto expenseTypePara);
+	public void grantParameterValueToExpenseType(long expenseTypeId, long parameterId);
 
-	public ExpenseTypeParaSendto update(long id);
-
-	public Collection<ExpenseTypeParaSendto> findAll();
-
-	public ExpenseTypeParaSendto findByExpenseTypeIdAndParameterValueId(long expense_id, long parameterValue_id);
-
-	public void grantExpenseTypeToParameterValue(long expense_id, long parameterValue_id);
-
-	public void revokeExpenseTypeFromParameterValue(long id, long expense_id);
-
+	public Page<ParameterValueSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable);
 }

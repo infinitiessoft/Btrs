@@ -14,4 +14,5 @@ public class UserNotFoundException extends HTTPNotFoundException {
 	public UserNotFoundException(long id) {
 		super(String.format("User %s could not be found.", id));
 	}
+
 }
