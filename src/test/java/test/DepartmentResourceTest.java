@@ -31,21 +31,22 @@ public class DepartmentResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetDepartmentWithNotFoundException() {
-		Response response = target("department").path("4").register(JacksonFeature.class).request()
+		Response response = target("department").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testDeleteDepartment() {
-		Response response = target("department").register(JacksonFeature.class).request().delete();
+		Response response = target("department").path("2").register(JacksonFeature.class).request()
+				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteDepartmentWithNotFoundException() {
-		Response response = target("department").register(JacksonFeature.class).request().header("user", "demo")
-				.delete();
+		Response response = target("department").path("2").register(JacksonFeature.class).request()
+				.header("user", "demo").header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -66,7 +67,7 @@ public class DepartmentResourceTest extends ResourceTest {
 	public void testUpdateDepartmentWithNotFoundException() {
 		DepartmentSendto admin = new DepartmentSendto();
 		admin.setName("administrator");
-		Response response = target("department").path("4").register(JacksonFeature.class).request()
+		Response response = target("department").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
 		AssertUtils.assertNotFound(response);
 	}
@@ -74,9 +75,9 @@ public class DepartmentResourceTest extends ResourceTest {
 	@Test
 	public void testSaveDepartment() {
 		DepartmentSendto admin = new DepartmentSendto();
-		admin.setName("administrator");
-		Response response = target("department").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
+		admin.setName("Sales");
+		Response response = target("department").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		DepartmentSendto sendto = response.readEntity(DepartmentSendto.class);
 		assertEquals(5l, sendto.getId().longValue());
@@ -88,8 +89,8 @@ public class DepartmentResourceTest extends ResourceTest {
 	public void testSaveDepartmentWithDuplicateName() {
 		DepartmentSendto admin = new DepartmentSendto();
 		admin.setName("Sales");
-		Response response = target("department").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
+		Response response = target("department").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").post(Entity.json(admin));
 		AssertUtils.assertBadRequest(response);
 	}
 

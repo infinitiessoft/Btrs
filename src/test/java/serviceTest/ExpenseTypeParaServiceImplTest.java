@@ -41,36 +41,36 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 		expenseTypeParaDao = context.mock(ExpenseTypeParaDao.class);
 		expenseTypeParaService = new ExpenseTypeParaServiceImpl(expenseTypeDao, parameterValueDao, expenseTypeParaDao);
 
-		expenseType = new ExpenseType();
-		expenseType.setId(1L);
 		parameterValue = new ParameterValue();
 		parameterValue.setId(1L);
+		expenseType = new ExpenseType();
+		expenseType.setId(1L);
 
 		expenseTypePara = new ExpenseTypePara();
 		expenseTypePara.setId(1L);
-		expenseTypePara.setExpenseType(expenseType);
 		expenseTypePara.setParameterValue(parameterValue);
-
+		expenseTypePara.setExpenseType(expenseType);
 	}
 
 	@After
 	public void tearDown() throws Exception {
+
 	}
 
 	@Test
 	public void testFindByExpenseTypeIdAndParameterValueId() {
+
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(expenseType.getId(),
-						parameterValue.getId());
+				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
+						expenseType.getId());
 				will(returnValue(expenseTypePara));
 			}
 		});
-		ParameterValueSendto ret = expenseTypeParaService.findByExpenseTypeIdAndParameterValueId(expenseType.getId(),
-				parameterValue.getId());
+		ParameterValueSendto ret = expenseTypeParaService.findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
+				expenseType.getId());
 		assertEquals(parameterValue.getId(), ret.getId());
-
 	}
 
 	@Test
@@ -78,14 +78,14 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(expenseType.getId(),
-						parameterValue.getId());
+				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
+						expenseType.getId());
 				will(returnValue(expenseTypePara));
 
 				exactly(1).of(expenseTypeParaDao).delete(expenseTypePara);
 			}
 		});
-		expenseTypeParaService.revokeParameterValueFromExpenseType(expenseType.getId(), parameterValue.getId());
+		expenseTypeParaService.revokeParameterValueFromExpenseType(parameterValue.getId(), expenseType.getId());
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 				will(returnValue(expenseTypePara));
 			}
 		});
-		expenseTypeParaService.grantParameterValueToExpenseType(expenseType.getId(), parameterValue.getId());
+		expenseTypeParaService.grantParameterValueToExpenseType(parameterValue.getId(), expenseType.getId());
 	}
 
 	@Test

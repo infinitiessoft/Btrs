@@ -6,16 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import enumpackage.RoleEnum;
 
 @Entity
 @Table(name = "roles")
@@ -26,8 +22,8 @@ public class Role extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated(EnumType.STRING)
-	private RoleEnum value;
+	@Column(name = "value", nullable = false)
+	private String value;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.ALL)
 	private List<UserRole> userRole = new ArrayList<UserRole>(0);;
@@ -49,11 +45,11 @@ public class Role extends AbstractEntity {
 		this.id = id;
 	}
 
-	public RoleEnum getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(RoleEnum value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

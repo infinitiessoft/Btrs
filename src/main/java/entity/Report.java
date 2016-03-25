@@ -7,8 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import enumpackage.StatusEnum;
 
 @Entity
 @Table(name = "reports")
@@ -70,8 +66,8 @@ public class Report extends AbstractEntity {
 	@Column(name = "last_updated_date", nullable = false)
 	private Date lastUpdatedDate;
 
-	@Enumerated(EnumType.STRING)
-	private StatusEnum currentStatus;
+	@Column(name = "current_status")
+	private String current_status;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
 	private List<StatusChanges> statusChanges = new ArrayList<StatusChanges>(0);;
@@ -88,8 +84,11 @@ public class Report extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Report [id=" + id + ", owner=" + owner + ", reviewer=" + reviewer + ", currentStatus=" + currentStatus
-				+ "]";
+		return "Report [id=" + id + ", maxIdLastMonth=" + maxIdLastMonth + ", attendanceRecordId=" + attendanceRecordId
+				+ ", owner=" + owner + ", reviewer=" + reviewer + ", reason=" + reason + ", route=" + route
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", comment=" + comment + ", createdDate="
+				+ createdDate + ", lastUpdatedDate=" + lastUpdatedDate + ", current_status=" + current_status
+				+ ", statusChanges=" + statusChanges + ", expenses=" + expenses + ", photos=" + photos + "]";
 	}
 
 	public Long getId() {
@@ -188,12 +187,12 @@ public class Report extends AbstractEntity {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
-	public StatusEnum getCurrentStatus() {
-		return currentStatus;
+	public String getCurrent_status() {
+		return current_status;
 	}
 
-	public void setCurrentStatus(StatusEnum currentStatus) {
-		this.currentStatus = currentStatus;
+	public void setCurrent_status(String current_status) {
+		this.current_status = current_status;
 	}
 
 	public List<StatusChanges> getStatusChanges() {

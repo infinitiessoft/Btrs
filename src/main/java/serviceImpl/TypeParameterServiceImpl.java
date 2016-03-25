@@ -37,6 +37,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 	private TypeParameterSendto toTypeParameterSendto(TypeParameter type) {
 		TypeParameterSendto ret = new TypeParameterSendto();
 		ret.setId(type.getId());
+		ret.setValue(type.getValue());
 		return ret;
 	}
 
@@ -56,9 +57,6 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 	public TypeParameterSendto save(TypeParameterSendto typeParameter) {
 		typeParameter.setId(null);
 		TypeParameter newEntry = new TypeParameter();
-		if (typeParameter.getValue() == null) {
-			typeParameter.setValue("value");
-		}
 		setUpTypeParameter(typeParameter, newEntry);
 		return toTypeParameterSendto(typeParameterDao.save(newEntry));
 
@@ -87,15 +85,9 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 	}
 
 	private void setUpTypeParameter(TypeParameterSendto sendto, TypeParameter newEntry) {
-		// if (sendto.isValueSet()) {
-		// try {
-		// ParameterEnum.valueOf(sendto.getValue());
-		// } catch (Exception e) {
-		// throw new InvalidValueException(sendto.getValue());
-		// }
-		// newEntry.setValue(sendto.getValue());
-		// }
+		if (sendto.isValueSet()) {
+			newEntry.setValue(sendto.getValue());
 
+		}
 	}
-
 }

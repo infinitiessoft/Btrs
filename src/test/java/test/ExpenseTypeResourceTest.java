@@ -1,10 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -15,92 +11,102 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
-import resources.ExpenseTypeResource;
+import entity.PageModel;
 import resources.ResourceTest;
+import resources.Type.ExpenseTypeResource;
 import sendto.ExpenseTypeSendto;
 
 public class ExpenseTypeResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseType() {
-		Response response = target("expType").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("expType").path("1").register(JacksonFeature.class).request().header("user", "demo")
+				.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseTypeSendto sendto = response.readEntity(ExpenseTypeSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-		assertEquals("5%", sendto.getTaxPercent());
+		assertEquals(60, sendto.getTaxPercent().intValue());
+		assertEquals("Transp_mrt", sendto.getValue());
 
 	}
 
 	@Test
 	public void testGetExpenseTypeWithNotFoundException() {
-		Response response = target("expType").path("4").register(JacksonFeature.class).request().get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		Response response = target("expType").path("1").register(JacksonFeature.class).request().header("user", "demo")
+				.get();
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteExpenseType() {
-		Response response = target("expType").register(JacksonFeature.class).request().delete();
+		Response response = target("expType").path("1").register(JacksonFeature.class).request().header("user", "demo")
+				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteExpenseTypeWithNotFoundException() {
-		Response response = target("expType").register(JacksonFeature.class).request().delete();
-		AssertUtils.assertNotFound(response);
+		Response response = target("expType").path("2").register(JacksonFeature.class).request().header("user", "demo")
+				.delete();
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testUpdateExpenseType() {
 		ExpenseTypeSendto admin = new ExpenseTypeSendto();
 		admin.setTaxPercent(5.00);
-		Response response = target("expType").path("1").register(JacksonFeature.class).request()
+		admin.setValue(null);
+		Response response = target("expType").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseTypeSendto sendto = response.readEntity(ExpenseTypeSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getTaxPercent(), sendto.getTaxPercent());
+		assertEquals(admin.getValue(), sendto.getValue());
 	}
 
 	@Test
 	public void testUpdateExpenseTypeWithNotFoundException() {
 		ExpenseTypeSendto admin = new ExpenseTypeSendto();
 		admin.setTaxPercent(5.00);
-		Response response = target("expType").path("4").register(JacksonFeature.class).request()
+		Response response = target("expType").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
-		AssertUtils.assertNotFound(response);
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testSaveExpenseType() {
 		ExpenseTypeSendto admin = new ExpenseTypeSendto();
-		admin.setTaxPercent(5.00);
-		Response response = target("expType").register(JacksonFeature.class).request().post(Entity.json(admin));
+		admin.setTaxPercent(60.00);
+		admin.setValue("Transp_mrt");
+		Response response = target("expType").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseTypeSendto sendto = response.readEntity(ExpenseTypeSendto.class);
 		assertEquals(5l, sendto.getId().longValue());
 		assertEquals(admin.getTaxPercent(), sendto.getTaxPercent());
+		assertEquals(admin.getValue(), sendto.getValue());
 
 	}
 
 	@Test
 	public void testSaveExpenseTypeWithDuplicateName() {
 		ExpenseTypeSendto admin = new ExpenseTypeSendto();
-		admin.setTaxPercent(5.00);
-		Response response = target("expType").register(JacksonFeature.class).request().post(Entity.json(admin));
+		admin.setTaxPercent(60.00);
+		admin.setValue("Transp_mrtTransp_mrt");
+		Response response = target("expType").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
 		AssertUtils.assertBadRequest(response);
 	}
 
 	@Test
 	public void testFindallExpenseType() {
-		Response response = target("expType").register(JacksonFeature.class).request().get();
+		Response response = target("expType").register(JacksonFeature.class).request().header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		Collection<ExpenseTypeSendto> rets = response.readEntity(new GenericType<List<ExpenseTypeSendto>>() {
+		PageModel<ExpenseTypeSendto> rets = response.readEntity(new GenericType<PageModel<ExpenseTypeSendto>>() {
 		});
-		assertEquals(200, response.getStatus());
-		for (ExpenseTypeSendto expType : rets) {
-			assertNotNull(expType.getId());
-			assertNotNull(expType.getTaxPercent());
-		}
+		assertEquals(2, rets.getTotalElements());
+
 	}
 
 	@Override

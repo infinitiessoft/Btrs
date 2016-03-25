@@ -1,11 +1,8 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -16,53 +13,64 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
+import entity.PageModel;
 import resources.ResourceTest;
-import resources.UserSharedResource;
+import resources.Type.UserSharedResource;
 import sendto.UserSharedSendto;
 
 public class UserSharedResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetUserShared() {
-		Response response = target("userShared").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSharedSendto sendto = response.readEntity(UserSharedSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-		assertEquals(new Date(), sendto.getCreatedDate());
-		assertEquals(02 - 15 - 2016, sendto.getDateOfBirth());
-		assertEquals("info@gmail.com", sendto.getEmail());
-		assertEquals("Gana", sendto.getFirstName());
-		assertEquals("Female", sendto.getGender());
-		assertEquals("Engineer", sendto.getJobTitle());
-		assertEquals("Shree", sendto.getLastName());
-		assertEquals("1234", sendto.getPassword());
-		assertEquals("gana", sendto.getUsername());
+		assertEquals("admin@inifinitiessoft.com", sendto.getEmail());
+		assertEquals("Admin", sendto.getFirstName());
+		assertEquals("Male", sendto.getGender());
+		assertEquals("demo", sendto.getJobTitle());
+		assertEquals("Admin", sendto.getLastName());
+		assertEquals("administrator", sendto.getUsername());
+		assertEquals("TRUE", sendto.getEnabled());
 	}
 
 	@Test
 	public void testGetUserSharedWithNotFoundException() {
-		Response response = target("userShared").path("4").register(JacksonFeature.class).request().get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		Response response = target("userShared").path("4").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteUserShared() {
-		Response response = target("userShared").register(JacksonFeature.class).request().delete();
+		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteUserSharedWithNotFoundException() {
-		Response response = target("userShared").register(JacksonFeature.class).request().delete();
-		AssertUtils.assertNotFound(response);
+		Response response = target("userShared").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").delete();
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testUpdateUserShared() {
 		UserSharedSendto admin = new UserSharedSendto();
 		admin.setUsername("admin");
+		admin.setCreatedDate(new Date());
+		admin.setDateOfBirth(new Date());
+		admin.setEmail("admin@gmai.com");
+		admin.setFirstName("admin");
+		admin.setJobTitle("admin");
+		admin.setLastName("demo");
+		admin.setPassword("admin");
+
 		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSharedSendto sendto = response.readEntity(UserSharedSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
@@ -81,8 +89,13 @@ public class UserSharedResourceTest extends ResourceTest {
 	public void testUpdateUserSharedWithNotFoundException() {
 		UserSharedSendto admin = new UserSharedSendto();
 		admin.setUsername("admin");
-		Response response = target("userShared").path("4").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+		admin.setEmail("admin@gmai.com");
+		admin.setFirstName("admin");
+		admin.setJobTitle("admin");
+		admin.setLastName("demo");
+		admin.setPassword("admin");
+		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").put(Entity.json(admin));
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -90,10 +103,16 @@ public class UserSharedResourceTest extends ResourceTest {
 	public void testSaveUserShared() {
 		UserSharedSendto admin = new UserSharedSendto();
 		admin.setUsername("admin");
-		Response response = target("userShared").register(JacksonFeature.class).request().post(Entity.json(admin));
+		admin.setEmail("admin@gmai.com");
+		admin.setFirstName("admin");
+		admin.setJobTitle("admin");
+		admin.setLastName("demo");
+		admin.setPassword("admin");
+		Response response = target("userShared").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSharedSendto sendto = response.readEntity(UserSharedSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
+		assertEquals(2l, sendto.getId().longValue());
 		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
 		assertEquals(admin.getDateOfBirth(), sendto.getDateOfBirth());
 		assertEquals(admin.getEmail(), sendto.getEmail());
@@ -108,30 +127,25 @@ public class UserSharedResourceTest extends ResourceTest {
 	@Test
 	public void testSaveUserSharedWithDuplicateName() {
 		UserSharedSendto admin = new UserSharedSendto();
-		admin.setUsername("admin");
-		Response response = target("userShared").register(JacksonFeature.class).request().post(Entity.json(admin));
-		AssertUtils.assertBadRequest(response);
+		admin.setUsername("admininstration");
+		admin.setEmail("admin@gmai.com");
+		admin.setFirstName("admin");
+		admin.setJobTitle("admin");
+		admin.setLastName("demo");
+		admin.setPassword("admin");
+		Response response = target("userShared").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
+		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testFindallUserShared() {
-		Response response = target("userShared").register(JacksonFeature.class).request().get();
+		Response response = target("userShared").register(JacksonFeature.class).request().header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		Collection<UserSharedSendto> rets = response.readEntity(new GenericType<List<UserSharedSendto>>() {
+		PageModel<UserSharedSendto> rets = response.readEntity(new GenericType<PageModel<UserSharedSendto>>() {
 		});
-		assertEquals(200, response.getStatus());
-		for (UserSharedSendto userShared : rets) {
-			assertNotNull(userShared.getId().toString());
-			assertNotNull(userShared.getCreatedDate());
-			assertNotNull(userShared.getDateOfBirth());
-			assertNotNull(userShared.getEmail());
-			assertNotNull(userShared.getFirstName());
-			assertNotNull(userShared.getGender());
-			assertNotNull(userShared.getJobTitle());
-			assertNotNull(userShared.getLastName());
-			assertNotNull(userShared.getPassword());
-			assertNotNull(userShared.getUsername());
-		}
+		assertEquals(2, rets.getTotalElements());
+
 	}
 
 	@Override

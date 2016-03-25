@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import enumpackage.GenderEnum;
-
 public class UserSharedSendto {
 
 	private Long id;
@@ -14,7 +12,7 @@ public class UserSharedSendto {
 	private String password;
 	private String jobTitle;
 	private String email;
-	private GenderEnum gender;
+	private String gender;
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
@@ -76,11 +74,11 @@ public class UserSharedSendto {
 		this.email = email;
 	}
 
-	public GenderEnum getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(GenderEnum gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 

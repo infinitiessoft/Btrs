@@ -35,48 +35,6 @@ public class ParameterValueSendto implements Serializable {
 		}
 	}
 
-	public static class TypeParameter implements Serializable {
-
-		public static class Type implements Serializable {
-			private static final long serialVersionUID = 1L;
-			private Long id;
-
-			public Long getId() {
-				return id;
-			}
-
-			public void setId(Long id) {
-
-				this.id = id;
-			}
-		}
-
-		private static final long serialVersionUID = 1L;
-		private Long id;
-
-		private boolean isIdSet;
-
-		public Long getId() {
-			return id;
-		}
-
-		public void setId(Long id) {
-			isIdSet = true;
-			this.id = id;
-		}
-
-		@XmlTransient
-		public boolean isIdSet() {
-			return isIdSet;
-		}
-
-		@XmlTransient
-		public void setIdSet(boolean isIdSet) {
-			this.isIdSet = isIdSet;
-		}
-
-	}
-
 	private Long id;
 	private String value;
 	private TypeParameter typeParameter;
@@ -153,10 +111,37 @@ public class ParameterValueSendto implements Serializable {
 	}
 
 	public void setExpense(Expense expense) {
-		if (expense != null) {
-			this.isExpenseSet = true;
-		}
+		isExpenseSet = true;
 		this.expense = expense;
 	}
 
+	public static class TypeParameter implements Serializable
+
+	{
+
+		private static final long serialVersionUID = 1L;
+		private Long id;
+
+		private boolean isIdSet;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			isIdSet = true;
+			this.id = id;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
+	}
 }

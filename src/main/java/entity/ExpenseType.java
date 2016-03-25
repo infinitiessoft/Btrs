@@ -8,16 +8,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import enumpackage.ExpenseTypeEnum;
 
 @Entity
 @Table(name = "expense_types")
@@ -32,8 +28,8 @@ public class ExpenseType extends AbstractEntity {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.ALL)
 	private List<ExpenseCateType> expenseCateType = new ArrayList<ExpenseCateType>(0);
 
-	@Enumerated(EnumType.STRING)
-	private ExpenseTypeEnum value;
+	@Column(name = "value", nullable = false)
+	private String value;
 
 	@Column(name = "tax_percent", nullable = false)
 	private Double taxPercent;
@@ -63,11 +59,11 @@ public class ExpenseType extends AbstractEntity {
 		this.id = id;
 	}
 
-	public ExpenseTypeEnum getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(ExpenseTypeEnum value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

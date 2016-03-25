@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +14,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.SimplePageRequest;
+import resources.specification.UserSharedSpecification;
 import sendto.UserSharedSendto;
 import service.UserSharedService;
 
@@ -44,7 +46,7 @@ public class UserSharedResource {
 	@Path(value = "{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSharedSendto updateUserShared(@PathParam("id") long id, UserSharedSendto userShared) {
-		return userSharedService.update(id);
+		return userSharedService.update(id, userShared);
 	}
 
 	@POST
@@ -55,8 +57,9 @@ public class UserSharedResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<UserSharedSendto> findallUserShared() {
-		return userSharedService.findAll();
+	public Page<UserSharedSendto> findallUserShared(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam UserSharedSpecification spec) {
+		return userSharedService.findAll(spec, pageRequest);
 	}
 
 }

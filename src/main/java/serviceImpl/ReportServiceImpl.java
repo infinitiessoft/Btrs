@@ -11,8 +11,6 @@ import org.springframework.data.jpa.domain.Specification;
 import dao.ReportDao;
 import dao.UserDao;
 import entity.Report;
-import enumpackage.StatusEnum;
-import exceptions.InvalidStatusException;
 import exceptions.ReportNotFoundException;
 import sendto.ReportSendto;
 import service.ReportService;
@@ -47,6 +45,7 @@ public class ReportServiceImpl implements ReportService {
 		ret.setReason(report.getReason());
 		ret.setRoute(report.getRoute());
 		ret.setStartDate(report.getStartDate());
+		ret.setCurrentStatus(report.getCurrent_status());
 		return ret;
 	}
 
@@ -58,7 +57,7 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public ReportSendto save(ReportSendto report) {
-		report.setId(null);
+		report.setId(1L);
 		Report rpt = new Report();
 		setUpReport(report, rpt);
 		rpt = reportDao.save(rpt);
@@ -122,12 +121,7 @@ public class ReportServiceImpl implements ReportService {
 			newEntry.setLastUpdatedDate(sendto.getLastUpdatedDate());
 		}
 		if (sendto.isCurrentStatusSet()) {
-			try {
-				StatusEnum.valueOf(sendto.getCurrentStatus());
-			} catch (Exception e) {
-				throw new InvalidStatusException(sendto.getCurrentStatus());
-			}
-			newEntry.setCurrentStatus(sendto.getCurrentStatus());
+			newEntry.setCurrent_status(sendto.getCurrentStatus());
 		}
 	}
 }

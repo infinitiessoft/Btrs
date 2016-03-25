@@ -1,7 +1,6 @@
-package resources;
+package resources.Type;
 
-import java.util.Collection;
-
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,11 +14,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
+import resources.specification.ExpenseTypeSpecification;
+import resources.specification.SimplePageRequest;
 import sendto.ExpenseTypeSendto;
 import service.ExpenseTypeService;
 
-@Path(value = "/expType")
+@Path(value = "/expenseType")
 public class ExpenseTypeResource {
 	@Autowired
 	private ExpenseTypeService expenseTypeService;
@@ -42,7 +44,7 @@ public class ExpenseTypeResource {
 	@PUT
 	@Path(value = "{id}")
 	public ExpenseTypeSendto updateExpenseType(@PathParam("id") long id, ExpenseTypeSendto expenseType) {
-		return expenseTypeService.update(id);
+		return expenseTypeService.update(id, expenseType);
 	}
 
 	@POST
@@ -53,8 +55,9 @@ public class ExpenseTypeResource {
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Collection<ExpenseTypeSendto> findallExpenseType() {
-		return expenseTypeService.findAll();
+	public Page<ExpenseTypeSendto> findallExpenseType(@BeanParam SimplePageRequest pageRequest,
+			@BeanParam ExpenseTypeSpecification spec) {
+		return expenseTypeService.findAll(spec, pageRequest);
 	}
 
 }

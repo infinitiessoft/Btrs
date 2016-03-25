@@ -34,7 +34,7 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 	public static ExpenseCategorySendto toExpenseCategorySendto(ExpenseCategory expenseCategory) {
 		ExpenseCategorySendto ret = new ExpenseCategorySendto();
 		ret.setId(expenseCategory.getId());
-		ret.setName(expenseCategory.getName());
+		ret.setName_key(expenseCategory.getName_key());
 		ret.setCode(expenseCategory.getCode());
 		return ret;
 	}
@@ -76,8 +76,8 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 	}
 
 	private void setUpExpenseCategory(ExpenseCategorySendto sendto, ExpenseCategory expCat) {
-		if (sendto.isNameSet()) {
-			expCat.setName(sendto.getName());
+		if (sendto.isName_keySet()) {
+			expCat.setName_key(sendto.getName_key());
 		}
 	}
 

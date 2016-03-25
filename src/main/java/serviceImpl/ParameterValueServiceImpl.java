@@ -57,15 +57,17 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		ret.setId(parameterValue.getId());
 		ret.setValue(parameterValue.getValue());
 
-		ParameterValueSendto.Expense exp = new ParameterValueSendto.Expense();
-		exp.setId(parameterValue.getExpense().getId());
-		ret.setExpense(exp);
+		entity.Expense exp = parameterValue.getExpense();
+		sendto.ParameterValueSendto.Expense expense = new ParameterValueSendto.Expense();
+		expense.setId(exp.getId());
+		ret.setExpense(expense);
 
 		entity.TypeParameter type = parameterValue.getTypeParameter();
 		TypeParameter typeParameter = new ParameterValueSendto.TypeParameter();
 		typeParameter.setId(type.getId());
 		ret.setTypeParameter(typeParameter);
 		return ret;
+
 	}
 
 	@Transactional

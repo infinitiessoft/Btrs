@@ -35,6 +35,7 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		expenseType = new ExpenseType();
 		expenseType.setId(1L);
 		expenseType.setTaxPercent(10.5);
+		expenseType.setValue("demo");
 
 	}
 
@@ -54,7 +55,7 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		ExpenseTypeSendto ret = expenseTypeService.retrieve(1);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(expenseType.getTaxPercent().doubleValue(), ret.getTaxPercent().doubleValue(), 0.1);
-
+		assertEquals(expenseType.getValue(), ret.getValue());
 	}
 
 	@Test
@@ -73,6 +74,7 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 	public void testSave() {
 		final ExpenseTypeSendto newEntry = new ExpenseTypeSendto();
 		newEntry.setTaxPercent(15.0);
+		newEntry.setValue("demo");
 		context.checking(new Expectations() {
 
 			{
@@ -94,12 +96,15 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		ExpenseTypeSendto ret = expenseTypeService.save(newEntry);
 		assertEquals(2l, ret.getId().longValue());
 		assertEquals(newEntry.getTaxPercent(), ret.getTaxPercent());
+		assertEquals(newEntry.getValue(), ret.getValue());
+
 	}
 
 	@Test
 	public void testUpdate() {
 		final ExpenseTypeSendto newEntry = new ExpenseTypeSendto();
 		newEntry.setTaxPercent(10.5);
+		newEntry.setValue("demo");
 		context.checking(new Expectations() {
 
 			{
@@ -113,6 +118,8 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		ExpenseTypeSendto ret = expenseTypeService.update(1l, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getTaxPercent(), ret.getTaxPercent());
+		assertEquals(newEntry.getValue(), ret.getValue());
+
 	}
 
 	@Test
@@ -134,5 +141,7 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		ExpenseTypeSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(expenseType.getTaxPercent(), ret.getTaxPercent());
+		assertEquals(expenseType.getValue(), ret.getValue());
+
 	}
 }

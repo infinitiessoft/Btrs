@@ -3,6 +3,7 @@ package sendto;
 public class RoleSendto {
 
 	private Long id;
+	private String value;
 
 	public RoleSendto() {
 	}
@@ -17,6 +18,14 @@ public class RoleSendto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

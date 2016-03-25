@@ -53,90 +53,105 @@
 	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
 		<constructor-arg ref="departmentDao" />
 	</bean>
-	
-	
+
 	<bean id="roleService" class="serviceImpl.RoleServiceImpl">
 		<constructor-arg ref="roleDao" />
 	</bean>
 
-	
+
 	<bean id="expenseCategoryService" class="serviceImpl.ExpenseCategoryServiceImpl">
-	<constructor-arg ref="expenseCategoryDao" />
+		<constructor-arg ref="expenseCategoryDao" />
 	</bean>
-	
-	
+
+
 	<bean id="expenseCateTypeService" class="serviceImpl.ExpenseCateTypeServiceImpl">
-	<constructor-arg ref="expenseCategoryDao" />
-	<constructor-arg ref="expenseTypeDao" />
-	<constructor-arg ref="expenseCateTypeDao"  />
+		<constructor-arg ref="expenseCategoryDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="expenseCateTypeDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
-	<constructor-arg ref="expenseDao" />
+		<constructor-arg ref="expenseDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="reportDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
-	<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
-	<constructor-arg ref="expenseTypeDao"/>
-	<constructor-arg ref="parameterValueDao" />
-	<constructor-arg ref="expenseTypeParaDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="expenseTypeParaDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="parameterValueService" class="serviceImpl.ParameterValueServiceImpl">
-	<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="typeParameterDao" />
+		<constructor-arg ref="expenseDao" />
 	</bean>
-	
-	
+
+
+
 	<bean id="photoService" class="serviceImpl.PhotoServiceImpl">
-	<constructor-arg ref="photoDao"/>
+		<constructor-arg ref="photoDao" />
+		<constructor-arg ref="reportDao" />
 	</bean>
-	
-	
-	
+
+
 	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
-	<constructor-arg ref="reportDao"/>
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="userDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="statusChangesService" class="serviceImpl.StatusChangesServiceImpl">
-	<constructor-arg ref="statusChangesDao"/>
+		<constructor-arg ref="statusChangesDao" />
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="userDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
-	<constructor-arg ref="typeParameterDao" />
+		<constructor-arg ref="typeParameterDao" />
 	</bean>
-	
-	
+
+
+
 	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
-	<constructor-arg ref="userRoleDao" />
-	<constructor-arg ref="userDao" />
-	<constructor-arg ref="roleDao" />
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="roleDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="userService" class="serviceImpl.UserServiceImpl">
-	<constructor-arg ref="userDao" />
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="departmentDao" />
+		<constructor-arg ref="userSharedDao" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
 		<constructor-arg ref="userSharedDao" />
 	</bean>
+
+
+
 	
-	</beans>
+
+</beans>

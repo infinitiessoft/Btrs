@@ -34,36 +34,36 @@ public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 	}
 
 	@Override
+	public void revokeParameterValueFromExpenseType(long expenseTypeId, long parameterValueId) {
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(parameterValueId,
+				expenseTypeId);
+		if (expenseTypePara == null) {
+			throw new ParameterValueAssignmentNotFoundException(parameterValueId, expenseTypeId);
+		}
+		expenseTypeParaDao.delete(expenseTypePara);
+	}
+
+	@Override
 	public Page<ParameterValueSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable) {
 		List<ParameterValueSendto> sendto = new ArrayList<ParameterValueSendto>();
-		Page<ExpenseTypePara> expenseTypes = expenseTypeParaDao.findAll(spec, pageable);
-		for (ExpenseTypePara expenseType : expenseTypes) {
-			ParameterValue parameterValue = expenseType.getParameterValue();
+		Page<ExpenseTypePara> expenseTypeParas = expenseTypeParaDao.findAll(spec, pageable);
+		for (ExpenseTypePara expense : expenseTypeParas) {
+			ParameterValue parameterValue = expense.getParameterValue();
 			sendto.add(ParameterValueServiceImpl.toParameterValueSendto(parameterValue));
 		}
 		Page<ParameterValueSendto> rets = new PageImpl<ParameterValueSendto>(sendto, pageable,
-				expenseTypes.getTotalElements());
+				expenseTypeParas.getTotalElements());
 		return rets;
 	}
 
 	@Override
 	public ParameterValueSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long parameterValueId) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(expenseTypeId,
-				parameterValueId);
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(parameterValueId,
+				expenseTypeId);
 		if (expenseTypePara == null) {
-			throw new ParameterValueAssignmentNotFoundException(expenseTypeId, parameterValueId);
+			throw new ParameterValueAssignmentNotFoundException(parameterValueId, expenseTypeId);
 		}
 		return ParameterValueServiceImpl.toParameterValueSendto(expenseTypePara.getParameterValue());
-	}
-
-	@Override
-	public void revokeParameterValueFromExpenseType(long expenseTypeId, long parameterValueId) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndParameterValueId(expenseTypeId,
-				parameterValueId);
-		if (expenseTypePara == null) {
-			throw new ParameterValueAssignmentNotFoundException(expenseTypeId, parameterValueId);
-		}
-		expenseTypeParaDao.delete(expenseTypePara);
 	}
 
 	@Override
@@ -81,4 +81,5 @@ public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 		expenseTypePara.setParameterValue(parameterValue);
 		expenseTypeParaDao.save(expenseTypePara);
 	}
+
 }

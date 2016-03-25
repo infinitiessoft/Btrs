@@ -41,7 +41,7 @@ public class Expense extends AbstractEntity {
 	@Column(name = "tax_amount", nullable = false)
 	private Integer taxAmount;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.PERSIST)
 	private List<ParameterValue> parameterValues;
 
 	public Expense() {

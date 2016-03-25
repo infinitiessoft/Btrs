@@ -35,6 +35,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		ExpenseTypeSendto ret = new ExpenseTypeSendto();
 		ret.setId(expenseType.getId());
 		ret.setTaxPercent(expenseType.getTaxPercent());
+		ret.setValue(expenseType.getValue());
 		return ret;
 	}
 

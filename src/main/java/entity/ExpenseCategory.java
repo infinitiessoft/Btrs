@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name") )
+@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name_key") )
 public class ExpenseCategory extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -23,8 +23,8 @@ public class ExpenseCategory extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "name_key", nullable = false)
+	private String name_key;
 
 	@Column(name = "code", nullable = false)
 	private String code;
@@ -44,12 +44,12 @@ public class ExpenseCategory extends AbstractEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getName_key() {
+		return name_key;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName_key(String name_key) {
+		this.name_key = name_key;
 	}
 
 	public String getCode() {

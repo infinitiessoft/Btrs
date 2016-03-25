@@ -36,6 +36,7 @@ public class ReportServiceImplTest extends ServiceTest {
 		report.setId(1L);
 		report.setReason("demo");
 		report.setComment("good");
+
 	}
 
 	@After
@@ -55,6 +56,7 @@ public class ReportServiceImplTest extends ServiceTest {
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals("demo", ret.getReason());
 		assertEquals("good", ret.getComment());
+
 	}
 
 	@Test
@@ -91,6 +93,7 @@ public class ReportServiceImplTest extends ServiceTest {
 		assertEquals(2l, ret.getId().longValue());
 		assertEquals(newEntry.getReason(), ret.getReason());
 		assertEquals(newEntry.getComment(), ret.getComment());
+
 	}
 
 	@Test

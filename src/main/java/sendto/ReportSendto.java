@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlTransient;
 
 import entity.User;
-import enumpackage.StatusEnum;
 
 public class ReportSendto {
 
@@ -21,7 +20,7 @@ public class ReportSendto {
 	private Date lastUpdatedDate;
 	private User owner;
 	private User reviewer;
-	private StatusEnum currentStatus;
+	private String currentStatus;
 
 	public ReportSendto() {
 		super();
@@ -43,11 +42,11 @@ public class ReportSendto {
 		this.reviewer = reviewer;
 	}
 
-	public StatusEnum getCurrentStatus() {
+	public String getCurrentStatus() {
 		return currentStatus;
 	}
 
-	public void setCurrentStatus(StatusEnum currentStatus) {
+	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
 	}
 
