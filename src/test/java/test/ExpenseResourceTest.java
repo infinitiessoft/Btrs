@@ -27,7 +27,6 @@ public class ExpenseResourceTest extends ResourceTest {
 		assertEquals("no", sendto.getComment());
 		assertEquals(60, sendto.getTaxAmount().intValue());
 		assertEquals(1257, sendto.getTotalAmount().intValue());
-		assertEquals(1l, sendto.getExpenseType().getId().longValue());
 	}
 
 	@Test
