@@ -22,6 +22,8 @@ import sendto.UserSharedSendto;
 import service.UserSharedService;
 
 @Path(value = "/userShared")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class UserSharedResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class UserSharedResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public UserSharedSendto getUserShared(@PathParam("id") long id) {
 		return userSharedService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUserShared(@PathParam("id") long id) {
 		userSharedService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -44,7 +44,6 @@ public class UserSharedResource {
 
 	@PUT
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSharedSendto updateUserShared(@PathParam("id") long id, UserSharedSendto userShared) {
 		return userSharedService.update(id, userShared);
 	}
@@ -56,7 +55,6 @@ public class UserSharedResource {
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<UserSharedSendto> findallUserShared(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam UserSharedSpecification spec) {
 		return userSharedService.findAll(spec, pageRequest);

@@ -20,7 +20,7 @@ public class ExpenseCateTypeResourceTest extends ResourceTest {
 	@Test
 	public void testFindAllExpenseType() {
 		Response response = target("expenseCategory").path("2").path("expenseType").register(JacksonFeature.class)
-				.request().header("user", "user").get();
+				.request().header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		PageModel<RoleSendto> rets = response.readEntity(new GenericType<PageModel<RoleSendto>>() {
 		});
@@ -30,7 +30,7 @@ public class ExpenseCateTypeResourceTest extends ResourceTest {
 	@Test
 	public void testFindExpenseType() {
 		Response response = target("expenseCategory").path("2").path("expenseType").path("2")
-				.register(JacksonFeature.class).request().header("user", "user").get();
+				.register(JacksonFeature.class).request().header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		RoleSendto transfer = response.readEntity(RoleSendto.class);
 		assertEquals(2l, transfer.getId().longValue());
@@ -39,23 +39,15 @@ public class ExpenseCateTypeResourceTest extends ResourceTest {
 	@Test
 	public void testFindExpenseTypeWithNotFoundException() {
 		Response response = target("expenseCategory").path("2").path("expenseType").path("4")
-				.register(JacksonFeature.class).request().header("user", "user").get();
+				.register(JacksonFeature.class).request().header("user", "demo").get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testAssignExpenseTypeToExpenseCategory() {
 		Response response = target("expenseCategory")
-				.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true).path("2").path("expenseType")
-				.path("1").register(JacksonFeature.class).request().header("user", "user").put(null);
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testAssignExpenseTypeToExpenseCategoryWithExpenseTypeNotFound() {
-		Response response = target("expenseCategory")
-				.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true).path("2").path("expenseType")
-				.path("4").register(JacksonFeature.class).request().header("user", "user").put(null);
+				.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true).path("1").path("expenseType")
+				.path("1").register(JacksonFeature.class).request().header("user", "demo").put(null);
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
@@ -63,15 +55,7 @@ public class ExpenseCateTypeResourceTest extends ResourceTest {
 	public void testRevokeExpenseTypeToExpenseCategory() {
 		Response response = target("expenseCategory")
 				.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true).path("2").path("expenseType")
-				.path("2").register(JacksonFeature.class).request().header("user", "user").delete();
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testRevokeExpenseTypeToExpenseCategoryWithExpenseTypeNotFound() {
-		Response response = target("expenseCategory")
-				.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true).path("2").path("expenseType")
-				.path("3").register(JacksonFeature.class).request().header("user", "user").delete();
+				.path("2").register(JacksonFeature.class).request().header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 

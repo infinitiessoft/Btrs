@@ -45,6 +45,8 @@ public class UserSharedServiceImpl implements UserSharedService {
 		ret.setFirstName(userShared.getFirstName());
 		ret.setLastName(userShared.getLastName());
 		ret.setDateOfBirth(userShared.getDateofBirth());
+		ret.setCreatedDate(userShared.getCreatedDate());
+		ret.setEnabled(userShared.getEnabled());
 		return ret;
 	}
 
@@ -94,6 +96,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		if (sendto.isUsernameSet()) {
 			newEntry.setUsername(sendto.getUsername());
 		}
+
 	}
 
 	@Transactional

@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class UserSharedSendto {
 
 	private Long id;
@@ -46,7 +48,9 @@ public class UserSharedSendto {
 	}
 
 	public void setUsername(String username) {
-		isUsernameSet = true;
+		if (!Strings.isNullOrEmpty(username)) {
+			this.isUsernameSet = true;
+		}
 		this.username = username;
 	}
 
@@ -55,6 +59,9 @@ public class UserSharedSendto {
 	}
 
 	public void setPassword(String password) {
+		if (!Strings.isNullOrEmpty(password)) {
+			this.isPasswordSet = true;
+		}
 		this.password = password;
 	}
 
@@ -63,6 +70,9 @@ public class UserSharedSendto {
 	}
 
 	public void setJobTitle(String jobTitle) {
+		if (!Strings.isNullOrEmpty(jobTitle)) {
+			this.isJobTitleSet = true;
+		}
 		this.jobTitle = jobTitle;
 	}
 
@@ -71,6 +81,9 @@ public class UserSharedSendto {
 	}
 
 	public void setEmail(String email) {
+		if (!Strings.isNullOrEmpty(email)) {
+			this.isEmailSet = true;
+		}
 		this.email = email;
 	}
 
@@ -79,6 +92,10 @@ public class UserSharedSendto {
 	}
 
 	public void setGender(String gender) {
+		if (!Strings.isNullOrEmpty(gender)) {
+			this.isGenderSet = true;
+
+		}
 		this.gender = gender;
 	}
 
@@ -87,6 +104,9 @@ public class UserSharedSendto {
 	}
 
 	public void setFirstName(String firstName) {
+		if (!Strings.isNullOrEmpty(firstName)) {
+			this.isFirstNameSet = true;
+		}
 		this.firstName = firstName;
 	}
 
@@ -95,6 +115,9 @@ public class UserSharedSendto {
 	}
 
 	public void setLastName(String lastName) {
+		if (!Strings.isNullOrEmpty(lastName)) {
+			this.isLastNameSet = true;
+		}
 		this.lastName = lastName;
 	}
 
@@ -103,6 +126,9 @@ public class UserSharedSendto {
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
+		if (dateOfBirth != null) {
+			this.isDateOfBirthSet = true;
+		}
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -111,6 +137,9 @@ public class UserSharedSendto {
 	}
 
 	public void setCreatedDate(Date createdDate) {
+		if (createdDate != null) {
+			this.isCreatedDateSet = true;
+		}
 		this.createdDate = createdDate;
 	}
 
