@@ -31,7 +31,7 @@ public class ExpenseResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpenseWithNotFoundException() {
-		Response response = target("expense").register(JacksonFeature.class).request().get();
+		Response response = target("expense").path("3").register(JacksonFeature.class).request().get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
@@ -44,7 +44,7 @@ public class ExpenseResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeleteExpenseWithNotFoundException() {
-		Response response = target("expense").path("2").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("expense").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
 	}
@@ -67,19 +67,16 @@ public class ExpenseResourceTest extends ResourceTest {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseSendto sendto = response.readEntity(ExpenseSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-		assertEquals(admin.getComment(), sendto.getComment());
-		assertEquals(admin.getReport(), sendto.getReport());
-		assertEquals(admin.getTaxAmount(), sendto.getTaxAmount());
 		assertEquals(admin.getTotalAmount(), sendto.getTotalAmount());
 		assertEquals(admin.getExpenseType().getId(), sendto.getExpenseType().getId());
-		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
 	}
 
 	@Test
 	public void testUpdateExpenseWithNotFoundException() {
 		ExpenseSendto admin = new ExpenseSendto();
 		admin.setTotalAmount(4321);
-		Response response = target("expense").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("expense").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
 		AssertUtils.assertNotFound(response);
 	}
@@ -102,32 +99,13 @@ public class ExpenseResourceTest extends ResourceTest {
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseSendto sendto = response.readEntity(ExpenseSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
-		assertEquals(admin.getReport(), sendto.getReport());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
 		assertEquals(admin.getTaxAmount(), sendto.getTaxAmount());
 		assertEquals(admin.getTotalAmount(), sendto.getTotalAmount());
-		assertEquals(admin.getExpenseType().getId(), sendto.getExpenseType().getId());
-		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
+		assertEquals(admin.getExpenseType().getId().longValue(), sendto.getExpenseType().getId().longValue());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
 
-	}
-
-	@Test
-	public void testSaveExpenseWithDuplicateName() {
-		ExpenseSendto admin = new ExpenseSendto();
-		admin.setTotalAmount(1257);
-		admin.setTaxAmount(60);
-		admin.setComment("no");
-		ExpenseSendto.ExpenseType expenseType = new ExpenseSendto.ExpenseType();
-		expenseType.setId(1L);
-		admin.setExpenseType(expenseType);
-
-		ExpenseSendto.Report rpt = new ExpenseSendto.Report();
-		rpt.setId(1L);
-		admin.setReport(rpt);
-		Response response = target("expense").path("1").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		AssertUtils.assertBadRequest(response);
 	}
 
 	@Test

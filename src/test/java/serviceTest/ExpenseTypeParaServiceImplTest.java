@@ -14,41 +14,41 @@ import org.springframework.data.domain.PageImpl;
 
 import dao.ExpenseTypeDao;
 import dao.ExpenseTypeParaDao;
-import dao.ParameterValueDao;
+import dao.TypeParameterDao;
 import entity.ExpenseType;
 import entity.ExpenseTypePara;
-import entity.ParameterValue;
+import entity.TypeParameter;
 import resources.specification.ExpenseTypeParaSpecification;
 import resources.specification.SimplePageRequest;
-import sendto.ParameterValueSendto;
+import sendto.ExpenseTypeParaSendto;
 import serviceImpl.ExpenseTypeParaServiceImpl;
 
 public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 
 	private ExpenseTypeDao expenseTypeDao;
-	private ParameterValueDao parameterValueDao;
+	private TypeParameterDao typeParameterDao;
 	private ExpenseTypeParaDao expenseTypeParaDao;
 	private ExpenseTypeParaServiceImpl expenseTypeParaService;
 
 	private ExpenseType expenseType;
-	private ParameterValue parameterValue;
+	private TypeParameter typeParameter;
 	private ExpenseTypePara expenseTypePara;
 
 	@Before
 	public void setUp() throws Exception {
 		expenseTypeDao = context.mock(ExpenseTypeDao.class);
-		parameterValueDao = context.mock(ParameterValueDao.class);
+		typeParameterDao = context.mock(TypeParameterDao.class);
 		expenseTypeParaDao = context.mock(ExpenseTypeParaDao.class);
-		expenseTypeParaService = new ExpenseTypeParaServiceImpl(expenseTypeDao, parameterValueDao, expenseTypeParaDao);
+		expenseTypeParaService = new ExpenseTypeParaServiceImpl(expenseTypeDao, typeParameterDao, expenseTypeParaDao);
 
-		parameterValue = new ParameterValue();
-		parameterValue.setId(1L);
+		typeParameter = new TypeParameter();
+		typeParameter.setId(1L);
 		expenseType = new ExpenseType();
 		expenseType.setId(1L);
 
 		expenseTypePara = new ExpenseTypePara();
 		expenseTypePara.setId(1L);
-		expenseTypePara.setParameterValue(parameterValue);
+		expenseTypePara.setTypeParameter(typeParameter);
 		expenseTypePara.setExpenseType(expenseType);
 	}
 
@@ -63,14 +63,14 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
-						expenseType.getId());
+				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndTypeParameterId(expenseType.getId(),
+						typeParameter.getId());
 				will(returnValue(expenseTypePara));
 			}
 		});
-		ParameterValueSendto ret = expenseTypeParaService.findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
+		ExpenseTypeParaSendto ret = expenseTypeParaService.findByExpenseTypeIdAndParameterValueId(typeParameter.getId(),
 				expenseType.getId());
-		assertEquals(parameterValue.getId(), ret.getId());
+		assertEquals(typeParameter.getId(), ret.getId());
 	}
 
 	@Test
@@ -78,14 +78,14 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndParameterValueId(parameterValue.getId(),
-						expenseType.getId());
+				exactly(1).of(expenseTypeParaDao).findByExpenseTypeIdAndTypeParameterId(expenseType.getId(),
+						typeParameter.getId());
 				will(returnValue(expenseTypePara));
 
 				exactly(1).of(expenseTypeParaDao).delete(expenseTypePara);
 			}
 		});
-		expenseTypeParaService.revokeParameterValueFromExpenseType(parameterValue.getId(), expenseType.getId());
+		expenseTypeParaService.revokeTypeParameterFromExpenseType(typeParameter.getId(), expenseType.getId());
 	}
 
 	@Test
@@ -96,14 +96,14 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 				exactly(1).of(expenseTypeDao).findOne(expenseType.getId());
 				will(returnValue(expenseType));
 
-				exactly(1).of(parameterValueDao).findOne(parameterValue.getId());
-				will(returnValue(parameterValue));
+				exactly(1).of(typeParameterDao).findOne(typeParameter.getId());
+				will(returnValue(typeParameter));
 
 				exactly(1).of(expenseTypeParaDao).save(with(any(ExpenseTypePara.class)));
 				will(returnValue(expenseTypePara));
 			}
 		});
-		expenseTypeParaService.grantParameterValueToExpenseType(parameterValue.getId(), expenseType.getId());
+		expenseTypeParaService.grantTypeParameterToExpenseType(typeParameter.getId(), expenseType.getId());
 	}
 
 	@Test
@@ -121,9 +121,9 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 				will(returnValue(page));
 			}
 		});
-		Page<ParameterValueSendto> rets = expenseTypeParaService.findAll(spec, pageable);
+		Page<ExpenseTypeParaSendto> rets = expenseTypeParaService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
-		ParameterValueSendto ret = rets.iterator().next();
-		assertEquals(parameterValue.getId(), ret.getId());
+		ExpenseTypeParaSendto ret = rets.iterator().next();
+		assertEquals(typeParameter.getId(), ret.getId());
 	}
 }

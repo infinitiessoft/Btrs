@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,8 +17,10 @@ import entity.ParameterValue;
 
 public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePara> {
 
+	@QueryParam("expenseTypeId")
 	private Long expenseTypeId;
-	private Long parameterValueId;
+	@QueryParam("typeParameterId")
+	private Long typeParameterId;
 
 	@Override
 	public Predicate toPredicate(Root<ExpenseTypePara> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -25,8 +28,8 @@ public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePa
 		if (expenseTypeId != null) {
 			predicates.add(cb.equal(root.<ExpenseType> get("expenseType").<Long> get("id"), expenseTypeId));
 		}
-		if (parameterValueId != null) {
-			predicates.add(cb.equal(root.<ParameterValue> get("parameterValue").<Long> get("id"), parameterValueId));
+		if (typeParameterId != null) {
+			predicates.add(cb.equal(root.<ParameterValue> get("typeParameter").<Long> get("id"), typeParameterId));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -43,12 +46,12 @@ public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePa
 		this.expenseTypeId = expenseTypeId;
 	}
 
-	public Long getParameterValueId() {
-		return parameterValueId;
+	public Long getTypeParameterId() {
+		return typeParameterId;
 	}
 
-	public void setParameterValueId(Long parameterValueId) {
-		this.parameterValueId = parameterValueId;
+	public void setTypeParameterId(Long typeParameterId) {
+		this.typeParameterId = typeParameterId;
 	}
 
 }

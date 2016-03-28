@@ -2,6 +2,8 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class ExpenseSendto {
 
 	private Long id;
@@ -56,6 +58,9 @@ public class ExpenseSendto {
 	}
 
 	public void setComment(String comment) {
+		if (!Strings.isNullOrEmpty(comment)) {
+			isCommentSet = true;
+		}
 		this.comment = comment;
 	}
 
@@ -64,6 +69,9 @@ public class ExpenseSendto {
 	}
 
 	public void setTotalAmount(Integer totalAmount) {
+		if (totalAmount != null) {
+			isTotalAmountSet = true;
+		}
 		this.totalAmount = totalAmount;
 	}
 
@@ -72,7 +80,9 @@ public class ExpenseSendto {
 	}
 
 	public void setTaxAmount(Integer taxAmount) {
-		isTaxAmountSet = true;
+		if (taxAmount != null) {
+			isTaxAmountSet = true;
+		}
 		this.taxAmount = taxAmount;
 	}
 

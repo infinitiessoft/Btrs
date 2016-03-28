@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +26,7 @@ public class Role extends AbstractEntity {
 	private String value;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.ALL)
-	private List<UserRole> userRole = new ArrayList<UserRole>(0);;
+	private Set<UserRole> userRole = new HashSet<UserRole>(0);;
 
 	public Role() {
 		super();
@@ -53,11 +53,11 @@ public class Role extends AbstractEntity {
 		this.value = value;
 	}
 
-	public List<UserRole> getUserRole() {
+	public Set<UserRole> getUserRole() {
 		return userRole;
 	}
 
-	public void setUserRole(List<UserRole> userRole) {
+	public void setUserRole(Set<UserRole> userRole) {
 		this.userRole = userRole;
 	}
 

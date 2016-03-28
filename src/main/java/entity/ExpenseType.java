@@ -1,8 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,7 +24,7 @@ public class ExpenseType extends AbstractEntity {
 	private Long id;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.ALL)
-	private List<ExpenseCateType> expenseCateType = new ArrayList<ExpenseCateType>(0);
+	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	@Column(name = "value", nullable = false)
 	private String value;
@@ -38,7 +36,7 @@ public class ExpenseType extends AbstractEntity {
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.ALL)
-	private List<ExpenseTypePara> expenseTypePara = new ArrayList<ExpenseTypePara>(0);
+	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
 
 	@Override
 	public String toString() {
@@ -75,11 +73,11 @@ public class ExpenseType extends AbstractEntity {
 		this.taxPercent = taxPercent;
 	}
 
-	public List<ExpenseCateType> getExpenseCateType() {
+	public Set<ExpenseCateType> getExpenseCateType() {
 		return expenseCateType;
 	}
 
-	public void setExpenseCateType(List<ExpenseCateType> expenseCateType) {
+	public void setExpenseCateType(Set<ExpenseCateType> expenseCateType) {
 		this.expenseCateType = expenseCateType;
 	}
 
@@ -91,11 +89,11 @@ public class ExpenseType extends AbstractEntity {
 		this.expenses = expenses;
 	}
 
-	public List<ExpenseTypePara> getExpenseTypePara() {
+	public Set<ExpenseTypePara> getExpenseTypePara() {
 		return expenseTypePara;
 	}
 
-	public void setExpenseTypePara(List<ExpenseTypePara> expenseTypePara) {
+	public void setExpenseTypePara(Set<ExpenseTypePara> expenseTypePara) {
 		this.expenseTypePara = expenseTypePara;
 	}
 

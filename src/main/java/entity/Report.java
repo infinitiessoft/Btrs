@@ -1,8 +1,8 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,13 +70,13 @@ public class Report extends AbstractEntity {
 	private String current_status;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<StatusChanges> statusChanges = new ArrayList<StatusChanges>(0);;
+	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<Expense> expenses = new ArrayList<Expense>(0);
+	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<Photo> photos = new ArrayList<Photo>(0);
+	private Set<Photo> photos = new HashSet<Photo>(0);
 
 	public Report() {
 		super();
@@ -195,27 +195,27 @@ public class Report extends AbstractEntity {
 		this.current_status = current_status;
 	}
 
-	public List<StatusChanges> getStatusChanges() {
+	public Set<StatusChanges> getStatusChanges() {
 		return statusChanges;
 	}
 
-	public void setStatusChanges(List<StatusChanges> statusChanges) {
+	public void setStatusChanges(Set<StatusChanges> statusChanges) {
 		this.statusChanges = statusChanges;
 	}
 
-	public List<Expense> getExpenses() {
+	public Set<Expense> getExpenses() {
 		return expenses;
 	}
 
-	public void setExpenses(List<Expense> expenses) {
+	public void setExpenses(Set<Expense> expenses) {
 		this.expenses = expenses;
 	}
 
-	public List<Photo> getPhotos() {
+	public Set<Photo> getPhotos() {
 		return photos;
 	}
 
-	public void setPhotos(List<Photo> photos) {
+	public void setPhotos(Set<Photo> photos) {
 		this.photos = photos;
 	}
 

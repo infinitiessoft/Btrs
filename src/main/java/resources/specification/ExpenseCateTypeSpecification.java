@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,7 +17,9 @@ import entity.ExpenseType;
 
 public class ExpenseCateTypeSpecification implements Specification<ExpenseCateType> {
 
+	@QueryParam("expenseTypeId")
 	private Long expenseTypeId;
+	@QueryParam("expenseCategoryId")
 	private Long expenseCategoryId;
 
 	@Override

@@ -10,10 +10,10 @@
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-<context:component-scan base-package="resources" />
-	 <context:annotation-config />
-	 
-	
+	<context:component-scan base-package="resources" />
+	<context:annotation-config />
+
+
 	<!-- DATABASE SETUP -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -24,8 +24,8 @@
 	</bean>
 
 
-	 
-	
+
+
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -82,14 +82,14 @@
 
 	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
-		
+
 	</bean>
 
 
 
 	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
-		<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="typeParameterDao" />
 		<constructor-arg ref="expenseTypeParaDao" />
 	</bean>
 
@@ -152,6 +152,6 @@
 
 
 
-	
+
 
 </beans>

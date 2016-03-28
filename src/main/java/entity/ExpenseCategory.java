@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +30,7 @@ public class ExpenseCategory extends AbstractEntity {
 	private String code;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.ALL)
-	private List<ExpenseCateType> expenseCateType = new ArrayList<ExpenseCateType>(0);
+	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	public ExpenseCategory() {
 		super();
@@ -60,11 +60,11 @@ public class ExpenseCategory extends AbstractEntity {
 		this.code = code;
 	}
 
-	public List<ExpenseCateType> getExpenseCateType() {
+	public Set<ExpenseCateType> getExpenseCateType() {
 		return expenseCateType;
 	}
 
-	public void setExpenseCateType(List<ExpenseCateType> expenseCateType) {
+	public void setExpenseCateType(Set<ExpenseCateType> expenseCateType) {
 		this.expenseCateType = expenseCateType;
 	}
 

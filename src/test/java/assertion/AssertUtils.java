@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.jersey.internal.Errors.ErrorMessage;
+import exceptions.ErrorMessage;
 
 public class AssertUtils {
 
@@ -25,7 +25,7 @@ public class AssertUtils {
 		assertEquals(code, response.getStatus());
 		ErrorMessage error = response.readEntity(ErrorMessage.class);
 		assertEquals("true", response.getHeaderString("safe"));
-		assertEquals(code, error.hashCode());
+		assertEquals(code, error.getCode());
 	}
 
 	public static void assertConflict(Response response) {

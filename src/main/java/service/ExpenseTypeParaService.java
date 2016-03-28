@@ -4,15 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import resources.specification.ExpenseTypeParaSpecification;
-import sendto.ParameterValueSendto;
+import sendto.ExpenseTypeParaSendto;
 
 public interface ExpenseTypeParaService {
 
-	public void revokeParameterValueFromExpenseType(long parameterId, long expenseTypeId);
+	public void revokeTypeParameterFromExpenseType(long typeParameterId, long expenseTypeId);
 
-	public ParameterValueSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long parameterId);
+	public ExpenseTypeParaSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long typeParameterId);
 
-	public void grantParameterValueToExpenseType(long expenseTypeId, long parameterId);
+	public void grantTypeParameterToExpenseType(long typeParameterId, long expenseTypeId);
 
-	public Page<ParameterValueSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable);
+	public Page<ExpenseTypeParaSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable);
 }

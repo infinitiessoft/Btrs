@@ -25,11 +25,11 @@ public class TypeParameter extends AbstractEntity {
 	@Column(name = "value", nullable = false)
 	private String value;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parameterValue", cascade = CascadeType.ALL)
-	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
 	private Set<ParameterValue> parameterValues = new HashSet<ParameterValue>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
+	private Set<ExpenseTypePara> expenseTypeParas = new HashSet<ExpenseTypePara>(0);
 
 	public TypeParameter() {
 		super();
@@ -77,20 +77,20 @@ public class TypeParameter extends AbstractEntity {
 		this.value = value;
 	}
 
-	public Set<ExpenseTypePara> getExpenseTypePara() {
-		return expenseTypePara;
+	public void setParameterValues(Set<ParameterValue> parameterValues) {
+		this.parameterValues = parameterValues;
 	}
 
-	public void setExpenseTypePara(Set<ExpenseTypePara> expenseTypePara) {
-		this.expenseTypePara = expenseTypePara;
+	public Set<ExpenseTypePara> getExpenseTypeParas() {
+		return expenseTypeParas;
+	}
+
+	public void setExpenseTypeParas(Set<ExpenseTypePara> expenseTypeParas) {
+		this.expenseTypeParas = expenseTypeParas;
 	}
 
 	public Set<ParameterValue> getParameterValues() {
 		return parameterValues;
-	}
-
-	public void setParameterValues(Set<ParameterValue> parameterValues) {
-		this.parameterValues = parameterValues;
 	}
 
 	@Override

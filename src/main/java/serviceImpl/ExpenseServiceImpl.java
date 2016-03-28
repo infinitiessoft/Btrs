@@ -38,6 +38,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		if (expense == null) {
 			throw new ExpenseNotFoundException(id);
 		}
+
 		return toExpenseSendto(expense);
 	}
 
@@ -50,9 +51,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 		ExpenseSendto.Report rpt = new ExpenseSendto.Report();
 		rpt.setId(expense.getReport().getId());
 		ret.setReport(rpt);
-		// ExpenseSendto.ExpenseType expType = new ExpenseSendto.ExpenseType();
-		// expType.setId(expense.getExpenseType().getId());
-		// ret.setExpenseType(expType);
+		ExpenseSendto.ExpenseType expType = new ExpenseSendto.ExpenseType();
+		expType.setId(expense.getExpenseType().getId());
+		ret.setExpenseType(expType);
 		return ret;
 	}
 
@@ -85,7 +86,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 			newEntry.setComment(sendto.getComment());
 		}
 		if (sendto.isTotalAmountSet()) {
-			newEntry.setTaxAmount(sendto.getTotalAmount());
+			newEntry.setTotalAmount(sendto.getTotalAmount());
 		}
 		if (sendto.isTaxAmountSet()) {
 			newEntry.setTaxAmount(sendto.getTaxAmount());

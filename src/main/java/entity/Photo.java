@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,11 +37,12 @@ public class Photo extends AbstractEntity {
 	@Column(name = "title", nullable = false)
 	private String title;
 
+	@Lob
 	@Column(name = "data", nullable = false)
 	private byte[] data;
 
 	@Column(name = "size", nullable = false)
-	private int size;
+	private Integer size;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "report_id", nullable = false)
@@ -94,11 +96,11 @@ public class Photo extends AbstractEntity {
 		this.data = data;
 	}
 
-	public int getSize() {
+	public Integer getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 

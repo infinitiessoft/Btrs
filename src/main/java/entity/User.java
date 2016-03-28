@@ -2,7 +2,6 @@ package entity;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,7 +40,7 @@ public class User extends AbstractEntity {
 	private UserShared userShared;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-	private List<UserRole> userRole;
+	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);
@@ -121,11 +120,11 @@ public class User extends AbstractEntity {
 		this.userShared = userShared;
 	}
 
-	public List<UserRole> getUserRole() {
+	public Set<UserRole> getUserRole() {
 		return userRole;
 	}
 
-	public void setUserRole(List<UserRole> userRole) {
+	public void setUserRole(Set<UserRole> userRole) {
 		this.userRole = userRole;
 	}
 
