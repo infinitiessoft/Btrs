@@ -5,14 +5,14 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import enumpackage.StatusEnum;
+import com.google.common.base.Strings;
 
 public class StatusChangesSendto {
 	private Long id;
 	private String comment;
 	private Date createdDate;
 	private User user;
-	private StatusEnum value;
+	private String value;
 	private Report report;
 
 	private boolean isCommentSet;
@@ -38,7 +38,9 @@ public class StatusChangesSendto {
 	}
 
 	public void setComment(String comment) {
-		isCommentSet = true;
+		if (!Strings.isNullOrEmpty(comment)) {
+			isCommentSet = true;
+		}
 		this.comment = comment;
 	}
 
@@ -47,7 +49,9 @@ public class StatusChangesSendto {
 	}
 
 	public void setCreatedDate(Date createdDate) {
-		isCreatedDateSet = true;
+		if (createdDate != null) {
+			isCreatedDateSet = true;
+		}
 		this.createdDate = createdDate;
 	}
 
@@ -56,14 +60,20 @@ public class StatusChangesSendto {
 	}
 
 	public void setUser(User user) {
+		if (user != null) {
+			this.isUserSet = true;
+		}
 		this.user = user;
 	}
 
-	public StatusEnum getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(StatusEnum value) {
+	public void setValue(String value) {
+		if (!Strings.isNullOrEmpty(value)) {
+			this.isValueSet = true;
+		}
 		this.value = value;
 	}
 
@@ -72,6 +82,9 @@ public class StatusChangesSendto {
 	}
 
 	public void setReport(Report report) {
+		if (report != null) {
+			this.isReportSet = true;
+		}
 		this.report = report;
 	}
 
@@ -139,7 +152,10 @@ public class StatusChangesSendto {
 		}
 
 		public void setRevisor_id(Long revisor_id) {
-			setIdSet(true);
+
+			if (revisor_id != null) {
+				isIdSet = true;
+			}
 			this.revisor_id = revisor_id;
 		}
 

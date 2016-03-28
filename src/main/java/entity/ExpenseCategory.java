@@ -23,13 +23,13 @@ public class ExpenseCategory extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name_key", nullable = false)
+	@Column(name = "name_key")
 	private String name_key;
 
-	@Column(name = "code", nullable = false)
+	@Column(name = "code")
 	private String code;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
 	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	public ExpenseCategory() {

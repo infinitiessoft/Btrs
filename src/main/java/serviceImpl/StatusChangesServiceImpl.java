@@ -13,7 +13,6 @@ import dao.StatusChangesDao;
 import dao.UserDao;
 import entity.StatusChanges;
 import enumpackage.StatusEnum;
-import exceptions.InvalidValueException;
 import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
 import exceptions.UserNotFoundException;
@@ -125,11 +124,6 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 			}
 		}
 		if (sendto.isValueSet()) {
-			try {
-				StatusEnum.valueOf(sendto.getValue());
-			} catch (Exception e) {
-				throw new InvalidValueException(sendto.getValue());
-			}
 			newEntry.setValue(sendto.getValue());
 		}
 	}

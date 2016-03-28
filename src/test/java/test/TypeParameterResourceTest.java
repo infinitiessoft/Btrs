@@ -10,10 +10,10 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
+import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.TypeParameterResource;
-import sendto.PhotoSendto;
 import sendto.TypeParameterSendto;
 
 public class TypeParameterResourceTest extends ResourceTest {
@@ -29,9 +29,9 @@ public class TypeParameterResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetTypeParameterWithNotFoundException() {
-		Response response = target("typeParameter").path("4").register(JacksonFeature.class).request()
+		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
@@ -45,47 +45,31 @@ public class TypeParameterResourceTest extends ResourceTest {
 	public void testDeleteTypeParameterWithNotFoundException() {
 		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testUpdateTypeParameter() {
 		TypeParameterSendto admin = new TypeParameterSendto();
-		admin.setId(2l);
+		admin.setValue("PERSONS");
 		Response response = target("typeParameter").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		PhotoSendto sendto = response.readEntity(PhotoSendto.class);
+		TypeParameterSendto sendto = response.readEntity(TypeParameterSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-	}
+		assertEquals(admin.getValue(), sendto.getValue());
 
-	@Test
-	public void testUpdateTypeParameterWithNotFoundException() {
-		TypeParameterSendto admin = new TypeParameterSendto();
-		admin.setId(2l);
-		Response response = target("typeParameter").path("4").register(JacksonFeature.class).request()
-				.header("user", "demo").put(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testSaveTypeParameter() {
 		TypeParameterSendto admin = new TypeParameterSendto();
-		admin.setId(2l);
+		admin.setValue("demo");
 		Response response = target("typeParameter").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		TypeParameterSendto sendto = response.readEntity(TypeParameterSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
-	}
-
-	@Test
-	public void testSaveTypeParameterWithDuplicateName() {
-		TypeParameterSendto admin = new TypeParameterSendto();
-		admin.setId(2l);
-		Response response = target("typeParameter").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		assertEquals(3l, sendto.getId().longValue());
 	}
 
 	@Test

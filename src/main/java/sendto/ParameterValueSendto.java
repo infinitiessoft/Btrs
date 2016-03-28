@@ -124,7 +124,9 @@ public class ParameterValueSendto implements Serializable {
 	}
 
 	public void setExpense(Expense expense) {
-		isExpenseSet = true;
+		if (expense != null) {
+			this.isExpenseSet = true;
+		}
 		this.expense = expense;
 	}
 

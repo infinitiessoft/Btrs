@@ -22,6 +22,8 @@ import sendto.UserSendto;
 import service.UserService;
 
 @Path(value = "/user")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class UserResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public UserSendto getUser(@PathParam("id") long id) {
 		return userService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(@PathParam("id") long id) {
 		userService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -44,19 +44,16 @@ public class UserResource {
 
 	@PUT
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
 		return userService.update(id, user);
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSendto saveUser(UserSendto user) {
 		return userService.save(user);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<UserSendto> findallUser(@BeanParam SimplePageRequest pageRequest, @BeanParam UserSpecification spec) {
 		return userService.findAll(spec, pageRequest);
 	}

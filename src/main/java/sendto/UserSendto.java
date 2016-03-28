@@ -24,7 +24,9 @@ public class UserSendto implements Serializable {
 		}
 
 		public void setId(Long id) {
-			isIdSet = true;
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
@@ -65,7 +67,9 @@ public class UserSendto implements Serializable {
 		}
 
 		public void setId(Long id) {
-			isIdSet = true;
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
@@ -90,6 +94,7 @@ public class UserSendto implements Serializable {
 	private boolean isLastLoginSet;
 	private boolean isUserSharedSet;
 	private boolean isDepartmentSet;
+	private boolean isUserRoleSet;
 
 	public UserSendto() {
 		super();
@@ -108,7 +113,9 @@ public class UserSendto implements Serializable {
 	}
 
 	public void setLastLogin(Date lastLogin) {
-		isLastLoginSet = true;
+		if (lastLogin != null) {
+			this.isLastLoginSet = true;
+		}
 		this.lastLogin = lastLogin;
 	}
 
@@ -117,6 +124,9 @@ public class UserSendto implements Serializable {
 	}
 
 	public void setUserShared(UserShared userShared) {
+		if (userShared != null) {
+			this.isUserSharedSet = true;
+		}
 		this.userShared = userShared;
 	}
 
@@ -125,6 +135,9 @@ public class UserSendto implements Serializable {
 	}
 
 	public void setDepartment(Department department) {
+		if (department != null) {
+			this.isDepartmentSet = true;
+		}
 		this.department = department;
 	}
 
@@ -134,7 +147,20 @@ public class UserSendto implements Serializable {
 	}
 
 	public void setUserRole(List<UserRole> userRole) {
+		if (userRole != null) {
+			this.isUserRoleSet = true;
+		}
 		this.userRole = userRole;
+	}
+
+	@XmlTransient
+	public boolean isUserRoleSet() {
+		return isUserRoleSet;
+	}
+
+	@XmlTransient
+	public void setUserRoleSet(boolean isUserRoleSet) {
+		this.isUserRoleSet = isUserRoleSet;
 	}
 
 	@XmlTransient

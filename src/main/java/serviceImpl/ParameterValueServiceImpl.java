@@ -73,12 +73,16 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 	@Transactional
 	@Override
 	public void delete(long id) {
+
 		try {
-			parameterValueDao.delete(id);
+			ParameterValue parameterValue = parameterValueDao.findOne(id);
+			if (parameterValue == null) {
+				throw new ParameterNotFoundException(id);
+			}
+			parameterValueDao.delete(parameterValue);
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			throw new ParameterNotFoundException(id);
 		}
-
 	}
 
 	@Transactional
@@ -86,9 +90,6 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 	public ParameterValueSendto save(ParameterValueSendto parameterValue) {
 		parameterValue.setId(null);
 		ParameterValue newEntry = new ParameterValue();
-		if (parameterValue.getValue() == null) {
-			parameterValue.setValue("value");
-		}
 		setUpParameterValue(parameterValue, newEntry);
 		return toParameterValueSendto(parameterValueDao.save(newEntry));
 	}
@@ -113,9 +114,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		if (parameterValue == null) {
 			throw new ParameterNotFoundException(id);
 		}
-		if (updated.isValueSet()) {
-			parameterValue.setValue(updated.getValue());
-		}
+		setUpParameterValue(updated, parameterValue);
 		return toParameterValueSendto(parameterValueDao.save(parameterValue));
 
 	}

@@ -29,14 +29,14 @@ public class User extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id", nullable = false)
+	@JoinColumn(name = "department_id", nullable = true)
 	private Department department;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_Login", nullable = false)
 	private Date lastLogin;
 
-	@Column(name = "user_shared_id", nullable = false)
+	@Column(name = "user_shared_id", nullable = true)
 	private UserShared userShared;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)

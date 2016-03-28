@@ -15,7 +15,9 @@ public class ExpenseTypeSendto {
 	}
 
 	public void setValue(String value) {
-		setValueSet(true);
+		if (value != null) {
+			setValueSet(true);
+		}
 		Value = value;
 	}
 
@@ -36,7 +38,9 @@ public class ExpenseTypeSendto {
 	}
 
 	public void setTaxPercent(Double taxPercent) {
-		setTaxPercentSet(true);
+		if (taxPercent != null) {
+			this.isTaxPercentSet = true;
+		}
 		this.taxPercent = taxPercent;
 	}
 

@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,8 +30,8 @@ public class StatusChanges extends AbstractEntity {
 	@JoinColumn(name = "revisor_id", nullable = false)
 	private User user;
 
-	@Enumerated(EnumType.STRING)
-	private StatusEnum value;
+	@Column(name = "value", nullable = true)
+	private String value;
 
 	@Column(length = 4000, name = "comment", nullable = true)
 	private String comment;
@@ -51,7 +49,7 @@ public class StatusChanges extends AbstractEntity {
 
 	}
 
-	public StatusChanges(Long id, User user, StatusEnum value, String comment, Report report, Date createdDate) {
+	public StatusChanges(Long id, User user, String value, String comment, Report report, Date createdDate) {
 		this.id = id;
 		this.user = user;
 		this.value = value;
@@ -76,11 +74,11 @@ public class StatusChanges extends AbstractEntity {
 		this.user = user;
 	}
 
-	public StatusEnum getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(StatusEnum value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

@@ -28,19 +28,18 @@ public class StatusChangesResourceTest extends ResourceTest {
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals("no", sendto.getComment());
-		assertEquals("approved", sendto.getValue());
 	}
 
 	@Test
 	public void testGetStatusChangesWithNotFoundException() {
-		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
+		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testDeleteStatusChanges() {
-		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
+		Response response = target("statusChanges").path("2").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
@@ -49,21 +48,20 @@ public class StatusChangesResourceTest extends ResourceTest {
 	public void testDeleteStatusChangesWithNotFoundException() {
 		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testUpdateStatusChanges() {
 		StatusChangesSendto admin = new StatusChangesSendto();
-		admin.setCreatedDate(new Date());
 		admin.setComment("Good");
 
 		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
-		report.setId(2L);
+		report.setId(1L);
 		admin.setReport(report);
 
 		StatusChangesSendto.User user = new StatusChangesSendto.User();
-		user.setRevisor_id(2L);
+		user.setRevisor_id(1L);
 		admin.setUser(user);
 
 		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
@@ -72,9 +70,8 @@ public class StatusChangesResourceTest extends ResourceTest {
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
-		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
-		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
-		assertEquals(admin.getUser().getRevisor_id(), sendto.getUser().getRevisor_id());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
+		assertEquals(admin.getUser().getRevisor_id().longValue(), sendto.getUser().getRevisor_id().longValue());
 	}
 
 	@Test
@@ -84,15 +81,15 @@ public class StatusChangesResourceTest extends ResourceTest {
 		admin.setComment("Good");
 
 		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
-		report.setId(2L);
+		report.setId(1L);
 		admin.setReport(report);
 
 		StatusChangesSendto.User user = new StatusChangesSendto.User();
-		user.setRevisor_id(2L);
+		user.setRevisor_id(1L);
 		admin.setUser(user);
 		Response response = target("statusChanges").path("4").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
@@ -100,41 +97,23 @@ public class StatusChangesResourceTest extends ResourceTest {
 		StatusChangesSendto admin = new StatusChangesSendto();
 		admin.setCreatedDate(new Date());
 		admin.setComment("no");
-
+		admin.setValue("value");
 		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
-		report.setId(2L);
+		report.setId(1L);
 		admin.setReport(report);
 
 		StatusChangesSendto.User user = new StatusChangesSendto.User();
-		user.setRevisor_id(2L);
+		user.setRevisor_id(1L);
 		admin.setUser(user);
 		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
 		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
-		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
-		assertEquals(admin.getUser().getRevisor_id(), sendto.getUser().getRevisor_id());
-	}
-
-	@Test
-	public void testSaveStatusChangesWithDuplicateName() {
-		StatusChangesSendto admin = new StatusChangesSendto();
-		admin.setCreatedDate(new Date());
-		admin.setComment("no");
-
-		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
-		report.setId(2L);
-		admin.setReport(report);
-
-		StatusChangesSendto.User user = new StatusChangesSendto.User();
-		user.setRevisor_id(2L);
-		admin.setUser(user);
-		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
+		assertEquals(admin.getUser().getRevisor_id().longValue(), sendto.getUser().getRevisor_id().longValue());
 	}
 
 	@Test

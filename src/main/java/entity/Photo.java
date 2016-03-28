@@ -24,7 +24,7 @@ public class Photo extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "file_name", nullable = false)
+	@Column(name = "file_name")
 	private String fileName;
 
 	@Column(name = "content_type", nullable = true)
@@ -38,14 +38,14 @@ public class Photo extends AbstractEntity {
 	private String title;
 
 	@Lob
-	@Column(name = "data", nullable = false)
+	@Column(name = "data")
 	private byte[] data;
 
 	@Column(name = "size", nullable = false)
 	private Integer size;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_id", nullable = false)
+	@JoinColumn(name = "report_id")
 	private Report report;
 
 	public Long getId() {

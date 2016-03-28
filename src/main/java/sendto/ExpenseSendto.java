@@ -125,7 +125,9 @@ public class ExpenseSendto {
 		}
 
 		public void setId(Long id) {
-			setIdSet(true);
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
@@ -155,7 +157,9 @@ public class ExpenseSendto {
 		}
 
 		public void setId(Long id) {
-			setIdSet(true);
+			if (id != null) {
+				setIdSet(true);
+			}
 			this.id = id;
 		}
 

@@ -77,8 +77,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		expense.setId(null);
 		Expense newEntry = new Expense();
 		setUpExpense(expense, newEntry);
-		newEntry = expenseDao.save(newEntry);
-		return toExpenseSendto(newEntry);
+		return toExpenseSendto(expenseDao.save(newEntry));
 	}
 
 	private void setUpExpense(ExpenseSendto sendto, Expense newEntry) {

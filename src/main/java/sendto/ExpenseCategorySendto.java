@@ -2,6 +2,8 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class ExpenseCategorySendto {
 
 	private Long id;
@@ -12,7 +14,7 @@ public class ExpenseCategorySendto {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -25,7 +27,9 @@ public class ExpenseCategorySendto {
 	}
 
 	public void setName_key(String name_key) {
-		setName_keySet(true);
+		if (!Strings.isNullOrEmpty(name_key)) {
+			isName_keySet = true;
+		}
 		this.name_key = name_key;
 	}
 
@@ -34,10 +38,14 @@ public class ExpenseCategorySendto {
 	}
 
 	public void setCode(String code) {
+		if (!Strings.isNullOrEmpty(code)) {
+			isCodeSet = true;
+		}
 		this.code = code;
 	}
 
-	public boolean isName_keySet;
+	private boolean isName_keySet;
+	private boolean isCodeSet;
 
 	@XmlTransient
 	public boolean isName_keySet() {
@@ -47,6 +55,16 @@ public class ExpenseCategorySendto {
 	@XmlTransient
 	public void setName_keySet(boolean isName_keySet) {
 		this.isName_keySet = isName_keySet;
+	}
+
+	@XmlTransient
+	public boolean isCodeSet() {
+		return isCodeSet;
+	}
+
+	@XmlTransient
+	public void setCodeSet(boolean isCodeSet) {
+		this.isCodeSet = isCodeSet;
 	}
 
 }

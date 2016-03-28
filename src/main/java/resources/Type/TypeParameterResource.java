@@ -22,6 +22,8 @@ import sendto.TypeParameterSendto;
 import service.TypeParameterService;
 
 @Path(value = "/typeParameter")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class TypeParameterResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class TypeParameterResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public TypeParameterSendto getTypeParameter(@PathParam("id") long id) {
 		return typeParameterService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteTypeParameter(@PathParam("id") long id) {
 		typeParameterService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -49,13 +49,11 @@ public class TypeParameterResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public TypeParameterSendto saveTypeParameter(TypeParameterSendto type) {
 		return typeParameterService.save(type);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<TypeParameterSendto> findallTypeParameter(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam TypeParameterSpecification spec) {
 		return typeParameterService.findAll(spec, pageRequest);

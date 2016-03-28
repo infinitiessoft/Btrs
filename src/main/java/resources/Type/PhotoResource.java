@@ -22,6 +22,8 @@ import sendto.PhotoSendto;
 import service.PhotoService;
 
 @Path(value = "/photo")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class PhotoResource {
 
 	@Autowired
@@ -29,14 +31,11 @@ public class PhotoResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public PhotoSendto getPhoto(@PathParam("id") long id) {
 		return photoService.retrieve(id);
 	}
 
 	@DELETE
-	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deletePhoto(@PathParam("id") long id) {
 		photoService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -49,13 +48,11 @@ public class PhotoResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public PhotoSendto savePhoto(PhotoSendto photo) {
 		return photoService.save(photo);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<PhotoSendto> findallPhoto(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam PhotoSpecification spec) {
 		return photoService.findAll(spec, pageRequest);

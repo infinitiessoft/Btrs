@@ -14,6 +14,9 @@ public class ExpenseTypeParaSendto {
 		}
 
 		public void setId(Long id) {
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
@@ -39,6 +42,9 @@ public class ExpenseTypeParaSendto {
 		}
 
 		public void setId(Long id) {
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
@@ -55,6 +61,7 @@ public class ExpenseTypeParaSendto {
 	}
 
 	private Long id;
+	private boolean isIdSet;
 	private ExpenseType expenseType = new ExpenseType();
 	private TypeParameter typeParameter = new TypeParameter();
 
@@ -79,7 +86,20 @@ public class ExpenseTypeParaSendto {
 	}
 
 	public void setId(Long id) {
+		if (id != null) {
+			isIdSet = true;
+		}
 		this.id = id;
+	}
+
+	@XmlTransient
+	public boolean isIdSet() {
+		return isIdSet;
+	}
+
+	@XmlTransient
+	public void setIdSet(boolean isIdSet) {
+		this.isIdSet = isIdSet;
 	}
 
 }

@@ -2,11 +2,14 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class DepartmentSendto {
 
 	private Long id;
 	private String name;
 	private String comment;
+	private boolean isIdSet;
 
 	public DepartmentSendto() {
 
@@ -23,6 +26,9 @@ public class DepartmentSendto {
 	}
 
 	public void setId(Long id) {
+		if (id != null) {
+			this.isIdSet = true;
+		}
 		this.id = id;
 	}
 
@@ -31,7 +37,9 @@ public class DepartmentSendto {
 	}
 
 	public void setName(String name) {
-		setNameSet(true);
+		if (!Strings.isNullOrEmpty(name)) {
+			isNameSet = true;
+		}
 		this.name = name;
 	}
 
@@ -40,10 +48,14 @@ public class DepartmentSendto {
 	}
 
 	public void setComment(String comment) {
+		if (!Strings.isNullOrEmpty(comment)) {
+			isCommentSet = true;
+		}
 		this.comment = comment;
 	}
 
-	public boolean isNameSet;
+	private boolean isNameSet;
+	private boolean isCommentSet;
 
 	@XmlTransient
 	public boolean isNameSet() {
@@ -53,6 +65,26 @@ public class DepartmentSendto {
 	@XmlTransient
 	public void setNameSet(boolean isNameSet) {
 		this.isNameSet = isNameSet;
+	}
+
+	@XmlTransient
+	public boolean isCommentSet() {
+		return isCommentSet;
+	}
+
+	@XmlTransient
+	public void setCommentSet(boolean isCommentSet) {
+		this.isCommentSet = isCommentSet;
+	}
+
+	@XmlTransient
+	public boolean isIdSet() {
+		return isIdSet;
+	}
+
+	@XmlTransient
+	public void setIdSet(boolean isIdSet) {
+		this.isIdSet = isIdSet;
 	}
 
 }

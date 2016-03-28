@@ -52,7 +52,7 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.retrieve(1);
-		assertEquals(1l, ret.getId());
+		assertEquals(1l, ret.getId().longValue());
 		assertEquals("demo", ret.getName_key());
 		assertEquals("demo", ret.getCode());
 	}
@@ -89,7 +89,7 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.save(newEntry);
-		assertEquals(2l, ret.getId());
+		assertEquals(2l, ret.getId().longValue());
 		assertEquals(newEntry.getName_key(), ret.getName_key());
 		assertEquals(newEntry.getCode(), ret.getCode());
 	}
@@ -110,7 +110,7 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.update(1l, newEntry);
-		assertEquals(1l, ret.getId());
+		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getName_key(), ret.getName_key());
 		assertEquals(newEntry.getCode(), ret.getCode());
 	}
@@ -132,7 +132,7 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		Page<ExpenseCategorySendto> rets = expenseCategoryService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
 		ExpenseCategorySendto ret = rets.iterator().next();
-		assertEquals(1l, ret.getId());
+		assertEquals(1l, ret.getId().longValue());
 		assertEquals(expenseCategory.getName_key(), ret.getName_key());
 		assertEquals(expenseCategory.getCode(), ret.getCode());
 	}

@@ -22,6 +22,8 @@ import sendto.ExpenseCategorySendto;
 import service.ExpenseCategoryService;
 
 @Path(value = "/expenseCategory")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ExpenseCategoryResource {
 
 	@Autowired
@@ -29,18 +31,15 @@ public class ExpenseCategoryResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public ExpenseCategorySendto getExpenseCategory(@PathParam("id") long id) {
 		return expenseCategoryService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteExpenseCategory(@PathParam("id") long id) {
 		expenseCategoryService.delete(id);
-		return Response.status(Status.OK).entity("expenseCategory has been successfully deleted")
-				.type(MediaType.APPLICATION_JSON).build();
+		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
@@ -51,13 +50,11 @@ public class ExpenseCategoryResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public ExpenseCategorySendto saveExpenseCategory(ExpenseCategorySendto expenseCategory) {
 		return expenseCategoryService.save(expenseCategory);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<ExpenseCategorySendto> findallExpenseCategory(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ExpenseCategorySpecification spec) {
 		return expenseCategoryService.findAll(spec, pageRequest);

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jmock.Expectations;
-import org.jmock.api.Invocation;
-import org.jmock.lib.action.CustomAction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +71,7 @@ public class ExpenseServiceImplTest extends ServiceTest {
 		assertEquals(0, ret.getTaxAmount().intValue());
 		assertEquals(1234, ret.getTotalAmount().intValue());
 		assertEquals(report.getId(), ret.getReport().getId());
-		// assertEquals(expenseType.getId(), ret.getExpenseType().getId());
+		assertEquals(expenseType.getId().longValue(), ret.getExpenseType().getId().longValue());
 	}
 
 	@Test
@@ -92,39 +90,34 @@ public class ExpenseServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testSave() {
+
 		final ExpenseSendto newEntry = new ExpenseSendto();
-		newEntry.setTaxAmount(12);
 		ExpenseSendto.Report rpt = new ExpenseSendto.Report();
-		rpt.setId(1L);
+		rpt.setId(report.getId());
+		ExpenseSendto.ExpenseType expenseTypeSendto = new ExpenseSendto.ExpenseType();
+		expenseTypeSendto.setId(expenseType.getId());
+		newEntry.setExpenseType(expenseTypeSendto);
 		newEntry.setReport(rpt);
-		ExpenseSendto.ExpenseType expType = new ExpenseSendto.ExpenseType();
-		expenseType.setId(1L);
-		newEntry.setExpenseType(expType);
+
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(reportDao).findOne(1L);
+				exactly(1).of(reportDao).findOne(newEntry.getReport().getId());
 				will(returnValue(report));
 
-				exactly(1).of(expenseTypeDao).findOne(1L);
+				exactly(1).of(expenseTypeDao).findOne(newEntry.getExpenseType().getId());
 				will(returnValue(expenseType));
 
 				exactly(1).of(expenseDao).save(with(any(Expense.class)));
-				will(new CustomAction("save Expense") {
+				will(returnValue(expense));
 
-					@Override
-					public Object invoke(Invocation invocation) throws Throwable {
-						Expense e = (Expense) invocation.getParameter(0);
-						e.setId(2L);
-						return e;
-					}
-				});
 			}
 		});
+
 		ExpenseSendto ret = expenseService.save(newEntry);
-		assertEquals(2l, ret.getId().longValue());
-		assertEquals(newEntry.getTaxAmount(), ret.getTaxAmount());
-		assertEquals(newEntry.getTotalAmount(), ret.getTotalAmount());
+		assertEquals(expense.getId(), ret.getId());
+		assertEquals(expenseType.getId(), ret.getExpenseType().getId());
+		assertEquals(report.getId(), ret.getReport().getId());
 	}
 
 	@Test

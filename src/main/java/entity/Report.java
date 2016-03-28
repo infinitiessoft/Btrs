@@ -27,18 +27,18 @@ public class Report extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "max_id_last_month", nullable = false)
+	@Column(name = "max_id_last_month")
 	private Long maxIdLastMonth;
 
-	@Column(name = "attendance_record_id", nullable = false)
+	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
+	@JoinColumn(name = "owner_id")
 	private User owner;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reviewer_id", nullable = false)
+	@JoinColumn(name = "reviewer_id")
 	private User reviewer;
 
 	@Column(name = "reason", nullable = true)
@@ -48,22 +48,22 @@ public class Report extends AbstractEntity {
 	private String route;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "start_date", nullable = false)
+	@Column(name = "start_date")
 	private Date startDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end_date", nullable = false)
+	@Column(name = "end_date")
 	private Date endDate;
 
-	@Column(name = "comment", nullable = true)
+	@Column(name = "comment")
 	private String comment;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_date", nullable = false)
+	@Column(name = "created_date")
 	private Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_updated_date", nullable = false)
+	@Column(name = "last_updated_date")
 	private Date lastUpdatedDate;
 
 	@Column(name = "current_status")

@@ -2,8 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -31,9 +29,8 @@ public class UserResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetUserWithNotFoundException() {
-		Response response = target("user").path("3").register(JacksonFeature.class).request().header("user", "demo")
-				.get();
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		Response response = target("user").path("3").register(JacksonFeature.class).request().get();
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
@@ -45,7 +42,7 @@ public class UserResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeleteUserWithNotFoundException() {
-		Response response = target("user").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("user").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
 	}
@@ -53,14 +50,12 @@ public class UserResourceTest extends ResourceTest {
 	@Test
 	public void testUpdateUser() {
 		UserSendto admin = new UserSendto();
-		admin.setLastLogin(new Date());
-
 		UserSendto.Department dpt = new UserSendto.Department();
-		dpt.setId(2L);
+		dpt.setId(1L);
 		admin.setDepartment(dpt);
 
 		UserSendto.UserShared usr = new UserSendto.UserShared();
-		usr.setId(2L);
+		usr.setId(1L);
 		admin.setUserShared(usr);
 
 		Response response = target("user").path("1").register(JacksonFeature.class).request().header("user", "demo")
@@ -68,65 +63,29 @@ public class UserResourceTest extends ResourceTest {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSendto sendto = response.readEntity(UserSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-		assertEquals(admin.getLastLogin(), sendto.getLastLogin());
 		assertEquals(admin.getUserShared().getId(), sendto.getUserShared().getId());
 		assertEquals(admin.getDepartment().getId(), sendto.getDepartment().getId());
-	}
-
-	@Test
-	public void testUpdateUserWithNotFoundException() {
-		UserSendto admin = new UserSendto();
-		admin.setLastLogin(new Date());
-
-		UserSendto.Department dpt = new UserSendto.Department();
-		dpt.setId(2L);
-		admin.setDepartment(dpt);
-
-		UserSendto.UserShared usr = new UserSendto.UserShared();
-		usr.setId(2L);
-		admin.setUserShared(usr);
-		Response response = target("user").path("2").register(JacksonFeature.class).request().header("user", "demo")
-				.put(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testSaveUser() {
 		UserSendto admin = new UserSendto();
-		admin.setLastLogin(new Date());
 
 		UserSendto.Department dpt = new UserSendto.Department();
-		dpt.setId(2L);
+		dpt.setId(1L);
 		admin.setDepartment(dpt);
 
 		UserSendto.UserShared usr = new UserSendto.UserShared();
-		usr.setId(3L);
+		usr.setId(1L);
 		admin.setUserShared(usr);
 		Response response = target("user").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSendto sendto = response.readEntity(UserSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getLastLogin(), sendto.getLastLogin());
 		assertEquals(admin.getUserShared().getId(), sendto.getUserShared().getId());
 		assertEquals(admin.getDepartment().getId(), sendto.getDepartment().getId());
-	}
-
-	@Test
-	public void testSaveUserWithDuplicateName() {
-		UserSendto admin = new UserSendto();
-		admin.setLastLogin(new Date());
-
-		UserSendto.Department dpt = new UserSendto.Department();
-		dpt.setId(2L);
-		admin.setDepartment(dpt);
-
-		UserSendto.UserShared usr = new UserSendto.UserShared();
-		usr.setId(3L);
-		admin.setUserShared(usr);
-		Response response = target("user").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test

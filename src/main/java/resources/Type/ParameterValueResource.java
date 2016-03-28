@@ -22,6 +22,8 @@ import sendto.ParameterValueSendto;
 import service.ParameterValueService;
 
 @Path(value = "/parameterValue")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ParameterValueResource {
 
 	@Autowired
@@ -29,21 +31,18 @@ public class ParameterValueResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public ParameterValueSendto getParameterValue(@PathParam("id") long id) {
 		return parameterValueService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteParameterValue(@PathParam("id") long id) {
 		parameterValueService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
-	@Path(value = "{id}")
 	public ParameterValueSendto updateParameterValue(@PathParam("id") long id, ParameterValueSendto parameterValue) {
 		return parameterValueService.update(id, parameterValue);
 	}

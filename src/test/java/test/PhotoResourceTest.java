@@ -29,13 +29,13 @@ public class PhotoResourceTest extends ResourceTest {
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals("DSC_0130.jpg", sendto.getFileName());
 		assertEquals("image/jpeg", sendto.getContentType());
-		assertEquals(617386, sendto.getSize());
+		assertEquals(617386, sendto.getSize().intValue());
 		assertEquals("DSC_0130.jpg", sendto.getTitle());
 	}
 
 	@Test
 	public void testGetPhotoWithNotFoundException() {
-		Response response = target("photo").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("photo").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		AssertUtils.assertNotFound(response);
 	}
@@ -49,9 +49,9 @@ public class PhotoResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeletePhotoWithNotFoundException() {
-		Response response = target("photo").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("photo").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
@@ -67,43 +67,25 @@ public class PhotoResourceTest extends ResourceTest {
 		rpt.setId(2L);
 		admin.setReport(rpt);
 
-		Response response = target("photo").path("2").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("photo").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		PhotoSendto sendto = response.readEntity(PhotoSendto.class);
-		assertEquals(2l, sendto.getId().longValue());
+		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getFileName(), sendto.getFileName());
 		assertEquals(admin.getContentType(), sendto.getContentType());
 		assertEquals(admin.getSize(), sendto.getSize());
 		assertEquals(admin.getTitle(), sendto.getTitle());
 		assertEquals(admin.getUploadDate(), sendto.getUploadDate());
 		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
-	}
-
-	@Test
-	public void testUpdatePhotoWithNotFoundException() {
-		PhotoSendto admin = new PhotoSendto();
-		admin.setFileName("Expense");
-		admin.setContentType("image/jpeg");
-		admin.setSize(617386);
-		admin.setUploadDate(new Date());
-		admin.setTitle("DSC_0130.jpg");
-
-		PhotoSendto.Report rpt = new PhotoSendto.Report();
-		rpt.setId(2L);
-		admin.setReport(rpt);
-
-		Response response = target("photo").path("2").register(JacksonFeature.class).request().header("user", "demo")
-				.put(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testSavePhoto() {
 		PhotoSendto admin = new PhotoSendto();
-		admin.setFileName("DSC_0130.jpg");
+		admin.setFileName("DSC_0131.jpg");
 		admin.setContentType("image/jpeg");
-		admin.setSize(617386);
+		admin.setSize(617336);
 		admin.setUploadDate(new Date());
 		admin.setTitle("DSC_0130.jpg");
 
@@ -115,33 +97,13 @@ public class PhotoResourceTest extends ResourceTest {
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		PhotoSendto sendto = response.readEntity(PhotoSendto.class);
-		assertEquals(2l, sendto.getId().longValue());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getFileName(), sendto.getFileName());
 		assertEquals(admin.getContentType(), sendto.getContentType());
-		assertEquals(admin.getData(), sendto.getData());
-		assertEquals(admin.getReport(), sendto.getReport());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
 		assertEquals(admin.getSize(), sendto.getSize());
 		assertEquals(admin.getTitle(), sendto.getTitle());
 		assertEquals(admin.getUploadDate(), sendto.getUploadDate());
-		assertEquals(admin.getReport().getId(), sendto.getReport().getId());
-	}
-
-	@Test
-	public void testSavePhotoWithDuplicateName() {
-		PhotoSendto admin = new PhotoSendto();
-		admin.setFileName("demo");
-		admin.setContentType("image/jpeg");
-		admin.setSize(617386);
-		admin.setUploadDate(new Date());
-		admin.setTitle("DSC_0130.jpg");
-
-		PhotoSendto.Report rpt = new PhotoSendto.Report();
-		rpt.setId(1L);
-		admin.setReport(rpt);
-
-		Response response = target("photo").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test

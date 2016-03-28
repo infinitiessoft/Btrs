@@ -2,8 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
@@ -37,7 +35,7 @@ public class ReportResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetReportWithNotFoundException() {
-		Response response = target("report").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("report").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		AssertUtils.assertNotFound(response);
 	}
@@ -51,7 +49,7 @@ public class ReportResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeleteReportWithNotFoundException() {
-		Response response = target("report").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("report").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
 	}
@@ -59,12 +57,9 @@ public class ReportResourceTest extends ResourceTest {
 	@Test
 	public void testUpdateReport() {
 		ReportSendto admin = new ReportSendto();
-
+		admin.setReason("pic");
 		admin.setAttendanceRecordId(2L);
 		admin.setComment("Good");
-		admin.setCreatedDate(new Date());
-		admin.setEndDate(new Date());
-		admin.setLastUpdatedDate(new Date());
 		admin.setMaxIdLastMonth(3L);
 		admin.setCurrentStatus("approved");
 
@@ -75,13 +70,8 @@ public class ReportResourceTest extends ResourceTest {
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getAttendanceRecordId(), sendto.getAttendanceRecordId());
 		assertEquals(admin.getComment(), sendto.getComment());
-		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
-		assertEquals(admin.getEndDate(), sendto.getEndDate());
-		assertEquals(admin.getLastUpdatedDate(), sendto.getLastUpdatedDate());
 		assertEquals(admin.getMaxIdLastMonth(), sendto.getMaxIdLastMonth());
 		assertEquals(admin.getReason(), sendto.getReason());
-		assertEquals(admin.getRoute(), sendto.getRoute());
-		assertEquals(admin.getStartDate(), sendto.getStartDate());
 		assertEquals(admin.getCurrentStatus(), sendto.getCurrentStatus());
 	}
 
@@ -91,57 +81,30 @@ public class ReportResourceTest extends ResourceTest {
 
 		admin.setAttendanceRecordId(2L);
 		admin.setComment("Good");
-		admin.setCreatedDate(new Date());
-		admin.setEndDate(new Date());
-		admin.setLastUpdatedDate(new Date());
 		admin.setMaxIdLastMonth(2L);
-		Response response = target("report").path("4").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("report").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testSaveReport() {
 		ReportSendto admin = new ReportSendto();
-		admin.setStartDate(new Date());
 		admin.setAttendanceRecordId(2L);
 		admin.setComment("Good");
-		admin.setCreatedDate(new Date());
-		admin.setEndDate(new Date());
-		admin.setLastUpdatedDate(new Date());
 		admin.setMaxIdLastMonth(2L);
 		admin.setCurrentStatus("approved");
 		Response response = target("report").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ReportSendto sendto = response.readEntity(ReportSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getAttendanceRecordId(), sendto.getAttendanceRecordId());
 		assertEquals(admin.getComment(), sendto.getComment());
-		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
-		assertEquals(admin.getEndDate(), sendto.getEndDate());
-		assertEquals(admin.getLastUpdatedDate(), sendto.getLastUpdatedDate());
 		assertEquals(admin.getMaxIdLastMonth(), sendto.getMaxIdLastMonth());
 		assertEquals(admin.getReason(), sendto.getReason());
 		assertEquals(admin.getRoute(), sendto.getRoute());
-		assertEquals(admin.getStartDate(), sendto.getStartDate());
 		assertEquals(admin.getCurrentStatus(), sendto.getCurrentStatus());
-	}
-
-	@Test
-	public void testSaveReportWithDuplicateName() {
-		ReportSendto admin = new ReportSendto();
-		admin.setStartDate(new Date());
-		admin.setAttendanceRecordId(2L);
-		admin.setComment("Good");
-		admin.setCreatedDate(new Date());
-		admin.setEndDate(new Date());
-		admin.setLastUpdatedDate(new Date());
-		admin.setMaxIdLastMonth(2L);
-		admin.setCurrentStatus("approved");
-		Response response = target("report").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test

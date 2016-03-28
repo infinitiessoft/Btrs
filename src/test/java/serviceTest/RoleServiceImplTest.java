@@ -59,7 +59,10 @@ public class RoleServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(roleDao).delete(1L);
+				exactly(1).of(roleDao).delete(role);
+
+				exactly(1).of(roleDao).findOne(1L);
+				will(returnValue(role));
 			}
 		});
 		roleService.delete(1l);

@@ -73,11 +73,15 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
 		}
 		setUpExpenseCategory(updated, expCat);
 		return toExpenseCategorySendto(expenseCategoryDao.save(expCat));
+
 	}
 
-	private void setUpExpenseCategory(ExpenseCategorySendto sendto, ExpenseCategory expCat) {
+	private void setUpExpenseCategory(ExpenseCategorySendto sendto, ExpenseCategory newEntry) {
 		if (sendto.isName_keySet()) {
-			expCat.setName_key(sendto.getName_key());
+			newEntry.setName_key(sendto.getName_key());
+		}
+		if (sendto.isCodeSet()) {
+			newEntry.setCode(sendto.getCode());
 		}
 	}
 

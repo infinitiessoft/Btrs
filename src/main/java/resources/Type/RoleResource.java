@@ -22,6 +22,8 @@ import sendto.RoleSendto;
 import service.RoleService;
 
 @Path(value = "/role")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class RoleResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class RoleResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public RoleSendto getRole(@PathParam("id") long id) {
 		return roleService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteRole(@PathParam("id") long id) {
 		roleService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -49,13 +49,11 @@ public class RoleResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public RoleSendto saveRole(RoleSendto role) {
 		return roleService.save(role);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<RoleSendto> findallRole(@BeanParam SimplePageRequest pageRequest, @BeanParam RoleSpecification spec) {
 		return roleService.findAll(spec, pageRequest);
 	}

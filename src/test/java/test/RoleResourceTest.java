@@ -26,11 +26,12 @@ public class RoleResourceTest extends ResourceTest {
 		RoleSendto sendto = response.readEntity(RoleSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals("Employee", sendto.getValue());
+
 	}
 
 	@Test
 	public void testGetRoleWithNotFoundException() {
-		Response response = target("role").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
@@ -44,7 +45,7 @@ public class RoleResourceTest extends ResourceTest {
 
 	@Test
 	public void testDeleteReportWithNotFoundException() {
-		Response response = target("role").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
 	}
@@ -52,41 +53,24 @@ public class RoleResourceTest extends ResourceTest {
 	@Test
 	public void testUpdateRole() {
 		RoleSendto admin = new RoleSendto();
-		admin.setId(2l);
+		admin.setValue("value");
 		Response response = target("role").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		RoleSendto sendto = response.readEntity(RoleSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-	}
+		assertEquals(admin.getValue(), sendto.getValue());
 
-	@Test
-	public void testUpdateRoleWithNotFoundException() {
-		RoleSendto admin = new RoleSendto();
-		admin.setId(2l);
-		Response response = target("role").path("4").register(JacksonFeature.class).request().header("user", "demo")
-				.put(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testSaveRole() {
 		RoleSendto admin = new RoleSendto();
-		admin.setId(2l);
 		Response response = target("role").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		RoleSendto sendto = response.readEntity(RoleSendto.class);
-		assertEquals(2l, sendto.getId().longValue());
-	}
-
-	@Test
-	public void testSaveRoleWithDuplicateName() {
-		RoleSendto admin = new RoleSendto();
-		admin.setId(2l);
-		Response response = target("role").register(JacksonFeature.class).request().header("user", "demo")
-				.post(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		assertEquals(3l, sendto.getId().longValue());
 	}
 
 	@Test
