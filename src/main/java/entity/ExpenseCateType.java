@@ -23,11 +23,11 @@ public class ExpenseCateType extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "category_id", nullable = false)
+	@JoinColumn(name = "category_id")
 	private ExpenseCategory expenseCategory;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "type_id", nullable = false)
+	@JoinColumn(name = "type_id")
 	private ExpenseType expenseType;
 
 	public ExpenseCateType() {

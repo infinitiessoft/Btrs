@@ -34,6 +34,7 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 		typeParameterService = new TypeParameterServiceImpl(typeParameterDao);
 		typeParameter = new TypeParameter();
 		typeParameter.setId(1L);
+		typeParameter.setValue("demo");
 
 	}
 
@@ -52,6 +53,7 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 		});
 		TypeParameterSendto ret = typeParameterService.retrieve(1);
 		assertEquals(1l, ret.getId().longValue());
+		assertEquals("demo", ret.getValue());
 	}
 
 	@Test
@@ -68,7 +70,7 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 	@Test
 	public void testSave() {
 		final TypeParameterSendto newEntry = new TypeParameterSendto();
-		newEntry.setValue("");
+		newEntry.setValue("demo");
 
 		context.checking(new Expectations() {
 
@@ -87,6 +89,8 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 		});
 		TypeParameterSendto ret = typeParameterService.save(newEntry);
 		assertEquals(2l, ret.getId().longValue());
+		assertEquals(newEntry.getValue(), ret.getValue());
+
 	}
 
 	@Test
@@ -105,6 +109,7 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 		});
 		TypeParameterSendto ret = typeParameterService.update(1l, newEntry);
 		assertEquals(1l, ret.getId().longValue());
+		assertEquals(newEntry.getValue(), ret.getValue());
 	}
 
 	@Test
@@ -125,5 +130,6 @@ public class TypeParameterServiceImplTest extends ServiceTest {
 		assertEquals(1, rets.getTotalElements());
 		TypeParameterSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
+		assertEquals(typeParameter.getValue(), ret.getValue());
 	}
 }

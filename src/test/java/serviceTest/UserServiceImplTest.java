@@ -3,7 +3,6 @@ package serviceTest;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.jmock.Expectations;
@@ -43,7 +42,6 @@ public class UserServiceImplTest extends ServiceTest {
 		userService = new UserServiceImpl(userDao, departmentDao, userSharedDao);
 		user = new User();
 		user.setId(1L);
-		user.setLastLogin(new Date());
 		user.setDepartment(department);
 		user.setUserShared(userShared);
 
@@ -72,9 +70,9 @@ public class UserServiceImplTest extends ServiceTest {
 		});
 		UserSendto ret = userService.retrieve(1);
 		assertEquals(user.getId(), ret.getId());
-		// assertEquals(user.getLastLogin(), ret.getLastLogin());
-		assertEquals(department.getId(), ret.getDepartment().getId());
-		assertEquals(userShared.getId(), ret.getUserShared().getId());
+		assertEquals(user.getLastLogin(), ret.getLastLogin());
+		assertEquals(department.getId().longValue(), ret.getDepartment().getId().longValue());
+		assertEquals(userShared.getId().longValue(), ret.getUserShared().getId().longValue());
 	}
 
 	@Test
@@ -114,7 +112,7 @@ public class UserServiceImplTest extends ServiceTest {
 		});
 		UserSendto ret = userService.save(newEntry);
 		assertEquals(user.getId(), ret.getId());
-		// assertEquals(user.getLastLogin(), ret.getLastLogin());
+		assertEquals(user.getLastLogin(), ret.getLastLogin());
 		assertEquals(department.getId(), ret.getDepartment().getId());
 		assertEquals(userShared.getId(), ret.getUserShared().getId());
 	}
@@ -163,7 +161,7 @@ public class UserServiceImplTest extends ServiceTest {
 		assertEquals(1, rets.getTotalElements());
 		UserSendto ret = rets.iterator().next();
 		assertEquals(user.getId(), ret.getId());
-		// assertEquals(user.getLastLogin(), ret.getLastLogin());
+		assertEquals(user.getLastLogin(), ret.getLastLogin());
 		assertEquals(department.getId(), ret.getDepartment().getId());
 		assertEquals(userShared.getId(), ret.getUserShared().getId());
 	}

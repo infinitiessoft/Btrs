@@ -2,21 +2,22 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import enumpackage.ExpenseTypeEnum;
-
 public class ExpenseTypeSendto {
 	private Long id;
 	private Double taxPercent;
 
 	private boolean isTaxPercentSet;
 	private boolean isValueSet;
-	public ExpenseTypeEnum Value;
+	public String Value;
 
-	public ExpenseTypeEnum getValue() {
+	public String getValue() {
 		return Value;
 	}
 
-	public void setValue(ExpenseTypeEnum value) {
+	public void setValue(String value) {
+		if (value != null) {
+			setValueSet(true);
+		}
 		Value = value;
 	}
 
@@ -37,7 +38,9 @@ public class ExpenseTypeSendto {
 	}
 
 	public void setTaxPercent(Double taxPercent) {
-		setTaxPercentSet(true);
+		if (taxPercent != null) {
+			this.isTaxPercentSet = true;
+		}
 		this.taxPercent = taxPercent;
 	}
 
@@ -54,6 +57,11 @@ public class ExpenseTypeSendto {
 	@XmlTransient
 	public boolean isValueSet() {
 		return isValueSet;
+	}
+
+	@XmlTransient
+	public void setValueSet(boolean isValueSet) {
+		this.isValueSet = isValueSet;
 	}
 
 }

@@ -22,6 +22,8 @@ import sendto.StatusChangesSendto;
 import service.StatusChangesService;
 
 @Path(value = "/statusChanges")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class StatusChangesResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class StatusChangesResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public StatusChangesSendto getStatusChanges(@PathParam("id") long id) {
 		return statusChangesService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteStatusChanges(@PathParam("id") long id) {
 		statusChangesService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -49,13 +49,11 @@ public class StatusChangesResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public StatusChangesSendto saveStatusChanges(StatusChangesSendto status) {
-		return statusChangesService.save(status);
+	public StatusChangesSendto saveStatusChanges(StatusChangesSendto statusChanges) {
+		return statusChangesService.save(statusChanges);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<StatusChangesSendto> findallStatusChanges(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam StatusChangesSpecification spec) {
 		return statusChangesService.findAll(spec, pageRequest);

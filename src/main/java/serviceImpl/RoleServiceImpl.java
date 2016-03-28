@@ -39,17 +39,23 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public void delete(long id) {
-		roleDao.delete(id);
-
+		try {
+			Role role = roleDao.findOne(id);
+			if (role == null) {
+				throw new RoleNotFoundException(id);
+			}
+			roleDao.delete(role);
+		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
+			throw new RoleNotFoundException(id);
+		}
 	}
 
 	@Override
 	public RoleSendto save(RoleSendto role) {
 		role.setId(null);
-		Role roles = new Role();
-		setUpRole(role, roles);
-		roles = roleDao.save(roles);
-		return toRoleSendto(roles);
+		Role newEntry = new Role();
+		setUpRole(role, newEntry);
+		return toRoleSendto(roleDao.save(newEntry));
 	}
 
 	@Override
@@ -73,8 +79,9 @@ public class RoleServiceImpl implements RoleService {
 		return toRoleSendto(roleDao.save(roles));
 	}
 
-	private void setUpRole(RoleSendto updated, Role roles) {
-		// TODO Auto-generated method stub
-
+	private void setUpRole(RoleSendto sendto, Role newEntry) {
+		if (sendto.isValueSet()) {
+			newEntry.setValue(sendto.getValue());
+		}
 	}
 }

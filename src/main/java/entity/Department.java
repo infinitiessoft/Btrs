@@ -23,13 +23,13 @@ public class Department extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	private String name;
 
-	@Column(name = "comment", nullable = true)
+	@Column(name = "comment")
 	private String comment;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<User>(0);
 
 	public Long getId() {

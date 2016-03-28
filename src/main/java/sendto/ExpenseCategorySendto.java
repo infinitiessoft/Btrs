@@ -1,16 +1,20 @@
 package sendto;
 
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.google.common.base.Strings;
+
 public class ExpenseCategorySendto {
 
 	private Long id;
-	private String name;
+	private String name_key;
 	private String code;
 
 	public ExpenseCategorySendto() {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -18,12 +22,15 @@ public class ExpenseCategorySendto {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getName_key() {
+		return name_key;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName_key(String name_key) {
+		if (!Strings.isNullOrEmpty(name_key)) {
+			isName_keySet = true;
+		}
+		this.name_key = name_key;
 	}
 
 	public String getCode() {
@@ -31,12 +38,33 @@ public class ExpenseCategorySendto {
 	}
 
 	public void setCode(String code) {
+		if (!Strings.isNullOrEmpty(code)) {
+			isCodeSet = true;
+		}
 		this.code = code;
 	}
 
-	public boolean isNameSet() {
-		// TODO Auto-generated method stub
-		return true;
+	private boolean isName_keySet;
+	private boolean isCodeSet;
+
+	@XmlTransient
+	public boolean isName_keySet() {
+		return isName_keySet;
+	}
+
+	@XmlTransient
+	public void setName_keySet(boolean isName_keySet) {
+		this.isName_keySet = isName_keySet;
+	}
+
+	@XmlTransient
+	public boolean isCodeSet() {
+		return isCodeSet;
+	}
+
+	@XmlTransient
+	public void setCodeSet(boolean isCodeSet) {
+		this.isCodeSet = isCodeSet;
 	}
 
 }

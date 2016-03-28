@@ -27,10 +27,9 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.filter.RequestContextFilter;
 
-import resources.GenericExceptionMapper;
-
-@ContextConfiguration("file:src/test/resource/test_context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("file:src/test/resource/test_context.xml")
+// @ContextConfiguration("file:src/java/resource/applicationContext.xml")
 @TestExecutionListeners(listeners = { ServletTestExecutionListener.class,
 		DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class })

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class PhotoSendto {
 
 	private Long id;
@@ -12,7 +14,7 @@ public class PhotoSendto {
 	private Date uploadDate;
 	private String title;
 	private byte[] data;
-	private int size;
+	private Integer size;
 	private Report report;
 
 	private boolean isFileNameSet;
@@ -40,7 +42,9 @@ public class PhotoSendto {
 	}
 
 	public void setFileName(String fileName) {
-		isFileNameSet = true;
+		if (!Strings.isNullOrEmpty(fileName)) {
+			isFileNameSet = true;
+		}
 		this.fileName = fileName;
 	}
 
@@ -49,6 +53,9 @@ public class PhotoSendto {
 	}
 
 	public void setContentType(String contentType) {
+		if (!Strings.isNullOrEmpty(contentType)) {
+			isContentTypeSet = true;
+		}
 		this.contentType = contentType;
 	}
 
@@ -57,6 +64,9 @@ public class PhotoSendto {
 	}
 
 	public void setUploadDate(Date uploadDate) {
+		if (uploadDate != null) {
+			isUploadDateSet = true;
+		}
 		this.uploadDate = uploadDate;
 	}
 
@@ -65,6 +75,9 @@ public class PhotoSendto {
 	}
 
 	public void setTitle(String title) {
+		if (!Strings.isNullOrEmpty(title)) {
+			isTitleSet = true;
+		}
 		this.title = title;
 	}
 
@@ -73,14 +86,20 @@ public class PhotoSendto {
 	}
 
 	public void setData(byte[] data) {
+		if (data != null) {
+			isDataSet = true;
+		}
 		this.data = data;
 	}
 
-	public int getSize() {
+	public Integer getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(Integer size) {
+		if (size != null) {
+			isSizeSet = true;
+		}
 		this.size = size;
 	}
 

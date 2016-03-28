@@ -13,7 +13,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "exp_types_type_parameters", uniqueConstraints = @UniqueConstraint(columnNames = { "type_id",
-		"parameter_id" }) )
+		"type_parameter_id" }) )
 public class ExpenseTypePara extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -26,8 +26,8 @@ public class ExpenseTypePara extends AbstractEntity {
 	private ExpenseType expenseType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "parameter_id", nullable = false)
-	private ParameterValue parameterValue;
+	@JoinColumn(name = "type_parameter_id", nullable = false)
+	private TypeParameter typeParameter;
 
 	public ExpenseTypePara() {
 		super();
@@ -50,12 +50,12 @@ public class ExpenseTypePara extends AbstractEntity {
 		this.expenseType = expenseType;
 	}
 
-	public ParameterValue getParameterValue() {
-		return parameterValue;
+	public TypeParameter getTypeParameter() {
+		return typeParameter;
 	}
 
-	public void setParameterValue(ParameterValue parameterValue) {
-		this.parameterValue = parameterValue;
+	public void setTypeParameter(TypeParameter typeParameter) {
+		this.typeParameter = typeParameter;
 	}
 
 }

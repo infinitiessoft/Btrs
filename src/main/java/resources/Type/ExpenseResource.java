@@ -22,20 +22,21 @@ import sendto.ExpenseSendto;
 import service.ExpenseService;
 
 @Path(value = "/expense")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ExpenseResource {
 	@Autowired
 	private ExpenseService expenseService;
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+
 	public ExpenseSendto getExpense(@PathParam("id") long id) {
 		return expenseService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteExpense(@PathParam("id") long id) {
 		expenseService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -48,13 +49,11 @@ public class ExpenseResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public ExpenseSendto saveExpense(ExpenseSendto expense) {
 		return expenseService.save(expense);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<ExpenseSendto> findallExpense(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ExpenseSpecification spec) {
 		return expenseService.findAll(spec, pageRequest);

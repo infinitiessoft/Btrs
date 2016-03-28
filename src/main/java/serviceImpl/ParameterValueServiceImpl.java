@@ -57,26 +57,32 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		ret.setId(parameterValue.getId());
 		ret.setValue(parameterValue.getValue());
 
-		ParameterValueSendto.Expense exp = new ParameterValueSendto.Expense();
-		exp.setId(parameterValue.getExpense().getId());
-		ret.setExpense(exp);
+		entity.Expense exp = parameterValue.getExpense();
+		sendto.ParameterValueSendto.Expense expense = new ParameterValueSendto.Expense();
+		expense.setId(exp.getId());
+		ret.setExpense(expense);
 
 		entity.TypeParameter type = parameterValue.getTypeParameter();
 		TypeParameter typeParameter = new ParameterValueSendto.TypeParameter();
 		typeParameter.setId(type.getId());
 		ret.setTypeParameter(typeParameter);
 		return ret;
+
 	}
 
 	@Transactional
 	@Override
 	public void delete(long id) {
+
 		try {
-			parameterValueDao.delete(id);
+			ParameterValue parameterValue = parameterValueDao.findOne(id);
+			if (parameterValue == null) {
+				throw new ParameterNotFoundException(id);
+			}
+			parameterValueDao.delete(parameterValue);
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			throw new ParameterNotFoundException(id);
 		}
-
 	}
 
 	@Transactional
@@ -84,9 +90,6 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 	public ParameterValueSendto save(ParameterValueSendto parameterValue) {
 		parameterValue.setId(null);
 		ParameterValue newEntry = new ParameterValue();
-		if (parameterValue.getValue() == null) {
-			parameterValue.setValue("value");
-		}
 		setUpParameterValue(parameterValue, newEntry);
 		return toParameterValueSendto(parameterValueDao.save(newEntry));
 	}
@@ -111,9 +114,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		if (parameterValue == null) {
 			throw new ParameterNotFoundException(id);
 		}
-		if (updated.isValueSet()) {
-			parameterValue.setValue(updated.getValue());
-		}
+		setUpParameterValue(updated, parameterValue);
 		return toParameterValueSendto(parameterValueDao.save(parameterValue));
 
 	}

@@ -22,6 +22,8 @@ import sendto.DepartmentSendto;
 import service.DepartmentService;
 
 @Path(value = "/department")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class DepartmentResource {
 
 	@Autowired
@@ -29,14 +31,12 @@ public class DepartmentResource {
 
 	@GET
 	@Path(value = "{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public DepartmentSendto getDepartment(@PathParam("id") long id) {
 		return departmentService.retrieve(id);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteDepartment(@PathParam("id") long id) {
 		departmentService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -49,13 +49,11 @@ public class DepartmentResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public DepartmentSendto saveDepartment(DepartmentSendto department) {
 		return departmentService.save(department);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<DepartmentSendto> findallDepartment(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam DepartmentSpecification spec) {
 		return departmentService.findAll(spec, pageRequest);

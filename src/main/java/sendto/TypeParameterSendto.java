@@ -2,6 +2,8 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class TypeParameterSendto {
 
 	private Long id;
@@ -29,7 +31,9 @@ public class TypeParameterSendto {
 	}
 
 	public void setValue(String value) {
-		this.isValueSet = true;
+		if (!Strings.isNullOrEmpty(value)) {
+			this.isValueSet = true;
+		}
 		this.value = value;
 	}
 

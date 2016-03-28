@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name") )
+@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name_key") )
 public class ExpenseCategory extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -23,14 +23,14 @@ public class ExpenseCategory extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "name_key")
+	private String name_key;
 
-	@Column(name = "code", nullable = false)
+	@Column(name = "code")
 	private String code;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.ALL)
-	private List<ExpenseCateType> expenseCateType = new ArrayList<ExpenseCateType>(0);
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
+	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	public ExpenseCategory() {
 		super();
@@ -44,12 +44,12 @@ public class ExpenseCategory extends AbstractEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getName_key() {
+		return name_key;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName_key(String name_key) {
+		this.name_key = name_key;
 	}
 
 	public String getCode() {
@@ -60,11 +60,11 @@ public class ExpenseCategory extends AbstractEntity {
 		this.code = code;
 	}
 
-	public List<ExpenseCateType> getExpenseCateType() {
+	public Set<ExpenseCateType> getExpenseCateType() {
 		return expenseCateType;
 	}
 
-	public void setExpenseCateType(List<ExpenseCateType> expenseCateType) {
+	public void setExpenseCateType(Set<ExpenseCateType> expenseCateType) {
 		this.expenseCateType = expenseCateType;
 	}
 

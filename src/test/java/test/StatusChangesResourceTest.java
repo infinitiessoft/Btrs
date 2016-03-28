@@ -1,11 +1,8 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -16,59 +13,82 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 
 import assertion.AssertUtils;
+import entity.PageModel;
 import resources.ResourceTest;
-import resources.StatusChangesResource;
+import resources.Type.StatusChangesResource;
 import sendto.StatusChangesSendto;
 
 public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetStatusChanges() {
-		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
-		assertEquals("Good", sendto.getComment());
-		assertEquals(new Date(), sendto.getCreatedDate());
+		assertEquals("no", sendto.getComment());
 	}
 
 	@Test
 	public void testGetStatusChangesWithNotFoundException() {
-		Response response = target("statusChanges").path("4").register(JacksonFeature.class).request().get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").get();
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeletePhoto() {
-		Response response = target("photo").register(JacksonFeature.class).request().delete();
+	public void testDeleteStatusChanges() {
+		Response response = target("statusChanges").path("2").register(JacksonFeature.class).request()
+				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testDeleteStatusChangesWithNotFoundException() {
-		Response response = target("statusChanges").register(JacksonFeature.class).request().delete();
+		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testUpdateStatusChanges() {
 		StatusChangesSendto admin = new StatusChangesSendto();
-		admin.setCreatedDate(new Date());
+		admin.setComment("Good");
+
+		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		report.setId(1L);
+		admin.setReport(report);
+
+		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		user.setRevisor_id(1L);
+		admin.setUser(user);
+
 		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
-		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
+		assertEquals(admin.getUser().getRevisor_id().longValue(), sendto.getUser().getRevisor_id().longValue());
 	}
 
 	@Test
 	public void testUpdateStatusChangesWithNotFoundException() {
 		StatusChangesSendto admin = new StatusChangesSendto();
 		admin.setCreatedDate(new Date());
+		admin.setComment("Good");
+
+		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		report.setId(1L);
+		admin.setReport(report);
+
+		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		user.setRevisor_id(1L);
+		admin.setUser(user);
 		Response response = target("statusChanges").path("4").register(JacksonFeature.class).request()
-				.put(Entity.json(admin));
+				.header("user", "demo").put(Entity.json(admin));
 		AssertUtils.assertNotFound(response);
 	}
 
@@ -76,34 +96,35 @@ public class StatusChangesResourceTest extends ResourceTest {
 	public void testSaveStatusChanges() {
 		StatusChangesSendto admin = new StatusChangesSendto();
 		admin.setCreatedDate(new Date());
-		Response response = target("statusChanges").register(JacksonFeature.class).request().post(Entity.json(admin));
+		admin.setComment("no");
+		admin.setValue("value");
+		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		report.setId(1L);
+		admin.setReport(report);
+
+		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		user.setRevisor_id(1L);
+		admin.setUser(user);
+		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
+				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
-		assertEquals(5l, sendto.getId().longValue());
+		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
 		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
-	}
-
-	@Test
-	public void testSaveStatusChangesWithDuplicateName() {
-		StatusChangesSendto admin = new StatusChangesSendto();
-		admin.setCreatedDate(new Date());
-		Response response = target("statusChanges").register(JacksonFeature.class).request().post(Entity.json(admin));
-		AssertUtils.assertBadRequest(response);
+		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
+		assertEquals(admin.getUser().getRevisor_id().longValue(), sendto.getUser().getRevisor_id().longValue());
 	}
 
 	@Test
 	public void testFindallStatusChanges() {
-		Response response = target("statusChanges").register(JacksonFeature.class).request().get();
+		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
+				.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		Collection<StatusChangesSendto> rets = response.readEntity(new GenericType<List<StatusChangesSendto>>() {
+		PageModel<StatusChangesSendto> rets = response.readEntity(new GenericType<PageModel<StatusChangesSendto>>() {
 		});
-		assertEquals(200, response.getStatus());
-		for (StatusChangesSendto status : rets) {
-			assertNotNull(status.getId().longValue());
-			assertNotNull(status.getComment());
-			assertNotNull(status.getCreatedDate());
-		}
+		assertEquals(2, rets.getTotalElements());
+
 	}
 
 	@Override

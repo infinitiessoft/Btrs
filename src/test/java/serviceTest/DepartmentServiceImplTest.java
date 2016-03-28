@@ -63,9 +63,13 @@ public class DepartmentServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(departmentDao).delete(1L);
+				exactly(1).of(departmentDao).delete(department);
+
+				exactly(1).of(departmentDao).findOne(1L);
+				will(returnValue(department));
 			}
 		});
+
 		departmentService.delete(1l);
 	}
 
@@ -82,14 +86,14 @@ public class DepartmentServiceImplTest extends ServiceTest {
 					@Override
 					public Object invoke(Invocation invocation) throws Throwable {
 						Department e = (Department) invocation.getParameter(0);
-						e.setId(2L);
+						e.setId(3L);
 						return e;
 					}
 				});
 			}
 		});
 		DepartmentSendto ret = departmentService.save(newEntry);
-		assertEquals(2l, ret.getId().longValue());
+		assertEquals(3l, ret.getId().longValue());
 		assertEquals(newEntry.getName(), ret.getName());
 		assertEquals(newEntry.getComment(), ret.getComment());
 	}

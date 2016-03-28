@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class ParameterValueSendto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,21 +37,9 @@ public class ParameterValueSendto implements Serializable {
 		}
 	}
 
-	public static class TypeParameter implements Serializable {
+	public static class TypeParameter implements Serializable
 
-		public static class Type implements Serializable {
-			private static final long serialVersionUID = 1L;
-			private Long id;
-
-			public Long getId() {
-				return id;
-			}
-
-			public void setId(Long id) {
-
-				this.id = id;
-			}
-		}
+	{
 
 		private static final long serialVersionUID = 1L;
 		private Long id;
@@ -110,31 +100,12 @@ public class ParameterValueSendto implements Serializable {
 		this.isExpenseSet = isExpenseSet;
 	}
 
-	@XmlTransient
-	public boolean isValueSet() {
-		return isValueSet;
-	}
-
-	@XmlTransient
-	public void setValueSet(boolean isValueSet) {
-		this.isValueSet = isValueSet;
-	}
-
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.isValueSet = true;
-		this.value = value;
 	}
 
 	public TypeParameter getTypeParameter() {
@@ -159,4 +130,24 @@ public class ParameterValueSendto implements Serializable {
 		this.expense = expense;
 	}
 
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+		if (!Strings.isNullOrEmpty(value)) {
+			isValueSet = true;
+		}
+	}
+
+	@XmlTransient
+	public boolean isValueSet() {
+		return isValueSet;
+	}
+
+	@XmlTransient
+	public void setValueSet(boolean isValueSet) {
+		this.isValueSet = isValueSet;
+	}
 }

@@ -36,6 +36,7 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		userShared.setId(1L);
 		userShared.setUsername("demo");
 		userShared.setJobTitle("admin");
+		userShared.setGender("male");
 	}
 
 	@After
@@ -55,6 +56,7 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		assertEquals(userShared.getId(), ret.getId());
 		assertEquals(userShared.getUsername(), ret.getUsername());
 		assertEquals(userShared.getJobTitle(), ret.getJobTitle());
+		assertEquals(userShared.getGender(), ret.getGender());
 	}
 
 	@Test
@@ -92,6 +94,7 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		assertEquals(userShared.getId(), ret.getId());
 		assertEquals(newEntry.getUsername(), ret.getUsername());
 		assertEquals(newEntry.getJobTitle(), ret.getJobTitle());
+		assertEquals(newEntry.getGender(), ret.getGender());
 	}
 
 	@Test
@@ -113,6 +116,7 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		assertEquals(userShared.getId(), ret.getId());
 		assertEquals(newEntry.getUsername(), ret.getUsername());
 		assertEquals(newEntry.getJobTitle(), ret.getJobTitle());
+		assertEquals(userShared.getGender(), ret.getGender());
 	}
 
 	@Test
@@ -135,5 +139,6 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		assertEquals(userShared.getId(), ret.getId());
 		assertEquals(userShared.getUsername(), ret.getUsername());
 		assertEquals(userShared.getJobTitle(), ret.getJobTitle());
+		assertEquals(userShared.getGender(), ret.getGender());
 	}
 }

@@ -6,16 +6,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import enumpackage.ParameterEnum;
 
 @Entity
 @Table(name = "type_parameters")
@@ -26,14 +22,14 @@ public class TypeParameter extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated(EnumType.STRING)
-	private ParameterEnum value;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parameterValue", cascade = CascadeType.ALL)
-	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
+	@Column(name = "value", nullable = false)
+	private String value;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
 	private Set<ParameterValue> parameterValues = new HashSet<ParameterValue>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
+	private Set<ExpenseTypePara> expenseTypeParas = new HashSet<ExpenseTypePara>(0);
 
 	public TypeParameter() {
 		super();
@@ -73,28 +69,28 @@ public class TypeParameter extends AbstractEntity {
 		this.id = id;
 	}
 
-	public ParameterEnum getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(ParameterEnum value) {
+	public void setValue(String value) {
 		this.value = value;
-	}
-
-	public Set<ExpenseTypePara> getExpenseTypePara() {
-		return expenseTypePara;
-	}
-
-	public void setExpenseTypePara(Set<ExpenseTypePara> expenseTypePara) {
-		this.expenseTypePara = expenseTypePara;
-	}
-
-	public Set<ParameterValue> getParameterValues() {
-		return parameterValues;
 	}
 
 	public void setParameterValues(Set<ParameterValue> parameterValues) {
 		this.parameterValues = parameterValues;
+	}
+
+	public Set<ExpenseTypePara> getExpenseTypeParas() {
+		return expenseTypeParas;
+	}
+
+	public void setExpenseTypeParas(Set<ExpenseTypePara> expenseTypeParas) {
+		this.expenseTypeParas = expenseTypeParas;
+	}
+
+	public Set<ParameterValue> getParameterValues() {
+		return parameterValues;
 	}
 
 	@Override

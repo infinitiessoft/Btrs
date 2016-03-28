@@ -7,12 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import dao.ReportDao;
-import dao.UserDao;
 import entity.Report;
-import enumpackage.StatusEnum;
-import exceptions.InvalidStatusException;
 import exceptions.ReportNotFoundException;
 import sendto.ReportSendto;
 import service.ReportService;
@@ -20,12 +18,13 @@ import service.ReportService;
 public class ReportServiceImpl implements ReportService {
 
 	private ReportDao reportDao;
-	private UserDao userDao;
 
 	public ReportServiceImpl(ReportDao reportDao) {
 		this.reportDao = reportDao;
+
 	}
 
+	@Transactional
 	@Override
 	public ReportSendto retrieve(long id) {
 		Report report = reportDao.findOne(id);
@@ -47,24 +46,34 @@ public class ReportServiceImpl implements ReportService {
 		ret.setReason(report.getReason());
 		ret.setRoute(report.getRoute());
 		ret.setStartDate(report.getStartDate());
+		ret.setCurrentStatus(report.getCurrent_status());
 		return ret;
 	}
 
+	@Transactional
 	@Override
 	public void delete(long id) {
-		reportDao.delete(id);
-
+		try {
+			Report report = reportDao.findOne(id);
+			if (report == null) {
+				throw new ReportNotFoundException(id);
+			}
+			reportDao.delete(report);
+		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
+			throw new ReportNotFoundException(id);
+		}
 	}
 
+	@Transactional
 	@Override
 	public ReportSendto save(ReportSendto report) {
-		report.setId(null);
-		Report rpt = new Report();
-		setUpReport(report, rpt);
-		rpt = reportDao.save(rpt);
-		return toReportSendto(rpt);
+		report.setId(1L);
+		Report newEntry = new Report();
+		setUpReport(report, newEntry);
+		return toReportSendto(reportDao.save(newEntry));
 	}
 
+	@Transactional
 	@Override
 	public Page<ReportSendto> findAll(Specification<Report> spec, Pageable pageable) {
 		List<ReportSendto> sendto = new ArrayList<ReportSendto>();
@@ -76,6 +85,7 @@ public class ReportServiceImpl implements ReportService {
 		return rets;
 	}
 
+	@Transactional
 	@Override
 	public ReportSendto update(long id, ReportSendto updated) {
 		Report rpt = reportDao.findOne(id);
@@ -122,12 +132,7 @@ public class ReportServiceImpl implements ReportService {
 			newEntry.setLastUpdatedDate(sendto.getLastUpdatedDate());
 		}
 		if (sendto.isCurrentStatusSet()) {
-			try {
-				StatusEnum.valueOf(sendto.getCurrentStatus());
-			} catch (Exception e) {
-				throw new InvalidStatusException(sendto.getCurrentStatus());
-			}
-			newEntry.setCurrentStatus(sendto.getCurrentStatus());
+			newEntry.setCurrent_status(sendto.getCurrentStatus());
 		}
 	}
 }

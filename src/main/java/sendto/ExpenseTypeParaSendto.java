@@ -1,94 +1,69 @@
 package sendto;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlTransient;
 
-public class ExpenseTypeParaSendto implements Serializable {
+public class ExpenseTypeParaSendto {
 
-	private static final long serialVersionUID = 1L;
+	public static class ExpenseType {
 
-	public static class ExpenseType implements Serializable {
-		private static final long serialVersionUID = 1L;
 		private Long id;
-		private Double taxPercent;
-
-		public ExpenseType(Long id, Double taxPercent) {
-			this.id = id;
-			this.taxPercent = taxPercent;
-		}
-
-		public ExpenseType() {
-		}
+		private boolean isIdSet = false;
 
 		public Long getId() {
 			return id;
 		}
 
 		public void setId(Long id) {
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
-		public Double getTaxPercent() {
-			return taxPercent;
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
 		}
 
-		public void setTaxPercent(Double taxPercent) {
-			this.taxPercent = taxPercent;
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
 		}
 
 	}
 
-	public static class ParameterValue implements Serializable {
-		private static final long serialVersionUID = 1L;
+	public static class TypeParameter {
+
 		private Long id;
-		private String value;
-
-		public ParameterValue() {
-		}
-
-		public ParameterValue(Long id, String value) {
-			this.id = id;
-			this.value = value;
-		}
+		private boolean isIdSet = false;
 
 		public Long getId() {
 			return id;
 		}
 
 		public void setId(Long id) {
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 
-		public String getValue() {
-			return value;
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
 		}
 
-		public void setValue(String value) {
-			this.value = value;
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
 		}
 
 	}
 
 	private Long id;
-	private ExpenseType expenseType;
-	private ParameterValue parameterValue;
-
-	public ExpenseTypeParaSendto() {
-
-	}
-
-	public ExpenseTypeParaSendto(Long id, ExpenseType expenseType, ParameterValue parameterValue) {
-		this.id = id;
-		this.expenseType = expenseType;
-		this.parameterValue = parameterValue;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	private boolean isIdSet;
+	private ExpenseType expenseType = new ExpenseType();
+	private TypeParameter typeParameter = new TypeParameter();
 
 	public ExpenseType getExpenseType() {
 		return expenseType;
@@ -98,12 +73,33 @@ public class ExpenseTypeParaSendto implements Serializable {
 		this.expenseType = expenseType;
 	}
 
-	public ParameterValue getParameterValue() {
-		return parameterValue;
+	public TypeParameter getTypeParameter() {
+		return typeParameter;
 	}
 
-	public void setParameterValue(ParameterValue parameterValue) {
-		this.parameterValue = parameterValue;
+	public void setTypeParameter(TypeParameter typeParameter) {
+		this.typeParameter = typeParameter;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		if (id != null) {
+			isIdSet = true;
+		}
+		this.id = id;
+	}
+
+	@XmlTransient
+	public boolean isIdSet() {
+		return isIdSet;
+	}
+
+	@XmlTransient
+	public void setIdSet(boolean isIdSet) {
+		this.isIdSet = isIdSet;
 	}
 
 }

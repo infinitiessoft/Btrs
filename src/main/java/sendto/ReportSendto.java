@@ -4,8 +4,9 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 import entity.User;
-import enumpackage.StatusEnum;
 
 public class ReportSendto {
 
@@ -21,7 +22,7 @@ public class ReportSendto {
 	private Date lastUpdatedDate;
 	private User owner;
 	private User reviewer;
-	private StatusEnum currentStatus;
+	private String currentStatus;
 
 	public ReportSendto() {
 		super();
@@ -32,6 +33,9 @@ public class ReportSendto {
 	}
 
 	public void setOwner(User owner) {
+		if (owner != null) {
+			this.isOwnerIdSet = true;
+		}
 		this.owner = owner;
 	}
 
@@ -40,14 +44,20 @@ public class ReportSendto {
 	}
 
 	public void setReviewer(User reviewer) {
+		if (reviewer != null) {
+			this.isReviewerIdSet = true;
+		}
 		this.reviewer = reviewer;
 	}
 
-	public StatusEnum getCurrentStatus() {
+	public String getCurrentStatus() {
 		return currentStatus;
 	}
 
-	public void setCurrentStatus(StatusEnum currentStatus) {
+	public void setCurrentStatus(String currentStatus) {
+		if (!Strings.isNullOrEmpty(currentStatus)) {
+			this.isCurrentStatusSet = true;
+		}
 		this.currentStatus = currentStatus;
 	}
 
@@ -64,6 +74,9 @@ public class ReportSendto {
 	}
 
 	public void setMaxIdLastMonth(Long maxIdLastMonth) {
+		if (maxIdLastMonth != null) {
+			this.isMaxIdLastMonthSet = true;
+		}
 		this.maxIdLastMonth = maxIdLastMonth;
 	}
 
@@ -72,6 +85,9 @@ public class ReportSendto {
 	}
 
 	public void setAttendanceRecordId(Long attendanceRecordId) {
+		if (attendanceRecordId != null) {
+			this.isAttendanceRecordIdSet = true;
+		}
 		this.attendanceRecordId = attendanceRecordId;
 	}
 
@@ -94,6 +110,9 @@ public class ReportSendto {
 	}
 
 	public void setRoute(String route) {
+		if (!Strings.isNullOrEmpty(route)) {
+			this.isRouteSet = true;
+		}
 		this.route = route;
 	}
 
@@ -102,6 +121,9 @@ public class ReportSendto {
 	}
 
 	public void setStartDate(Date startDate) {
+		if (startDate != null) {
+			this.isStartDateSet = true;
+		}
 		this.startDate = startDate;
 	}
 
@@ -110,6 +132,9 @@ public class ReportSendto {
 	}
 
 	public void setEndDate(Date endDate) {
+		if (startDate != null) {
+			this.isStartDateSet = true;
+		}
 		this.endDate = endDate;
 	}
 
@@ -118,6 +143,9 @@ public class ReportSendto {
 	}
 
 	public void setComment(String comment) {
+		if (!Strings.isNullOrEmpty(comment)) {
+			this.isCommentSet = true;
+		}
 		this.comment = comment;
 	}
 
@@ -126,6 +154,9 @@ public class ReportSendto {
 	}
 
 	public void setCreatedDate(Date createdDate) {
+		if (createdDate != null) {
+			this.isCreatedDateSet = true;
+		}
 		this.createdDate = createdDate;
 	}
 
@@ -134,6 +165,9 @@ public class ReportSendto {
 	}
 
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
+		if (lastUpdatedDate != null) {
+			this.isLastUpdatesDateSet = true;
+		}
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 

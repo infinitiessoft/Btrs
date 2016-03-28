@@ -1,14 +1,12 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import enumpackage.StatusEnum;
-
 @Entity
 @Table(name = "reports")
 public class Report extends AbstractEntity {
@@ -31,18 +27,18 @@ public class Report extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "max_id_last_month", nullable = false)
+	@Column(name = "max_id_last_month")
 	private Long maxIdLastMonth;
 
-	@Column(name = "attendance_record_id", nullable = false)
+	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
+	@JoinColumn(name = "owner_id")
 	private User owner;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reviewer_id", nullable = false)
+	@JoinColumn(name = "reviewer_id")
 	private User reviewer;
 
 	@Column(name = "reason", nullable = true)
@@ -52,35 +48,35 @@ public class Report extends AbstractEntity {
 	private String route;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "start_date", nullable = false)
+	@Column(name = "start_date")
 	private Date startDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end_date", nullable = false)
+	@Column(name = "end_date")
 	private Date endDate;
 
-	@Column(name = "comment", nullable = true)
+	@Column(name = "comment")
 	private String comment;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_date", nullable = false)
+	@Column(name = "created_date")
 	private Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_updated_date", nullable = false)
+	@Column(name = "last_updated_date")
 	private Date lastUpdatedDate;
 
-	@Enumerated(EnumType.STRING)
-	private StatusEnum currentStatus;
+	@Column(name = "current_status")
+	private String current_status;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<StatusChanges> statusChanges = new ArrayList<StatusChanges>(0);;
+	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<Expense> expenses = new ArrayList<Expense>(0);
+	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
-	private List<Photo> photos = new ArrayList<Photo>(0);
+	private Set<Photo> photos = new HashSet<Photo>(0);
 
 	public Report() {
 		super();
@@ -88,8 +84,11 @@ public class Report extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Report [id=" + id + ", owner=" + owner + ", reviewer=" + reviewer + ", currentStatus=" + currentStatus
-				+ "]";
+		return "Report [id=" + id + ", maxIdLastMonth=" + maxIdLastMonth + ", attendanceRecordId=" + attendanceRecordId
+				+ ", owner=" + owner + ", reviewer=" + reviewer + ", reason=" + reason + ", route=" + route
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", comment=" + comment + ", createdDate="
+				+ createdDate + ", lastUpdatedDate=" + lastUpdatedDate + ", current_status=" + current_status
+				+ ", statusChanges=" + statusChanges + ", expenses=" + expenses + ", photos=" + photos + "]";
 	}
 
 	public Long getId() {
@@ -188,35 +187,35 @@ public class Report extends AbstractEntity {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
-	public StatusEnum getCurrentStatus() {
-		return currentStatus;
+	public String getCurrent_status() {
+		return current_status;
 	}
 
-	public void setCurrentStatus(StatusEnum currentStatus) {
-		this.currentStatus = currentStatus;
+	public void setCurrent_status(String current_status) {
+		this.current_status = current_status;
 	}
 
-	public List<StatusChanges> getStatusChanges() {
+	public Set<StatusChanges> getStatusChanges() {
 		return statusChanges;
 	}
 
-	public void setStatusChanges(List<StatusChanges> statusChanges) {
+	public void setStatusChanges(Set<StatusChanges> statusChanges) {
 		this.statusChanges = statusChanges;
 	}
 
-	public List<Expense> getExpenses() {
+	public Set<Expense> getExpenses() {
 		return expenses;
 	}
 
-	public void setExpenses(List<Expense> expenses) {
+	public void setExpenses(Set<Expense> expenses) {
 		this.expenses = expenses;
 	}
 
-	public List<Photo> getPhotos() {
+	public Set<Photo> getPhotos() {
 		return photos;
 	}
 
-	public void setPhotos(List<Photo> photos) {
+	public void setPhotos(Set<Photo> photos) {
 		this.photos = photos;
 	}
 

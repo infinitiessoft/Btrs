@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import dao.ExpenseTypeDao;
 import entity.ExpenseType;
@@ -22,6 +23,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		this.expenseTypeDao = expenseTypeDao;
 	}
 
+	@Transactional
 	@Override
 	public ExpenseTypeSendto retrieve(long id) {
 		ExpenseType expenseType = expenseTypeDao.findOne(id);
@@ -35,15 +37,18 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		ExpenseTypeSendto ret = new ExpenseTypeSendto();
 		ret.setId(expenseType.getId());
 		ret.setTaxPercent(expenseType.getTaxPercent());
+		ret.setValue(expenseType.getValue());
 		return ret;
 	}
 
+	@Transactional
 	@Override
 	public void delete(long id) {
 		expenseTypeDao.delete(id);
 
 	}
 
+	@Transactional
 	@Override
 	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType) {
 		expenseType.setId(null);
@@ -53,6 +58,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return toExpenseTypeSendto(type);
 	}
 
+	@Transactional
 	@Override
 	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec, Pageable pageable) {
 		List<ExpenseTypeSendto> sendto = new ArrayList<ExpenseTypeSendto>();
@@ -64,6 +70,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return rets;
 	}
 
+	@Transactional
 	@Override
 	public ExpenseTypeSendto update(long id, ExpenseTypeSendto updated) {
 		ExpenseType type = expenseTypeDao.findOne(id);

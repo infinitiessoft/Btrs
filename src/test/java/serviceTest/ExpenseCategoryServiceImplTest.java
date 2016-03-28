@@ -34,8 +34,8 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		expenseCategoryService = new ExpenseCategoryServiceImpl(expenseCategoryDao);
 		expenseCategory = new ExpenseCategory();
 		expenseCategory.setId(1L);
-		expenseCategory.setName("demo");
-		expenseCategory.setCode("123");
+		expenseCategory.setName_key("demo");
+		expenseCategory.setCode("demo");
 	}
 
 	@After
@@ -52,9 +52,9 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.retrieve(1);
-		assertEquals(1l, ret.getId());
-		assertEquals("demo", ret.getName());
-		assertEquals("123", ret.getCode());
+		assertEquals(1l, ret.getId().longValue());
+		assertEquals("demo", ret.getName_key());
+		assertEquals("demo", ret.getCode());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 	@Test
 	public void testSave() {
 		final ExpenseCategorySendto newEntry = new ExpenseCategorySendto();
-		newEntry.setName("name");
+		newEntry.setName_key("name");
 
 		context.checking(new Expectations() {
 
@@ -89,16 +89,16 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.save(newEntry);
-		assertEquals(2l, ret.getId());
-		assertEquals(newEntry.getName(), ret.getName());
+		assertEquals(2l, ret.getId().longValue());
+		assertEquals(newEntry.getName_key(), ret.getName_key());
 		assertEquals(newEntry.getCode(), ret.getCode());
 	}
 
 	@Test
 	public void testUpdate() {
 		final ExpenseCategorySendto newEntry = new ExpenseCategorySendto();
-		newEntry.setName("demo");
-		newEntry.setCode("123");
+		newEntry.setName_key("demo");
+		newEntry.setCode("demo");
 		context.checking(new Expectations() {
 
 			{
@@ -110,8 +110,8 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 			}
 		});
 		ExpenseCategorySendto ret = expenseCategoryService.update(1l, newEntry);
-		assertEquals(1l, ret.getId());
-		assertEquals(newEntry.getName(), ret.getName());
+		assertEquals(1l, ret.getId().longValue());
+		assertEquals(newEntry.getName_key(), ret.getName_key());
 		assertEquals(newEntry.getCode(), ret.getCode());
 	}
 
@@ -132,8 +132,8 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		Page<ExpenseCategorySendto> rets = expenseCategoryService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
 		ExpenseCategorySendto ret = rets.iterator().next();
-		assertEquals(1l, ret.getId());
-		assertEquals(expenseCategory.getName(), ret.getName());
+		assertEquals(1l, ret.getId().longValue());
+		assertEquals(expenseCategory.getName_key(), ret.getName_key());
 		assertEquals(expenseCategory.getCode(), ret.getCode());
 	}
 }
