@@ -27,21 +27,21 @@ public class Photo extends AbstractEntity {
 	@Column(name = "file_name")
 	private String fileName;
 
-	@Column(name = "content_type", nullable = true)
+	@Column(name = "content_type")
 	private String contentType;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "upload_date", nullable = false)
+	@Column(name = "upload_date")
 	private Date uploadDate;
 
-	@Column(name = "title", nullable = false)
+	@Column(name = "title")
 	private String title;
 
 	@Lob
 	@Column(name = "data")
 	private byte[] data;
 
-	@Column(name = "size", nullable = false)
+	@Column(name = "size")
 	private Integer size;
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -61,7 +61,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(long id) {
 		try {
-			userDao.delete(id);
+			User user = userDao.findOne(id);
+			if (user == null) {
+				throw new UserNotFoundException(id);
+			}
+			userDao.delete(user);
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			throw new UserNotFoundException(id);
 		}
@@ -74,8 +78,7 @@ public class UserServiceImpl implements UserService {
 		user.setId(null);
 		User newEntry = new User();
 		setUpUser(user, newEntry);
-		newEntry = userDao.save(newEntry);
-		return toUserSendto(newEntry);
+		return toUserSendto(userDao.save(newEntry));
 	}
 
 	@Transactional

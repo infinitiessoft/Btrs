@@ -49,7 +49,6 @@ public class UserSharedResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public UserSharedSendto saveUserShared(UserSharedSendto userShared) {
 		return userSharedService.save(userShared);
 	}

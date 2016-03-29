@@ -33,7 +33,7 @@ public class RoleResourceTest extends ResourceTest {
 	public void testGetRoleWithNotFoundException() {
 		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test

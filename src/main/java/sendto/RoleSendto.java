@@ -32,7 +32,7 @@ public class RoleSendto {
 
 	public void setValue(String value) {
 		if (!Strings.isNullOrEmpty(value)) {
-			this.isValueSet = true;
+			isValueSet = true;
 		}
 		this.value = value;
 	}

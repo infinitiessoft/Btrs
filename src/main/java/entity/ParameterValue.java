@@ -23,14 +23,14 @@ public class ParameterValue extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parameter_id", nullable = false)
+	@JoinColumn(name = "parameter_id")
 	private TypeParameter typeParameter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "expense_id", nullable = false)
+	@JoinColumn(name = "expense_id")
 	private Expense expense;
 
-	@Column(name = "value", nullable = false)
+	@Column(name = "value")
 	private String value;
 
 	@Override

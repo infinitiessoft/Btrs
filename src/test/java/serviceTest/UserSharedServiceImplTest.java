@@ -64,7 +64,11 @@ public class UserSharedServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(userSharedDao).delete(1L);
+				exactly(1).of(userSharedDao).delete(userShared);
+
+				exactly(1).of(userSharedDao).findOne(1L);
+				will(returnValue(userShared));
+
 			}
 		});
 		userSharedService.delete(1l);

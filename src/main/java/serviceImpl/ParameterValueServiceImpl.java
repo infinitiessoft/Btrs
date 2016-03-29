@@ -14,6 +14,7 @@ import dao.TypeParameterDao;
 import entity.ParameterValue;
 import exceptions.ExpenseNotFoundException;
 import exceptions.ParameterNotFoundException;
+import exceptions.TypeParameterNotFoundException;
 import resources.specification.ParameterValueSpecification;
 import sendto.ParameterValueSendto;
 import sendto.ParameterValueSendto.TypeParameter;
@@ -134,7 +135,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 			if (sendto.getTypeParameter().isIdSet()) {
 				entity.TypeParameter typeParameter = typeParameterDao.findOne(sendto.getTypeParameter().getId());
 				if (typeParameter == null) {
-					throw new ExpenseNotFoundException(sendto.getExpense().getId());
+					throw new TypeParameterNotFoundException(sendto.getTypeParameter().getId());
 				}
 
 				newEntry.setTypeParameter(typeParameter);
