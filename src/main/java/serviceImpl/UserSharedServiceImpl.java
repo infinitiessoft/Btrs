@@ -54,7 +54,11 @@ public class UserSharedServiceImpl implements UserSharedService {
 	@Override
 	public void delete(long id) {
 		try {
-			userSharedDao.delete(id);
+			UserShared userShared = userSharedDao.findOne(id);
+			if (userShared == null) {
+				throw new UserSharedNotFoundException(id);
+			}
+			userSharedDao.delete(userShared);
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			throw new UserSharedNotFoundException(id);
 		}
@@ -66,8 +70,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		userShared.setId(null);
 		UserShared newEntry = new UserShared();
 		setUpUserShared(userShared, newEntry);
-		newEntry = userSharedDao.save(newEntry);
-		return toUserSharedSendto(newEntry);
+		return toUserSharedSendto(userSharedDao.save(newEntry));
 	}
 
 	private void setUpUserShared(UserSharedSendto sendto, UserShared newEntry) {
@@ -96,7 +99,9 @@ public class UserSharedServiceImpl implements UserSharedService {
 		if (sendto.isUsernameSet()) {
 			newEntry.setUsername(sendto.getUsername());
 		}
-
+		if (sendto.isGenderSet()) {
+			newEntry.setGender(sendto.getGender());
+		}
 	}
 
 	@Transactional

@@ -66,9 +66,8 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 			}
 		});
 		StatusChangesSendto ret = statusChangesService.retrieve(1);
-		assertEquals(statusChanges.getId(), ret.getId());
-		assertEquals(statusChanges.getCreatedDate(), ret.getCreatedDate());
-		assertEquals(statusChanges.getComment(), ret.getComment());
+		assertEquals(1l, ret.getId().longValue());
+		assertEquals("OKK", ret.getComment());
 		assertEquals(report.getId(), ret.getReport().getId());
 	}
 
@@ -77,7 +76,10 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(statusChangesDao).delete(1L);
+				exactly(1).of(statusChangesDao).delete(statusChanges);
+
+				exactly(1).of(statusChangesDao).findOne(1L);
+				will(returnValue(statusChanges));
 
 			}
 		});
@@ -95,7 +97,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 
 			{
 
-				exactly(1).of(reportDao).findOne(1L);
+				exactly(1).of(reportDao).findOne(newEntry.getReport().getId());
 				will(returnValue(report));
 
 				exactly(1).of(statusChangesDao).save(with(any(StatusChanges.class)));
@@ -113,11 +115,8 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 	@Test
 	public void testUpdate() {
 		final StatusChangesSendto newEntry = new StatusChangesSendto();
-		newEntry.setCreatedDate(new Date());
-		newEntry.setComment("OKK");
-		StatusChangesSendto.Report reportSendto = new StatusChangesSendto.Report();
-		reportSendto.setId(report.getId());
-		newEntry.setReport(reportSendto);
+		newEntry.setComment("nooo");
+
 		context.checking(new Expectations() {
 
 			{
@@ -129,10 +128,8 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 			}
 		});
 		StatusChangesSendto ret = statusChangesService.update(1l, newEntry);
-		assertEquals(statusChanges.getId(), ret.getId());
-		assertEquals(newEntry.getCreatedDate(), ret.getCreatedDate());
+		assertEquals(1L, ret.getId().longValue());
 		assertEquals(newEntry.getComment(), ret.getComment());
-		assertEquals(report.getId(), ret.getReport().getId());
 	}
 
 	@Test
@@ -152,9 +149,8 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 		Page<StatusChangesSendto> rets = statusChangesService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
 		StatusChangesSendto ret = rets.iterator().next();
-		assertEquals(statusChanges.getId(), ret.getId());
+		assertEquals(1l, ret.getId().longValue());
 		assertEquals(statusChanges.getCreatedDate(), ret.getCreatedDate());
 		assertEquals(statusChanges.getComment(), ret.getComment());
-		assertEquals(report.getId(), ret.getReport().getId());
 	}
 }

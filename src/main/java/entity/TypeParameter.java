@@ -25,10 +25,10 @@ public class TypeParameter extends AbstractEntity {
 	@Column(name = "value", nullable = false)
 	private String value;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.REMOVE)
 	private Set<ParameterValue> parameterValues = new HashSet<ParameterValue>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "typeParameter", cascade = CascadeType.REMOVE)
 	private Set<ExpenseTypePara> expenseTypeParas = new HashSet<ExpenseTypePara>(0);
 
 	public TypeParameter() {

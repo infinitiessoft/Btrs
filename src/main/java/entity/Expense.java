@@ -26,20 +26,20 @@ public class Expense extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "type_id", nullable = false)
+	@JoinColumn(name = "type_id")
 	private ExpenseType expenseType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_id", nullable = false)
+	@JoinColumn(name = "report_id")
 	private Report report;
 
-	@Column(length = 4000, name = "comment", nullable = true)
+	@Column(length = 4000, name = "comment")
 	private String comment;
 
-	@Column(name = "total_amount", nullable = false)
+	@Column(name = "total_amount")
 	private Integer totalAmount;
 
-	@Column(name = "tax_amount", nullable = false)
+	@Column(name = "tax_amount")
 	private Integer taxAmount;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.REMOVE)

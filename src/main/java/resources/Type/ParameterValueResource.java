@@ -43,18 +43,17 @@ public class ParameterValueResource {
 	}
 
 	@PUT
+	@Path(value = "{id}")
 	public ParameterValueSendto updateParameterValue(@PathParam("id") long id, ParameterValueSendto parameterValue) {
 		return parameterValueService.update(id, parameterValue);
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public ParameterValueSendto saveParameterValue(ParameterValueSendto parameterValue) {
 		return parameterValueService.save(parameterValue);
 	}
 
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Page<ParameterValueSendto> findallParameterValue(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ParameterValueSpecification spec) {
 		return parameterValueService.findAll(spec, pageRequest);

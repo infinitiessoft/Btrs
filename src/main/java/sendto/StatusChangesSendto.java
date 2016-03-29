@@ -61,7 +61,7 @@ public class StatusChangesSendto {
 
 	public void setUser(User user) {
 		if (user != null) {
-			this.isUserSet = true;
+			isUserSet = true;
 		}
 		this.user = user;
 	}
@@ -72,7 +72,7 @@ public class StatusChangesSendto {
 
 	public void setValue(String value) {
 		if (!Strings.isNullOrEmpty(value)) {
-			this.isValueSet = true;
+			isValueSet = true;
 		}
 		this.value = value;
 	}
@@ -83,7 +83,7 @@ public class StatusChangesSendto {
 
 	public void setReport(Report report) {
 		if (report != null) {
-			this.isReportSet = true;
+			isReportSet = true;
 		}
 		this.report = report;
 	}
@@ -136,6 +136,7 @@ public class StatusChangesSendto {
 	@XmlTransient
 	public void setReportSet(boolean isReportSet) {
 		this.isReportSet = isReportSet;
+
 	}
 
 	public static class User {
@@ -188,7 +189,9 @@ public class StatusChangesSendto {
 		}
 
 		public void setId(Long id) {
-			setIdSet(true);
+			if (id != null) {
+				isIdSet = true;
+			}
 			this.id = id;
 		}
 

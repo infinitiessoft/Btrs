@@ -30,7 +30,7 @@ public class UserResourceTest extends ResourceTest {
 	@Test
 	public void testGetUserWithNotFoundException() {
 		Response response = target("user").path("3").register(JacksonFeature.class).request().get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
@@ -51,20 +51,20 @@ public class UserResourceTest extends ResourceTest {
 	public void testUpdateUser() {
 		UserSendto admin = new UserSendto();
 		UserSendto.Department dpt = new UserSendto.Department();
-		dpt.setId(1L);
+		dpt.setId(2L);
 		admin.setDepartment(dpt);
 
 		UserSendto.UserShared usr = new UserSendto.UserShared();
-		usr.setId(1L);
+		usr.setId(2L);
 		admin.setUserShared(usr);
 
-		Response response = target("user").path("1").register(JacksonFeature.class).request().header("user", "demo")
+		Response response = target("user").path("2").register(JacksonFeature.class).request().header("user", "demo")
 				.put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSendto sendto = response.readEntity(UserSendto.class);
-		assertEquals(1l, sendto.getId().longValue());
-		assertEquals(admin.getUserShared().getId(), sendto.getUserShared().getId());
-		assertEquals(admin.getDepartment().getId(), sendto.getDepartment().getId());
+		assertEquals(2l, sendto.getId().longValue());
+		assertEquals(admin.getUserShared().getId().longValue(), sendto.getUserShared().getId().longValue());
+		assertEquals(admin.getDepartment().getId().longValue(), sendto.getDepartment().getId().longValue());
 	}
 
 	@Test
@@ -83,7 +83,6 @@ public class UserResourceTest extends ResourceTest {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		UserSendto sendto = response.readEntity(UserSendto.class);
 		assertEquals(3l, sendto.getId().longValue());
-		assertEquals(admin.getLastLogin(), sendto.getLastLogin());
 		assertEquals(admin.getUserShared().getId(), sendto.getUserShared().getId());
 		assertEquals(admin.getDepartment().getId(), sendto.getDepartment().getId());
 	}

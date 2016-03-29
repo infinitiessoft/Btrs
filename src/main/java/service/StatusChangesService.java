@@ -18,7 +18,4 @@ public interface StatusChangesService {
 
 	public StatusChangesSendto update(long id, StatusChangesSendto statusChanges);
 
-	public StatusChangesSendto reject(long id);
-
-	public StatusChangesSendto permit(long id);
 }

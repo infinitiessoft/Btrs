@@ -1,12 +1,17 @@
 package entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,36 +27,39 @@ public class UserShared extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "username", nullable = false)
+	@Column(name = "username")
 	private String username;
 
-	@Column(name = "job_title", nullable = false, length = 20)
+	@Column(name = "job_title", length = 20)
 	private String jobTitle;
 
-	@Column(name = "gender", nullable = false, length = 6)
+	@Column(name = "gender", length = 6)
 	private String gender;
 
-	@Column(name = "password", nullable = false, length = 100)
+	@Column(name = "password", length = 100)
 	private String password;
 
-	@Column(name = "first_name", nullable = false, length = 20)
+	@Column(name = "first_name", length = 20)
 	private String firstName;
 
-	@Column(name = "last_name", nullable = false, length = 20)
+	@Column(name = "last_name", length = 20)
 	private String lastName;
 
-	@Column(name = "email", nullable = false, length = 40)
+	@Column(name = "email", length = 40)
 	private String email;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "date_of_Birth", nullable = false, length = 13)
+	@Column(name = "date_of_Birth", length = 13)
 	private Date dateofBirth;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "created_date", nullable = false, length = 13)
+	@Column(name = "created_date", length = 13)
 	private Date createdDate;
 
 	private Boolean enabled;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userShared", cascade = CascadeType.REMOVE)
+	private Set<User> users = new HashSet<User>(0);
 
 	public UserShared() {
 		super();
@@ -143,6 +151,14 @@ public class UserShared extends AbstractEntity {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	@Override

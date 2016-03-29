@@ -18,6 +18,6 @@ public interface ParameterValueService {
 
 	public ParameterValueSendto update(long id, ParameterValueSendto parameterValue);
 
-	ParameterValueSendto retrieve(ParameterValueSpecification spec);
+	public ParameterValueSendto retrieve(ParameterValueSpecification spec);
 
 }

@@ -34,7 +34,7 @@ public class ReportSendto {
 
 	public void setOwner(User owner) {
 		if (owner != null) {
-			this.isOwnerIdSet = true;
+			isOwnerIdSet = true;
 		}
 		this.owner = owner;
 	}
@@ -45,7 +45,7 @@ public class ReportSendto {
 
 	public void setReviewer(User reviewer) {
 		if (reviewer != null) {
-			this.isReviewerIdSet = true;
+			isReviewerIdSet = true;
 		}
 		this.reviewer = reviewer;
 	}
@@ -56,7 +56,7 @@ public class ReportSendto {
 
 	public void setCurrentStatus(String currentStatus) {
 		if (!Strings.isNullOrEmpty(currentStatus)) {
-			this.isCurrentStatusSet = true;
+			isCurrentStatusSet = true;
 		}
 		this.currentStatus = currentStatus;
 	}
@@ -75,7 +75,7 @@ public class ReportSendto {
 
 	public void setMaxIdLastMonth(Long maxIdLastMonth) {
 		if (maxIdLastMonth != null) {
-			this.isMaxIdLastMonthSet = true;
+			isMaxIdLastMonthSet = true;
 		}
 		this.maxIdLastMonth = maxIdLastMonth;
 	}
@@ -86,7 +86,7 @@ public class ReportSendto {
 
 	public void setAttendanceRecordId(Long attendanceRecordId) {
 		if (attendanceRecordId != null) {
-			this.isAttendanceRecordIdSet = true;
+			isAttendanceRecordIdSet = true;
 		}
 		this.attendanceRecordId = attendanceRecordId;
 	}
@@ -96,7 +96,9 @@ public class ReportSendto {
 	}
 
 	public void setReason(String reason) {
-		setReasonSet(true);
+		if (!Strings.isNullOrEmpty(reason)) {
+			isReasonSet = true;
+		}
 		this.reason = reason;
 	}
 
@@ -111,7 +113,7 @@ public class ReportSendto {
 
 	public void setRoute(String route) {
 		if (!Strings.isNullOrEmpty(route)) {
-			this.isRouteSet = true;
+			isRouteSet = true;
 		}
 		this.route = route;
 	}
@@ -122,7 +124,7 @@ public class ReportSendto {
 
 	public void setStartDate(Date startDate) {
 		if (startDate != null) {
-			this.isStartDateSet = true;
+			isStartDateSet = true;
 		}
 		this.startDate = startDate;
 	}
@@ -133,7 +135,7 @@ public class ReportSendto {
 
 	public void setEndDate(Date endDate) {
 		if (startDate != null) {
-			this.isStartDateSet = true;
+			isStartDateSet = true;
 		}
 		this.endDate = endDate;
 	}
@@ -144,7 +146,7 @@ public class ReportSendto {
 
 	public void setComment(String comment) {
 		if (!Strings.isNullOrEmpty(comment)) {
-			this.isCommentSet = true;
+			isCommentSet = true;
 		}
 		this.comment = comment;
 	}
@@ -155,7 +157,7 @@ public class ReportSendto {
 
 	public void setCreatedDate(Date createdDate) {
 		if (createdDate != null) {
-			this.isCreatedDateSet = true;
+			isCreatedDateSet = true;
 		}
 		this.createdDate = createdDate;
 	}
@@ -166,7 +168,7 @@ public class ReportSendto {
 
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		if (lastUpdatedDate != null) {
-			this.isLastUpdatesDateSet = true;
+			isLastUpdatesDateSet = true;
 		}
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
@@ -259,6 +261,66 @@ public class ReportSendto {
 	@XmlTransient
 	public boolean isAttendanceRecordIdSet() {
 		return isAttendanceRecordIdSet;
+	}
+
+	@XmlTransient
+	public void setRouteSet(boolean isRouteSet) {
+		this.isRouteSet = isRouteSet;
+	}
+
+	@XmlTransient
+	public void setStartDateSet(boolean isStartDateSet) {
+		this.isStartDateSet = isStartDateSet;
+	}
+
+	@XmlTransient
+	public void setEndDateSet(boolean isEndDateSet) {
+		this.isEndDateSet = isEndDateSet;
+	}
+
+	@XmlTransient
+	public void setCommentSet(boolean isCommentSet) {
+		this.isCommentSet = isCommentSet;
+	}
+
+	@XmlTransient
+	public void setCreatedDateSet(boolean isCreatedDateSet) {
+		this.isCreatedDateSet = isCreatedDateSet;
+	}
+
+	@XmlTransient
+	public void setLastUpdatesDateSet(boolean isLastUpdatesDateSet) {
+		this.isLastUpdatesDateSet = isLastUpdatesDateSet;
+	}
+
+	@XmlTransient
+	public void setCurrentStatusSet(boolean isCurrentStatusSet) {
+		this.isCurrentStatusSet = isCurrentStatusSet;
+	}
+
+	@XmlTransient
+	public void setUserSet(boolean isUserSet) {
+		this.isUserSet = isUserSet;
+	}
+
+	@XmlTransient
+	public void setOwnerIdSet(boolean isOwnerIdSet) {
+		this.isOwnerIdSet = isOwnerIdSet;
+	}
+
+	@XmlTransient
+	public void setReviewerIdSet(boolean isReviewerIdSet) {
+		this.isReviewerIdSet = isReviewerIdSet;
+	}
+
+	@XmlTransient
+	public void setMaxIdLastMonthSet(boolean isMaxIdLastMonthSet) {
+		this.isMaxIdLastMonthSet = isMaxIdLastMonthSet;
+	}
+
+	@XmlTransient
+	public void setAttendanceRecordIdSet(boolean isAttendanceRecordIdSet) {
+		this.isAttendanceRecordIdSet = isAttendanceRecordIdSet;
 	}
 
 }

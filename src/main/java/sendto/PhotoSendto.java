@@ -180,4 +180,39 @@ public class PhotoSendto {
 
 	}
 
+	@XmlTransient
+	public void setFileNameSet(boolean isFileNameSet) {
+		this.isFileNameSet = isFileNameSet;
+	}
+
+	@XmlTransient
+	public void setContentTypeSet(boolean isContentTypeSet) {
+		this.isContentTypeSet = isContentTypeSet;
+	}
+
+	@XmlTransient
+	public void setUploadDateSet(boolean isUploadDateSet) {
+		this.isUploadDateSet = isUploadDateSet;
+	}
+
+	@XmlTransient
+	public void setTitleSet(boolean isTitleSet) {
+		this.isTitleSet = isTitleSet;
+	}
+
+	@XmlTransient
+	public void setDataSet(boolean isDataSet) {
+		this.isDataSet = isDataSet;
+	}
+
+	@XmlTransient
+	public void setSizeSet(boolean isSizeSet) {
+		this.isSizeSet = isSizeSet;
+	}
+
+	@XmlTransient
+	public void setReportSet(boolean isReportSet) {
+		this.isReportSet = isReportSet;
+	}
+
 }

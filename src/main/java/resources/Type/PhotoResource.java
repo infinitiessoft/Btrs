@@ -36,6 +36,7 @@ public class PhotoResource {
 	}
 
 	@DELETE
+	@Path(value = "{id}")
 	public Response deletePhoto(@PathParam("id") long id) {
 		photoService.delete(id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();

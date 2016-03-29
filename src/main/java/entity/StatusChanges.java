@@ -27,21 +27,21 @@ public class StatusChanges extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "revisor_id", nullable = false)
+	@JoinColumn(name = "revisor_id")
 	private User user;
 
-	@Column(name = "value", nullable = true)
+	@Column(name = "value")
 	private String value;
 
-	@Column(length = 4000, name = "comment", nullable = true)
+	@Column(length = 4000, name = "comment")
 	private String comment;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_id", nullable = false)
+	@JoinColumn(name = "report_id")
 	private Report report;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_date", nullable = false)
+	@Column(name = "created_date")
 	private Date createdDate;
 
 	public StatusChanges() {

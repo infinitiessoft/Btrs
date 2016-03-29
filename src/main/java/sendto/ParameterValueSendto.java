@@ -114,7 +114,7 @@ public class ParameterValueSendto implements Serializable {
 
 	public void setTypeParameter(TypeParameter typeParameter) {
 		if (typeParameter != null) {
-			this.isTypeParameterSet = true;
+			isTypeParameterSet = true;
 		}
 		this.typeParameter = typeParameter;
 	}
@@ -125,7 +125,7 @@ public class ParameterValueSendto implements Serializable {
 
 	public void setExpense(Expense expense) {
 		if (expense != null) {
-			this.isExpenseSet = true;
+			isExpenseSet = true;
 		}
 		this.expense = expense;
 	}
@@ -149,5 +149,7 @@ public class ParameterValueSendto implements Serializable {
 	@XmlTransient
 	public void setValueSet(boolean isValueSet) {
 		this.isValueSet = isValueSet;
+
 	}
+
 }

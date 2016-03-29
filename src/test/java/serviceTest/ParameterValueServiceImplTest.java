@@ -80,7 +80,10 @@ public class ParameterValueServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(parameterValueDao).delete(1L);
+				exactly(1).of(parameterValueDao).delete(parameterValue);
+
+				exactly(1).of(parameterValueDao).findOne(1L);
+				will(returnValue(parameterValue));
 			}
 		});
 		parameterValueService.delete(1l);
@@ -121,13 +124,7 @@ public class ParameterValueServiceImplTest extends ServiceTest {
 	@Test
 	public void testUpdate() {
 		final ParameterValueSendto newEntry = new ParameterValueSendto();
-		ParameterValueSendto.Expense expenseSendto = new ParameterValueSendto.Expense();
-		expenseSendto.setId(expense.getId());
-		ParameterValueSendto.TypeParameter typeParameterSendto = new ParameterValueSendto.TypeParameter();
-		typeParameterSendto.setId(typeParameter.getId());
-		newEntry.setExpense(expenseSendto);
-		newEntry.setTypeParameter(typeParameterSendto);
-
+		newEntry.setValue("value");
 		context.checking(new Expectations() {
 
 			{
@@ -139,10 +136,8 @@ public class ParameterValueServiceImplTest extends ServiceTest {
 			}
 		});
 		ParameterValueSendto ret = parameterValueService.update(1l, newEntry);
-		assertEquals(parameterValue.getId(), ret.getId());
-		assertEquals(parameterValue.getValue(), ret.getValue());
-		assertEquals(expense.getId(), ret.getExpense().getId());
-		assertEquals(typeParameter.getId(), ret.getTypeParameter().getId());
+		assertEquals(1l, ret.getId().longValue());
+		assertEquals(newEntry.getValue(), ret.getValue());
 	}
 
 	@Test

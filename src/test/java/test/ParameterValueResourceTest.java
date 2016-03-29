@@ -79,27 +79,24 @@ public class ParameterValueResourceTest extends ResourceTest {
 		admin.setTypeParameter(type);
 		Response response = target("parameterValue").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
 	public void testSaveParameterValue() {
 		ParameterValueSendto admin = new ParameterValueSendto();
-		admin.setValue("Tanin");
 		ParameterValueSendto.Expense expense = new ParameterValueSendto.Expense();
-		expense.setId(1L);
+		expense.setId(2L);
 		admin.setExpense(expense);
 
 		ParameterValueSendto.TypeParameter type = new ParameterValueSendto.TypeParameter();
-		type.setId(1L);
+		type.setId(2L);
 		admin.setTypeParameter(type);
 		Response response = target("parameterValue").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ParameterValueSendto sendto = response.readEntity(ParameterValueSendto.class);
 		assertEquals(3l, sendto.getId().longValue());
-		assertEquals(admin.getValue(), sendto.getValue());
 		assertEquals(admin.getExpense().getId().longValue(), sendto.getExpense().getId().longValue());
 		assertEquals(admin.getTypeParameter().getId().longValue(), sendto.getTypeParameter().getId().longValue());
 	}

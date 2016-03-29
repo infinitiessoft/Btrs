@@ -3,6 +3,8 @@ package serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +14,6 @@ import dao.ReportDao;
 import dao.StatusChangesDao;
 import dao.UserDao;
 import entity.StatusChanges;
-import enumpackage.StatusEnum;
 import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
 import exceptions.UserNotFoundException;
@@ -22,6 +23,7 @@ import service.StatusChangesService;
 
 public class StatusChangesServiceImpl implements StatusChangesService {
 
+	private static final Logger logger = LoggerFactory.getLogger(StatusChangesServiceImpl.class);
 	private StatusChangesDao statusChangesDao;
 	private ReportDao reportDao;
 	private UserDao userDao;
@@ -47,10 +49,16 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		ret.setId(status.getId());
 		ret.setCreatedDate(status.getCreatedDate());
 		ret.setComment(status.getComment());
+		ret.setValue(status.getValue());
 
 		StatusChangesSendto.Report rpt = new StatusChangesSendto.Report();
 		rpt.setId(status.getReport().getId());
 		ret.setReport(rpt);
+
+		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		user.setRevisor_id(status.getUser().getId());
+		ret.setUser(user);
+
 		return ret;
 	}
 
@@ -58,8 +66,11 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 	@Override
 	public void delete(long id) {
 		try {
-
-			statusChangesDao.delete(id);
+			StatusChanges statusChanges = statusChangesDao.findOne(id);
+			if (statusChanges == null) {
+				throw new StatusChangesNotFoundException(id);
+			}
+			statusChangesDao.delete(statusChanges);
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			throw new StatusChangesNotFoundException(id);
 		}
@@ -71,8 +82,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		statusChanges.setId(null);
 		StatusChanges newEntry = new StatusChanges();
 		setUpStatusChanges(statusChanges, newEntry);
-		newEntry = statusChangesDao.save(newEntry);
-		return toStatusChangesSendto(newEntry);
+		return toStatusChangesSendto(statusChangesDao.save(newEntry));
 	}
 
 	@Transactional
@@ -116,6 +126,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		}
 		if (sendto.isUserSet()) {
 			if (sendto.getUser().isIdSet()) {
+				logger.debug("find user in setUpStatusChanges id: {}", sendto.getUser().getRevisor_id());
 				entity.User user = userDao.findOne(sendto.getUser().getRevisor_id());
 				if (user == null) {
 					throw new UserNotFoundException(sendto.getUser().getRevisor_id());
@@ -126,28 +137,6 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		if (sendto.isValueSet()) {
 			newEntry.setValue(sendto.getValue());
 		}
-	}
-
-	@Override
-	public StatusChangesSendto reject(long id) {
-		StatusChanges status = statusChangesDao.findOne(id);
-		if (status == null) {
-			throw new StatusChangesNotFoundException(id);
-		}
-		status.setStatus(StatusEnum.reject);
-		status = statusChangesDao.save(status);
-		return toStatusChangesSendto(status);
-	}
-
-	@Override
-	public StatusChangesSendto permit(long id) {
-		StatusChanges status = statusChangesDao.findOne(id);
-		if (status == null) {
-			throw new StatusChangesNotFoundException(id);
-		}
-		status.setStatus(StatusEnum.approved);
-		status = statusChangesDao.save(status);
-		return toStatusChangesSendto(status);
 	}
 
 }
