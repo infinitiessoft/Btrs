@@ -8,74 +8,61 @@ import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.ParameterValueResource;
-import sendto.RoleSendto;
+import resources.Type.ExpenseTypeResource;
+import sendto.TypeParameterSendto;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExpenseTypeParaResourceTest extends ResourceTest {
 	@Test
-	public void testFindAllParameterValue() {
-		Response response = target("expenseType").path("2").path("parameterValue").register(JacksonFeature.class)
+	public void testFindAllTypeParameter() {
+		Response response = target("expenseType").path("2").path("typeParameter").register(JacksonFeature.class)
 				.request().header("user", "user").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		PageModel<RoleSendto> rets = response.readEntity(new GenericType<PageModel<RoleSendto>>() {
+		PageModel<TypeParameterSendto> rets = response.readEntity(new GenericType<PageModel<TypeParameterSendto>>() {
 		});
 		assertEquals(1, rets.getTotalElements());
 	}
 
 	@Test
-	public void testFindParameterValue() {
-		Response response = target("expenseType").path("2").path("parameterValue").path("2")
+	public void testFindTypeParameter() {
+		Response response = target("expenseType").path("2").path("typeParameter").path("2")
 				.register(JacksonFeature.class).request().header("user", "user").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		RoleSendto transfer = response.readEntity(RoleSendto.class);
-		assertEquals(2l, transfer.getId().longValue());
+		TypeParameterSendto sendto = response.readEntity(TypeParameterSendto.class);
+		assertEquals(2l, sendto.getId().longValue());
 	}
 
 	@Test
-	public void testFindParameterValueWithNotFoundException() {
-		Response response = target("expenseType").path("2").path("parameterValue").path("4")
+	public void testFindTypeParameterWithNotFoundException() {
+		Response response = target("expenseType").path("2").path("typeParameter").path("4")
 				.register(JacksonFeature.class).request().header("user", "user").get();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testAssignParameterValueToExpenseType() {
+	public void testAssignTypeParameterToExpenseType() {
 		Response response = target("expenseType").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("parameterValue").path("1").register(JacksonFeature.class).request()
+				.path("2").path("typeParameter").path("1").register(JacksonFeature.class).request()
 				.header("user", "user").put(null);
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testAssignParameterValueToExpenseTypeWithParameterValueNotFound() {
+	public void testRevokeTypeParameterToExpenseType() {
 		Response response = target("expenseType").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("parameterValue").path("4").register(JacksonFeature.class).request()
-				.header("user", "user").put(null);
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testRevokeParameterValueToExpenseParameterValue() {
-		Response response = target("expenseType").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("parameterValue").path("2").register(JacksonFeature.class).request()
+				.path("2").path("typeParameter").path("2").register(JacksonFeature.class).request()
 				.header("user", "user").delete();
-		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testRevokeParameterValueToExpenseTypeWithParameterValueNotFound() {
-		Response response = target("expenseType").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("parameterValue").path("3").register(JacksonFeature.class).request()
-				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Override
 	protected Class<?>[] getResource() {
-		return new Class<?>[] { ParameterValueResource.class };
+		return new Class<?>[] { ExpenseTypeResource.class };
 	}
 }

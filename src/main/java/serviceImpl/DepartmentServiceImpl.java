@@ -94,9 +94,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		if (sendto.isCommentSet()) {
 			newEntry.setComment(sendto.getComment());
 		}
-		if (sendto.isIdSet()) {
-			newEntry.setId(sendto.getId());
-		}
+
 	}
 
 	private DepartmentSendto toDepartmentSendto(Department department) {

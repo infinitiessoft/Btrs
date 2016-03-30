@@ -18,20 +18,20 @@ import org.springframework.stereotype.Component;
 
 import resources.specification.ExpenseTypeParaSpecification;
 import resources.specification.SimplePageRequest;
-import sendto.ExpenseTypeParaSendto;
+import sendto.TypeParameterSendto;
 import service.ExpenseTypeParaService;
 
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path(value = "/expTypePara")
+
 public class ExpenseTypeParaResource {
 
 	@Autowired
 	private ExpenseTypeParaService expTypeParaService;
 
 	@GET
-	public Page<ExpenseTypeParaSendto> findAllParameterValue(@PathParam("id") long id,
+	public Page<TypeParameterSendto> findAllExpenseType(@PathParam("id") long id,
 			@BeanParam ExpenseTypeParaSpecification spec, @BeanParam SimplePageRequest pageRequest) {
 		spec.setExpenseTypeId(id);
 		return expTypeParaService.findAll(spec, pageRequest);
@@ -39,14 +39,14 @@ public class ExpenseTypeParaResource {
 
 	@GET
 	@Path(value = "{typeParameterId}")
-	public ExpenseTypeParaSendto findParameterValue(@PathParam("id") long id,
+	public TypeParameterSendto findTypeParameter(@PathParam("id") long id,
 			@PathParam("typeParameterId") long typeParameterId) {
-		return expTypeParaService.findByExpenseTypeIdAndParameterValueId(id, typeParameterId);
+		return expTypeParaService.findByExpenseTypeIdAndTypeParameterId(id, typeParameterId);
 	}
 
 	@PUT
 	@Path(value = "{typeParameterId}")
-	public Response assignParameterValueToExpenseType(@PathParam("id") long id,
+	public Response assignTypeParameterToExpenseType(@PathParam("id") long id,
 			@PathParam("typeParameterId") long typeParameterId) {
 		expTypeParaService.grantTypeParameterToExpenseType(typeParameterId, id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
@@ -54,7 +54,7 @@ public class ExpenseTypeParaResource {
 
 	@DELETE
 	@Path(value = "{typeParameterId}")
-	public Response revokeParameterValueToExpenseType(@PathParam("id") long id,
+	public Response revokeTypeParameterToExpenseType(@PathParam("id") long id,
 			@PathParam("typeParameterId") long typeParameterId) {
 		expTypeParaService.revokeTypeParameterFromExpenseType(typeParameterId, id);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();

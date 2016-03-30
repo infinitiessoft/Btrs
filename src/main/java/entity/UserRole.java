@@ -21,11 +21,11 @@ public class UserRole extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id", nullable = true)
+	@JoinColumn(name = "role_id")
 	private Role role;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", nullable = true)
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public UserRole() {

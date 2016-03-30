@@ -20,7 +20,8 @@ public class ExpenseResourceTest extends ResourceTest {
 
 	@Test
 	public void testGetExpense() {
-		Response response = target("expense").path("1").register(JacksonFeature.class).request().get();
+		Response response = target("expense").path("1").register(JacksonFeature.class).request().header("user", "demo")
+				.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		ExpenseSendto sendto = response.readEntity(ExpenseSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
@@ -32,7 +33,7 @@ public class ExpenseResourceTest extends ResourceTest {
 	@Test
 	public void testGetExpenseWithNotFoundException() {
 		Response response = target("expense").path("3").register(JacksonFeature.class).request().get();
-		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		AssertUtils.assertNotFound(response);
 	}
 
 	@Test

@@ -63,7 +63,10 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeDao).delete(1L);
+				exactly(1).of(expenseTypeDao).delete(expenseType);
+
+				exactly(1).of(expenseTypeDao).findOne(1L);
+				will(returnValue(expenseType));
 
 			}
 		});

@@ -9,16 +9,9 @@ public class DepartmentSendto {
 	private Long id;
 	private String name;
 	private String comment;
-	private boolean isIdSet;
 
 	public DepartmentSendto() {
-
-	}
-
-	public DepartmentSendto(Long id, String name, String comment) {
-		this.id = id;
-		this.name = name;
-		this.comment = comment;
+		super();
 	}
 
 	public Long getId() {
@@ -26,9 +19,6 @@ public class DepartmentSendto {
 	}
 
 	public void setId(Long id) {
-		if (id != null) {
-			this.isIdSet = true;
-		}
 		this.id = id;
 	}
 
@@ -75,16 +65,6 @@ public class DepartmentSendto {
 	@XmlTransient
 	public void setCommentSet(boolean isCommentSet) {
 		this.isCommentSet = isCommentSet;
-	}
-
-	@XmlTransient
-	public boolean isIdSet() {
-		return isIdSet;
-	}
-
-	@XmlTransient
-	public void setIdSet(boolean isIdSet) {
-		this.isIdSet = isIdSet;
 	}
 
 }

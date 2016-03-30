@@ -17,7 +17,7 @@ import exceptions.ExpenseTypeNotFoundException;
 import exceptions.TypeParameterAssignmentNotFoundException;
 import exceptions.TypeParameterNotFoundException;
 import resources.specification.ExpenseTypeParaSpecification;
-import sendto.ExpenseTypeParaSendto;
+import sendto.TypeParameterSendto;
 import service.ExpenseTypeParaService;
 
 public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
@@ -34,47 +34,40 @@ public class ExpenseTypeParaServiceImpl implements ExpenseTypeParaService {
 	}
 
 	@Override
-	public Page<ExpenseTypeParaSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable) {
-		List<ExpenseTypeParaSendto> sendto = new ArrayList<ExpenseTypeParaSendto>();
-		Page<ExpenseTypePara> expenseTypeParas = expenseTypeParaDao.findAll(spec, pageable);
-		for (ExpenseTypePara expenseTypePara : expenseTypeParas) {
-			sendto.add(ExpenseTypeParaServiceImpl.toExpenseTypeParaSendto(expenseTypePara));
-		}
-		Page<ExpenseTypeParaSendto> rets = new PageImpl<ExpenseTypeParaSendto>(sendto, pageable,
-				expenseTypeParas.getTotalElements());
-		return rets;
-	}
-
-	private static ExpenseTypeParaSendto toExpenseTypeParaSendto(ExpenseTypePara expenseTypePara) {
-		ExpenseTypeParaSendto expenseTypeParaSendto = new ExpenseTypeParaSendto();
-		expenseTypeParaSendto.setId(expenseTypePara.getId());
-		expenseTypeParaSendto.getExpenseType().setId(expenseTypePara.getExpenseType().getId());
-		expenseTypeParaSendto.getTypeParameter().setId(expenseTypePara.getTypeParameter().getId());
-		return expenseTypeParaSendto;
-	}
-
-	@Override
-	public ExpenseTypeParaSendto findByExpenseTypeIdAndParameterValueId(long expenseTypeId, long typeParameterId) {
+	public void revokeTypeParameterFromExpenseType(long expenseTypeId, long typeParameterId) {
 		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndTypeParameterId(expenseTypeId,
 				typeParameterId);
 		if (expenseTypePara == null) {
-			throw new TypeParameterAssignmentNotFoundException(typeParameterId, expenseTypeId);
-		}
-		return ExpenseTypeParaServiceImpl.toExpenseTypeParaSendto(expenseTypePara);
-	}
-
-	@Override
-	public void revokeTypeParameterFromExpenseType(long typeParameterId, long expenseTypeId) {
-		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndTypeParameterId(expenseTypeId,
-				typeParameterId);
-		if (expenseTypePara == null) {
-			throw new TypeParameterAssignmentNotFoundException(typeParameterId, expenseTypeId);
+			throw new TypeParameterAssignmentNotFoundException(expenseTypeId, typeParameterId);
 		}
 		expenseTypeParaDao.delete(expenseTypePara);
 	}
 
 	@Override
-	public void grantTypeParameterToExpenseType(long typeParameterId, long expenseTypeId) {
+	public Page<TypeParameterSendto> findAll(ExpenseTypeParaSpecification spec, Pageable pageable) {
+		List<TypeParameterSendto> sendto = new ArrayList<TypeParameterSendto>();
+		Page<ExpenseTypePara> expenseTypeParas = expenseTypeParaDao.findAll(spec, pageable);
+		for (ExpenseTypePara expense : expenseTypeParas) {
+			TypeParameter typeParameter = expense.getTypeParameter();
+			sendto.add(TypeParameterServiceImpl.toTypeParameterSendto(typeParameter));
+		}
+		Page<TypeParameterSendto> rets = new PageImpl<TypeParameterSendto>(sendto, pageable,
+				expenseTypeParas.getTotalElements());
+		return rets;
+	}
+
+	@Override
+	public TypeParameterSendto findByExpenseTypeIdAndTypeParameterId(long expenseTypeId, long typeParameterId) {
+		ExpenseTypePara expenseTypePara = expenseTypeParaDao.findByExpenseTypeIdAndTypeParameterId(expenseTypeId,
+				typeParameterId);
+		if (expenseTypePara == null) {
+			throw new TypeParameterAssignmentNotFoundException(expenseTypeId, typeParameterId);
+		}
+		return TypeParameterServiceImpl.toTypeParameterSendto(expenseTypePara.getTypeParameter());
+	}
+
+	@Override
+	public void grantTypeParameterToExpenseType(long expenseTypeId, long typeParameterId) {
 		ExpenseType expenseType = expenseTypeDao.findOne(expenseTypeId);
 		if (expenseType == null) {
 			throw new ExpenseTypeNotFoundException(expenseTypeId);

@@ -34,7 +34,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 
 	}
 
-	private TypeParameterSendto toTypeParameterSendto(TypeParameter type) {
+	public static TypeParameterSendto toTypeParameterSendto(TypeParameter type) {
 		TypeParameterSendto ret = new TypeParameterSendto();
 		ret.setId(type.getId());
 		ret.setValue(type.getValue());

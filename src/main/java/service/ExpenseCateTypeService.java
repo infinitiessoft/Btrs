@@ -8,11 +8,11 @@ import sendto.ExpenseTypeSendto;
 
 public interface ExpenseCateTypeService {
 
-	public void revokeExpenseTypeFromExpenseCategory(long expenseTypeId, long expenseCategoryId);
+	public void revokeExpenseTypeFromExpenseCategory(long expenseCategoryId, long expenseTypeId);
 
 	public Page<ExpenseTypeSendto> findAll(ExpenseCateTypeSpecification spec, Pageable pageable);
 
-	public ExpenseTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long expenseTypeId, long expenseCategoryId);
+	public ExpenseTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long expenseCategoryId, long expenseTypeId);
 
-	public void grantExpenseTypeToExpenseCategory(long expenseTypeId, long expenseCategoryId);
+	public void grantExpenseTypeToExpenseCategory(long expenseCategoryId, long expenseTypeId);
 }

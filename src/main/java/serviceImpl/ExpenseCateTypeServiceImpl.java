@@ -34,7 +34,7 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 	}
 
 	@Override
-	public void revokeExpenseTypeFromExpenseCategory(long expenseTypeId, long expenseCategoryId) {
+	public void revokeExpenseTypeFromExpenseCategory(long expenseCategoryId, long expenseTypeId) {
 		ExpenseCateType expenseCateType = expenseCateTypeDao.findByExpenseCategoryIdAndExpenseTypeId(expenseCategoryId,
 				expenseTypeId);
 		if (expenseCateType == null) {
@@ -57,7 +57,7 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 	}
 
 	@Override
-	public ExpenseTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long expenseTypeId, long expenseCategoryId) {
+	public ExpenseTypeSendto findByExpenseCategoryIdAndExpenseTypeId(long expenseCategoryId, long expenseTypeId) {
 		ExpenseCateType expenseCateType = expenseCateTypeDao.findByExpenseCategoryIdAndExpenseTypeId(expenseCategoryId,
 				expenseTypeId);
 		if (expenseCateType == null) {
@@ -67,7 +67,7 @@ public class ExpenseCateTypeServiceImpl implements ExpenseCateTypeService {
 	}
 
 	@Override
-	public void grantExpenseTypeToExpenseCategory(long expenseTypeId, long expenseCategoryId) {
+	public void grantExpenseTypeToExpenseCategory(long expenseCategoryId, long expenseTypeId) {
 		ExpenseCategory expenseCategory = expenseCategoryDao.findOne(expenseCategoryId);
 		if (expenseCategory == null) {
 			throw new ExpenseCategoryNotFoundException(expenseCategoryId);

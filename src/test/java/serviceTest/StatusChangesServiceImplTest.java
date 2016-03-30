@@ -50,6 +50,9 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 		report.setId(1L);
 		statusChanges.setReport(report);
 
+		user = new User();
+		user.setId(1L);
+		statusChanges.setUser(user);
 	}
 
 	@After
@@ -69,6 +72,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals("OKK", ret.getComment());
 		assertEquals(report.getId(), ret.getReport().getId());
+		assertEquals(user.getId(), ret.getUser().getRevisor_id());
 	}
 
 	@Test
