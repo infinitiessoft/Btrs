@@ -2,24 +2,15 @@ package sendto;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Strings;
+
 public class ExpenseTypeSendto {
 	private Long id;
 	private Double taxPercent;
+	public String value;
 
 	private boolean isTaxPercentSet;
 	private boolean isValueSet;
-	public String Value;
-
-	public String getValue() {
-		return Value;
-	}
-
-	public void setValue(String value) {
-		if (value != null) {
-			setValueSet(true);
-		}
-		Value = value;
-	}
 
 	public ExpenseTypeSendto() {
 		super();
@@ -39,9 +30,20 @@ public class ExpenseTypeSendto {
 
 	public void setTaxPercent(Double taxPercent) {
 		if (taxPercent != null) {
-			this.isTaxPercentSet = true;
+			isTaxPercentSet = true;
 		}
 		this.taxPercent = taxPercent;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		if (!Strings.isNullOrEmpty(value)) {
+			isValueSet = true;
+		}
+		this.value = value;
 	}
 
 	@XmlTransient

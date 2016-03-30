@@ -20,7 +20,7 @@ import entity.ExpenseTypePara;
 import entity.TypeParameter;
 import resources.specification.ExpenseTypeParaSpecification;
 import resources.specification.SimplePageRequest;
-import sendto.ExpenseTypeParaSendto;
+import sendto.TypeParameterSendto;
 import serviceImpl.ExpenseTypeParaServiceImpl;
 
 public class ExpenseTypeParaServiceImplTest extends ServiceTest {
@@ -68,7 +68,7 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 				will(returnValue(expenseTypePara));
 			}
 		});
-		ExpenseTypeParaSendto ret = expenseTypeParaService.findByExpenseTypeIdAndParameterValueId(typeParameter.getId(),
+		TypeParameterSendto ret = expenseTypeParaService.findByExpenseTypeIdAndTypeParameterId(typeParameter.getId(),
 				expenseType.getId());
 		assertEquals(typeParameter.getId(), ret.getId());
 	}
@@ -121,9 +121,9 @@ public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 				will(returnValue(page));
 			}
 		});
-		Page<ExpenseTypeParaSendto> rets = expenseTypeParaService.findAll(spec, pageable);
+		Page<TypeParameterSendto> rets = expenseTypeParaService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
-		ExpenseTypeParaSendto ret = rets.iterator().next();
+		TypeParameterSendto ret = rets.iterator().next();
 		assertEquals(typeParameter.getId(), ret.getId());
 	}
 }

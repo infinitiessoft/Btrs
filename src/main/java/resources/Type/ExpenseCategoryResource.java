@@ -60,4 +60,9 @@ public class ExpenseCategoryResource {
 		return expenseCategoryService.findAll(spec, pageRequest);
 	}
 
+	@Path("{id}/expenseType")
+	public Class<ExpenseCateTypeResource> getExpenseCateTypeResource() {
+		return ExpenseCateTypeResource.class;
+	}
+
 }

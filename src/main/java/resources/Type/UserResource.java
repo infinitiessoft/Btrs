@@ -58,4 +58,9 @@ public class UserResource {
 		return userService.findAll(spec, pageRequest);
 	}
 
+	@Path("{id}/role")
+	public Class<UserRoleResource> getUserRolesResource() {
+		return UserRoleResource.class;
+	}
+
 }

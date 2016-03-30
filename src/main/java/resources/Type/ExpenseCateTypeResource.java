@@ -24,7 +24,6 @@ import service.ExpenseCateTypeService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path(value = "/expCateType")
 public class ExpenseCateTypeResource {
 
 	@Autowired
@@ -40,14 +39,14 @@ public class ExpenseCateTypeResource {
 	@GET
 	@Path(value = "{ expenseTypeid}")
 	public ExpenseTypeSendto findExpenseType(@PathParam("id") long id, @PathParam("expenseTypeid") long expenseTypeId) {
-		return expCateTypeService.findByExpenseCategoryIdAndExpenseTypeId(expenseTypeId, id);
+		return expCateTypeService.findByExpenseCategoryIdAndExpenseTypeId(id, expenseTypeId);
 	}
 
 	@PUT
 	@Path(value = "{ expenseTypeid}")
 	public Response assignExpenseTypeToExpenseCategory(@PathParam("id") long id,
 			@PathParam("expenseTypeid") long expenseTypeId) {
-		expCateTypeService.grantExpenseTypeToExpenseCategory(expenseTypeId, id);
+		expCateTypeService.grantExpenseTypeToExpenseCategory(id, expenseTypeId);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
@@ -55,7 +54,7 @@ public class ExpenseCateTypeResource {
 	@Path(value = "{ expenseTypeid}")
 	public Response revokeExpenseTypeToExpenseCategory(@PathParam("id") long id,
 			@PathParam("expenseTypeid") long expenseTypeId) {
-		expCateTypeService.revokeExpenseTypeFromExpenseCategory(expenseTypeId, id);
+		expCateTypeService.revokeExpenseTypeFromExpenseCategory(id, expenseTypeId);
 		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 }

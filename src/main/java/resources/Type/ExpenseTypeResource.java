@@ -22,8 +22,9 @@ import sendto.ExpenseTypeSendto;
 import service.ExpenseTypeService;
 
 @Path(value = "/expenseType")
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+
 public class ExpenseTypeResource {
 	@Autowired
 	private ExpenseTypeService expenseTypeService;
@@ -56,6 +57,11 @@ public class ExpenseTypeResource {
 	public Page<ExpenseTypeSendto> findallExpenseType(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ExpenseTypeSpecification spec) {
 		return expenseTypeService.findAll(spec, pageRequest);
+	}
+
+	@Path("{id}/typeParameter")
+	public Class<ExpenseTypeParaResource> getExpenseTypeParaResource() {
+		return ExpenseTypeParaResource.class;
 	}
 
 }

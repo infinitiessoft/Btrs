@@ -22,11 +22,11 @@ public class ExpenseTypePara extends AbstractEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "type_id", nullable = false)
+	@JoinColumn(name = "type_id")
 	private ExpenseType expenseType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "type_parameter_id", nullable = false)
+	@JoinColumn(name = "type_parameter_id")
 	private TypeParameter typeParameter;
 
 	public ExpenseTypePara() {

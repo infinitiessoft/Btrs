@@ -12,6 +12,7 @@ public class TypeParameterSendto {
 	private boolean isValueSet;
 
 	public TypeParameterSendto() {
+		super();
 	}
 
 	public TypeParameterSendto(Long id) {

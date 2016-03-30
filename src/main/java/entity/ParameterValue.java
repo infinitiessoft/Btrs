@@ -9,11 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "parameters_values", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "parameter_id", "expense_id" }) })
+@Table(name = "parameters_values")
 public class ParameterValue extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 

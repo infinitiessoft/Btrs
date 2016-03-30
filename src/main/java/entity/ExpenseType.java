@@ -26,10 +26,10 @@ public class ExpenseType extends AbstractEntity {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
 	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
-	@Column(name = "value", nullable = false)
+	@Column(name = "value")
 	private String value;
 
-	@Column(name = "tax_percent", nullable = false)
+	@Column(name = "tax_percent")
 	private Double taxPercent;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
@@ -38,15 +38,8 @@ public class ExpenseType extends AbstractEntity {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
 
-	@Override
-	public String toString() {
-		return "ExpenseType [id=" + id + ", value=" + value + ", taxPercent=" + taxPercent + ", expenses=" + expenses
-				+ "]";
-	}
-
 	public ExpenseType() {
-
-		this.taxPercent = 0.0;
+		super();
 	}
 
 	public Long getId() {

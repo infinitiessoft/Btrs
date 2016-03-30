@@ -12,10 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "departments", uniqueConstraints = @UniqueConstraint(columnNames = "name") )
+@Table(name = "departments")
 public class Department extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -29,8 +28,12 @@ public class Department extends AbstractEntity {
 	@Column(name = "comment")
 	private String comment;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.REMOVE)
 	private Set<User> users = new HashSet<User>(0);
+
+	public Department() {
+		super();
+	}
 
 	public Long getId() {
 		return id;
@@ -56,16 +59,12 @@ public class Department extends AbstractEntity {
 		this.comment = comment;
 	}
 
-	public Set<User> getEvents() {
+	public Set<User> getUsers() {
 		return users;
 	}
 
-	public void setEvents(Set<User> users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
-	}
-
-	public Department() {
-		super();
 	}
 
 	@Override

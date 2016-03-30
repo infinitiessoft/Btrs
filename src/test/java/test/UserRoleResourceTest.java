@@ -8,19 +8,22 @@ import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.UserResource;
 import sendto.RoleSendto;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserRoleResourceTest extends ResourceTest {
 
 	@Test
 	public void testFindAllRole() {
 		Response response = target("user").path("2").path("role").register(JacksonFeature.class).request()
-				.header("user", "user").get();
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		PageModel<RoleSendto> rets = response.readEntity(new GenericType<PageModel<RoleSendto>>() {
 		});
@@ -30,7 +33,7 @@ public class UserRoleResourceTest extends ResourceTest {
 	@Test
 	public void testFindRole() {
 		Response response = target("user").path("2").path("role").path("2").register(JacksonFeature.class).request()
-				.header("user", "user").get();
+				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		RoleSendto transfer = response.readEntity(RoleSendto.class);
 		assertEquals(2l, transfer.getId().longValue());
@@ -46,33 +49,17 @@ public class UserRoleResourceTest extends ResourceTest {
 	@Test
 	public void testAssignRoleToUser() {
 		Response response = target("user").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("role").path("1").register(JacksonFeature.class).request().header("user", "user")
+				.path("2").path("role").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.put(null);
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testAssignRoleToUserWithRoleNotFound() {
-		Response response = target("user").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("role").path("4").register(JacksonFeature.class).request().header("user", "user")
-				.put(null);
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void testRevokeRoleToUser() {
 		Response response = target("user").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("role").path("2").register(JacksonFeature.class).request().header("user", "user")
+				.path("2").path("role").path("2").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
-	}
-
-	@Test
-	public void testRevokeRoleToUserWithRoleNotFound() {
-		Response response = target("user").property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true)
-				.path("2").path("role").path("3").register(JacksonFeature.class).request().header("user", "user")
-				.delete();
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Override
