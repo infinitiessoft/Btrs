@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -15,8 +16,9 @@ import entity.ExpenseTypePara;
 import entity.ParameterValue;
 
 public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePara> {
-
+	@QueryParam("expenseTypeId")
 	private Long expenseTypeId;
+	@QueryParam("typeParameterId")
 	private Long typeParameterId;
 
 	@Override

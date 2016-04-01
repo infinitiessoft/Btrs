@@ -62,6 +62,15 @@ public class TypeParameterResourceTest extends ResourceTest {
 	}
 
 	@Test
+	public void testUpdateTypeParameterWithNotFoundException() {
+		TypeParameterSendto admin = new TypeParameterSendto();
+		admin.setValue("PERSONS");
+		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").put(Entity.json(admin));
+		AssertUtils.assertNotFound(response);
+	}
+
+	@Test
 	public void testSaveTypeParameter() {
 		TypeParameterSendto admin = new TypeParameterSendto();
 		admin.setValue("demo");
