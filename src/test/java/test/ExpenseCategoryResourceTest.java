@@ -63,6 +63,16 @@ public class ExpenseCategoryResourceTest extends ResourceTest {
 	}
 
 	@Test
+	public void testUpdateExpenseCategoryWithNotFoundException() {
+		ExpenseCategorySendto admin = new ExpenseCategorySendto();
+		admin.setName_key("administrator");
+		admin.setCode("transportation");
+		Response response = target("expenseCategory").path("3").register(JacksonFeature.class).request()
+				.header("user", "demo").put(Entity.json(admin));
+		AssertUtils.assertNotFound(response);
+	}
+
+	@Test
 	public void testSaveExpenseCategory() {
 		ExpenseCategorySendto admin = new ExpenseCategorySendto();
 		admin.setName_key("category.transport");

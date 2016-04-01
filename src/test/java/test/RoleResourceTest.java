@@ -64,6 +64,16 @@ public class RoleResourceTest extends ResourceTest {
 	}
 
 	@Test
+	public void testUpdateRoleWithNotFoundException() {
+		RoleSendto admin = new RoleSendto();
+		admin.setValue("value");
+
+		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
+				.put(Entity.json(admin));
+		AssertUtils.assertNotFound(response);
+	}
+
+	@Test
 	public void testSaveRole() {
 		RoleSendto admin = new RoleSendto();
 		Response response = target("role").register(JacksonFeature.class).request().header("user", "demo")

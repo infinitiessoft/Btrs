@@ -81,6 +81,24 @@ public class PhotoResourceTest extends ResourceTest {
 	}
 
 	@Test
+	public void testUpdatePhotoWithNotFoundException() {
+		PhotoSendto admin = new PhotoSendto();
+		admin.setFileName("Expense");
+		admin.setContentType("image/jpeg");
+		admin.setSize(617386);
+		admin.setUploadDate(new Date());
+		admin.setTitle("DSC_0130.jpg");
+
+		PhotoSendto.Report rpt = new PhotoSendto.Report();
+		rpt.setId(2L);
+		admin.setReport(rpt);
+
+		Response response = target("photo").path("3").register(JacksonFeature.class).request().header("user", "demo")
+				.put(Entity.json(admin));
+		AssertUtils.assertNotFound(response);
+	}
+
+	@Test
 	public void testSavePhoto() {
 		PhotoSendto admin = new PhotoSendto();
 		admin.setFileName("DSC_0131.jpg");

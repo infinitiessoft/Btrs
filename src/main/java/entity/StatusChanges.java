@@ -14,8 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import enumpackage.StatusEnum;
-
 @Entity
 @Table(name = "status_changes")
 public class StatusChanges extends AbstractEntity {
@@ -104,10 +102,6 @@ public class StatusChanges extends AbstractEntity {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
-	}
-
-	public void setStatus(StatusEnum reject) {
-
 	}
 
 	@Override
