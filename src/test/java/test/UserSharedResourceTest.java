@@ -19,7 +19,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.UserSharedResource;
+import resources.Type.admin.UserSharedResource;
 import sendto.UserSharedSendto;
 
 public class UserSharedResourceTest extends ResourceTest {

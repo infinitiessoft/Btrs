@@ -15,7 +15,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.PhotoResource;
+import resources.Type.admin.PhotoResource;
 import sendto.PhotoSendto;
 
 public class PhotoResourceTest extends ResourceTest {

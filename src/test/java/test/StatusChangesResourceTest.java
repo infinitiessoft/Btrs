@@ -15,7 +15,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.StatusChangesResource;
+import resources.Type.admin.StatusChangesResource;
 import sendto.StatusChangesSendto;
 
 public class StatusChangesResourceTest extends ResourceTest {

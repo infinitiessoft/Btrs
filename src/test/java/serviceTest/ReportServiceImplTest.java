@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jmock.Expectations;
-import org.jmock.api.Invocation;
-import org.jmock.lib.action.CustomAction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import dao.ReportDao;
+import dao.UserDao;
 import entity.Report;
+import entity.User;
 import resources.specification.ReportSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
@@ -25,17 +25,27 @@ public class ReportServiceImplTest extends ServiceTest {
 
 	private ReportDao reportDao;
 	private ReportServiceImpl reportService;
+	private UserDao userDao;
 
 	private Report report;
+	private User user;
 
 	@Before
 	public void setUp() throws Exception {
 		reportDao = context.mock(ReportDao.class);
-		reportService = new ReportServiceImpl(reportDao);
+		reportService = new ReportServiceImpl(reportDao, userDao);
 		report = new Report();
 		report.setId(1L);
 		report.setReason("demo");
 		report.setComment("good");
+
+		user = new User();
+		user.setId(1L);
+		report.setOwner(user);
+
+		user = new User();
+		user.setId(1L);
+		report.setReviewer(user);
 
 	}
 
@@ -76,27 +86,20 @@ public class ReportServiceImplTest extends ServiceTest {
 	@Test
 	public void testSave() {
 		final ReportSendto newEntry = new ReportSendto();
-		newEntry.setReason("trip");
+
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(reportDao).save(with(any(Report.class)));
-				will(new CustomAction("save Report") {
 
-					@Override
-					public Object invoke(Invocation invocation) throws Throwable {
-						Report e = (Report) invocation.getParameter(0);
-						e.setId(2L);
-						return e;
-					}
-				});
+				exactly(1).of(reportDao).save(with(any(Report.class)));
+				will(returnValue(report));
+
 			}
 		});
 		ReportSendto ret = reportService.save(newEntry);
-		assertEquals(2l, ret.getId().longValue());
-		assertEquals(newEntry.getReason(), ret.getReason());
-		assertEquals(newEntry.getComment(), ret.getComment());
-
+		assertEquals(report.getId(), ret.getId());
+		assertEquals(report.getCreatedDate(), ret.getCreatedDate());
+		assertEquals(report.getComment(), ret.getComment());
 	}
 
 	@Test

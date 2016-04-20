@@ -13,7 +13,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.DepartmentResource;
+import resources.Type.admin.DepartmentResource;
 import sendto.DepartmentSendto;
 
 public class DepartmentResourceTest extends ResourceTest {

@@ -6,8 +6,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Strings;
 
-import entity.User;
-
 public class ReportSendto {
 
 	private Long id;
@@ -323,4 +321,58 @@ public class ReportSendto {
 		this.isAttendanceRecordIdSet = isAttendanceRecordIdSet;
 	}
 
+	public static class User {
+		private Long owner_id;
+		private Long reviewer_id;
+
+		private Boolean isOwnerIdSet;
+		private Boolean isReviewerIdSet;
+
+		public User() {
+			super();
+		}
+
+		public Long getOwner_id() {
+			return owner_id;
+		}
+
+		public void setOwner_id(Long owner_id) {
+			if (owner_id != null) {
+				isOwnerIdSet = true;
+			}
+			this.owner_id = owner_id;
+		}
+
+		public Long getReviewer_id() {
+			return reviewer_id;
+		}
+
+		public void setReviewer_id(Long reviewer_id) {
+			if (reviewer_id != null) {
+				isReviewerIdSet = true;
+			}
+			this.reviewer_id = reviewer_id;
+		}
+
+		@XmlTransient
+		public boolean isOwnerIdSet() {
+			return isOwnerIdSet;
+		}
+
+		@XmlTransient
+		public void setIsOwnerIdSet(boolean isOwnerIdSet) {
+			this.isOwnerIdSet = isOwnerIdSet;
+		}
+
+		@XmlTransient
+		public boolean isReviewerIdSet() {
+			return isReviewerIdSet;
+		}
+
+		@XmlTransient
+		public void setIsReviewerIdSet(boolean isReviewerIdSet) {
+			this.isReviewerIdSet = isReviewerIdSet;
+		}
+
+	}
 }

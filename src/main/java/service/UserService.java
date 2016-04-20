@@ -18,4 +18,6 @@ public interface UserService {
 
 	public UserSendto update(long id, UserSendto user);
 
+	public UserSendto findByUserSharedId(long id);
+
 }

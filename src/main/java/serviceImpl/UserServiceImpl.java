@@ -128,4 +128,9 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public UserSendto findByUserSharedId(long id) {
+		return toUserSendto(userDao.findByUserSharedId(id));
+	}
+
 }

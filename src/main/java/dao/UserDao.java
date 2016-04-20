@@ -7,4 +7,6 @@ import entity.User;
 
 public interface UserDao extends PagingAndSortingRepository<User, Long>, JpaSpecificationExecutor<User> {
 
+	User findByUserSharedId(long id);
+
 }
