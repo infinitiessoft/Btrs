@@ -14,7 +14,7 @@ import org.junit.runners.MethodSorters;
 
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.UserResource;
+import resources.Type.admin.UserResource;
 import sendto.RoleSendto;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

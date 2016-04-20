@@ -13,7 +13,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.RoleResource;
+import resources.Type.admin.RoleResource;
 import sendto.RoleSendto;
 
 public class RoleResourceTest extends ResourceTest {

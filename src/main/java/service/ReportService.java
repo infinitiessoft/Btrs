@@ -19,4 +19,6 @@ public interface ReportService {
 
 	public ReportSendto update(long id, ReportSendto report);
 
+	public ReportSendto findByOwnerId(long id);
+
 }

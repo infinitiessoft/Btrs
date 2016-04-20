@@ -24,7 +24,22 @@
 
 	<task:annotation-driven executor="executor" />
 	<task:executor id="executor" pool-size="1" />
+	
+	<bean id="properties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:system.properties" />
+	</bean>
 
+	<!-- SET default mail properties -->
+
+	<bean id="mailService" class="mock.MockMailService">
+	</bean>
+
+	<bean id="mailWritter" class="util.MailWritterImpl">
+		<property name="header" value="${mail.header}" />
+		<property name="footer" value="${mail.footer}" />
+		<property name="systemUrl" value="${mail.footer}" />
+	</bean>
 
 	<!-- DATABASE SETUP -->
 
@@ -118,7 +133,7 @@
 
 	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
 		<constructor-arg ref="reportDao" />
-
+		<constructor-arg ref="userDao" />
 	</bean>
 
 

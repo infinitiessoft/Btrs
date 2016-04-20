@@ -14,7 +14,7 @@ import org.junit.runners.MethodSorters;
 
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.ExpenseTypeResource;
+import resources.Type.admin.ExpenseTypeResource;
 import sendto.TypeParameterSendto;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

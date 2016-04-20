@@ -13,7 +13,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.TypeParameterResource;
+import resources.Type.admin.TypeParameterResource;
 import sendto.TypeParameterSendto;
 
 public class TypeParameterResourceTest extends ResourceTest {

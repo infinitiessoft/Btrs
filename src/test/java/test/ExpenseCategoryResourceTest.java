@@ -13,7 +13,7 @@ import org.junit.Test;
 import assertion.AssertUtils;
 import entity.PageModel;
 import resources.ResourceTest;
-import resources.Type.ExpenseCategoryResource;
+import resources.Type.admin.ExpenseCategoryResource;
 import sendto.ExpenseCategorySendto;
 
 public class ExpenseCategoryResourceTest extends ResourceTest {
