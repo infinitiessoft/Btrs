@@ -67,26 +67,27 @@
           <div class="table">
             <table class="table table-striped">
               <thead>
-                <tr>
-                  <td>ID</td>
-                  <td>${userReport.id}</td>
-                  </tr>
-    			  <tr>
-                  <td>Created Date</td>
-                  <td>${userReport.createdDate}</td>
-                  </tr>
-                  <tr>
-                  <td>Current Status</td>
-                  <td>${userReport.currentStatus }</td>
-                  </tr>
-                  <tr>
-                  <td>End Date</td>
-                  <td>${userReport.endDate}</td>
-                  </tr>
-                  <tr>
-                  <td>Reason</td>
-                  <td>${userReport.reason }</td>
-                </tr>
+              <tr>  
+    <td class="heading">Id</td>  
+    <td class="heading">Created Date</td>  
+    <td class="heading">Current Status</td>  
+    <td class="heading">End Date</td>  
+    <td class="heading">Reason</td>  
+    <td class="heading">Edit</td>  
+    <td class="heading">Delete</td>  
+   </tr>  
+   <c:forEach var="userReport" items="${userData}">  
+    <tr>  
+     <td>${userReport.Id}</td>  
+     <td>${userReport.createdDate}</td>  
+     <td>${userReport.currentStatus}</td>  
+     <td>${userReport.endDate}</td>  
+     <td>${userReport.reason}</td>  
+     <td><a href="edit?id=${userReport.id}">Edit</a></td>  
+     <td><a href="delete?id=${userReport.id}">Delete</a></td>  
+    </tr>  
+   </c:forEach>  
+                
               </thead>
               <tbody>
               </tbody>
