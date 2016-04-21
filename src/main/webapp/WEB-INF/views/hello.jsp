@@ -119,7 +119,7 @@ alert(txt)
           <div class="para">
           <p>When report is submitted by employee the report that you want to review. Check the report information.</p>
           <div class="button">
-          <p><a class="btn btn-default" href="${pageContext.request.contextPath}/report/user/${pageContext.request.userPrincipal.name}"  role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="${pageContext.request.contextPath}/report/${pageContext.request.userPrincipal.name}"  role="button">View details &raquo;</a></p>
         </div>
         </div>
         </div>

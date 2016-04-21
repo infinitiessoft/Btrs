@@ -85,8 +85,14 @@ function isCheckedByGenger(gender) {
                         <div class="panel-heading" >
                             <h1>User Details</h1>
                         </div>
-                    <form action="" method="POST">
+                    <form action="${pageContext.request.contextPath}/save/${userData.id}" method="POST">
                     <div class="panel-body">
+                    <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin black"></i></span>
+                                <input type="text" name="InputName" placeholder="Id" class="form-control" autofocus="autofocus" value="${userData.id}">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user black"></i></span>
