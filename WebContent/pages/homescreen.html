@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> 
+   
+    
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <script src="http://code.angularjs.org/1.2.6/angular.js"></script>
+
+<style type="text/css">
+ .topcorner{
+   position:absolute;
+   top:20px;
+   right:6px;
+  }
+  .center{
+  	margin-left: 150px;
+    margin-right: 200px;
+    width: 5px;
+  }
+  .circle{
+   margin-left: 100px;
+   padding: 20px;
+  }
+  .para{
+  margin-left: 300px;
+  padding: 0px;
+  }
+  h3 { margin-bottom: 5px; }
+  p{margin:0;padding:5px}
+  .btn btn-default{
+  margin-left: 200px;
+  
+  }
+</style>
+
+</head>
+<!-- NAVBAR -->
+
+<body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Welcome :
+              <div class="topcorner">
+				<a ng-show="authenticated"><a href="" ng-click="logout()"><i class="glyphicon glyphicon-off"></i>Logout</a>
+				 
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+        <li><a href="#/"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+        <li><a href="#about"><i class="glyphicon glyphicon-user"></i> About</a></li>
+      </ul>            </div>
+          </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+      <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+        <div class="center">
+          <img class="first-slide" src="http://i2.cdn.turner.com/cnnnext/dam/assets/151008132701-new-york-city-exlarge-169.jpg"  alt="First slide" >
+         </div> 
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Business Trip Report System</h1>
+              <p> You're here to submit your Business Report </p>
+			</div>
+		  </div>
+		</div>
+      </div>
+	</div>
+<!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+		
+      <!-- Four columns of text below the carousel -->
+      <div class="circle">
+        <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="http://thumbs.dreamstime.com/z/data-reports-mis-concept-word-magnifying-glass-pen-45526121.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h3>My Reports</h3>
+          <p>When report is submitted by employee the report that you want to review. Check the report information.</p>
+          <p><a class="btn btn-default" href="#report" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUQEBASEBAPEA8PDw8PEBAQDw8PFRUWFhUVFRUYHSggGBolHhUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OFRAQGisfHR8tKystLS0rLSstLS0tLS0tLS0tLS0rKy0tKystKystLS0tLS0rLS0tLS0tNystLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAAABwEBAAAAAAAAAAAAAAAAAQIDBAUHBgj/xABIEAABAwIDBAcFBQQHBwUAAAABAAIDBBEFEiEGMUFREyJSYXGBkQdCobHBFCMyktEVU4KiVGJjcoPh8BYkdLLC0vEXM0NERf/EABkBAQEBAQEBAAAAAAAAAAAAAAABAgMEBf/EACQRAQACAQQBBQADAAAAAAAAAAABEQIDEiFBMQQTIlFhIzJx/9oADAMBAAIRAxEAPwDSWqvrwrFoUaojutMyoRGSdFIZROPBXFJSC+5WbKULpEsU5tuGEpxmD9y6MUwTrIVnLOljG1FDg45KfDhoHD4K2ZEl5Fn3La2K4UllEqoVcvCp8ec5jGSAhrekAde3WYQfrZMs4jmSMb4UNVEQVf7OxENud51VS6ndI4cl1dBT5WgLczwzEcpDlEniKnEJp4WYltQVQIVdLNZdBVxqhrI1pEU1QSHVQKizhRTvVErEndXyWcYs/rHxXb4jVWZbuXAYlJdx8VUV0pXQ7CQZpXO5AALm5Cun9nkwExaeNikI02Sn6gUR0Fl0cVLdqh1VGraqB5RxuSqqLKUwwoJW9WNGOqqgPVvSu6vkkhEhSmO0TUrkhsiypc0miXTHRQqiXRS6IHKiFYhboz4LjIX9bzXXYobMPguQiHWUahZtcgmc6JVGiOgTXQaq1MaSIVhOTVPCpgYjjjThYrZSK9JY9OyxFMthK1UTDMTMSkB6UHpsMRArG2G9xwi6otpqcTRTQHV32Z8sfc5hB0+CvA5U+LzZJ6d/uyPfTv8ACRpt/MGrEqrvZ9VCema46uYSx3iF2ICzf2ZyGGqqqN3uuc5o72uLT9FpKqkkpmRyeITUjFYEOd11TVzVbVMfJU1XJwK2ilqmqCTa6sp9VU177BVFDjVXwC5KqfqrfGJ9Vz08irJt7l0OwFM99W0t/CzV30XMOctm9lOzxji6V4s6Tra8BwSCWh0rLNHgmqqPRTwywUeduizbTjsUZqq5rVeYsxUpWkJeFY0D9FW8VYU4sEC50wxyKpkKEDLqBmpbopmH1FhYpM0WiXHHogg45U30HFUsTNVd11NoSqWF2p7io1BwsQROciVRrrgg0Iyg1cw40JaS1KWWgRWRoICsiLQlJqd5A03k2CTNERYSFo3my5nbGdhpnZHWkjcyVh/rMcHfRT8WmyNus02qx05HNC4Za0xNPVh6eMos5hmI5MVjnJsKhwLjw+8GvxutcnqWtFzr4alYNNJmgp6ge48xk+jh83KXQbTzMe5hkccriN53Lpnnthy09LfMw2CPEXvNmR2HN+ieqZCxuZxGm/Wy4TCdo5XneTbmulieZG9Zt/HVZjX/ABrL00x2Q3F4nG2ax7yo2It4g3VLj+CNvmjJjeNbA6HyVdhGJyXMUl9NLrrhqRlw5Z6c48rCSSxVHjM1gr5sGd4HNX5wBjm9ZoK6uUsIxao1VOXEmw1J0AHFbXjOw8TrkMHoqHCNjo4qgPcLhu4HddaZtVbGbAzTSMlnGWMEOyne7ldbrh1GI2hoGgFkxhwaGi1hopL6oDis5fUNRHZ+RwVfVTopJi5RpmhXHGlmVTiJuqeRquqnVVNQtMombVWEAuFWvbc6KxojlbqpKhUNsm4prKNiFeL2CRBLcKCVVVKlUstwqepfqn4XEBBLxeUBh8FydLLvPerPHKg5FQU0yjSxdJqgoXToKo3QoBEHX3I1zDjUpIalrLQIIIICcbancFFFQHXI3DQd5R4m0mJ1t9r6cQNSqh1YIohc2Jv4rlnlU07aeFxfaBtJU6WWTbWSWvbjcea77GK3OCb777tbLNdqMwNna3PVI3Febzk+hjjWCdsnJ01DUwHV0OSdncGmzv5Xn0VTWvLZA/hIxrj4jqn4hO7BVIZWticbMq2up3crvBaP+ZMY/G6MAEWdFK+N45X/AM2uXpy5xePD46rsdlMQbcNdx3HmVpv2d3R6G2ixTYOlknqGsZpEz7yWQi4jaPqdwC1bF9oGNHRs1AFr815+Iu3pyicpilFjVXJHvN+C58VR6aNzdM5IcFJxHFOkuLHfuPJUlc0iWLKbWJefBdNH+0OevFYTbRcLcOlF+C7FjtFjNBjp6fQ6DQrTsLr87RqvbL5ifVLm8UbxXSSG4VRiEN0glzE2KzM0a82UvCcWkcbON1Hq6TuQoIcpW7ZdbHPoolZVlJik0UerddRtAnr1WT1pKeq2qC9itoMVmqOfFjayjliJ9OCEsQRWEuuVaU1WFXGl1TrYFBPkqm3UyKqFlQOiN04A4IJG0FSMi5qnm0U/EgXCxVeynIRTxeiTJjKNQbviOMxQObDnBneDkj3uPeeQUXDmzEl88mZxOjWABjRwHf5rnKHYwCU1FVNLVzndJK6xa3kGtsAPAK+q8VpqUDpp44RwEj2g+QJUT/VlPPI0XY3MeAOiXhlRMW/fNa119zSSAFn2Oe1eli6tMDVOHvDqxD+I7/IFczWe1+reMkUEUbj793SHyGiHLdHVDRvIHiVBptoqWSb7MydjpgC4xtcCQB4Lz4+TEq27nyzEHi55jZbllFtFIwKkjo52TS1IY6M5rRG7u8ab1NsLcvR6zbbeR0cwaD1SwW5cQVBrfa81ukMBkt70hyA+QuVeTyRVsWZ+gLWvY8b2OIvp+i82vHEPZ6XKsplzULswVTjeHiVhYdDvY7su4eSnZshLb3LePNK6cOHevJ2+jEWy7M6KVjjdroZWkkbwWnWy6fH6r7fVuhp4XB1bI0tJIs198znEcGjrHfuVpjuDRVLTcCOQjqytGt+GYe8Pj3qNsU009X98AJGwSMYd7Tct1aeOl/ivRjqRMW8mehlGcOt6OKigFHSgnLrLJa75ZOLnEeHkuaqa51+tuOl1fVsulm7wb35nvVFWsB627UAgrlW7l6rjHgguFszjZrdSeQVbhrzUzOkBsxoyt8FTbTYve1PF+G/WcPeP6LpNkKcRxC+86levR065fP8AU6u6ahc0WDtab8d66nDLt0BVRTzBXNA5eh419TvJ3qSIAd6jU5U+NAz9gYeCAwxnJTAlBVERuHt5Izh7OSl3RFw5oID8KjPAJl+CRn3R6K0zDmhdUUj9nYj7oTZ2aj5BdAisg507LxcgiOzEfJdHZEQgzXarB3QDpIwSBvA5KhoK4SacVsFZStkaWuFwQsd2rwZ9HNnaPu3G45A8koPVESY6FCgrRIO9SyxQQTCgpmREoKD/AG6xmpaWxOfZ3vU9OAR3BxBsPj3qFTbF10zjLU/dA6vmqpOtbvJNynaz2g1rhkidHTM4Mp4mtsPE3K5ysr5ZTeWV8h5yPc75oroJMKw6n/8Acq3VLhvZTt6vhm3fFKl2piYMtJRxxgaZ5Ou8rlLpLpAFFW9Vjk8n4pXWPut6rfQKJ0qhNeT+EKxpaFx3hRbdnsJsM6vHSvl6KEG3VAL3eF9AtBx7C20EUbIi4xFuTrHMcw7/AD+CzzZSjqmEdA6RouDYEhvotliw37VTdFVXJNiHDRzHjc4d6xq4bsW9HU2ZxM+GYyPDj9Uy5hGqk4vhMlLKYpNwPVduD28CE3HJovBMVxL6+OUTzB6jhdICdNOPPuULG8Ndl6pyyM60T+y/l4HcVNpKoM6pNmuIN+R/RP47WMbEXvcA0C9/irEfTW/nnw5bCtp2Pb94cj26Oa7gRvHeoOLYuZTlZ1Wbr7s3+SosLtJLISPxudIByzOvb4rpDh4LDoNAXDnou2WOyeHnwznUxuVTS4cHOBOpvyXT0ZsAOSr6OI6cPFXdNEF20spny8vqNPHGYpNozqF0dEdAqWliCu6JtwF2iXlmF/Tu0uidX8kKUaKQaNjt49FvGu2JvpXTYi7t2UcYq8bpQe4qyqMDa4aOI+KqanZB5/DKPML1YZaXbhljn1JmoxWUuuX9Xk0hLixaM6Okc0nTU2UZ2xE1iemGb3QLgHxKqqjYqtPYP+IfqF2j2uphms+3bCjda4e6x70tlJJwe5c/gNHiUU0fTHPCOo4ZmmzeB7yNF3S8+pnOH1LeOF/aoEbm75bJ+OrAFtXHnZOvpRcmw1RiErM5Yz5WImPBDapx9zROCo5tKPoij6HvWJnFr5DbICq7H8HZUxOjcNSNDyKsWxJwhZmum4vt53xCmko5zG4EFp8nN4FdHQVTZGgjzXa+0PZYVcJliH38QLm298cWrHcMr3Qv1va9nt5LI7JxH+rIJgMY/r3/ABa70FnleGWF6bM3LXwUuDCnO3q6w3Z4usGtJ8tEVz0VO9/Cys6LAi47iT6rRMF2HJsZNO4LucK2ZjjAs0eiJbMsG2Jkfa7co7967rBtiI2WLhmPeuzp6MDcFMjhsoK+hwljNzQPJW8TLBABFI+yk8rHDjvapJC2kMkmkkbh0RG8uOhb4H6LJcOxMvvla7q2J0OgO5dR7V6/ppmU97RQh0sx5WF3edtB3uXQ7K7Hsio2dKy08w6ebm1z9Qz+Ftm+SzlpRk7aevljx04R1Tz/AEVHjPXAO/I4OtvFjofmtTr9nLbhcd4uqCrwFuoLBYgg9UcVzjRqbeifURljTNYD0E50uHNI5aHX6Kz/AGxcWAPlrp4qzdsxIHwyyuYGh0kZB3uaxt8xO4XBBVtHhUN7Ai44XF1qMYy8uUas43EKjCyZDyAHG6uHQWIF76E6K1osIv8Ag3d1vFW1Pget3WvYDUcv/K6Y414c8893MoFHTnRXFNAbt7yVJhw0N3u3dynQ04BBuDa+8BbhymT0DLKZGo7W99lIY3+t8lUOtOnkjjk1RNbpvCJsXG40RD19UT3o8p03aHhyQLPBAYOiMFE1pHJG1vzQAo0LFEAUUCUTyQlWSS0248uGqIb6UpYfcXSRF/q4RsYR4HvG9UAutrwPwWR+1PZfoZPtkLfupTaVoGkcp4+B+a13Lwtp5KPV0TZo3wTNzRvaWEHi0/Ijn3AqDzjHM8CzXkDgL7kav8W2GrYpnxxwSTRtd1JWAWew6g+Njr3go0uCnSYVsYNC/X5LsMOwNjALNHormOnA4KQ1iza0YhpgFLYxG0JYCijaEoIAI1FC6hYjPla53IEqaVS7REmIsYbPkIY09m+93gBd3kkJLMcNw41te1rhdkkhmm/4SnfqD3PmAb/hg8VsD2qg2KwpsbXz5bGctZGDvbSxDLEPPVx53XRkLUSIkkIKhz0DTvAVqWpJYqluNxvAHPa3ovdfmsHMFtHC93DvOnf5pukwMs4Skgb7xWJ5WXZPjvw/16pAgHZSIhbU1NSEDUG/9a1/hp3+afFMVaiIDgjyKoqZaY2tzsPUgKQICprmfMfNKyoKSprTG/JlB6ode543/RKoMSL35MoF8xvmJ3a7lFxokT/4TPmUxg5/3hvi/wCRXp9qPbjJx3zumFrX4qYn5Mma7M981uJFtyh4ZtJ0s/2cxZSc9nGTNuBNrWHJPY/SOc+MtaXdV7DlBPEEfVKpcIiiyydEH1TbnRzjYm411sNCp/FGnc+ZX5znUeB4rjggkETos2aPpA4OAGjrEbt409VEwraoTTin6BzSS+zy4FugJ4DkEMYwyeoLHFkbDGHgWcTcOtcHTuClYZUGBrYp2lgF7SXzMNze1+G/ipu0vb8fJaz3fh3FMZ6B4YYHPzMLw9p6uhsW7t+4+ahYZtSJZxTmnkYXFwEjrFmgJG5vcuiaQdRa3cjWYyw21OPP3a1ld2qcVxroHtY6Fzg9jnB7SMtwQC3dv1BULDtq2STinMEjHOJAkdlLSQLjcOK6NBSMsNtTjz92VN+VXimMtgc1r4nnO1zmvblLbg6t379QVBw/ayKWYU/RSse4kB7wzITa41B4rokEjLDbU48/dlTflVYpjTKdzWSRv+8a4tc3LkJG9tyfxcbKFh+10Ekwp8kjJHXDS8MDXG1wLg8eCt8Tw5k7OjkGgcHNc02c1w4g+o80jDcMbACGOc4ON7OINj3WC3jOl7fMfJJ37uPCWD3ag6i/DmjI5FE5vEW/UckV+VgFxbDpBx0PJBDMOYRqBdkdkaCw0ASgiRhAoFKukBGoDcVWVUHSOtw/AO6/4j6aeanyO0uq3EMRMDczYnSnkzLf4lWktasYAAALAAADkAjsuGqtv5G//nzn+KL/ALlWze1CYbsMm85I/ortlbaVZJKyWo9rtSN2HEf3pT9Gqtm9sdbwoo2+L3n/AKVdso2ohCywp3tjr/3EA/Og32zVvGnhPm8JUjdrIiBx00WG/wDrRWf0WH87/wBE/Q+2Koc600EYZxyFxd8UmJGhh1XI82maxmc5bjXKNyl/ZajjVD0CzLHNuY5CDBLYbyNRY/RVR2vf+9/mWN343TXZMILzmfOS61r3tojjwMNOYTODhqCHLHnbYScJf5ikHbKb95/MU3ym1uMNI4G5nc7uzBTY3NboLDz1K8/HbObtn8xTse1jyCTNY8sybq6XbfbfunHMeqRI9jhZ1iDoQbLB6bahz985bbvJUh20BAuKg273Wv5KTqfjUaUz21qSgcD9zO6NvZvmA8L7kPstR/SvUNWQjag/vz+co/8Aas/v3fnP6p7n4myftrvQ1I/+w0+LQjtVD/5oz/CFj7trf7d35ygNr/7d/wCZyu/8Tb+tpp5pmg9IWP8A7ulgrEnW1wsHG2H9u/8AMVLPtRfG7NpKQOdrqxlcpMcNuQWQU/trZ79JJ/C5hHzUpntpp+NPMPyH6rbLVEg/A/NZvH7ZKI/iZK3+C/yU2D2r4c7fI5v95jx9EHc28EFyQ9pOHHX7Sz4oKo7ZBAolzaGjSUaBSNJCNQc1jVFXdIXUs7Ax1vu5GXse4gqjqKTFzvfB+V4+q0Apt4WrSmZSUGJ8TCfzJh9FiPZiPqtJkYmHRq7kpm32Cv4xRHzP6JbaOu40sJ8/8loeRONYm5KZpJRVfGhi9R+iiSYfU/0GP1b+i1gsTTmK7imRzYdUHfQs/lUCXB57H/cwLjeMui2V8YTDoxyTcU8/1ezU5OsZCiO2bmHuFb1WULTwVa/DByUtWJnZ+XsFIOBS9graX4a3kmnYcOShbGTgkvYcknB5ew5bIcOHJIOHDkELY4cKl7Lkk4ZJ2XLYzhzeQ9Eg4a3kPRFuWOnDH9lyI4c/su9FsJw1vZHoknDG9keiFsf/AGe7k70SfsLuTvQrYDhbeyPRJ/ZTOyPRC2Q/YXcnehT0dPzafRax+yWdkeidbg0fYHoqWyYRDsn0RmNvZPotY/YsXYHoh+xYuwPRW0ZL0Y7J9EfRt5H0WrnBIuwPREcCh7A9EsZV0beR9ES1P9gw9gIINmKJGkrDQ0aSggXdC6TdGgMpDkaSSiGnhNOCeckFAzlRgJSCAiEhwTiS5Aw4KPIpL0xIqiLKFFkapcijSIIr2ppwT7wmnBAyQkEJ4hIKBotScqcKIoGy1JLU4iQIyoZEtBAjIlWRoIE2SSEtJKBKJGUSAkEEFRpxRIkFloEEEEBoXQQQAlJKCCIQUgokEBFEgggIpDigggacmZEEFUR3qM9GggjvTLkEECCkFBBAgpJRoIhKJBBFBBBBASCCCAikFGgiklEggiEoIIKj/9k=" alt="Generic placeholder image" width="140" height="140">
+          <h3>Create New Report</h3>
+          <p>In order to submit report -"Create New Report". Fill all the required fields, add necessary expenses and Submit it.</p>
+          <p><a class="btn btn-default" href="#create" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="http://blog.sunburstsoftwaresolutions.com/wp-content/uploads/2011/01/travel-expense-report.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h3>Expense</h3>
+		  <p>Add you Business Expense information with the photo</p>
+          <p><a class="btn btn-default" href="#expense" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+      </div>
+        <!-- /END THE FEATURETTES -->
+
+
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2016 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+        
+	
+</body>
+</html>

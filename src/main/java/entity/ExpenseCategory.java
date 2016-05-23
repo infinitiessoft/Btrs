@@ -29,7 +29,7 @@ public class ExpenseCategory extends AbstractEntity {
 	@Column(name = "code")
 	private String code;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
 	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	public ExpenseCategory() {

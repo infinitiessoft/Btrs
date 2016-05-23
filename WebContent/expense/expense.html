@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense</title>
+  
+
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="expense.js"></script>  
+<style type="text/css">
+.btn btn-primary{
+margin-right: 250px;
+    margin-right: 150px;
+    width: 3px;
+}
+ .navbar {
+overflow: visible;
+margin-bottom: 20px;
+color: #956362;
+*position: relative;
+*z-index: 2;
+width: 1200px; 
+</style>
+  
+</head>
+<body ng-app="formExample">
+  <div ng-controller="expenseController">
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Welcome:</a>
+      </div>
+		<ul class="nav navbar-nav navbar-right">
+        <li><a href="#/"><i class="glyphicon glyphicon-home"></i></a></li>
+        <li><a href="#/login" ng-click="logout()"><i class="glyphicon glyphicon-off"></i></a></li>
+      </ul>
+    </div>
+  </nav>
+  <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Expense Form</legend>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Expense Category</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control" required="">
+      <option value="1">Accomodation</option>
+      <option value="2">Meal</option>
+      <option value="3">Transport</option>
+      <option value="4">Other</option>
+    </select>
+  </div>
+</div>
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Expense Type</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control" required="">
+      <option value="1">Accomodation</option>
+      <option value="2">Meal</option>
+      <option value="3">Bus Ticket</option>
+      <option value="4">Taxi</option>
+      <option value="5">High Speed Train</option>
+      <option value="6">Mass Rapid Transit</option>
+      <option value="7">Train</option>
+      <option value="8">Other</option>
+    </select>
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Comment</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="Enter Comment" class="form-control input-md" >
+    
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Number of Persons</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control" required="">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Number of Days</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control" required="">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+    </select>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Amount</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="Enter your Amount" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Photo upload</label>
+  <div class="col-md-4">
+<p><a class="btn btn-default" href="#photo" role="button">Add Photo</a></p></div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</fieldset>
+</form>
+</div>
+</body>
+</html>

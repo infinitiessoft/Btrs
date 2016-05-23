@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import dao.DepartmentDao;
 import dao.UserDao;
 import dao.UserSharedDao;
+import entity.Report;
 import entity.User;
 import exceptions.DepartmentNotFoundException;
 import exceptions.UserNotFoundException;
@@ -54,7 +55,29 @@ public class UserServiceImpl implements UserService {
 		UserSendto.UserShared userShrd = new UserSendto.UserShared();
 		userShrd.setId(user.getUserShared().getId());
 		ret.setUserShared(userShrd);
+
+		List<UserSendto.Report> incomingReport = new ArrayList<UserSendto.Report>();
+		for (Report report : user.getIncomingReports()) {
+			UserSendto.Report r = toResponseReport(report);
+			incomingReport.add(r);
+		}
+		ret.setIncomingReport(incomingReport);
+
+		List<UserSendto.Report> outgoingReport = new ArrayList<UserSendto.Report>();
+		for (Report report : user.getOutgoingReports()) {
+			UserSendto.Report r = toResponseReport(report);
+			outgoingReport.add(r);
+		}
+
+		ret.setOutgoingReport(outgoingReport);
+
 		return ret;
+	}
+
+	private sendto.UserSendto.Report toResponseReport(Report report) {
+		sendto.UserSendto.Report set = new sendto.UserSendto.Report();
+		set.setId(report.getId());
+		return set;
 	}
 
 	@Transactional
@@ -126,11 +149,6 @@ public class UserServiceImpl implements UserService {
 				newEntry.setUserShared(userShared);
 			}
 		}
-	}
-
-	@Override
-	public UserSendto findByUserSharedId(long id) {
-		return toUserSendto(userDao.findByUserSharedId(id));
 	}
 
 }

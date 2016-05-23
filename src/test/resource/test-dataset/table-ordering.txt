@@ -12,4 +12,4 @@ exp_types_type_parameters
 photo
 roles
 status_changes
-users_role
+users_roles

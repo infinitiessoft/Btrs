@@ -3,8 +3,6 @@ package serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +19,7 @@ import service.ReportService;
 
 public class ReportServiceImpl implements ReportService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
 	private ReportDao reportDao;
-
 	private UserDao userDao;
 
 	public ReportServiceImpl(ReportDao reportDao, UserDao userDao) {
@@ -56,11 +52,12 @@ public class ReportServiceImpl implements ReportService {
 		ret.setStartDate(report.getStartDate());
 		ret.setCurrentStatus(report.getCurrent_status());
 
-		ReportSendto.User user = new ReportSendto.User();
-		user.setOwner_id(report.getOwner().getId());
-		user.setReviewer_id(report.getReviewer().getId());
-		ret.setOwner(user);
-		ret.setReviewer(user);
+		ReportSendto.User usr = new ReportSendto.User();
+		usr.setId(report.getOwner().getId());
+		ret.setUserOwner(usr);
+
+		usr.setId(report.getReviewer().getId());
+		ret.setUserReviewer(usr);
 
 		return ret;
 	}
@@ -82,7 +79,7 @@ public class ReportServiceImpl implements ReportService {
 	@Transactional
 	@Override
 	public ReportSendto save(ReportSendto report) {
-		report.setId(1L);
+		report.setId(null);
 		Report newEntry = new Report();
 		setUpReport(report, newEntry);
 		return toReportSendto(reportDao.save(newEntry));
@@ -120,24 +117,26 @@ public class ReportServiceImpl implements ReportService {
 			newEntry.setAttendanceRecordId(sendto.getAttendanceRecordId());
 		}
 		if (sendto.isOwnerIdSet()) {
-			if (sendto.getOwner().isOwnerIdSet()) {
-				logger.debug("find user in setUpReport id: {}", sendto.getOwner().getOwner_id());
-				entity.User user = userDao.findOne(sendto.getOwner().getOwner_id());
+			if (sendto.getUserOwner().isIdSet()) {
+				entity.User user = userDao.findOne(sendto.getUserOwner().getId());
 				if (user == null) {
-					throw new UserNotFoundException(sendto.getOwner().getOwner_id());
+					throw new UserNotFoundException(sendto.getUserOwner().getId());
 				}
 				newEntry.setOwner(user);
 			}
 		}
+
 		if (sendto.isReviewerIdSet()) {
-			if (sendto.getReviewer().isReviewerIdSet()) {
-				entity.User user = userDao.findOne(sendto.getReviewer().getReviewer_id());
-				if (user == null) {
-					throw new UserNotFoundException(sendto.getReviewer().getReviewer_id());
+			if (sendto.getUserReviewer().isIdSet()) {
+				entity.User usr = userDao.findOne(sendto.getUserReviewer().getId());
+				if (usr == null) {
+					throw new UserNotFoundException(sendto.getUserReviewer().getId());
 				}
-				newEntry.setReviewer(user);
+				newEntry.setReviewer(usr);
 			}
+
 		}
+
 		if (sendto.isReasonSet()) {
 			newEntry.setReason(sendto.getReason());
 		}
@@ -164,8 +163,4 @@ public class ReportServiceImpl implements ReportService {
 		}
 	}
 
-	@Override
-	public ReportSendto findByOwnerId(long owner_id) {
-		return toReportSendto(reportDao.findByOwnerId(owner_id));
-	}
 }

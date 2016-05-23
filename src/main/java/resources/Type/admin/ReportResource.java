@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.ReportSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
 import service.ReportService;
 
+@Component
 @Path(value = "/report")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +52,11 @@ public class ReportResource {
 
 	@POST
 	public ReportSendto saveReport(ReportSendto report) {
+
+		// UserSendto user = userService.findByUserSharedId(id);
+		// List<UserSendto.Report> incomingReports = user.getIncomingReport();
+		// List<UserSendto.Report> outgoingReports = user.getOutgoingReport();
+
 		return reportService.save(report);
 	}
 

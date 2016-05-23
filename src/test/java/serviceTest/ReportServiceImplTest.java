@@ -25,14 +25,15 @@ public class ReportServiceImplTest extends ServiceTest {
 
 	private ReportDao reportDao;
 	private ReportServiceImpl reportService;
-	private UserDao userDao;
-
 	private Report report;
+
+	private UserDao userDao;
 	private User user;
 
 	@Before
 	public void setUp() throws Exception {
 		reportDao = context.mock(ReportDao.class);
+		userDao = context.mock(UserDao.class);
 		reportService = new ReportServiceImpl(reportDao, userDao);
 		report = new Report();
 		report.setId(1L);
@@ -40,11 +41,11 @@ public class ReportServiceImplTest extends ServiceTest {
 		report.setComment("good");
 
 		user = new User();
-		user.setId(1L);
+		user.setId(2l);
 		report.setOwner(user);
 
 		user = new User();
-		user.setId(1L);
+		user.setId(2l);
 		report.setReviewer(user);
 
 	}
@@ -66,6 +67,8 @@ public class ReportServiceImplTest extends ServiceTest {
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals("demo", ret.getReason());
 		assertEquals("good", ret.getComment());
+		assertEquals(user.getId(), ret.getUserOwner().getId());
+		assertEquals(user.getId(), ret.getUserReviewer().getId());
 
 	}
 
@@ -87,16 +90,32 @@ public class ReportServiceImplTest extends ServiceTest {
 	public void testSave() {
 		final ReportSendto newEntry = new ReportSendto();
 
+		ReportSendto.User userSendto = new ReportSendto.User();
+		userSendto.setId(1L);
+		newEntry.setUserOwner(userSendto);
+
+		ReportSendto.User userSend = new ReportSendto.User();
+		userSendto.setId(2L);
+		newEntry.setUserReviewer(userSend);
+
 		context.checking(new Expectations() {
 
 			{
+				exactly(1).of(userDao).findOne(newEntry.getUserOwner().getId());
+				will(returnValue(user));
+
+				exactly(1).of(userDao).findOne(newEntry.getUserReviewer().getId());
+				will(returnValue(user));
 
 				exactly(1).of(reportDao).save(with(any(Report.class)));
 				will(returnValue(report));
 
 			}
+
 		});
+
 		ReportSendto ret = reportService.save(newEntry);
+
 		assertEquals(report.getId(), ret.getId());
 		assertEquals(report.getCreatedDate(), ret.getCreatedDate());
 		assertEquals(report.getComment(), ret.getComment());

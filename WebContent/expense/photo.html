@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photo</title>
+  
+
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="expense.js"></script>  
+<style type="text/css">
+.btn-circle.btn-lg {
+	margin-left: 400px;
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+</style>
+  
+</head>
+<body ng-app="photoExample">
+  <div ng-controller="photoController">
+  <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Photo Upload</legend>
+  <!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Title</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="Enter Title" class="form-control input-md" required="">
+    
+  </div>
+</div>
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">Photo upload</label>
+  <div class="col-md-4">
+    <input id="filebutton" name="filebutton" class="input-file" type="file">
+  </div>
+</div>
+<p><a class="btn btn-danger btn-circle btn-lg" href="#expense" type="button"><i class="glyphicon glyphicon-remove"></i></a>
+<button type="button" class="btn btn-success btn-circle btn-lg"><i class="glyphicon glyphicon-ok"></i></button></p>
+
+</fieldset>
+</form>
+</div>
+</body>
+</html>
