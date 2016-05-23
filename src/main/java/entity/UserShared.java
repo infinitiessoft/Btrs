@@ -58,7 +58,7 @@ public class UserShared extends AbstractEntity {
 
 	private Boolean enabled;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userShared", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userShared", cascade = CascadeType.REMOVE)
 	private Set<User> users = new HashSet<User>(0);
 
 	public UserShared() {

@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.demo</groupId>
-  <artifactId>Btrs</artifactId>
-  <packaging>jar</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>Btrs Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.demo</groupId>
+	<artifactId>Btrs</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Btrs Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javaCompilerVersion>1.7</javaCompilerVersion>
 		<spring.version>4.1.9.RELEASE</spring.version>
@@ -26,7 +26,8 @@
 		<junit.version>4.11</junit.version>
 		<org.eclipse.jetty.jetty-maven-plugin.version>9.1.1.v20140108</org.eclipse.jetty.jetty-maven-plugin.version>
 	</properties>
-  <build>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -42,6 +43,31 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${maven-war-plugin.version}</version>
 				<configuration>
+					<webResources>
+						<resource>
+							<directory>${basedir}/WebContent</directory>
+						</resource>
+					</webResources>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+					<warSourceExcludes>WebContent/WEB-INF/lib/*.jar</warSourceExcludes>
+					<archiveClasses>false</archiveClasses>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix />
+						</manifest>
+						<manifestEntries>
+							<url>${pom.url}</url>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Vendor>Gana</Implementation-Vendor>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Built-By>${user.name}</Built-By>
+							<Built-OS>${os.name}</Built-OS>
+							<Build-Date>${timestamp}</Build-Date>
+							<SCM>${buildNumber}</SCM>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -60,8 +86,9 @@
 			</plugin>
 		</plugins>
 	</build>
-  <dependencies>
-  <dependency>
+
+	<dependencies>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4.1207.jre7</version>
@@ -89,7 +116,7 @@
 			<version>${spring.data.version}</version>
 		</dependency>
 
-		
+
 
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
@@ -117,9 +144,9 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-context</artifactId>
 				</exclusion>
-		</exclusions>
-		</dependency>		
-   <dependency>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>${jersey.version}</version>
@@ -130,7 +157,7 @@
 			<version>${jersey.version}</version>
 		</dependency>
 
-<!-- Jersey Dependencies -->
+		<!-- Jersey Dependencies -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-jetty-servlet</artifactId>
@@ -138,7 +165,7 @@
 		</dependency>
 
 
-		
+
 		<!-- LogBack dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -171,10 +198,10 @@
 		</dependency>
 
 		<dependency>
-	<groupId>javax.servlet</groupId>
-	<artifactId>javax.servlet-api</artifactId>
-	<version>3.1.0</version>
-</dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 
 
 
@@ -241,18 +268,18 @@
 			<scope>test</scope>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
 			<version>${jersey.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<!-- Spring-MVC Dependencies -->
 		<dependency>
@@ -261,7 +288,7 @@
 			<version>4.1.9.RELEASE</version>
 		</dependency>
 
-		<!-- -SpringSecurity  -->
+		<!-- -SpringSecurity -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
@@ -285,7 +312,7 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>4.0.4.RELEASE</version>
 		</dependency>
-		<!-- JavaMail-->
+		<!-- JavaMail -->
 
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -297,7 +324,7 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>4.2.5.RELEASE</version>
 		</dependency>
-<dependency>
+		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
 			<version>${spring.retry.version}</version>
@@ -310,6 +337,6 @@
 		</dependency>
 
 
-  </dependencies>
-  
+	</dependencies>
+
 </project>

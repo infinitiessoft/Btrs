@@ -33,18 +33,18 @@ public class Report extends AbstractEntity {
 	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne // (fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne // (fetch = FetchType.LAZY)
 	@JoinColumn(name = "reviewer_id")
 	private User reviewer;
 
-	@Column(name = "reason", nullable = true)
+	@Column(name = "reason")
 	private String reason;
 
-	@Column(name = "route", nullable = true)
+	@Column(name = "route")
 	private String route;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -69,13 +69,13 @@ public class Report extends AbstractEntity {
 	@Column(name = "current_status")
 	private String current_status;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<Photo> photos = new HashSet<Photo>(0);
 
 	public Report() {

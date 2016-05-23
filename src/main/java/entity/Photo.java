@@ -44,7 +44,7 @@ public class Photo extends AbstractEntity {
 	@Column(name = "size")
 	private Integer size;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "report_id")
 	private Report report;
 

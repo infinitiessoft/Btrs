@@ -28,7 +28,7 @@ public class User extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne // (fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id")
 	private Department department;
 
@@ -36,20 +36,20 @@ public class User extends AbstractEntity {
 	@Column(name = "last_Login")
 	private Date lastLogin;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne // (fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_shared_id")
 	private UserShared userShared;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.REMOVE)
 	private Set<Report> outgoingReports = new HashSet<Report>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reviewer", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "reviewer", cascade = CascadeType.REMOVE)
 	private Set<Report> incomingReports = new HashSet<Report>(0);
 
 	public User() {
@@ -138,7 +138,10 @@ public class User extends AbstractEntity {
 	}
 
 	public Set<Report> getOutgoingReports() {
-		return outgoingReports;
+		if (outgoingReports == null) {
+			outgoingReports = new HashSet<Report>(0);
+		}
+		return this.outgoingReports;
 	}
 
 	public void setOutgoingReports(Set<Report> outgoingReports) {
@@ -146,7 +149,10 @@ public class User extends AbstractEntity {
 	}
 
 	public Set<Report> getIncomingReports() {
-		return incomingReports;
+		if (incomingReports == null) {
+			incomingReports = new HashSet<Report>(0);
+		}
+		return this.incomingReports;
 	}
 
 	public void setIncomingReports(Set<Report> incomingReports) {

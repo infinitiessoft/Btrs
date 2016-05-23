@@ -7,6 +7,4 @@ import entity.Report;
 
 public interface ReportDao extends PagingAndSortingRepository<Report, Long>, JpaSpecificationExecutor<Report> {
 
-	Report findByOwnerId(long owner_id);
-
 }

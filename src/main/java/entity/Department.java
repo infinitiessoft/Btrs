@@ -28,7 +28,7 @@ public class Department extends AbstractEntity {
 	@Column(name = "comment")
 	private String comment;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "department", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = CascadeType.REMOVE)
 	private Set<User> users = new HashSet<User>(0);
 
 	public Department() {

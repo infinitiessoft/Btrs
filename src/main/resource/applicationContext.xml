@@ -3,7 +3,8 @@
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
-	 xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
@@ -11,15 +12,18 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
-			http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	
-	
+
+
+
 	<context:annotation-config />
-	
+
 	<context:component-scan base-package="resources" />
 	<context:component-scan base-package="controller" />
-	
+
 	<bean id="properties"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="WEB-INF/system.properties" />
@@ -90,36 +94,26 @@
 			pointcut="execution(public * org.springframework.mail.javamail.JavaMailSenderImpl.send(..))"
 			advice-ref="mailRetryAdvice" />
 	</aop:config>
-	
-	
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass"
-            value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
 
-<!-- MVC SETUP -->
-<mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
-            
-        </mvc:message-converters>
-        <mvc:argument-resolvers>
-            <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
-        </mvc:argument-resolvers>
-    </mvc:annotation-driven>
-    
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
 	<!-- DATABASE SETUP -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="postgres" />
 		<property name="password" value="1234" />
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/btrs" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
 	</bean>
 
-	
+
 
 
 	<bean id="entityManagerFactory"
@@ -135,7 +129,7 @@
 		</property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 			</props>
 		</property>
 	</bean>
@@ -246,8 +240,77 @@
 		<constructor-arg ref="userSharedDao" />
 	</bean>
 
+	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
+		<constructor-arg ref="userSharedDao" />
+	</bean>
+
+	<!-- SPRING SECURITY SETUP -->
+
+	<bean id="passwordEncoder" class="security.SHA1PasswordEncoder">
+	</bean>
+
+	<bean id="csrfHeaderFilter" class="security.CsrfHeaderFilter">
+	</bean>
+
+	<bean id="csrfTokenRepository"
+		class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+		<property name="headerName" value="X-XSRF-TOKEN" />
+	</bean>
+
+	<bean id="entryPoint"
+		class="org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint">
+		<constructor-arg>
+			<map>
+				<entry key="hasHeader('X-Requested-With','XMLHttpRequest')"
+					value-ref="ajaxEntyPoint" />
+			</map>
+		</constructor-arg>
+		<property name="defaultEntryPoint" ref="defaultEntryPoint" />
+	</bean>
+
+	<bean id="ajaxEntyPoint"
+		class="org.springframework.security.web.authentication.HttpStatusEntryPoint">
+		<constructor-arg name="httpStatus"
+			value="#{T(org.springframework.http.HttpStatus).UNAUTHORIZED}" />
+	</bean>
+
+	<bean id="defaultEntryPoint"
+		class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+		<property name="realmName" value="Protected API" />
+	</bean>
+	<security:authentication-manager id="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailService">
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
 
 
+	<security:global-method-security
+		secured-annotations="enabled" pre-post-annotations="enabled" />
 
+	<security:http realm="Protected API" use-expressions="true"
+		auto-config="true" authentication-manager-ref="authenticationManager">
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/index.html"
+			access="permitAll" />
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+			<security:intercept-url method="GET"
+			pattern="/rest/auth" access="permitAll" />
+		<security:intercept-url pattern="/rest/**"
+			access="permitAll" />
+		<!-- <security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" 
+			/> <security:intercept-url method="PUT" pattern="/rest/news/**" access="hasRole('admin')" 
+			/> <security:intercept-url method="POST" pattern="/rest/news/**" access="hasRole('admin')" 
+			/> <security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" 
+			/> -->
+		<security:csrf disabled="true" />
+		<security:custom-filter ref="csrfHeaderFilter"
+			after="CSRF_FILTER" />
+		<security:http-basic entry-point-ref="entryPoint" />
+		<security:logout />
+	</security:http>
+	
 
 </beans>

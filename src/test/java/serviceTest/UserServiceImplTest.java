@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import dao.DepartmentDao;
+import dao.ReportDao;
 import dao.UserDao;
 import dao.UserSharedDao;
 import entity.Department;
@@ -30,6 +31,7 @@ public class UserServiceImplTest extends ServiceTest {
 	private DepartmentDao departmentDao;
 	private UserSharedDao userSharedDao;
 	private UserServiceImpl userService;
+	private ReportDao reportDao;
 
 	private User user;
 	private Department department;
@@ -43,6 +45,7 @@ public class UserServiceImplTest extends ServiceTest {
 		userService = new UserServiceImpl(userDao, departmentDao, userSharedDao);
 		user = new User();
 		user.setId(1L);
+
 		user.setDepartment(department);
 		user.setUserShared(userShared);
 

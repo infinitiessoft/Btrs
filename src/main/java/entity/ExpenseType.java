@@ -23,7 +23,7 @@ public class ExpenseType extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
 	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
 
 	@Column(name = "value")
@@ -32,10 +32,10 @@ public class ExpenseType extends AbstractEntity {
 	@Column(name = "tax_percent")
 	private Double taxPercent;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
 
 	public ExpenseType() {

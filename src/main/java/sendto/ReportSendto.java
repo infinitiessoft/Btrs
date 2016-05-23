@@ -1,5 +1,6 @@
 package sendto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -18,34 +19,34 @@ public class ReportSendto {
 	private String comment;
 	private Date createdDate;
 	private Date lastUpdatedDate;
-	private User owner;
-	private User reviewer;
+	private User userOwner;
+	private User userReviewer;
 	private String currentStatus;
 
 	public ReportSendto() {
 		super();
 	}
 
-	public User getOwner() {
-		return owner;
+	public User getUserOwner() {
+		return userOwner;
 	}
 
-	public void setOwner(User owner) {
-		if (owner != null) {
+	public void setUserOwner(User userOwner) {
+		if (userOwner != null) {
 			isOwnerIdSet = true;
 		}
-		this.owner = owner;
+		this.userOwner = userOwner;
 	}
 
-	public User getReviewer() {
-		return reviewer;
+	public User getUserReviewer() {
+		return userReviewer;
 	}
 
-	public void setReviewer(User reviewer) {
-		if (reviewer != null) {
+	public void setUserReviewer(User userReviewer) {
+		if (userReviewer != null) {
 			isReviewerIdSet = true;
 		}
-		this.reviewer = reviewer;
+		this.userReviewer = userReviewer;
 	}
 
 	public String getCurrentStatus() {
@@ -321,58 +322,36 @@ public class ReportSendto {
 		this.isAttendanceRecordIdSet = isAttendanceRecordIdSet;
 	}
 
-	public static class User {
-		private Long owner_id;
-		private Long reviewer_id;
+	public static class User implements Serializable {
 
-		private Boolean isOwnerIdSet;
-		private Boolean isReviewerIdSet;
+		private static final long serialVersionUID = 1L;
+		private Long id;
+
+		private boolean isIdSet;
 
 		public User() {
 			super();
 		}
 
-		public Long getOwner_id() {
-			return owner_id;
+		public Long getId() {
+			return id;
 		}
 
-		public void setOwner_id(Long owner_id) {
-			if (owner_id != null) {
-				isOwnerIdSet = true;
-			}
-			this.owner_id = owner_id;
-		}
-
-		public Long getReviewer_id() {
-			return reviewer_id;
-		}
-
-		public void setReviewer_id(Long reviewer_id) {
-			if (reviewer_id != null) {
-				isReviewerIdSet = true;
-			}
-			this.reviewer_id = reviewer_id;
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
 		}
 
 		@XmlTransient
-		public boolean isOwnerIdSet() {
-			return isOwnerIdSet;
+		public boolean isIdSet() {
+			return isIdSet;
 		}
 
 		@XmlTransient
-		public void setIsOwnerIdSet(boolean isOwnerIdSet) {
-			this.isOwnerIdSet = isOwnerIdSet;
-		}
-
-		@XmlTransient
-		public boolean isReviewerIdSet() {
-			return isReviewerIdSet;
-		}
-
-		@XmlTransient
-		public void setIsReviewerIdSet(boolean isReviewerIdSet) {
-			this.isReviewerIdSet = isReviewerIdSet;
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
 		}
 
 	}
+
 }

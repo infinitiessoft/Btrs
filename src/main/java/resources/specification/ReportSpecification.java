@@ -13,8 +13,6 @@ public class ReportSpecification implements Specification<Report> {
 
 	@Override
 	public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
