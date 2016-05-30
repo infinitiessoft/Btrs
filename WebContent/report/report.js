@@ -1,0 +1,23 @@
+angular.module('reportApp',['ui.router','ngResource','reportApp.controllers','reportApp.services']);
+
+angular.module('reportApp').config(function($stateProvider,$httpProvider){
+    $stateProvider.state('reports',{
+        url:'rest/report',
+        templateUrl:'report/report.html',
+        controller:'reportController'
+    }).state('viewreport',{
+       url:'/report/:id/view',
+       templateUrl:'report/report-view.html',
+       controller:'ReportViewController'
+    }).state('newReport',{
+        url:'/report/new',
+        templateUrl:'report/report-add.html',
+        controller:'ReportCreateController'
+    }).state('editReport',{
+        url:'/report/:id/edit',
+        templateUrl:'report/report-edit.html',
+        controller:'ReportEditController'
+    });
+}).run(function($state){
+   $state.go('report');
+});
