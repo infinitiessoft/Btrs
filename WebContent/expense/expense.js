@@ -4,13 +4,12 @@
  formExample.config(function($routeProvider) {
         $routeProvider
 
-            // route for the home page
+            
         .when('/', {
             templateUrl : 'expense/expense.html',
             controller  : 'expenseController'
         })
 
-        // route for the about page
         .when('/photo', {
             templateUrl : 'expense/photo.html',
             controller  : 'photoController'
@@ -19,7 +18,21 @@
     });
 
     // create the controller and inject Angular's $scope
- formExample.controller('photoController', function($scope) {
-        // create a message to display in our view
-        $scope.message = 'Everyone come and see how good I look!';
-    });
+ formExample.controller('expenseController', [ '$scope', '$resource',
+                                    			function($scope, $resource) {
+		$scope.saveExpenses = function() {
+			$scope.users.push({'expenseCategory':$scope.expenseCategory, 'expenseType':$scope.expenseType, 'comment': $scope.comment, 'numberOfPerson':$scope.numberOfPerson, 'numberOfDays':$scope.numberOfDays, 'amount': $scope.amount, 'photoUpload': $scope.photoUpload});
+			}
+		var Expense = $resource('rest/expense/');
+		Expense.save({expenseCategory:$scope.expenseCategory, expenseType:$scope.expenseType, comment: $scope.comment, numberOfPerson:$scope.numberOfPerson, numberOfDays:$scope.numberOfDays, amount: $scope.amount, uploadPhoto: $scope.uploadPhoto}, function(response){
+			$scope.message = response.message;
+		});
+		$scope.expenseCategory='';
+		$scope.expenseType='';
+		$scope.comment='';                     					
+		$scope.numberOfDays='';
+		$scope.amount='';  
+		$scope.uploadPhoto='';
+ }
+ ]);                           				
+                             				
