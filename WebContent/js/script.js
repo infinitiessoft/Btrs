@@ -44,8 +44,8 @@
       $scope.message = 'Look! I am an about page.';
     });
   scotchApp.controller('createController', function($scope) {
-      $scope.message = 'Look! I am an about page.';
+      $scope.message = 'Look! I am an create page.';
     });
   scotchApp.controller('expenseController', function($scope) {
-      $scope.message = 'Look! I am an about page.';
+      $scope.message = 'Look! I am an expense page.';
     });

@@ -16,7 +16,7 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider, $httpProv
         controller  : 'createController'
     })
     .when('/report', {
-        templateUrl : 'report/report.html',
+        templateUrl : 'report.html',
         controller  : 'reportController'
     })
     .when('/expense', {

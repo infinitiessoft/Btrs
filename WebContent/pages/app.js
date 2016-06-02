@@ -13,7 +13,7 @@ var app = angular.module("app", []);
     };
     
     $scope.GetAllData = function () {
-        $http.get('/rest/userShared')
+        $http.get('/rest/userShared:id', {id: '@id'})
         .success(function (data,status,headers,config){
         	$scope.Details = data;
         	})

@@ -7,7 +7,28 @@
    
     
     <!-- JS ===================== -->
+    <script type="text/javascript" src="lib/api-check.min.js"></script>
+<script type="text/javascript" src="lib/angular-1.4.7.min.js"></script>
+<script type="text/javascript" src="lib/angular-route.min.js"></script>
+<script type="text/javascript" src="lib/angular-messages-1.4.4.min.js"></script>
+<script type="text/javascript" src="lib/angular-animate-1.4.4.min.js"></script>
+<script type="text/javascript" src="lib/angular-sanitize-1.4.6.min.js"></script>
+<script type="text/javascript" src="lib/select-0.13.2.min.js"></script>
+<script type="text/javascript" src="lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
+
+<script src="lib/bootstrap.min.js"></script>
+<script src="lib/json3.min.js"></script>
+<script src="lib/ocLazyLoad.min.js"></script>
+<script src="lib/loading-bar.min.js"></script>
+<script src="lib/metisMenu.min.js"></script>
+<script src="lib/angular-touch.min.js"></script>
+    
     <!-- load angular -->
+    <script type="text/javascript" src="report/report.js"></script>
+    <script type="text/javascript" src="report/controller.js"></script>
+    <script type="text/javascript" src="report/service.js"></script>
+    <script type="text/javascript" src="lib/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="lib/angular-resource.min.js"></script>
     <script src="http://code.angularjs.org/1.2.6/angular.js"></script>
     <style type="text/css">
     .container-fluid{
@@ -72,7 +93,7 @@ width: 1200px;
 				<span class="pull-right">0</span></a>
 		</li>
 		<li class="divider"></li>
-		<li><a href="/resst/report?type=All" id="all-my-reports">
+		<li><a href="/rest/report?type=All" id="all-my-reports">
 				<span>All Reports</span>
 				<span class="pull-right">0</span></a>
 		</li>
@@ -80,58 +101,32 @@ width: 1200px;
 					</ul>
 				</div>
 				<div class="row">
-			<div class="col-lg-12">
-			<table st-pipe="callServer" st-table="displayed"
-				class="table table-striped table-hover">
-				<thead>
-					<tr>
-						<th st-sort="id" st-sort-default="reverse" style="padding:15px 35px 15px 35px;">Id</th>
-						<th st-sort="reportcurrentstatus"style="padding:15px 35px 15px 35px;">Status</th>
-						<th st-sort="recordroute" style="padding:15px 35px 15px 35px;">Route</th>
-						<th st-sort="reportStartDate" style="padding:15px 35px 15px 35px;">Start date</th>
-						<th st-sort="reportEndDate" style="padding:15px 35px 15px 35px;">End date</th>
-						<th st-sort="action" style="padding:15px 35px 15px 35px;">action</th>
-					</tr>
-					<!-- <tr>
-						<th></th>
-						<th><input st-search="applicantName"
-							class="input-sm form-control" /></th>
-						<th><input st-search="reportid"
-							class="input-sm form-control" /></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-					</tr> -->
-				</thead>
-				<tbody ng-show="!isLoading">
-					<tr ng-repeat="row in displayed"
-						popover="reason: {{row.report.reason}}" popover-placement="top"
-						popover-trigger="click">
-						<td>{{row.id}}</td>
-						<td>{{row.report.current_status}}</td>
-						<td>{{row.report.route}}</td>
-						<td>{{row.report.startDate| date:'yyyy-MM-dd HH:mm' }}</td>
-						<td>{{row.report.endDate| date:'yyyy-MM-dd HH:mm' }}</td>
-						<td><span class="form-control {{row.action}}"> {{row.action}}</span></td>
-						<td><button type="button" ng-click="permit(row)"
-								class="btn btn-sm btn-primary" ng-show="row.action == 'pending'">
-								<i class="glyphicon glyphicon-ok"> </i>
-							</button>
-							<button type="button" ng-click="reject(row)"
-								class="btn btn-sm btn-danger" ng-show="row.action == 'pending'">
-								<i class="glyphicon glyphicon-remove"> </i>
-							</button></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="col-lg-20">
+			<table class="table reporttable">
+    <tr>
+        <td><h3>All Reports</h3></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="report in btrs">
+        <td>{{report.id}}</td>
+        <td>{{report.status}}</td>
+        <td>{{report.route}}</td>
+        <td>{{report.startDate}}</td>
+        <td>{{report.endDate}}</td>
+        
+        <td>
+            <a class="btn btn-primary" ui-sref="viewreport({id:report._id})">View</a>
+            <a class="btn btn-danger"  ng-click="deleteReport(report)">Delete</a>
+        </td>
+    </tr>
+</table>
 			</div>
 			</div>
 			</div>
 			</div>
 			</div>
 			<div class="btn">
-						<a class="btn icon-btn btn-success" href="#create"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Add</a>
+						<a class="btn icon-btn btn-success" ui-sref="#create"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>Add</a>
 			</div>
 			</body>
 			</html>
