@@ -26,6 +26,12 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider, $httpProv
     .when('/photo', {
         templateUrl : 'expense/photo.html',
         controller  : 'photoController'
+    }).when('/category', {
+        templateUrl : 'expenseCategory/eCategory.html',
+        controller  : 'categoryController'
+    }).when('/type', {
+        templateUrl : 'expenseType/eType.html',
+        controller  : 'typeController'
     });
 
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense</title>
+  
+
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="expenseCategory.js"></script>  
+<style type="text/css">
+.btn btn-primary{
+    margin-right:50px;
+    width: 3px;
+}
+.button {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 4px;
+    
+}
+ .navbar {
+overflow: visible;
+margin-bottom: 20px;
+color: #956362;
+*position: relative;
+*z-index: 2;
+width: 1200px; 
+</style>
+  
+</head>
+<body ng-app="formExample">
+  <div ng-controller="categoryController">
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Welcome:</a>
+      </div>
+		<ul class="nav navbar-nav navbar-right">
+        <li><a href="#/"><i class="glyphicon glyphicon-home"></i></a></li>
+        <li><a href="#/login" ng-click="logout()"><i class="glyphicon glyphicon-off"></i></a></li>
+      </ul>
+    </div>
+  </nav>
+  <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Expense Category</legend>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Code</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="Enter Code" ng-model="code" class="form-control input-md" required="" >
+    </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Name</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="Enter your name_key" class="form-control input-md" ng-model="name" required="">
+    </div>
+</div>
+<button type="reset" class="button">Reset</button>
+<button type="submit" class="btn btn-primary">Add</button>
+</fieldset>
+</form>
+</div>
+</body>
+</html>
