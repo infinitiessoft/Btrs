@@ -16,18 +16,8 @@
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-
-
-
 	<context:annotation-config />
-
 	<context:component-scan base-package="resources" />
-	<context:component-scan base-package="controller" />
-
-	<bean id="properties"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="WEB-INF/system.properties" />
-	</bean>
 
 	<!-- retry advice for external service call -->
 	<bean id="mailRetryAdvice"
@@ -63,38 +53,12 @@
 			</bean>
 		</property>
 	</bean>
-	<!-- SET default mail properties -->
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="${smtp.host}" />
-		<property name="port" value="${smtp.port}" />
-		<property name="username" value="${smtp.username}" />
-		<property name="password" value="${smtp.password}" />
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop>
-			</props>
-		</property>
-	</bean>
-
-	<bean id="mailWritter" class="mail.MailImpl">
-		<property name="header" value="${mail.header}" />
-		<property name="footer" value="${mail.footer}" />
-		<property name="systemUrl" value="${mail.footer}" />
-	</bean>
-
-	<bean id="mailService" class="serviceImpl.MailServiceImpl">
-		<constructor-arg ref="mailSender" />
-	</bean>
 
 	<aop:config>
 		<aop:advisor
 			pointcut="execution(public * org.springframework.mail.javamail.JavaMailSenderImpl.send(..))"
 			advice-ref="mailRetryAdvice" />
 	</aop:config>
-
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -108,7 +72,7 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="postgres" />
-		<property name="password" value="1234" />
+		<property name="password" value="2ggudoou" />
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
 	</bean>
@@ -296,8 +260,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-			<security:intercept-url method="GET"
-			pattern="/rest/auth" access="permitAll" />
+		<security:intercept-url method="GET" pattern="/rest/auth"
+			access="permitAll" />
 		<security:intercept-url pattern="/rest/**"
 			access="permitAll" />
 		<!-- <security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" 
@@ -311,6 +275,6 @@
 		<security:http-basic entry-point-ref="entryPoint" />
 		<security:logout />
 	</security:http>
-	
+
 
 </beans>

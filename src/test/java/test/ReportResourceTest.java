@@ -10,13 +10,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.ReportResource;
 import sendto.ReportSendto;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ReportResourceTest extends ResourceTest {
 
 	@Test
@@ -43,14 +46,14 @@ public class ReportResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testDeleteReport() {
+	public void testZDeleteReport() {
 		Response response = target("report").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteReportWithNotFoundException() {
+	public void test1ZDeleteReportWithNotFoundException() {
 		Response response = target("report").path("5").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
@@ -85,7 +88,7 @@ public class ReportResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateReportWithNotFoundException() {
+	public void test1UpdateReportWithNotFoundException() {
 		ReportSendto admin = new ReportSendto();
 
 		admin.setAttendanceRecordId(2L);

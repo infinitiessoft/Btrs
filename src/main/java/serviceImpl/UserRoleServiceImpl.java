@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import resources.specification.UserRoleSpecification;
+import sendto.RoleSendto;
+import service.UserRoleService;
 import dao.RoleDao;
 import dao.UserDao;
 import dao.UserRoleDao;
@@ -16,9 +19,6 @@ import entity.UserRole;
 import exceptions.RoleNotFoundException;
 import exceptions.UserAssignmentNotFoundException;
 import exceptions.UserNotFoundException;
-import resources.specification.UserRoleSpecification;
-import sendto.RoleSendto;
-import service.UserRoleService;
 
 public class UserRoleServiceImpl implements UserRoleService {
 
@@ -26,7 +26,8 @@ public class UserRoleServiceImpl implements UserRoleService {
 	private UserDao userDao;
 	private RoleDao roleDao;
 
-	public UserRoleServiceImpl(UserRoleDao userRoleDao, UserDao userDao, RoleDao roleDao) {
+	public UserRoleServiceImpl(UserRoleDao userRoleDao, UserDao userDao,
+			RoleDao roleDao) {
 		this.userRoleDao = userRoleDao;
 		this.userDao = userDao;
 		this.roleDao = roleDao;
@@ -42,14 +43,16 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
-	public Page<RoleSendto> findAll(UserRoleSpecification spec, Pageable pageable) {
+	public Page<RoleSendto> findAll(UserRoleSpecification spec,
+			Pageable pageable) {
 		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
 		Page<UserRole> userRoles = userRoleDao.findAll(spec, pageable);
 		for (UserRole users : userRoles) {
 			Role role = users.getRole();
 			sendto.add(RoleServiceImpl.toRoleSendto(role));
 		}
-		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable, userRoles.getTotalElements());
+		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable,
+				userRoles.getTotalElements());
 		return rets;
 	}
 

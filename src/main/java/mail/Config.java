@@ -29,7 +29,8 @@ public class Config {
 			logger.warn(message, e);
 			throw new RuntimeException(message, e);
 		} catch (IOException e) {
-			String message = "Error while reading" + configFileLocation + " file";
+			String message = "Error while reading" + configFileLocation
+					+ " file";
 			logger.warn(message, e);
 			throw new RuntimeException(message, e);
 		}

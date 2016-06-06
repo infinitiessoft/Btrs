@@ -14,14 +14,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.UserSharedResource;
 import sendto.UserSharedSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserSharedResourceTest extends ResourceTest {
 
 	@Test
@@ -49,21 +52,21 @@ public class UserSharedResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetUserSharedWithNotFoundException() {
+	public void test1GetUserSharedWithNotFoundException() {
 		Response response = target("userShared").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteUserShared() {
+	public void testZDeleteUserShared() {
 		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteUserSharedWithNotFoundException() {
+	public void test1ZDeleteUserSharedWithNotFoundException() {
 		Response response = target("userShared").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
@@ -72,7 +75,7 @@ public class UserSharedResourceTest extends ResourceTest {
 	@Test
 	public void testUpdateUserShared() {
 		UserSharedSendto admin = new UserSharedSendto();
-		admin.setUsername("admin");
+		admin.setUsername("demo2");
 		Response response = target("userShared").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -82,7 +85,7 @@ public class UserSharedResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateUserSharedWithNotFoundException() {
+	public void test1UpdateUserSharedWithNotFoundException() {
 		UserSharedSendto admin = new UserSharedSendto();
 		admin.setUsername("admin");
 

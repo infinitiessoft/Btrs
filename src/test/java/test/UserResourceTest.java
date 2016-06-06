@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.UserResource;
 import sendto.UserSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserResourceTest extends ResourceTest {
 
 	@Test
@@ -28,20 +31,20 @@ public class UserResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetUserWithNotFoundException() {
+	public void test1GetUserWithNotFoundException() {
 		Response response = target("user").path("3").register(JacksonFeature.class).request().get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteUser() {
+	public void testZDeleteUser() {
 		Response response = target("user").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteUserWithNotFoundException() {
+	public void test1ZDeleteUserWithNotFoundException() {
 		Response response = target("user").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);

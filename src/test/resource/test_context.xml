@@ -17,29 +17,11 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 
-	<context:component-scan base-package="resources" />
-
 	<context:annotation-config />
-
+	<context:component-scan base-package="resources" />
 
 	<task:annotation-driven executor="executor" />
 	<task:executor id="executor" pool-size="1" />
-	
-	<bean id="properties"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:system.properties" />
-	</bean>
-
-	<!-- SET default mail properties -->
-
-	<bean id="mailService" class="mock.MockMailService">
-	</bean>
-
-	<bean id="mailWritter" class="mail.MailImpl">
-		<property name="header" value="${mail.header}" />
-		<property name="footer" value="${mail.footer}" />
-		<property name="systemUrl" value="${mail.footer}" />
-	</bean>
 
 	<!-- DATABASE SETUP -->
 
@@ -172,13 +154,13 @@
 		<constructor-arg ref="userSharedDao" />
 	</bean>
 
-<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
+	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
 		<constructor-arg ref="userSharedDao" />
 	</bean>
-	
+
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-<!-- SPRING SECURITY SETUP -->
+	<!-- SPRING SECURITY SETUP -->
 
 	<bean id="passwordEncoder" class="security.SHA1PasswordEncoder">
 	</bean>
@@ -204,7 +186,7 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-		
+
 		<security:csrf disabled="true" />
 		<security:custom-filter ref="mockUserHeaderFilter"
 			after="SECURITY_CONTEXT_FILTER" />

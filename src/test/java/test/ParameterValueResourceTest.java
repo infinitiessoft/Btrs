@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.ParameterValueResource;
 import sendto.ParameterValueSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ParameterValueResourceTest extends ResourceTest {
 
 	@Test
@@ -29,14 +32,14 @@ public class ParameterValueResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testDeleteParameterValue() {
+	public void testZDeleteParameterValue() {
 		Response response = target("parameterValue").path("2").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteParameterValueWithNotFoundException() {
+	public void test1ZDeleteParameterValueWithNotFoundException() {
 		Response response = target("parameterValue").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
@@ -66,7 +69,7 @@ public class ParameterValueResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateParameterValueWithNotFoundException() {
+	public void test1UpdateParameterValueWithNotFoundException() {
 		ParameterValueSendto admin = new ParameterValueSendto();
 		admin.setValue("administrator");
 

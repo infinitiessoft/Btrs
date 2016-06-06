@@ -10,14 +10,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.StatusChangesResource;
 import sendto.StatusChangesSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
@@ -31,21 +34,21 @@ public class StatusChangesResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetStatusChangesWithNotFoundException() {
+	public void test1GetStatusChangesWithNotFoundException() {
 		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteStatusChanges() {
+	public void testZDeleteStatusChanges() {
 		Response response = target("statusChanges").path("2").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteStatusChangesWithNotFoundException() {
+	public void test1ZDeleteStatusChangesWithNotFoundException() {
 		Response response = target("statusChanges").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
@@ -75,7 +78,7 @@ public class StatusChangesResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateStatusChangesWithNotFoundException() {
+	public void test1UpdateStatusChangesWithNotFoundException() {
 		StatusChangesSendto admin = new StatusChangesSendto();
 		admin.setCreatedDate(new Date());
 		admin.setComment("Good");

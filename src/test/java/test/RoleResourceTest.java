@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.RoleResource;
 import sendto.RoleSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RoleResourceTest extends ResourceTest {
 
 	@Test
@@ -30,21 +33,21 @@ public class RoleResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetRoleWithNotFoundException() {
+	public void test1GetRoleWithNotFoundException() {
 		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteRole() {
+	public void testZDeleteRole() {
 		Response response = target("role").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteReportWithNotFoundException() {
+	public void test1ZDeleteReportWithNotFoundException() {
 		Response response = target("role").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
@@ -64,7 +67,7 @@ public class RoleResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateRoleWithNotFoundException() {
+	public void test1UpdateRoleWithNotFoundException() {
 		RoleSendto admin = new RoleSendto();
 		admin.setValue("value");
 

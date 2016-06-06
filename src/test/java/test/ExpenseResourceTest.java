@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.ExpenseResource;
 import sendto.ExpenseSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExpenseResourceTest extends ResourceTest {
 
 	@Test
@@ -37,14 +40,14 @@ public class ExpenseResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testDeleteExpense() {
+	public void testZDeleteExpense() {
 		Response response = target("expense").path("2").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteExpenseWithNotFoundException() {
+	public void test1ZDeleteExpenseWithNotFoundException() {
 		Response response = target("expense").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
@@ -74,7 +77,7 @@ public class ExpenseResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateExpenseWithNotFoundException() {
+	public void test1UpdateExpenseWithNotFoundException() {
 		ExpenseSendto admin = new ExpenseSendto();
 		admin.setTotalAmount(4321);
 		Response response = target("expense").path("3").register(JacksonFeature.class).request().header("user", "demo")

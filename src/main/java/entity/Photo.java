@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -37,7 +36,6 @@ public class Photo extends AbstractEntity {
 	@Column(name = "title")
 	private String title;
 
-	@Lob
 	@Column(name = "data")
 	private byte[] data;
 

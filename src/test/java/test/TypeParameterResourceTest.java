@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.TypeParameterResource;
 import sendto.TypeParameterSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TypeParameterResourceTest extends ResourceTest {
 
 	@Test
@@ -28,21 +31,21 @@ public class TypeParameterResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetTypeParameterWithNotFoundException() {
+	public void test1GetTypeParameterWithNotFoundException() {
 		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteTypeParameter() {
+	public void testZDeleteTypeParameter() {
 		Response response = target("typeParameter").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteTypeParameterWithNotFoundException() {
+	public void test1ZDeleteTypeParameterWithNotFoundException() {
 		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
@@ -62,7 +65,7 @@ public class TypeParameterResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateTypeParameterWithNotFoundException() {
+	public void test1UpdateTypeParameterWithNotFoundException() {
 		TypeParameterSendto admin = new TypeParameterSendto();
 		admin.setValue("PERSONS");
 		Response response = target("typeParameter").path("3").register(JacksonFeature.class).request()

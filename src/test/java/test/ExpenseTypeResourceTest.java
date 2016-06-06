@@ -8,14 +8,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.ExpenseTypeResource;
 import sendto.ExpenseTypeSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExpenseTypeResourceTest extends ResourceTest {
 
 	@Test
@@ -27,21 +30,21 @@ public class ExpenseTypeResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetExpenseTypeWithNotFoundException() {
+	public void test1GetExpenseTypeWithNotFoundException() {
 		Response response = target("expenseType").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeleteExpenseType() {
+	public void testZDeleteExpenseType() {
 		Response response = target("expenseType").path("2").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeleteExpenseTypeWithNotFoundException() {
+	public void test1ZDeleteExpenseTypeWithNotFoundException() {
 		Response response = target("expenseType").path("3").register(JacksonFeature.class).request()
 				.header("user", "demo").delete();
 		AssertUtils.assertNotFound(response);
@@ -62,7 +65,7 @@ public class ExpenseTypeResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdateExpenseTypeWithNotFoundException() {
+	public void test1UpdateExpenseTypeWithNotFoundException() {
 		ExpenseTypeSendto admin = new ExpenseTypeSendto();
 		admin.setTaxPercent(5.00);
 		admin.setValue("value");

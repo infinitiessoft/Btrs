@@ -10,14 +10,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-import assertion.AssertUtils;
-import entity.PageModel;
 import resources.ResourceTest;
 import resources.Type.admin.PhotoResource;
 import sendto.PhotoSendto;
+import assertion.AssertUtils;
+import entity.PageModel;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PhotoResourceTest extends ResourceTest {
 
 	@Test
@@ -34,21 +37,21 @@ public class PhotoResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testGetPhotoWithNotFoundException() {
+	public void test1GetPhotoWithNotFoundException() {
 		Response response = target("photo").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		AssertUtils.assertNotFound(response);
 	}
 
 	@Test
-	public void testDeletePhoto() {
+	public void testZDeletePhoto() {
 		Response response = target("photo").path("1").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		assertEquals(Status.NO_CONTENT.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void testDeletePhotoWithNotFoundException() {
+	public void test1ZDeletePhotoWithNotFoundException() {
 		Response response = target("photo").path("3").register(JacksonFeature.class).request().header("user", "demo")
 				.delete();
 		AssertUtils.assertNotFound(response);
@@ -81,7 +84,7 @@ public class PhotoResourceTest extends ResourceTest {
 	}
 
 	@Test
-	public void testUpdatePhotoWithNotFoundException() {
+	public void test1UpdatePhotoWithNotFoundException() {
 		PhotoSendto admin = new PhotoSendto();
 		admin.setFileName("Expense");
 		admin.setContentType("image/jpeg");
