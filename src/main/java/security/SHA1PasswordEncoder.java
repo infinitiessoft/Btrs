@@ -16,14 +16,17 @@ public class SHA1PasswordEncoder implements PasswordEncoder {
 	@Override
 	public String encode(CharSequence rawPassword) {
 		try {
-			MessageDigest messageDigest = MessageDigest.getInstance(digestAlgorithm);
+			MessageDigest messageDigest = MessageDigest
+					.getInstance(digestAlgorithm);
 			messageDigest.update(rawPassword.toString().getBytes(charset));
 			byte[] digest = messageDigest.digest();
 			return new String(Hex.encode(digest));
 		} catch (NoSuchAlgorithmException e) {
-			throw new IllegalArgumentException("No such algorithm [" + digestAlgorithm + "]");
+			throw new IllegalArgumentException("No such algorithm ["
+					+ digestAlgorithm + "]");
 		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("Unsupported encoding [" + charset + "]");
+			throw new IllegalArgumentException("Unsupported encoding ["
+					+ charset + "]");
 		}
 	}
 
@@ -31,7 +34,8 @@ public class SHA1PasswordEncoder implements PasswordEncoder {
 	public boolean matches(CharSequence rawPassword, String encodedPassword) {
 		String pass1 = "" + encodedPassword;
 		String pass2 = encode(rawPassword);
-
+		System.err.println(".........." + pass1 + "  " + pass2);
+//		89e495e7941cf9e40e6980d14a16bf023ccd4c91
 		return equals(pass1, pass2);
 	}
 

@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.AuthResource;
+import resources.version1.member.AuthResource;
 import entity.PrincipalImpl;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

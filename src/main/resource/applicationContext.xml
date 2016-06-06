@@ -17,7 +17,6 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<context:annotation-config />
-	<context:component-scan base-package="resources" />
 
 	<!-- retry advice for external service call -->
 	<bean id="mailRetryAdvice"
@@ -60,6 +59,9 @@
 			advice-ref="mailRetryAdvice" />
 	</aop:config>
 
+	<bean class="resources.DemoData">
+	</bean>
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -76,9 +78,6 @@
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
 	</bean>
-
-
-
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -260,9 +259,9 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-		<security:intercept-url method="GET" pattern="/rest/auth"
-			access="permitAll" />
-		<security:intercept-url pattern="/rest/**"
+		<security:intercept-url method="GET"
+			pattern="/rest/v1.0/auth" access="permitAll" />
+		<security:intercept-url pattern="/rest/v1.0/**"
 			access="permitAll" />
 		<!-- <security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" 
 			/> <security:intercept-url method="PUT" pattern="/rest/news/**" access="hasRole('admin')" 

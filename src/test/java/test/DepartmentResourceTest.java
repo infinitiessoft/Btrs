@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.DepartmentResource;
+import resources.version1.admin.DepartmentResource;
 import sendto.DepartmentSendto;
 import assertion.AssertUtils;
 import entity.PageModel;

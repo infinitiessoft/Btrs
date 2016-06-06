@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.UserSharedResource;
+import resources.version1.admin.UserSharedResource;
 import sendto.UserSharedSendto;
 import assertion.AssertUtils;
 import entity.PageModel;

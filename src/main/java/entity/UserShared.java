@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "user_shared", uniqueConstraints = @UniqueConstraint(columnNames = "username") )
+@Table(name = "user_shared", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class UserShared extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 
@@ -166,7 +166,8 @@ public class UserShared extends AbstractEntity {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -190,6 +191,17 @@ public class UserShared extends AbstractEntity {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "UserShared [id=" + id + ", username=" + username
+				+ ", jobTitle=" + jobTitle + ", gender=" + gender
+				+ ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email
+				+ ", dateofBirth=" + dateofBirth + ", createdDate="
+				+ createdDate + ", enabled=" + enabled + ", users=" + users
+				+ "]";
 	}
 
 }

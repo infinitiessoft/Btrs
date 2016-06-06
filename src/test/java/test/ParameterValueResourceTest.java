@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.ParameterValueResource;
+import resources.version1.admin.ParameterValueResource;
 import sendto.ParameterValueSendto;
 import assertion.AssertUtils;
 import entity.PageModel;

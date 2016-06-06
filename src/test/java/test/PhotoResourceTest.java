@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.PhotoResource;
+import resources.version1.admin.PhotoResource;
 import sendto.PhotoSendto;
 import assertion.AssertUtils;
 import entity.PageModel;

@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.StatusChangesResource;
+import resources.version1.admin.StatusChangesResource;
 import sendto.StatusChangesSendto;
 import assertion.AssertUtils;
 import entity.PageModel;

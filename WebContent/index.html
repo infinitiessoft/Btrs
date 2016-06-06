@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html >
+<html>
 <head>
 <title></title>
-<link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
 <meta name="viewport" content="width=device-width">
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <!-- build:css(.) styles/vendor.css -->
@@ -28,13 +29,41 @@
 <script src="lib/metisMenu.min.js"></script>
 <script src="lib/angular-touch.min.js"></script>
 <script src="js/hello.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/navigation.js"></script>
+
 
 </head>
 <body ng-app="hello" ng-cloak class="ng-cloak">
-<div ng-controller="navigation" >
-<div class="active"><a href="#/login"></a></div>
-<div ng-show="authenticated"><a href="#/login" ng-click="logout()">logout</a></div>
-</div>
-<div ng-view class="container"></div>
+	<div ng-controller="navigation" class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand page-scroll" href="#page-top">Business
+					Trip Report System</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li ng-show="authenticated"><a class="page-scroll"
+						href="#logout">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div id="page-wrapper" style="min-height: 561px;">
+		<div class="alert alert-danger alert-dismissable" ng-show="error">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true">&times;</button>
+			<i class="fa fa-times-circle"></i> {{error}}
+		</div>
+		<div ui-view></div>
+
+	</div>
 </body>
 </html>

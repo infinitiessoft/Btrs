@@ -4,9 +4,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import security.UserDetail;
 import dao.UserSharedDao;
 import entity.UserShared;
-import security.UserDetail;
 
 public class UserDetailServiceImpl implements UserDetailsService {
 
@@ -17,12 +17,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.err.println("find username:  " + username);
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException {
 		UserShared user = userDao.findByUsername(username);
-
+		
 		if (null == user) {
-			throw new UsernameNotFoundException("The employee with username " + username + " was not found");
+			throw new UsernameNotFoundException("The employee with username "
+					+ username + " was not found");
 		}
 		return new UserDetail(user);
 	}

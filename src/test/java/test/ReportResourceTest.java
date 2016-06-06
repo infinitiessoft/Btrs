@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.ReportResource;
+import resources.version1.admin.ReportResource;
 import sendto.ReportSendto;
 import entity.PageModel;
 

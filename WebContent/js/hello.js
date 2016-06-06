@@ -1,93 +1,115 @@
-angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider, $httpProvider) {
+angular
+		.module('hello', [ 'ui.router', 'auth', 'navigation' ])
+		.config(
+				[
+						'$stateProvider',
+						'$urlRouterProvider',
+						'$httpProvider',
+						function($stateProvider, $urlRouterProvider,
+								$httpProvider) {
 
-	$routeProvider
-	.when('/login', {
-		templateUrl : 'login.html',
-		controller : 'navigation',
-		controllerAs: 'controller'
-	}).when('/',{
-                templateUrl : 'pages/homescreen.html',
-                controller  : 'mainController'
-	}) .when('/about', {
-        templateUrl : 'about.html',
-        controller  : 'aboutController'
-    }).when('/create', {
-        templateUrl : 'createReport/createReport.html',
-        controller  : 'createController'
-    })
-    .when('/report', {
-        templateUrl : 'report.html',
-        controller  : 'reportController'
-    })
-    .when('/expense', {
-        templateUrl : 'expense/expense.html',
-        controller  : 'expenseController'
-    })
-    .when('/photo', {
-        templateUrl : 'expense/photo.html',
-        controller  : 'photoController'
-    }).when('/category', {
-        templateUrl : 'expenseCategory/eCategory.html',
-        controller  : 'categoryController'
-    }).when('/type', {
-        templateUrl : 'expenseType/eType.html',
-        controller  : 'typeController'
-    });
+							$urlRouterProvider.otherwise('/home');
 
-	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+							$stateProvider.state('login', {
+								url : '/login',
+								controller : 'navigation',
+								templateUrl : 'login.html'
+							}).state('home', {
+								url : '/home',
+								templateUrl : 'pages/homescreen.html'
+							}).state('about', {
+								url : '/about',
+								controller : 'aboutController',
+								templateUrl : 'about.html'
+							}).state('create', {
+								url : '/create',
+								controller : 'createController',
+								templateUrl : 'createReport/createReport.html'
+							}).state('report', {
+								url : '/report',
+								controller : 'reportController',
+								templateUrl : 'report.html'
+							}).state('expense', {
+								url : '/expense',
+								controller : 'expenseController',
+								templateUrl : 'expense/expense.html'
+							}).state('photo', {
+								url : '/photo',
+								controller : 'photoController',
+								templateUrl : 'expense/photo.html'
+							}).state('category', {
+								url : '/category',
+								controller : 'categoryController',
+								templateUrl : 'expenseCategory/eCategory.html'
+							}).state('type', {
+								url : '/type',
+								controller : 'typeController',
+								templateUrl : 'expenseType/eType.html'
+							});
 
-}).controller('navigation',
-		  function($rootScope, $scope, $http, $location) {
-	  var authenticate = function(callback) {
-	    $http.get('rest/userShared').success(function(data) {
-	      if (data.username) {
-	        $rootScope.authenticated = true;
-	      } else {
-	        $rootScope.authenticated = false;
-	      }
-	      callback && callback();
-	    }).error(function() {
-	      $rootScope.authenticated = false;
-	      callback && callback();
-	    });
-	  }
-	  authenticate();
-	  $scope.credentials = {};
-	  $scope.login = function() {
-	    $http.post('login', $.param($scope.credentials), {
-	 
-	      headers : {
-	        "content-type" : "application/x-www-form-urlencoded"
-	      }
-	    }).success(function(data) {
-	      authenticate(function() {
-	        if ($rootScope.authenticated) {
-	          $location.path("/");
-	          $scope.error = false;
-	        } else {
-	          $location.path("/");
-	          $scope.error = true;
-	        }
-	      });
-	    }).error(function(data) {
-	      $location.path("/login");
-	      $scope.error = true;
-	      $rootScope.authenticated = false;
-	    })
-	  };
-	
+							$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+							/*
+							 * Register error provider that shows message on
+							 * failed requests or redirects to login page on
+							 * unauthenticated requests
+							 */
+							$httpProvider.interceptors
+									.push('authHttpResponseInterceptor');
+						} ]).factory(
+				'authHttpResponseInterceptor',
+				[
+						'$q',
+						'$rootScope',
+						'$location',
+						function($q, $rootScope, $location) {
+							return {
+								response : function(response) {
+									if (response.status === 401) {
+										console.log("Response 401");
+									}
+									return response || $q.when(response);
+								},
+								responseError : function(rejection) {
+									var data = rejection.data;
+									var status = rejection.status;
+									var config = rejection.config;
+									var method = config.method;
+									var url = config.url;
+									if (rejection.status === 401) {
+										console.log("Response Error 401",
+												rejection);
+										$location.path('/login').search(
+												'returnTo', $location.path());
+									} else {
+										$rootScope.error = data.message;
+									}
+									return $q.reject(rejection);
+								}
+							}
+						} ]).run(function($rootScope, $http, auth) {
+			auth.init('/home', '/login', 'logout');
 
-			self.logout = function() {
-				$http.post('logout', {}).finally(function() {
-					$rootScope.authenticated = false;
-					$location.path("/");
-				});
-			}
+			/* Reset error when a new view is loaded */
+			$rootScope.$on('$viewContentLoaded', function() {
+				delete $rootScope.error;
+			});
 
-		}).controller('hello', function($scope) {
-//	var self = this;
-//	$http.get('/Btrs/home.html').then(function(response) {
-//		self.greeting = response.data;
-			 $scope.message = 'Look! I am an about page.';
-	});
-	 
+			$rootScope.back = function() {
+				window.history.back();
+			};
+
+			$rootScope.hasRole = function(role) {
+
+				if ($rootScope.user === undefined) {
+					return false;
+				}
+
+				if ($rootScope.user.roles[role] === undefined) {
+					return false;
+				}
+
+				return $rootScope.user.roles[role];
+			};
+
+			$rootScope.initialized = true;
+		});

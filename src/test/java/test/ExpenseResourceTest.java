@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.Type.admin.ExpenseResource;
+import resources.version1.admin.ExpenseResource;
 import sendto.ExpenseSendto;
 import assertion.AssertUtils;
 import entity.PageModel;
