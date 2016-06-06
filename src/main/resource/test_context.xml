@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+			http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="resources" />
+
+	<task:annotation-driven executor="executor" />
+	<task:executor id="executor" pool-size="1" />
+
+	<!-- DATABASE SETUP -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:example" />
+	</bean>
+
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="btrsPU" />
+		<property name="persistenceXmlLocation"
+			value="file:src/main/resource/META-INF/persistence.xml"></property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<jpa:repositories base-package="dao" />
+
+	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
+		<constructor-arg ref="departmentDao" />
+	</bean>
+
+	<bean id="roleService" class="serviceImpl.RoleServiceImpl">
+		<constructor-arg ref="roleDao" />
+	</bean>
+
+
+	<bean id="expenseCategoryService" class="serviceImpl.ExpenseCategoryServiceImpl">
+		<constructor-arg ref="expenseCategoryDao" />
+	</bean>
+
+
+	<bean id="expenseCateTypeService" class="serviceImpl.ExpenseCateTypeServiceImpl">
+		<constructor-arg ref="expenseCategoryDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="expenseCateTypeDao" />
+	</bean>
+
+
+
+	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
+		<constructor-arg ref="expenseDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="reportDao" />
+	</bean>
+
+
+
+	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
+		<constructor-arg ref="expenseTypeDao" />
+
+	</bean>
+
+
+
+	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="typeParameterDao" />
+		<constructor-arg ref="expenseTypeParaDao" />
+	</bean>
+
+
+
+	<bean id="parameterValueService" class="serviceImpl.ParameterValueServiceImpl">
+		<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="typeParameterDao" />
+		<constructor-arg ref="expenseDao" />
+	</bean>
+
+
+
+	<bean id="photoService" class="serviceImpl.PhotoServiceImpl">
+		<constructor-arg ref="photoDao" />
+		<constructor-arg ref="reportDao" />
+	</bean>
+
+
+	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="userDao" />
+	</bean>
+
+
+
+	<bean id="statusChangesService" class="serviceImpl.StatusChangesServiceImpl">
+		<constructor-arg ref="statusChangesDao" />
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="userDao" />
+	</bean>
+
+
+
+	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
+		<constructor-arg ref="typeParameterDao" />
+	</bean>
+
+
+
+	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="roleDao" />
+	</bean>
+
+
+
+	<bean id="userService" class="serviceImpl.UserServiceImpl">
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="departmentDao" />
+		<constructor-arg ref="userSharedDao" />
+	</bean>
+
+
+
+	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
+		<constructor-arg ref="userSharedDao" />
+	</bean>
+
+	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
+		<constructor-arg ref="userSharedDao" />
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- SPRING SECURITY SETUP -->
+
+	<bean id="passwordEncoder" class="security.SHA1PasswordEncoder">
+	</bean>
+
+	<bean id="mockUserHeaderFilter" class="resources.MockUserHeaderFilter">
+	</bean>
+
+	<security:authentication-manager id="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailService">
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+
+	<security:global-method-security
+		secured-annotations="enabled" pre-post-annotations="enabled" />
+
+	<security:http realm="Protected API" use-expressions="true"
+		auto-config="true" authentication-manager-ref="authenticationManager">
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/index.html"
+			access="permitAll" />
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+
+		<security:csrf disabled="true" />
+		<security:custom-filter ref="mockUserHeaderFilter"
+			after="SECURITY_CONTEXT_FILTER" />
+		<security:http-basic />
+		<security:logout />
+	</security:http>
+
+</beans>
