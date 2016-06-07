@@ -39,30 +39,30 @@ angular
 						   controller : 'aboutController',
 						   templateUrl : 'about.html'
 					   }).state('dashboard.edit-memberreport', {
-                		   templateUrl:'edit.html',
-                		   controller: 'edit-memberreport',
-                		   url:'/edit-memberreport/:id',
-                		   resolve : {
-                			   loadMyDirectives:function($ocLazyLoad){
-                				   return $ocLazyLoad.load(
-                						   {
-                							   name:'edit-memberreport',
-                							   files:[
-                							          'report/edit-memberreport.js'
-                							          ]
-                						   })
-                			   },
-                			   record : function(
-                					   memberReportService,
-                					   $stateParams) {
-                				   var id = $stateParams.id || 0;
-                				   if(id == 0){
-                					   return {data:{}};
-                				   }
-                				   return memberReportService.get(id);
-                			   }
-                		   }
-                	   }).state('dashboard.list-memberreports', {
+						   templateUrl:'edit.html',
+						   controller: 'edit-memberreport',
+						   url:'/edit-memberreport/:id',
+						   resolve : {
+							   loadMyDirectives:function($ocLazyLoad){
+								   return $ocLazyLoad.load(
+										   {
+											   name:'edit-memberreport',
+											   files:[
+											          'report/edit-memberreport.js'
+											          ]
+										   })
+							   },
+							   report : function(
+									   memberReportService,
+									   $stateParams) {
+								   var id = $stateParams.id || 0;
+								   if(id == 0){
+									   return {data:{}};
+								   }
+								   return memberReportService.get(id);
+							   }
+						   }
+					   }).state('dashboard.list-memberreports', {
 						   url : '/list-memberreports',
 						   controller : 'list-memberreports',
 						   templateUrl : 'report/list-memberreports.html',
