@@ -65,7 +65,7 @@ angular
                 	   }).state('dashboard.list-memberreports', {
 						   url : '/list-memberreports',
 						   controller : 'list-memberreports',
-						   templateUrl : 'report/list-reports.html',
+						   templateUrl : 'report/list-memberreports.html',
 						   params : {
 							   startDate : null,
 							   endDate : null,
