@@ -20,7 +20,7 @@ import service.ReportService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @PreAuthorize("isAuthenticated()")
-@Path("/report")
+@Path("/reports")
 public class MemberReportResource {
 
 	@Autowired

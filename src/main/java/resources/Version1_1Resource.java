@@ -26,7 +26,7 @@ public class Version1_1Resource {
 		return AuthResource.class;
 	}
 
-	@Path("employees")
+	@Path("users")
 	public Class<resources.version1.member.MembersResource> getEmployeesResource() {
 		return resources.version1.member.MembersResource.class;
 	}

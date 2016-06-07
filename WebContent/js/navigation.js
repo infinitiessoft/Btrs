@@ -27,7 +27,7 @@ angular.module('navigation', []).controller(
 			$scope.user = function() {
 				return auth.user;
 			}
-
+			
 			$scope.authenticated = function() {
 				return auth.authenticated;
 			}

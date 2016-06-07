@@ -61,12 +61,12 @@ public class MembersResource {
 		return userService.findAll(spec, pageRequest);
 	}
 
-	@Path("{id}/role")
+	@Path("{id}/roles")
 	public Class<MemberRoleResource> getUserRoleResource() {
 		return MemberRoleResource.class;
 	}
 
-	@Path("{id}/report")
+	@Path("{id}/reports")
 	public Class<MemberReportResource> getUserReportResource() {
 		return MemberReportResource.class;
 	}
