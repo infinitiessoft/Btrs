@@ -100,6 +100,31 @@ angular
 								   })
 							   }
 						   }
+					   }).state('dashboard.create-memberreports', {
+						   url : '/create-memberreports',
+						   controller : 'create-memberreports',
+						   templateUrl : 'createReport/create-memberreports.html',
+						   resolve : {
+							   loadMyDirectives:function($ocLazyLoad){
+								   return $ocLazyLoad.load(
+										   {
+											   name:'add-memberreport',
+											   files:[
+											          'createReport/add-memberreport.js'
+											          ]
+										   })
+							   },
+							   report : function(
+									   memberReportService,
+									   $stateParams) {
+								   var id = $stateParams.id || 0;
+								   if(id == 0){
+									   return {data:{}};
+								   }
+								   return memberReportService.get(id);
+							   }
+						   }
+						   
 					   }).state('dashboard.expense', {
 						   url : '/expense',
 						   controller : 'expenseController',
