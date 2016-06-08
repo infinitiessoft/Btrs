@@ -8,7 +8,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a ui-sref="dashboard.home()"><i
 							class="glyphicon glyphicon-home"></i> Home</a></li>
-					<li><a ui-sref="dashboard.about()"><i
+					<li><a ui-sref="dashboard.edit-profile()"><i
 							class="glyphicon glyphicon-user"></i> About</a></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -23,10 +23,16 @@
 	</div>
 	
 	<div id="page-wrapper" style="" class="alert alert-danger
-		alert-dismissable" ng-show="error">
+		alert-dismissable" ng-show="error" role="alert">
 		<button type="button" class="close" data-dismiss="alert"
 			aria-hidden="true"></button>
 		<i class="fa fa-times-circle"></i> {{error}}
+	</div>
+	<div id="page-wrapper" style="" class="alert alert-info
+		alert-dismissable" ng-show="info" role="alert">
+		<button type="button" class="close" data-dismiss="alert"
+			aria-hidden="true"></button>
+		<i class="fa fa-info-circle"></i> {{info}}
 	</div>
 	<div ui-view></div>
 

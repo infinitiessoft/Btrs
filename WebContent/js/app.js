@@ -34,11 +34,32 @@ angular
 					   }).state('dashboard.home', {
 						   url : '/home',
 						   templateUrl : 'home.html'
-					   }).state('dashboard.about', {
-						   url : '/about',
-						   controller : 'aboutController',
-						   templateUrl : 'about.html'
-					   }).state('dashboard.edit-memberreport', {
+					   }).state('dashboard.edit-profile',{
+                		   templateUrl:'edit.html',
+                		   controller: 'edit-profile',
+                		   url:'/edit-profile',
+                		   resolve : {
+                			   loadMyDirectives:function($ocLazyLoad){
+                				   return $ocLazyLoad.load(
+                						   {
+                							   name:'edit-profile',
+                							   files:[
+                							          'profile/edit-profile.js'
+                							          ]
+                						   })
+                			   },
+                			   employee : function(
+                					   auth,
+                					   profileService) {
+
+                				   var id = auth.user.principal.id;
+                				   if(id == 0){
+                					   return {data:{}};
+                				   }
+                				   return profileService.get(id);
+                			   }
+                		   }
+                	   }).state('dashboard.edit-memberreport', {
 						   templateUrl:'edit.html',
 						   controller: 'edit-memberreport',
 						   url:'/edit-memberreport/:id',
@@ -210,6 +231,7 @@ angular
 						    			/* Reset error when a new view is loaded */
 						    			$rootScope.$on('$viewContentLoaded', function() {
 						    				delete $rootScope.error;
+						    				delete $rootScope.info;
 						    			});
 
 						    			$rootScope.back = function() {
@@ -344,4 +366,75 @@ angular
 						    					return chr ? chr.toLowerCase() : '';
 						    				});
 						    			}
-						    		});
+						    		}).factory(
+				    						  'profileService',
+				    						  [
+				    						   'auth',
+				    						   '$http',
+				    						   function(auth, $http) {
+                  				    			 var serviceBase = 'rest/v1.0/users/';
+                				    			 var obj = {};
+                				    			 obj.list = function(queries) {
+                				    				 return $http.get(serviceBase, {params:queries});
+                				    			 };
+
+                				    			 obj.get = function(id) {
+                				    				 return $http.get(serviceBase  + id);
+                				    			 };
+
+                				    			 obj.insert = function(employee) {
+                				    				 return $http.post(serviceBase, employee);
+                				    			 };
+
+                				    			 obj.update = function(id, employee) {
+                				    				 return $http.put(serviceBase  + id,
+                				    						 employee).then(function(results) {
+                				    							 return results;
+                				    						 });
+                				    			 };
+
+                				    			 obj.remove = function(id) {
+                				    				 return $http.delete(serviceBase + id).then(function(status) {
+                				    					 return status;
+                				    				 });
+                				    			 };
+
+                				    			 return obj;
+                				    		 } ])
+					.factory(
+					'memberDepartmentService',
+					[
+							'$http',
+							function($http) {
+								var serviceBase = 'rest/v1.0/departments/';
+								var obj = {};
+								obj.list = function(queries) {
+									return $http.get(serviceBase, {params:queries});
+								};
+
+								obj.get = function(id) {
+									return $http.get(serviceBase  + id);
+								};
+
+								obj.insert = function(department) {
+									return $http.post(serviceBase, department).then(
+											function(results) {
+												return results;
+											});
+								};
+
+								obj.update = function(id, department) {
+									return $http.put(serviceBase  + id,
+											department).then(function(results) {
+										return results;
+									});
+								};
+								
+								obj.remove = function(id) {
+									return $http.delete(serviceBase + id).then(function(status) {
+										return status;
+									});
+								};
+
+								return obj;
+							} ]);
