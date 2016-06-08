@@ -49,13 +49,6 @@ public class Expense extends AbstractEntity {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Expense [id=" + id + ", expenseType=" + expenseType + ", report=" + report + ", comment=" + comment
-				+ ", totalAmount=" + totalAmount + ", taxAmount=" + taxAmount + ", parameterValues=" + parameterValues
-				+ "]";
-	}
-
 	public Long getId() {
 		return id;
 	}

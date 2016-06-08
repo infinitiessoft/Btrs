@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +29,8 @@ public class User extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne // (fetch = FetchType.LAZY)
+	@ManyToOne
+	// (fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id")
 	private Department department;
 
@@ -36,8 +38,11 @@ public class User extends AbstractEntity {
 	@Column(name = "last_Login")
 	private Date lastLogin;
 
-	@ManyToOne // (fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_shared_id")
+	// @ManyToOne // (fetch = FetchType.LAZY)
+	// @JoinColumn(name = "user_shared_id")
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
+	// @JoinColumn(name="USER_ID", nullable=false)
+	@JoinColumn(name = "user_shared_id", unique = true, nullable = false, insertable = true, updatable = true)
 	private UserShared userShared;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -80,13 +85,6 @@ public class User extends AbstractEntity {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", department=" + department + ", lastLogin=" + lastLogin + ", userShared="
-				+ userShared + ", userRole=" + userRole + ", statusChanges=" + statusChanges + ", outgoingReports="
-				+ outgoingReports + ", incomingReports=" + incomingReports + "]";
 	}
 
 	public Long getId() {

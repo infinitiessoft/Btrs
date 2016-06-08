@@ -1,17 +1,13 @@
 package entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,8 +54,8 @@ public class UserShared extends AbstractEntity {
 
 	private Boolean enabled;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userShared", cascade = CascadeType.REMOVE)
-	private Set<User> users = new HashSet<User>(0);
+	@OneToOne(mappedBy = "userShared")
+	private User user;
 
 	public UserShared() {
 		super();
@@ -153,12 +149,12 @@ public class UserShared extends AbstractEntity {
 		this.createdDate = createdDate;
 	}
 
-	public Set<User> getUsers() {
-		return users;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -166,8 +162,6 @@ public class UserShared extends AbstractEntity {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -185,23 +179,7 @@ public class UserShared extends AbstractEntity {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "UserShared [id=" + id + ", username=" + username
-				+ ", jobTitle=" + jobTitle + ", gender=" + gender
-				+ ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email
-				+ ", dateofBirth=" + dateofBirth + ", createdDate="
-				+ createdDate + ", enabled=" + enabled + ", users=" + users
-				+ "]";
 	}
 
 }

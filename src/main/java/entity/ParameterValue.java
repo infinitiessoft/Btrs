@@ -31,12 +31,6 @@ public class ParameterValue extends AbstractEntity {
 	@Column(name = "value")
 	private String value;
 
-	@Override
-	public String toString() {
-		return "ParameterValue [id=" + id + ", typeParameter=" + typeParameter + ", expense=" + expense + ", value="
-				+ value + "]";
-	}
-
 	public ParameterValue() {
 		super();
 	}
