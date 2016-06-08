@@ -32,11 +32,6 @@ public class Role extends AbstractEntity {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Role [ value=" + value + "]";
-	}
-
 	public Long getId() {
 		return id;
 	}

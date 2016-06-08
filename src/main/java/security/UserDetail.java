@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import entity.User;
+import entity.UserRole;
 import entity.UserShared;
 
 public class UserDetail implements UserDetails {
@@ -32,9 +32,10 @@ public class UserDetail implements UserDetails {
 		username = user.getUsername();
 		password = user.getPassword();
 		id = user.getId();
-		Set<entity.User> roles = user.getUsers();
-		for (User role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role.getUserShared().getUsername()));
+		Set<UserRole> roles = user.getUser().getUserRole();
+		for (UserRole userRole : roles) {
+			authorities.add(new SimpleGrantedAuthority(userRole.getRole()
+					.getValue()));
 		}
 	}
 
@@ -85,8 +86,9 @@ public class UserDetail implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "UserDetail [id=" + id + ", username=" + username + ", password=" + password + ", authorities="
-				+ authorities + "]";
+		return "UserDetail [id=" + id + ", username=" + username
+				+ ", password=" + password + ", authorities=" + authorities
+				+ "]";
 	}
 
 }

@@ -31,11 +31,10 @@ public class Version1_1Resource {
 		return resources.version1.member.MembersResource.class;
 	}
 
-	// @Path("departments")
-	// public Class<resources.version1.member.MemberDepartmentsResource>
-	// getDepartmentsResource() {
-	// return resources.version1.member.MemberDepartmentsResource.class;
-	// }
+	@Path("departments")
+	public Class<resources.version1.member.MemberDepartmentsResource> getDepartmentsResource() {
+		return resources.version1.member.MemberDepartmentsResource.class;
+	}
 	//
 	// @Path("recordtypes")
 	// public Class<resources.version1.member.MemberAttendRecordTypesResource>

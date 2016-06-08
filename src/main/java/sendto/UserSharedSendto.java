@@ -1,13 +1,18 @@
 package sendto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Strings;
 
-public class UserSharedSendto {
+public class UserSharedSendto implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String username;
 	private String password;

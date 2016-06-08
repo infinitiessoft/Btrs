@@ -33,11 +33,13 @@ public class Report extends AbstractEntity {
 	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
-	@ManyToOne // (fetch = FetchType.LAZY)
+	@ManyToOne
+	// (fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
-	@ManyToOne // (fetch = FetchType.LAZY)
+	@ManyToOne
+	// (fetch = FetchType.LAZY)
 	@JoinColumn(name = "reviewer_id")
 	private User reviewer;
 
@@ -80,15 +82,6 @@ public class Report extends AbstractEntity {
 
 	public Report() {
 		super();
-	}
-
-	@Override
-	public String toString() {
-		return "Report [id=" + id + ", maxIdLastMonth=" + maxIdLastMonth + ", attendanceRecordId=" + attendanceRecordId
-				+ ", owner=" + owner + ", reviewer=" + reviewer + ", reason=" + reason + ", route=" + route
-				+ ", startDate=" + startDate + ", endDate=" + endDate + ", comment=" + comment + ", createdDate="
-				+ createdDate + ", lastUpdatedDate=" + lastUpdatedDate + ", current_status=" + current_status
-				+ ", statusChanges=" + statusChanges + ", expenses=" + expenses + ", photos=" + photos + "]";
 	}
 
 	public Long getId() {
