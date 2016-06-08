@@ -195,6 +195,7 @@
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="departmentDao" />
 		<constructor-arg ref="userSharedDao" />
+		<constructor-arg ref="passwordEncoder" />
 	</bean>
 
 

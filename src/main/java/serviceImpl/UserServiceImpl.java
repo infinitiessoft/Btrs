@@ -1,36 +1,40 @@
 package serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.DepartmentDao;
-import dao.UserDao;
-import dao.UserSharedDao;
-import entity.Report;
-import entity.User;
-import exceptions.DepartmentNotFoundException;
-import exceptions.UserNotFoundException;
-import exceptions.UserSharedNotFoundException;
 import resources.specification.UserSpecification;
 import sendto.UserSendto;
 import service.UserService;
+import dao.DepartmentDao;
+import dao.UserDao;
+import dao.UserSharedDao;
+import entity.Gender;
+import entity.User;
+import entity.UserShared;
+import exceptions.DepartmentNotFoundException;
+import exceptions.InvalidGenderException;
+import exceptions.UserNotFoundException;
 
 public class UserServiceImpl implements UserService {
 
 	private UserDao userDao;
 	private DepartmentDao departmentDao;
 	private UserSharedDao userSharedDao;
+	private PasswordEncoder passwordEncoder;
 
-	public UserServiceImpl(UserDao userDao, DepartmentDao departmentDao, UserSharedDao userSharedDao) {
+	public UserServiceImpl(UserDao userDao, DepartmentDao departmentDao,
+			UserSharedDao userSharedDao, PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.departmentDao = departmentDao;
 		this.userSharedDao = userSharedDao;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Transactional
@@ -46,38 +50,23 @@ public class UserServiceImpl implements UserService {
 	private UserSendto toUserSendto(User user) {
 		UserSendto ret = new UserSendto();
 		ret.setId(user.getId());
-		ret.setLastLogin(new Date());
 
 		UserSendto.Department dept = new UserSendto.Department();
 		dept.setId(user.getDepartment().getId());
+		dept.setName(user.getDepartment().getName());
 		ret.setDepartment(dept);
 
 		UserSendto.UserShared userShrd = new UserSendto.UserShared();
 		userShrd.setId(user.getUserShared().getId());
+		userShrd.setEmail(user.getUserShared().getEmail());
+		userShrd.setCreatedDate(user.getUserShared().getCreatedDate());
+		userShrd.setFirstName(user.getUserShared().getFirstName());
+		userShrd.setGender(user.getUserShared().getGender());
+		userShrd.setLastName(user.getUserShared().getLastName());
+		userShrd.setUsername(user.getUserShared().getUsername());
 		ret.setUserShared(userShrd);
 
-		List<UserSendto.Report> incomingReport = new ArrayList<UserSendto.Report>();
-		for (Report report : user.getIncomingReports()) {
-			UserSendto.Report r = toResponseReport(report);
-			incomingReport.add(r);
-		}
-		ret.setIncomingReport(incomingReport);
-
-		List<UserSendto.Report> outgoingReport = new ArrayList<UserSendto.Report>();
-		for (Report report : user.getOutgoingReports()) {
-			UserSendto.Report r = toResponseReport(report);
-			outgoingReport.add(r);
-		}
-
-		ret.setOutgoingReport(outgoingReport);
-
 		return ret;
-	}
-
-	private sendto.UserSendto.Report toResponseReport(Report report) {
-		sendto.UserSendto.Report set = new sendto.UserSendto.Report();
-		set.setId(report.getId());
-		return set;
 	}
 
 	@Transactional
@@ -112,7 +101,8 @@ public class UserServiceImpl implements UserService {
 		for (User usr : users) {
 			sendto.add(toUserSendto(usr));
 		}
-		Page<UserSendto> rets = new PageImpl<UserSendto>(sendto, pageable, users.getTotalElements());
+		Page<UserSendto> rets = new PageImpl<UserSendto>(sendto, pageable,
+				users.getTotalElements());
 		return rets;
 	}
 
@@ -124,29 +114,52 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException(id);
 		}
 		setUpUser(updated, usr);
+		System.err.println("test............."+usr.getUserShared().getFirstName());
 		return toUserSendto(userDao.save(usr));
 	}
 
-	private void setUpUser(UserSendto sendto, User newEntry) {
-		if (sendto.isLastLoginSet()) {
-			newEntry.setLastLogin(sendto.getLastLogin());
-		}
-		if (sendto.isDepartmentSet()) {
-			if (sendto.getDepartment().isIdSet()) {
-				entity.Department department = departmentDao.findOne(sendto.getDepartment().getId());
-				if (department == null) {
-					throw new DepartmentNotFoundException(sendto.getDepartment().getId());
+	private void setUpUser(UserSendto userSendto, User newEntry) {
+		if (userSendto.isUserSharedSet()) {
+			sendto.UserSendto.UserShared userShared = userSendto
+					.getUserShared();
+			UserShared userSharedEntry = newEntry.getUserShared();
+			if (userShared.isCreatedDateSet()) {
+				userSharedEntry.setCreatedDate(userShared.getCreatedDate());
+			}
+			if (userShared.isEmailSet()) {
+				userSharedEntry.setEmail(userShared.getEmail());
+			}
+			if (userShared.isFirstNameSet()) {
+				userSharedEntry.setFirstName(userShared.getFirstName());
+			}
+			if (userShared.isLastNameSet()) {
+				userSharedEntry.setLastName(userShared.getLastName());
+			}
+			if (userShared.isUsernameSet()) {
+				userSharedEntry.setUsername(userShared.getUsername());
+			}
+			if (userShared.isGenderSet()) {
+				try {
+					Gender.valueOf(userShared.getGender());
+				} catch (Exception e) {
+					throw new InvalidGenderException(userShared.getGender());
 				}
-				newEntry.setDepartment(department);
+				userSharedEntry.setGender(userShared.getGender());
+			}
+			if (userShared.isPasswordSet()) {
+				userSharedEntry.setPassword(passwordEncoder.encode(userShared
+						.getPassword()));
 			}
 		}
-		if (sendto.isUserSharedSet()) {
-			if (sendto.getUserShared().isIdSet()) {
-				entity.UserShared userShared = userSharedDao.findOne(sendto.getUserShared().getId());
-				if (userShared == null) {
-					throw new UserSharedNotFoundException(sendto.getUserShared().getId());
+		if (userSendto.isDepartmentSet()) {
+			if (userSendto.getDepartment().isIdSet()) {
+				entity.Department department = departmentDao.findOne(userSendto
+						.getDepartment().getId());
+				if (department == null) {
+					throw new DepartmentNotFoundException(userSendto
+							.getDepartment().getId());
 				}
-				newEntry.setUserShared(userShared);
+				newEntry.setDepartment(department);
 			}
 		}
 	}

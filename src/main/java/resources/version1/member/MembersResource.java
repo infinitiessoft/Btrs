@@ -1,7 +1,5 @@
 package resources.version1.member;
 
-import java.util.ArrayList;
-
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,7 +18,6 @@ import resources.specification.SimplePageRequest;
 import resources.specification.UserSpecification;
 import sendto.UserSendto;
 import service.UserService;
-import entity.UserRole;
 
 @Component
 @Produces(MediaType.APPLICATION_JSON)
@@ -45,9 +42,7 @@ public class MembersResource {
 		if (user != null) {
 			user.setDepartment(null);
 			user.setDepartmentSet(false);
-			user.setUserShared(null);
-			user.setUserSharedSet(false);
-			user.setUserRole(new ArrayList<UserRole>(0));
+			// user.setUserRole(new ArrayList<UserRole>(0));
 		}
 		return userService.update(id, user);
 	}
