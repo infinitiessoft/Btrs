@@ -74,7 +74,7 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="postgres" />
-		<property name="password" value="2ggudoou" />
+		<property name="password" value="1234" />
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
 	</bean>
