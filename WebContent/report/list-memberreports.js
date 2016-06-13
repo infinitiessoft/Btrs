@@ -90,39 +90,4 @@ angular
 				 }
 			 };
 
-		 } ])
-		 .factory(
-				 'memberReportService',
-				 [
-				  'auth','$http',
-				  function(auth, $http) {
-					  var serviceBase = 'rest/v1.0/users/';
-					  var obj = {};
-					  obj.list = function(queries) {
-						  var url  = serviceBase + auth.user.principal.id + '/reports/';
-						  return $http.get(url, {params:queries});
-					  };
-
-					  obj.get = function(id) {
-						  var url  = serviceBase + auth.user.principal.id + '/reports/';
-						  return $http.get(url  + id);
-					  };
-
-					  obj.insert = function(record) {
-						  var url  = serviceBase + auth.user.principal.id + '/reports/';
-						  return $http.post(url, record);
-					  };
-
-					  obj.update = function(id, record) {
-						  var url  = serviceBase + auth.user.principal.id + '/reports/';
-						  return $http.put(url  + id,
-								  record);
-					  };
-
-					  obj.remove = function(id) {
-						  var url  = serviceBase + auth.user.principal.id + '/reports/';
-						  return $http.delete(url + id);
-					  };
-
-					  return obj;
-				  } ]);
+		 } ]);
