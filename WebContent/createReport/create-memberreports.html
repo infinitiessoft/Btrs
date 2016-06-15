@@ -1,76 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Create Report</title>
-  
-
-   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
-  
-<style type="text/css">
-body
-{
-    background-color: #1b1b1b;
-    padding-top: 40px;
-}
-.form-signin {
-    max-width: 280px;
-    padding: 200px;
-    margin:300px;
-    margin-top:150px;
-  }
-
-.input-group-addon
-{
-    background-color: rgb(50, 118, 177);
-    border-color: rgb(40, 94, 142);
-    color: rgb(255, 255, 255);
-}
-.form-control:focus
-{
-    background-color: rgb(50, 118, 177);
-    border-color: rgb(40, 94, 142);
-    color: rgb(255, 255, 255);
-}
-.form-signup input[type="text"],.form-signup input[type="password"] { border: 50px solid rgb(50, 118, 177); }
-.fullscreen_bg {
-    position: fixed;
-    top: 110px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-size: cover;
-    background-position: 50% 50%;
-    background-image: url('http://blog.transfer-iphone-recovery.com/images/photo-with-blur-background.jpg');
-    background-repeat:repeat;
-  }
-   .navbar {
-overflow: visible;
-margin-bottom: 20px;
-color: #956362;
-*position: relative;
-*z-index: 2;
-width: 1200px; 
-</style>
-  
-</head>
-<body ng-app="formExample">
-  <div ng-controller="ExampleController">
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/">Welcome:</a>
-      </div>
-		<ul class="nav navbar-nav navbar-right">
-        <li><a href="#/"><i class="glyphicon glyphicon-home"></i></a></li>
-        <li><a href="#/login" ng-click="logout()"><i class="glyphicon glyphicon-off"></i></a></li>
-      </ul>
-    </div>
-  </nav>
-  <form novalidate class="simple-form">
-  
-  <div id="fullscreen_bg" class="fullscreen_bg"/>
+  <div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Create Report</h1>
+		</div>
+	</div>
+<div id="fullscreen_bg" class="fullscreen_bg"/>
  <form class="form-signin">
 <div class="container">
     <div class="row">
@@ -142,20 +76,80 @@ width: 1200px;
                             <input type="Text" class="form-control" placeholder="Comment" ng-model="comment" required />
                         </div>
                     </div>
-                    
-               
-                    
-                    
-                </div>
-                <a class="btn btn-sm btn-primary btn-block" role="button" ng-click="SendData()">SUBMIT</a> </form>
-            </div>
-        </div>
-    </div>
+                    </div>
+                 <a class="btn btn-sm btn-primary btn-block" role="button" ng-click="SendData()">SUBMIT</a> </form>
+ 
+   <!-- <div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header"> Create Report</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="pull-right">
+				<a ui-sref="dashboard.create()" class="btn btn-sm btn-success"
+					title="Create"><i class="glyphicon glyphicon-plus"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<table id="table" st-pipe="callServer" st-table="displayed"
+				class="table table-striped">
+				<thead>
+					<tr>
+						<th st-sort="id" st-sort-default="reverse">id</th>
+						<th>route</th>
+						<th st-sort="startDate">start date</th>
+						<th st-sort="endDate">end date</th>
+						<th st-sort="currentStatus">status</th>
+						<th></th>
+					</tr>
+					<tr>
+						<th></th>
+						<th><input st-search="currentStatus" class="input-sm form-control"
+							st-search-default="{{currentStatus}}" /></th>
+						<th><input st-search="startDate"
+							class="input-sm form-control" st-search-default="{{startDate}}" /></th>
+						<th><input st-search="endDate" class="input-sm form-control"
+							st-search-default="{{endDate}}" /></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody ng-show="!isLoading">
+					<tr ng-repeat="row in displayed" popover="reason: {{row.reason}}"
+						popover-placement="top" popover-trigger="click">
+						<td>{{row.id}}</td>
+						<td>{{row.route}}</td>
+						<td>{{row.startDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
+						<td>{{row.endDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
+						<td><span class="form-control {{row.currentStatus}}">
+								{{row.currentStatus}}</span></td>
+						<td><a ui-sref="dashboard.edit-report({id:row.id})"
+							class="btn btn-sm btn-primary"> <i
+								class="glyphicon glyphicon-pencil"> </i>
+						</a>
+							<button type="button" ng-click="removeEntry(row)"
+								class="btn btn-sm btn-danger">
+								<i class="glyphicon glyphicon-remove"> </i>
+							</button></td>
+					</tr>
+				</tbody>
+				<tbody ng-show="isLoading">
+					<tr>
+						<td colspan="3" class="text-center">Loading ...</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="text-center" st-pagination="" st-items-by-page="10"
+							colspan="3"></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
 </div>
-
-  </form>
-
-<script src="create.js"></script>
-
-</body>
-</html>
+  -->
