@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="pull-right">
-				<a ui-sref="dashboard.create()" class="btn btn-sm btn-success"
+				<a ui-sref="dashboard.edit-memberreport()" class="btn btn-sm btn-success"
 					title="Create"><i class="glyphicon glyphicon-plus"></i></a>
 			</div>
 		</div>
@@ -24,17 +24,18 @@
 						<th st-sort="startDate">start date</th>
 						<th st-sort="endDate">end date</th>
 						<th st-sort="currentStatus">status</th>
-						<th></th>
+						<th>#Total Element: {{size}}</th>
 					</tr>
 					<tr>
 						<th></th>
-						<th><input st-search="currentStatus" class="input-sm form-control"
-							st-search-default="{{currentStatus}}" /></th>
+						<th><input st-search="route" class="input-sm form-control"
+							st-search-default="{{route}}" /></th>
 						<th><input st-search="startDate"
 							class="input-sm form-control" st-search-default="{{startDate}}" /></th>
 						<th><input st-search="endDate" class="input-sm form-control"
 							st-search-default="{{endDate}}" /></th>
-						<th></th>
+						<th><input st-search="currentStatus" class="input-sm form-control"
+							st-search-default="{{currentStatus}}" /></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -47,7 +48,7 @@
 						<td>{{row.endDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
 						<td><span class="form-control {{row.currentStatus}}">
 								{{row.currentStatus}}</span></td>
-						<td><a ui-sref="dashboard.edit-report({id:row.id})"
+						<td><a ui-sref="dashboard.edit-memberreport({id:row.id})"
 							class="btn btn-sm btn-primary"> <i
 								class="glyphicon glyphicon-pencil"> </i>
 						</a>
@@ -59,13 +60,13 @@
 				</tbody>
 				<tbody ng-show="isLoading">
 					<tr>
-						<td colspan="3" class="text-center">Loading ...</td>
+						<td colspan="6" class="text-center">Loading ...</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
 						<td class="text-center" st-pagination="" st-items-by-page="10"
-							colspan="3"></td>
+							colspan="6"></td>
 					</tr>
 				</tfoot>
 			</table>
