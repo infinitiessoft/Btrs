@@ -64,6 +64,7 @@ angular
 							 $scope.displayed = status.data.content;
 							 tableState.pagination.numberOfPages = status.data.totalPages;
 							 $scope.isLoading = false;
+							 $scope.size = status.data.totalElements
 						 });
 			 };
 

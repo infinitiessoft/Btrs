@@ -24,17 +24,18 @@
 						<th st-sort="startDate">start date</th>
 						<th st-sort="endDate">end date</th>
 						<th st-sort="currentStatus">status</th>
-						<th></th>
+						<th>#Total Element: {{size}}</th>
 					</tr>
 					<tr>
 						<th></th>
-						<th><input st-search="currentStatus" class="input-sm form-control"
-							st-search-default="{{currentStatus}}" /></th>
+						<th><input st-search="route" class="input-sm form-control"
+							st-search-default="{{route}}" /></th>
 						<th><input st-search="startDate"
 							class="input-sm form-control" st-search-default="{{startDate}}" /></th>
 						<th><input st-search="endDate" class="input-sm form-control"
 							st-search-default="{{endDate}}" /></th>
-						<th></th>
+						<th><input st-search="currentStatus" class="input-sm form-control"
+							st-search-default="{{currentStatus}}" /></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -59,13 +60,13 @@
 				</tbody>
 				<tbody ng-show="isLoading">
 					<tr>
-						<td colspan="3" class="text-center">Loading ...</td>
+						<td colspan="6" class="text-center">Loading ...</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
 						<td class="text-center" st-pagination="" st-items-by-page="10"
-							colspan="3"></td>
+							colspan="6"></td>
 					</tr>
 				</tfoot>
 			</table>
