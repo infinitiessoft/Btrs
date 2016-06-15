@@ -116,29 +116,16 @@
 		<constructor-arg ref="expenseCategoryDao" />
 	</bean>
 
-
-	<bean id="expenseCateTypeService" class="serviceImpl.ExpenseCateTypeServiceImpl">
-		<constructor-arg ref="expenseCategoryDao" />
-		<constructor-arg ref="expenseTypeDao" />
-		<constructor-arg ref="expenseCateTypeDao" />
-	</bean>
-
-
-
 	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
 		<constructor-arg ref="expenseDao" />
 		<constructor-arg ref="expenseTypeDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
 
-
-
 	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
 
 	</bean>
-
-
 
 	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />

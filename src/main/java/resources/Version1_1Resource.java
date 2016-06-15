@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import resources.version1.admin.AdminResource;
 import resources.version1.member.AuthResource;
+import resources.version1.member.MemberExpenseTypeResource;
 
 @Component
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +35,11 @@ public class Version1_1Resource {
 	@Path("departments")
 	public Class<resources.version1.member.MemberDepartmentsResource> getDepartmentsResource() {
 		return resources.version1.member.MemberDepartmentsResource.class;
+	}
+
+	@Path("expensetypes")
+	public Class<MemberExpenseTypeResource> getExpenseTypeResource() {
+		return MemberExpenseTypeResource.class;
 	}
 	//
 	// @Path("recordtypes")

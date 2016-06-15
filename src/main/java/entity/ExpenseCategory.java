@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name_key") )
+@Table(name = "expense_categories", uniqueConstraints = @UniqueConstraint(columnNames = "name_key"))
 public class ExpenseCategory extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -30,7 +30,7 @@ public class ExpenseCategory extends AbstractEntity {
 	private String code;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
-	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
+	private Set<ExpenseType> expenseTypes = new HashSet<ExpenseType>(0);
 
 	public ExpenseCategory() {
 		super();
@@ -60,12 +60,12 @@ public class ExpenseCategory extends AbstractEntity {
 		this.code = code;
 	}
 
-	public Set<ExpenseCateType> getExpenseCateType() {
-		return expenseCateType;
+	public Set<ExpenseType> getExpenseTypes() {
+		return expenseTypes;
 	}
 
-	public void setExpenseCateType(Set<ExpenseCateType> expenseCateType) {
-		this.expenseCateType = expenseCateType;
+	public void setExpenseTypes(Set<ExpenseType> expenseTypes) {
+		this.expenseTypes = expenseTypes;
 	}
 
 	@Override

@@ -111,10 +111,10 @@ angular
 
 					   $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 					   /*
-					    * Register error provider that shows message on
-					    * failed requests or redirects to login page on
-					    * unauthenticated requests
-					    */
+						 * Register error provider that shows message on failed
+						 * requests or redirects to login page on
+						 * unauthenticated requests
+						 */
 					   $httpProvider.interceptors
 					   .push('authHttpResponseInterceptor');
 				   } ])
@@ -298,7 +298,8 @@ angular
 						    				             '$scope', function ($scope) {
 						    				            	 $scope.datepicker = {};
 
-						    				            	 // make sure the initial
+						    				            	 // make sure the
+																// initial
 						    				            	 // value is of
 						    				            	 // type DATE!
 						    				            	 var currentModelVal = $scope.model[$scope.options.key];
@@ -330,7 +331,8 @@ angular
 						    				             '$scope', function ($scope) {
 						    				            	 $scope.datepicker = {};
 
-						    				            	 // make sure the initial
+						    				            	 // make sure the
+																// initial
 						    				            	 // value is of
 						    				            	 // type DATE!
 						    				            	 var currentModelVal = $scope.model[$scope.options.key];
@@ -352,7 +354,8 @@ angular
 						    						match, chr) {
 						    					return chr ? chr.toUpperCase() : '';
 						    				});
-						    				// Ensure 1st char is always lowercase
+						    				// Ensure 1st char is always
+											// lowercase
 						    				return string.replace(/^([A-Z])/, function(match, chr) {
 						    					return chr ? chr.toLowerCase() : '';
 						    				});
@@ -441,25 +444,21 @@ angular
 									return $http.get(serviceBase  + id);
 								};
 
-								obj.insert = function(department) {
-									return $http.post(serviceBase, department).then(
-											function(results) {
-												return results;
-											});
-								};
-
-								obj.update = function(id, department) {
-									return $http.put(serviceBase  + id,
-											department).then(function(results) {
-										return results;
-									});
-								};
-								
-								obj.remove = function(id) {
-									return $http.delete(serviceBase + id).then(function(status) {
-										return status;
-									});
-								};
-
 								return obj;
-							} ]);
+							} ]).factory(
+									'memberExpenseTypeService',
+									[
+											'$http',
+											function($http) {
+												var serviceBase = 'rest/v1.0/expensetypes/';
+												var obj = {};
+												obj.list = function(queries) {
+													return $http.get(serviceBase, {params:queries});
+												};
+
+												obj.get = function(id) {
+													return $http.get(serviceBase  + id);
+												};
+
+												return obj;
+											} ]);

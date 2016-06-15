@@ -1,11 +1,10 @@
 departments
+expense_categories
 expense_types
 user_shared
 users
 reports
 expenses
-expense_categories
-exp_category_exp_type
 type_parameters
 parameters_values
 exp_types_type_parameters

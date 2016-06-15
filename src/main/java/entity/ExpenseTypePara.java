@@ -20,6 +20,9 @@ public class ExpenseTypePara extends AbstractEntity {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "data_type")
+	private String dataType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "type_id")
@@ -56,6 +59,14 @@ public class ExpenseTypePara extends AbstractEntity {
 
 	public void setTypeParameter(TypeParameter typeParameter) {
 		this.typeParameter = typeParameter;
+	}
+
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 }
