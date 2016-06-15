@@ -1,0 +1,21 @@
+
+<div>
+	<!--loop through each element in model array-->
+	<div class="{{hideRepeat}}">
+		<div class="repeatsection" ng-repeat="element in model[options.key]"
+			ng-init="formOptions = createOptions(); fields = createFields(element);">
+			<formly-form fields="fields" model="element" form="form">
+			</formly-form>
+			<div style="margin-bottom: 20px;">
+				<button type="button" class="btn btn-sm btn-danger"
+					ng-click="model[options.key].splice($index, 1)">Remove</button>
+					<!-- <button type="button" class="btn btn-sm btn-danger"
+					ng-click="edit(element)">Edit</button> -->
+			</div>
+			<hr>
+		</div>
+		<p class="AddNewButton">
+			<button type="button" class="btn btn-primary" ng-click="edit({}, true)">{{to.btnText}}</button>
+		</p>
+	</div>
+</div>

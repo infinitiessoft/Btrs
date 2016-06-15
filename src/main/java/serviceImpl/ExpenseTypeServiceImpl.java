@@ -9,11 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.ExpenseTypeDao;
-import entity.ExpenseType;
-import exceptions.ExpenseTypeNotFoundException;
 import sendto.ExpenseTypeSendto;
 import service.ExpenseTypeService;
+import dao.ExpenseTypeDao;
+import entity.ExpenseType;
+import entity.ExpenseTypePara;
+import entity.TypeParameter;
+import exceptions.ExpenseTypeNotFoundException;
 
 public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
@@ -33,11 +35,25 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return toExpenseTypeSendto(expenseType);
 	}
 
-	public static ExpenseTypeSendto toExpenseTypeSendto(ExpenseType expenseType) {
+	private ExpenseTypeSendto toExpenseTypeSendto(ExpenseType expenseType) {
 		ExpenseTypeSendto ret = new ExpenseTypeSendto();
 		ret.setId(expenseType.getId());
 		ret.setTaxPercent(expenseType.getTaxPercent());
 		ret.setValue(expenseType.getValue());
+		ExpenseTypeSendto.ExpenseCategory category = new ExpenseTypeSendto.ExpenseCategory();
+		category.setId(expenseType.getExpenseCategory().getId());
+		category.setName(expenseType.getExpenseCategory().getName_key());
+		ret.setExpenseCategory(category);
+
+		for (ExpenseTypePara typePara : expenseType.getExpenseTypePara()) {
+			TypeParameter typeParameter = typePara.getTypeParameter();
+			ExpenseTypeSendto.TypeParameter typeParameterSendto = new ExpenseTypeSendto.TypeParameter();
+			typeParameterSendto.setId(typeParameter.getId());
+			typeParameterSendto.setValue(typeParameter.getValue());
+			typeParameterSendto.setDataType(typePara.getDataType());
+			ret.getTypeParameters().add(typeParameterSendto);
+		}
+
 		return ret;
 	}
 
@@ -68,13 +84,15 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	@Transactional
 	@Override
-	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec, Pageable pageable) {
+	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec,
+			Pageable pageable) {
 		List<ExpenseTypeSendto> sendto = new ArrayList<ExpenseTypeSendto>();
 		Page<ExpenseType> expType = expenseTypeDao.findAll(spec, pageable);
 		for (ExpenseType expenseType : expType) {
 			sendto.add(toExpenseTypeSendto(expenseType));
 		}
-		Page<ExpenseTypeSendto> rets = new PageImpl<ExpenseTypeSendto>(sendto, pageable, expType.getTotalElements());
+		Page<ExpenseTypeSendto> rets = new PageImpl<ExpenseTypeSendto>(sendto,
+				pageable, expType.getTotalElements());
 		return rets;
 	}
 

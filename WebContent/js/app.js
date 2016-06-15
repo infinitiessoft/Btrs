@@ -72,15 +72,6 @@ angular
 											          'report/edit-memberreport.js'
 											          ]
 										   })
-							   },
-							   report : function(
-									   memberReportService,
-									   $stateParams) {
-								   var id = $stateParams.id || 0;
-								   if(id == 0){
-									   return {data:{}};
-								   }
-								   return memberReportService.get(id);
 							   }
 						   }
 					   }).state('dashboard.list-memberreports', {
@@ -145,10 +136,10 @@ angular
 
 					   $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 					   /*
-					    * Register error provider that shows message on
-					    * failed requests or redirects to login page on
-					    * unauthenticated requests
-					    */
+						 * Register error provider that shows message on failed
+						 * requests or redirects to login page on
+						 * unauthenticated requests
+						 */
 					   $httpProvider.interceptors
 					   .push('authHttpResponseInterceptor');
 				   } ])
@@ -332,7 +323,8 @@ angular
 						    				             '$scope', function ($scope) {
 						    				            	 $scope.datepicker = {};
 
-						    				            	 // make sure the initial
+						    				            	 // make sure the
+																// initial
 						    				            	 // value is of
 						    				            	 // type DATE!
 						    				            	 var currentModelVal = $scope.model[$scope.options.key];
@@ -364,7 +356,8 @@ angular
 						    				             '$scope', function ($scope) {
 						    				            	 $scope.datepicker = {};
 
-						    				            	 // make sure the initial
+						    				            	 // make sure the
+																// initial
 						    				            	 // value is of
 						    				            	 // type DATE!
 						    				            	 var currentModelVal = $scope.model[$scope.options.key];
@@ -386,7 +379,8 @@ angular
 						    						match, chr) {
 						    					return chr ? chr.toUpperCase() : '';
 						    				});
-						    				// Ensure 1st char is always lowercase
+						    				// Ensure 1st char is always
+											// lowercase
 						    				return string.replace(/^([A-Z])/, function(match, chr) {
 						    					return chr ? chr.toLowerCase() : '';
 						    				});
@@ -425,7 +419,41 @@ angular
                 				    			 };
 
                 				    			 return obj;
-                				    		 } ])
+                				    		 } ]).factory(
+                				    				 'memberReportService',
+                				    				 [
+                				    				  'auth','$http',
+                				    				  function(auth, $http) {
+                				    					  var serviceBase = 'rest/v1.0/users/';
+                				    					  var obj = {};
+                				    					  obj.list = function(queries) {
+                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    						  return $http.get(url, {params:queries});
+                				    					  };
+
+                				    					  obj.get = function(id) {
+                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    						  return $http.get(url  + id);
+                				    					  };
+
+                				    					  obj.insert = function(record) {
+                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    						  return $http.post(url, record);
+                				    					  };
+
+                				    					  obj.update = function(id, record) {
+                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    						  return $http.put(url  + id,
+                				    								  record);
+                				    					  };
+
+                				    					  obj.remove = function(id) {
+                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    						  return $http.delete(url + id);
+                				    					  };
+
+                				    					  return obj;
+                				    				  } ])
 					.factory(
 					'memberDepartmentService',
 					[
@@ -441,25 +469,21 @@ angular
 									return $http.get(serviceBase  + id);
 								};
 
-								obj.insert = function(department) {
-									return $http.post(serviceBase, department).then(
-											function(results) {
-												return results;
-											});
-								};
-
-								obj.update = function(id, department) {
-									return $http.put(serviceBase  + id,
-											department).then(function(results) {
-										return results;
-									});
-								};
-								
-								obj.remove = function(id) {
-									return $http.delete(serviceBase + id).then(function(status) {
-										return status;
-									});
-								};
-
 								return obj;
-							} ]);
+							} ]).factory(
+									'memberExpenseTypeService',
+									[
+											'$http',
+											function($http) {
+												var serviceBase = 'rest/v1.0/expensetypes/';
+												var obj = {};
+												obj.list = function(queries) {
+													return $http.get(serviceBase, {params:queries});
+												};
+
+												obj.get = function(id) {
+													return $http.get(serviceBase  + id);
+												};
+
+												return obj;
+											} ]);

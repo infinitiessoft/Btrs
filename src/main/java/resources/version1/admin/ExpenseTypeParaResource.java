@@ -24,7 +24,6 @@ import service.ExpenseTypeParaService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-
 public class ExpenseTypeParaResource {
 
 	@Autowired

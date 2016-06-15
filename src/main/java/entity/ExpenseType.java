@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,8 +25,9 @@ public class ExpenseType extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
-	private Set<ExpenseCateType> expenseCateType = new HashSet<ExpenseCateType>(0);
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "category_id", nullable = false)
+	private ExpenseCategory expenseCategory;
 
 	@Column(name = "value")
 	private String value;
@@ -35,8 +38,9 @@ public class ExpenseType extends AbstractEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
-	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(0);
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
+	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(
+			0);
 
 	public ExpenseType() {
 		super();
@@ -66,14 +70,6 @@ public class ExpenseType extends AbstractEntity {
 		this.taxPercent = taxPercent;
 	}
 
-	public Set<ExpenseCateType> getExpenseCateType() {
-		return expenseCateType;
-	}
-
-	public void setExpenseCateType(Set<ExpenseCateType> expenseCateType) {
-		this.expenseCateType = expenseCateType;
-	}
-
 	public Set<Expense> getExpenses() {
 		return expenses;
 	}
@@ -88,6 +84,14 @@ public class ExpenseType extends AbstractEntity {
 
 	public void setExpenseTypePara(Set<ExpenseTypePara> expenseTypePara) {
 		this.expenseTypePara = expenseTypePara;
+	}
+
+	public ExpenseCategory getExpenseCategory() {
+		return expenseCategory;
+	}
+
+	public void setExpenseCategory(ExpenseCategory expenseCategory) {
+		this.expenseCategory = expenseCategory;
 	}
 
 	@Override

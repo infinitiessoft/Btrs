@@ -5,7 +5,6 @@
 		<class>entity.Department</class>
 		<class>entity.Expense</class>
 		<class>entity.ExpenseCategory</class>
-		<class>entity.ExpenseCateType</class>
 		<class>entity.ExpenseType</class>
 		<class>entity.ExpenseTypePara</class>
 		<class>entity.ParameterValue</class>
