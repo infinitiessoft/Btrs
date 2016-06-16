@@ -77,9 +77,6 @@ public class Report extends AbstractEntity {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
-	private Set<Photo> photos = new HashSet<Photo>(0);
-
 	public Report() {
 		super();
 	}
@@ -202,14 +199,6 @@ public class Report extends AbstractEntity {
 
 	public void setExpenses(Set<Expense> expenses) {
 		this.expenses = expenses;
-	}
-
-	public Set<Photo> getPhotos() {
-		return photos;
-	}
-
-	public void setPhotos(Set<Photo> photos) {
-		this.photos = photos;
 	}
 
 	@Override
