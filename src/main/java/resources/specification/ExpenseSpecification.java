@@ -24,16 +24,20 @@ public class ExpenseSpecification implements Specification<Expense> {
 	private Integer taxAmount;
 
 	@Override
-	public Predicate toPredicate(Root<Expense> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<Expense> root, CriteriaQuery<?> query,
+			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(comment)) {
-			return cb.like(root.<String> get("comment"), "%" + comment + "%");
+			predicates.add(cb.like(root.<String> get("comment"), "%" + comment
+					+ "%"));
 		}
 		if (totalAmount != null) {
-			predicates.add(cb.equal(root.<Integer> get("totalAmount"), totalAmount));
+			predicates.add(cb.equal(root.<Integer> get("totalAmount"),
+					totalAmount));
 		}
 		if (taxAmount != null) {
-			predicates.add(cb.equal(root.<Integer> get("taxAmount"), taxAmount));
+			predicates
+					.add(cb.equal(root.<Integer> get("taxAmount"), taxAmount));
 		}
 		if (predicates.isEmpty()) {
 			return null;
