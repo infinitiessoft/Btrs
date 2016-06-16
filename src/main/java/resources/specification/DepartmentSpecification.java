@@ -1,5 +1,8 @@
 package resources.specification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -20,14 +23,23 @@ public class DepartmentSpecification implements Specification<Department> {
 	private String comment;
 
 	@Override
-	public Predicate toPredicate(Root<Department> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<Department> root, CriteriaQuery<?> query,
+			CriteriaBuilder cb) {
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(name)) {
-			return cb.like(root.<String> get("name"), "%" + name + "%");
+			predicates
+					.add(cb.like(root.<String> get("name"), "%" + name + "%"));
 		}
 		if (!Strings.isNullOrEmpty(comment)) {
-			return cb.like(root.<String> get("comment"), "%" + comment + "%");
+			predicates.add(cb.like(root.<String> get("comment"), "%" + comment
+					+ "%"));
 		}
-		return null;
+
+		if (predicates.isEmpty()) {
+			return null;
+		}
+
+		return cb.and(predicates.toArray(new Predicate[0]));
 	}
 
 	public String getName() {

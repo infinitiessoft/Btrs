@@ -1,5 +1,8 @@
 package resources.specification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -12,7 +15,8 @@ import com.google.common.base.Strings;
 
 import entity.ExpenseCategory;
 
-public class ExpenseCategorySpecification implements Specification<ExpenseCategory> {
+public class ExpenseCategorySpecification implements
+		Specification<ExpenseCategory> {
 
 	@QueryParam("name_key")
 	private String name_key;
@@ -20,15 +24,23 @@ public class ExpenseCategorySpecification implements Specification<ExpenseCatego
 	private String code;
 
 	@Override
-	public Predicate toPredicate(Root<ExpenseCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<ExpenseCategory> root,
+			CriteriaQuery<?> query, CriteriaBuilder cb) {
+		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(name_key)) {
-			return cb.like(root.<String> get("name_key"), "%" + name_key + "%");
+			predicates.add(cb.like(root.<String> get("name_key"), "%"
+					+ name_key + "%"));
 		}
 		if (!Strings.isNullOrEmpty(code)) {
-			return cb.like(root.<String> get("code"), "%" + code + "%");
+			predicates
+					.add(cb.like(root.<String> get("code"), "%" + code + "%"));
 		}
-		return null;
 
+		if (predicates.isEmpty()) {
+			return null;
+		}
+
+		return cb.and(predicates.toArray(new Predicate[0]));
 	}
 
 	public String getName_key() {

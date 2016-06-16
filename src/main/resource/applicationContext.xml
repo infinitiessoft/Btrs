@@ -142,13 +142,6 @@
 	</bean>
 
 
-
-	<bean id="photoService" class="serviceImpl.PhotoServiceImpl">
-		<constructor-arg ref="photoDao" />
-		<constructor-arg ref="reportDao" />
-	</bean>
-
-
 	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
 		<constructor-arg ref="reportDao" />
 		<constructor-arg ref="userDao" />

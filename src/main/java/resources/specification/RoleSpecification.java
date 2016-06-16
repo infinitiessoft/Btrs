@@ -14,23 +14,24 @@ import entity.Role;
 
 public class RoleSpecification implements Specification<Role> {
 
-	@QueryParam("name")
-	private String name;
+	@QueryParam("value")
+	private String value;
 
 	@Override
-	public Predicate toPredicate(Root<Role> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-		if (!Strings.isNullOrEmpty(name)) {
-			return cb.like(root.<String> get("name"), "%" + name + "%");
+	public Predicate toPredicate(Root<Role> root, CriteriaQuery<?> query,
+			CriteriaBuilder cb) {
+		if (!Strings.isNullOrEmpty(value)) {
+			return cb.like(root.<String> get("value"), "%" + value + "%");
 		}
 		return null;
 	}
 
-	public String getName() {
-		return name;
+	public String getValue() {
+		return value;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

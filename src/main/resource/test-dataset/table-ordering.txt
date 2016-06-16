@@ -8,7 +8,6 @@ expenses
 type_parameters
 parameters_values
 exp_types_type_parameters
-photo
 roles
 status_changes
 users_roles

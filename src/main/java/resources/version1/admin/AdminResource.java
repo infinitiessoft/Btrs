@@ -54,11 +54,6 @@ public class AdminResource {
 		return RoleResource.class;
 	}
 
-	@Path("photo")
-	public Class<PhotoResource> getPhotoResource() {
-		return PhotoResource.class;
-	}
-
 	@Path("typeParameter")
 	public Class<TypeParameterResource> getTypeParameterResource() {
 		return TypeParameterResource.class;
