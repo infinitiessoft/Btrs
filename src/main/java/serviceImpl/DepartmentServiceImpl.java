@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import sendto.DepartmentSendto;
+import service.DepartmentService;
 import dao.DepartmentDao;
 import entity.Department;
 import exceptions.DepartmentNotFoundException;
-import sendto.DepartmentSendto;
-import service.DepartmentService;
 
 public class DepartmentServiceImpl implements DepartmentService {
 
@@ -23,7 +23,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		this.departmentDao = departmentDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public DepartmentSendto retrieve(long id) {
 		Department department = departmentDao.findOne(id);
@@ -33,7 +33,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return toDepartmentSendto(department);
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -48,13 +48,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public DepartmentSendto findByName(String name) {
 		return toDepartmentSendto(departmentDao.findByName(name));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public DepartmentSendto save(DepartmentSendto department) {
 		department.setId(null);
@@ -63,7 +63,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return toDepartmentSendto(departmentDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<DepartmentSendto> findAll(Specification<Department> spec, Pageable pageable) {
 		List<DepartmentSendto> sendtos = new ArrayList<DepartmentSendto>();
@@ -75,7 +75,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public DepartmentSendto update(long id, DepartmentSendto updated) {
 		Department dept = departmentDao.findOne(id);

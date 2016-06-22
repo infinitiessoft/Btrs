@@ -48,4 +48,9 @@ public class MembersResource {
 		return MemberReportResource.class;
 	}
 
+	@Path("{id}/records")
+	public Class<MemberAttendRecordResource> getUserAttendRecordResource() {
+		return MemberAttendRecordResource.class;
+	}
+
 }

@@ -25,7 +25,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		this.expenseTypeDao = expenseTypeDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseTypeSendto retrieve(long id) {
 		ExpenseType expenseType = expenseTypeDao.findOne(id);
@@ -57,7 +57,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -72,7 +72,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType) {
 		expenseType.setId(null);
@@ -82,7 +82,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return toExpenseTypeSendto(newEntry);
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec,
 			Pageable pageable) {
@@ -96,7 +96,7 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseTypeSendto update(long id, ExpenseTypeSendto updated) {
 		ExpenseType exptype = expenseTypeDao.findOne(id);

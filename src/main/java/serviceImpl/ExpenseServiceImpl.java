@@ -8,6 +8,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import resources.specification.ExpenseSpecification;
+import sendto.ExpenseSendto;
+import service.ExpenseService;
 import dao.ExpenseDao;
 import dao.ExpenseTypeDao;
 import dao.ReportDao;
@@ -15,9 +18,6 @@ import entity.Expense;
 import exceptions.ExpenseNotFoundException;
 import exceptions.ExpenseTypeNotFoundException;
 import exceptions.ReportNotFoundException;
-import resources.specification.ExpenseSpecification;
-import sendto.ExpenseSendto;
-import service.ExpenseService;
 
 public class ExpenseServiceImpl implements ExpenseService {
 
@@ -31,7 +31,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		this.reportDao = reportDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseSendto retrieve(long id) {
 		Expense expense = expenseDao.findOne(id);
@@ -57,7 +57,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -71,7 +71,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseSendto save(ExpenseSendto expense) {
 		expense.setId(null);
@@ -111,7 +111,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<ExpenseSendto> findAll(ExpenseSpecification spec, Pageable pageable) {
 		List<ExpenseSendto> sendto = new ArrayList<ExpenseSendto>();
@@ -123,7 +123,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ExpenseSendto update(long id, ExpenseSendto updated) {
 		Expense exp = expenseDao.findOne(id);

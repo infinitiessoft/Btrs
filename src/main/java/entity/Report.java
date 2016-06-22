@@ -33,8 +33,7 @@ public class Report extends AbstractEntity {
 	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
-	@ManyToOne
-	// (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 

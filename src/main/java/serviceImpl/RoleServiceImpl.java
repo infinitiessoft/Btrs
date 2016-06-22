@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import sendto.RoleSendto;
+import service.RoleService;
 import dao.RoleDao;
 import entity.Role;
 import exceptions.RoleNotFoundException;
-import sendto.RoleSendto;
-import service.RoleService;
 
 public class RoleServiceImpl implements RoleService {
 
@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
 		this.roleDao = roleDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public RoleSendto retrieve(long id) {
 		Role role = roleDao.findOne(id);
@@ -40,7 +40,7 @@ public class RoleServiceImpl implements RoleService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public RoleSendto save(RoleSendto role) {
 		role.setId(null);
@@ -63,7 +63,7 @@ public class RoleServiceImpl implements RoleService {
 		return toRoleSendto(roleDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<RoleSendto> findAll(Specification<Role> spec, Pageable pageable) {
 		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
@@ -75,7 +75,7 @@ public class RoleServiceImpl implements RoleService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public RoleSendto update(long id, RoleSendto updated) {
 		Role roles = roleDao.findOne(id);

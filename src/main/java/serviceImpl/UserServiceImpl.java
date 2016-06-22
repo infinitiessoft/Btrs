@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSendto retrieve(long id) {
 		User user = userDao.findOne(id);
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSendto save(UserSendto user) {
 		user.setId(null);
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 		return toUserSendto(userDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<UserSendto> findAll(UserSpecification spec, Pageable pageable) {
 		List<UserSendto> sendto = new ArrayList<UserSendto>();
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSendto update(long id, UserSendto updated) {
 		User usr = userDao.findOne(id);
@@ -114,7 +114,6 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException(id);
 		}
 		setUpUser(updated, usr);
-		System.err.println("test............."+usr.getUserShared().getFirstName());
 		return toUserSendto(userDao.save(usr));
 	}
 

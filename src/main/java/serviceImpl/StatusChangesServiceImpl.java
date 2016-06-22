@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import resources.specification.StatusChangesSpecification;
+import sendto.StatusChangesSendto;
+import service.StatusChangesService;
 import dao.ReportDao;
 import dao.StatusChangesDao;
 import dao.UserDao;
@@ -17,9 +20,6 @@ import entity.StatusChanges;
 import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
 import exceptions.UserNotFoundException;
-import resources.specification.StatusChangesSpecification;
-import sendto.StatusChangesSendto;
-import service.StatusChangesService;
 
 public class StatusChangesServiceImpl implements StatusChangesService {
 
@@ -34,7 +34,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		this.userDao = userDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public StatusChangesSendto retrieve(long id) {
 		StatusChanges status = statusChangesDao.findOne(id);
@@ -62,7 +62,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -76,7 +76,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public StatusChangesSendto save(StatusChangesSendto statusChanges) {
 		statusChanges.setId(null);
@@ -85,7 +85,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		return toStatusChangesSendto(statusChangesDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<StatusChangesSendto> findAll(StatusChangesSpecification spec, Pageable pageable) {
 		List<StatusChangesSendto> sendto = new ArrayList<StatusChangesSendto>();
@@ -97,7 +97,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public StatusChangesSendto update(long id, StatusChangesSendto updated) {
 		StatusChanges status = statusChangesDao.findOne(id);

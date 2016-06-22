@@ -27,7 +27,7 @@ public class DbUnitUtil {
 
 	private EntityManager entityManager;
 
-	@Transactional
+	@Transactional("transactionManager")
 	public void loadData() throws HibernateException, DatabaseUnitException, SQLException {
 		connection = new DatabaseConnection(((SessionImpl) (entityManager.getDelegate())).connection());
 		connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new HsqldbDataTypeFactory());

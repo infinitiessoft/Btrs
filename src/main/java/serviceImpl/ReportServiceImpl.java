@@ -9,13 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import sendto.ReportSendto;
+import service.ReportService;
 import dao.ReportDao;
 import dao.UserDao;
 import entity.Report;
 import exceptions.ReportNotFoundException;
 import exceptions.UserNotFoundException;
-import sendto.ReportSendto;
-import service.ReportService;
 
 public class ReportServiceImpl implements ReportService {
 
@@ -28,7 +28,7 @@ public class ReportServiceImpl implements ReportService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ReportSendto retrieve(long id) {
 		Report report = reportDao.findOne(id);
@@ -62,7 +62,7 @@ public class ReportServiceImpl implements ReportService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -76,7 +76,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ReportSendto save(ReportSendto report) {
 		report.setId(null);
@@ -85,7 +85,7 @@ public class ReportServiceImpl implements ReportService {
 		return toReportSendto(reportDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<ReportSendto> findAll(Specification<Report> spec, Pageable pageable) {
 		List<ReportSendto> sendto = new ArrayList<ReportSendto>();
@@ -97,7 +97,7 @@ public class ReportServiceImpl implements ReportService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ReportSendto update(long id, ReportSendto updated) {
 		Report rpt = reportDao.findOne(id);
