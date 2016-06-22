@@ -24,7 +24,7 @@ public class StatusChanges extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "revisor_id")
 	private User user;
 
@@ -34,7 +34,7 @@ public class StatusChanges extends AbstractEntity {
 	@Column(length = 4000, name = "comment")
 	private String comment;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "report_id")
 	private Report report;
 

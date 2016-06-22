@@ -14,9 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "expense_types")
+@Table(name = "expense_types", uniqueConstraints = @UniqueConstraint(columnNames = "value"))
 public class ExpenseType extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 
@@ -25,7 +26,7 @@ public class ExpenseType extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = false)
 	private ExpenseCategory expenseCategory;
 
@@ -38,7 +39,7 @@ public class ExpenseType extends AbstractEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
 	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(
 			0);
 

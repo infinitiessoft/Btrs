@@ -40,21 +40,21 @@ public class User extends AbstractEntity {
 
 	// @ManyToOne // (fetch = FetchType.LAZY)
 	// @JoinColumn(name = "user_shared_id")
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY, orphanRemoval = true)
 	// @JoinColumn(name="USER_ID", nullable=false)
 	@JoinColumn(name = "user_shared_id", unique = true, nullable = false, insertable = true, updatable = true)
 	private UserShared userShared;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
 	private Set<Report> outgoingReports = new HashSet<Report>(0);
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "reviewer", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reviewer", cascade = CascadeType.REMOVE)
 	private Set<Report> incomingReports = new HashSet<Report>(0);
 
 	public User() {
