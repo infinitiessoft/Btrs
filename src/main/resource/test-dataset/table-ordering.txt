@@ -3,11 +3,7 @@ expense_categories
 expense_types
 user_shared
 users
-reports
-expenses
 type_parameters
-parameters_values
 exp_types_type_parameters
 roles
-status_changes
 users_roles
