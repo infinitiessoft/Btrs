@@ -34,7 +34,6 @@ public class SHA1PasswordEncoder implements PasswordEncoder {
 	public boolean matches(CharSequence rawPassword, String encodedPassword) {
 		String pass1 = "" + encodedPassword;
 		String pass2 = encode(rawPassword);
-		System.err.println(".........." + pass1 + "  " + pass2);
 //		89e495e7941cf9e40e6980d14a16bf023ccd4c91
 		return equals(pass1, pass2);
 	}

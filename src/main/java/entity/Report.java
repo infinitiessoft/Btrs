@@ -17,9 +17,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "reports")
+@Table(name = "reports", uniqueConstraints = @UniqueConstraint(columnNames = "attendanceRecordId"))
 public class Report extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -30,11 +31,10 @@ public class Report extends AbstractEntity {
 	@Column(name = "max_id_last_month")
 	private Long maxIdLastMonth;
 
-	@Column(name = "attendance_record_id")
+	@Column(name = "attendance_record_id", unique = true, nullable = false)
 	private Long attendanceRecordId;
 
-	@ManyToOne
-	// (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
@@ -71,10 +71,10 @@ public class Report extends AbstractEntity {
 	@Column(name = "current_status")
 	private String current_status;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "report", cascade = CascadeType.REMOVE)
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	public Report() {

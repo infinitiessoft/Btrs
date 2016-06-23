@@ -28,7 +28,7 @@ public class DemoData {
 	private EntityManagerFactory entityManagerFactory;
 
 	@PostConstruct
-	@Transactional
+	@Transactional("transactionManager")
 	public void loadData() throws HibernateException, DatabaseUnitException,
 			SQLException {
 		IDatabaseConnection connection = new DatabaseConnection(

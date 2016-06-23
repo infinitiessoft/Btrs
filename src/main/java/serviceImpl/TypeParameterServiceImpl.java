@@ -8,12 +8,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.TypeParameterDao;
-import entity.TypeParameter;
-import exceptions.TypeParameterNotFoundException;
 import resources.specification.TypeParameterSpecification;
 import sendto.TypeParameterSendto;
 import service.TypeParameterService;
+import dao.TypeParameterDao;
+import entity.TypeParameter;
+import exceptions.TypeParameterNotFoundException;
 
 public class TypeParameterServiceImpl implements TypeParameterService {
 
@@ -23,7 +23,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 		this.typeParameterDao = typeDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public TypeParameterSendto retrieve(long id) {
 		TypeParameter type = typeParameterDao.findOne(id);
@@ -41,7 +41,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -52,7 +52,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public TypeParameterSendto save(TypeParameterSendto typeParameter) {
 		typeParameter.setId(null);
@@ -62,7 +62,7 @@ public class TypeParameterServiceImpl implements TypeParameterService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<TypeParameterSendto> findAll(TypeParameterSpecification spec, Pageable pageable) {
 		List<TypeParameterSendto> sendto = new ArrayList<TypeParameterSendto>();

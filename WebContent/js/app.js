@@ -62,7 +62,7 @@ angular
                 	   }).state('dashboard.edit-memberreport', {
 						   templateUrl:'edit.html',
 						   controller: 'edit-memberreport',
-						   url:'/edit-memberreport/:id',
+						   url:'/list-memberrecords/:recordid/report/:reportid',
 						   resolve : {
 							   loadMyDirectives:function($ocLazyLoad){
 								   return $ocLazyLoad.load(
@@ -91,31 +91,23 @@ angular
 								   })
 							   }
 						   }
-					   }).state('dashboard.create-memberreports', {
-						   url : '/create-memberreports',
-						   controller : 'create-memberreports',
-						   templateUrl : 'createReport/create-memberreports.html',
+					   }).state('dashboard.list-memberrecords', {
+						   url : '/list-memberrecords',
+						   controller : 'list-memberrecords',
+						   templateUrl : 'record/list-memberrecords.html',
+						   params : {
+							   startDate : null,
+							   endDate : null,
+							   currentStatus : null
+						   },
 						   resolve : {
-							   loadMyDirectives:function($ocLazyLoad){
-								   return $ocLazyLoad.load(
-										   {
-											   name:'add-memberreport',
-											   files:[
-											          'createReport/add-memberreport.js'
-											          ]
-										   })
-							   },
-							   report : function(
-									   memberReportService,
-									   $stateParams) {
-								   var id = $stateParams.id || 0;
-								   if(id == 0){
-									   return {data:{}};
-								   }
-								   return memberReportService.get(id);
+							   loadMyDirectives : function($ocLazyLoad) {
+								   return $ocLazyLoad.load({
+									   name : 'list-memberrecords',
+									   files : [ 'record/list-memberrecords.js' ]
+								   })
 							   }
 						   }
-						   
 					   }).state('dashboard.expense', {
 						   url : '/expense',
 						   controller : 'expenseController',
@@ -486,4 +478,22 @@ angular
 												};
 
 												return obj;
-											} ]);
+											} ]).factory(
+               				    				 'memberRecordService',
+            				    				 [
+            				    				  'auth','$http',
+            				    				  function(auth, $http) {
+            				    					  var serviceBase = 'rest/v1.0/users/';
+            				    					  var obj = {};
+            				    					  obj.list = function(queries) {
+            				    						  var url  = serviceBase + auth.user.principal.id + '/records/available';
+            				    						  return $http.get(url, {params:queries});
+            				    					  };
+            				    					  
+            				    					  obj.get = function(id) {
+            				    						  var url  = serviceBase + auth.user.principal.id + '/records/';
+            				    						  return $http.get(url  + id);
+      												};
+
+            				    					  return obj;
+            				    				  } ]);

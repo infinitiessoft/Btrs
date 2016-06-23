@@ -1,51 +1,51 @@
 angular
-		.module('edit-memberreport',
-				[ 'formly', 'formlyBootstrap', 'ngAnimate', 'ngMessages' ])
+.module('edit-memberreport',
+		[ 'formly', 'formlyBootstrap', 'ngAnimate', 'ngMessages' ])
 		.constant('formlyExampleApiCheck', apiCheck())
 		.run(
 				function(formlyConfig, formlyValidationMessages) {
 					formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'fc.$touched || form.$submitted';
 
 					formlyValidationMessages.addStringMessage('required',
-							'This field is required');
+					'This field is required');
 				})
-		.config(
-				function config(formlyConfigProvider, formlyExampleApiCheck) {
-					var unique = 1;
+				.config(
+						function config(formlyConfigProvider, formlyExampleApiCheck) {
+							var unique = 1;
 
-					formlyConfigProvider.removeWrapperByName('bootstrapLabel');
-					formlyConfigProvider.setWrapper({
-						name : 'bootstrapLabel',
-						templateUrl : 'templates/label-wrapper.html'
-					});
+							formlyConfigProvider.removeWrapperByName('bootstrapLabel');
+							formlyConfigProvider.setWrapper({
+								name : 'bootstrapLabel',
+								templateUrl : 'templates/label-wrapper.html'
+							});
 
-					// Replace formlyBootstrap input field type to implement
-					// read-only forms
-					formlyConfigProvider.setType({
-						name : 'input',
-						templateUrl : 'templates/input-template.html',
-						wrapper : [ 'bootstrapLabel', 'bootstrapHasError' ],
-						overwriteOk : true
-					});
+							// Replace formlyBootstrap input field type to implement
+							// read-only forms
+							formlyConfigProvider.setType({
+								name : 'input',
+								templateUrl : 'templates/input-template.html',
+								wrapper : [ 'bootstrapLabel', 'bootstrapHasError' ],
+								overwriteOk : true
+							});
 
-					formlyConfigProvider.setWrapper({
-						name : 'validation',
-						types : [ 'input' ],
-						templateUrl : 'templates/error-messages.html'
-					});
+							formlyConfigProvider.setWrapper({
+								name : 'validation',
+								types : [ 'input' ],
+								templateUrl : 'templates/error-messages.html'
+							});
 
-					formlyConfigProvider.setWrapper({
-						name : 'panel',
-						templateUrl : 'templates/panel.html'
-					});
+							formlyConfigProvider.setWrapper({
+								name : 'panel',
+								templateUrl : 'templates/panel.html'
+							});
 
-					formlyConfigProvider
+							formlyConfigProvider
 							.setType({
 								name : 'parameterSection',
 								templateUrl : 'templates/parameterSection.html',
 								controller : function($scope) {
 									$scope.formOptions = {
-										formState : $scope.formState
+											formState : $scope.formState
 									};
 
 									$scope.createFields = createFields;
@@ -61,7 +61,7 @@ angular
 										addRandomIds(fields);
 										return fields;
 									}
-									
+
 									function createField(key, label, dataType) {
 										return {
 											key : key,
@@ -78,31 +78,31 @@ angular
 									function addRandomIds(fields) {
 										unique++;
 										angular
-												.forEach(
-														fields,
-														function(field, index) {
-															if (field.fieldGroup) {
-																addRandomIds(field.fieldGroup);
-																return; // fieldGroups
-																// don't
-																// need
-																// an ID
-															}
+										.forEach(
+												fields,
+												function(field, index) {
+													if (field.fieldGroup) {
+														addRandomIds(field.fieldGroup);
+														return; // fieldGroups
+														// don't
+														// need
+														// an ID
+													}
 
-															if (field.templateOptions
-																	&& field.templateOptions.fields) {
-																addRandomIds(field.templateOptions.fields);
-															}
+													if (field.templateOptions
+															&& field.templateOptions.fields) {
+														addRandomIds(field.templateOptions.fields);
+													}
 
-															field.id = field.id
-																	|| (field.key
-																			+ '_'
-																			+ index
-																			+ '_'
-																			+ unique + getRandomInt(
-																			0,
-																			9999));
-														});
+													field.id = field.id
+													|| (field.key
+															+ '_'
+															+ index
+															+ '_'
+															+ unique + getRandomInt(
+																	0,
+																	9999));
+												});
 									}
 
 									function getRandomInt(min, max) {
@@ -113,13 +113,13 @@ angular
 								}
 							});
 
-					formlyConfigProvider
+							formlyConfigProvider
 							.setType({
 								name : 'expenseSection',
 								templateUrl : 'templates/expenseSection.html',
 								controller : function($scope, $uibModal) {
 									$scope.formOptions = {
-										formState : $scope.formState
+											formState : $scope.formState
 									};
 
 									$scope.edit = edit;
@@ -129,7 +129,7 @@ angular
 
 									function createOptions() {
 										var options = {
-											formState : {}
+												formState : {}
 										};
 										options['formState']['readOnly'] = true;
 										return options;
@@ -145,7 +145,7 @@ angular
 													label : 'Parameter',
 													'fields' : []
 												}
-											};
+										};
 										fields.push({
 											key : 'value',
 											type : 'input',
@@ -162,27 +162,27 @@ angular
 
 									function createFieldsById($scope, expenseType) {
 										$scope.model["parameterValues"] = $scope.model["parameterValues"]
-												|| [];
+										|| [];
 										var repeatsection = $scope.model["parameterValues"];
 
 										var typeParameters = expenseType.typeParameters;
 										var fields = [];
 										angular
-												.forEach(
-														typeParameters,
-														function(typeParameter,
-																index) {
-															repeatsection.push({'typeParameter':typeParameter});
-														});
+										.forEach(
+												typeParameters,
+												function(typeParameter,
+														index) {
+													repeatsection.push({'typeParameter':typeParameter});
+												});
 										addRandomIds(fields);
 
 										var parameterSection = {
-											type : 'parameterSection',
-											key : 'parameterValues',
-											templateOptions : {
-												label : 'Parameter',
-												'fields' : []
-											}
+												type : 'parameterSection',
+												key : 'parameterValues',
+												templateOptions : {
+													label : 'Parameter',
+													'fields' : []
+												}
 										};
 
 										return [ parameterSection ];
@@ -191,31 +191,31 @@ angular
 									function addRandomIds(fields) {
 										unique++;
 										angular
-												.forEach(
-														fields,
-														function(field, index) {
-															if (field.fieldGroup) {
-																addRandomIds(field.fieldGroup);
-																return; // fieldGroups
-																// don't
-																// need
-																// an ID
-															}
+										.forEach(
+												fields,
+												function(field, index) {
+													if (field.fieldGroup) {
+														addRandomIds(field.fieldGroup);
+														return; // fieldGroups
+														// don't
+														// need
+														// an ID
+													}
 
-															if (field.templateOptions
-																	&& field.templateOptions.fields) {
-																addRandomIds(field.templateOptions.fields);
-															}
+													if (field.templateOptions
+															&& field.templateOptions.fields) {
+														addRandomIds(field.templateOptions.fields);
+													}
 
-															field.id = field.id
-																	|| (field.key
-																			+ '_'
-																			+ index
-																			+ '_'
-																			+ unique + getRandomInt(
-																			0,
-																			9999));
-														});
+													field.id = field.id
+													|| (field.key
+															+ '_'
+															+ index
+															+ '_'
+															+ unique + getRandomInt(
+																	0,
+																	9999));
+												});
 									}
 
 									function getRandomInt(min, max) {
@@ -226,56 +226,56 @@ angular
 
 									function edit(model, add) {
 										var result = $uibModal
-												.open({
-													templateUrl : 'templates/expense-categories.html',
-													controller : function(
-															$uibModalInstance,
-															formData) {
-														var vm = this;
+										.open({
+											templateUrl : 'templates/expense-categories.html',
+											controller : function(
+													$uibModalInstance,
+													formData) {
+												var vm = this;
 
-														// function assignment
-														vm.ok = ok;
-														vm.cancel = cancel;
+												// function assignment
+												vm.ok = ok;
+												vm.cancel = cancel;
 
-														// variable assignment
-														vm.formData = formData;
-														// vm.originalFields =
-														// angular
-														// .copy(vm.formData.fields);
+												// variable assignment
+												vm.formData = formData;
+												// vm.originalFields =
+												// angular
+												// .copy(vm.formData.fields);
 
-														// function definition
-														function ok() {
-															$uibModalInstance
-																	.close(vm.formData);
-														}
+												// function definition
+												function ok() {
+													$uibModalInstance
+													.close(vm.formData);
+												}
 
-														function cancel() {
-															vm.formData.options
-																	.resetModel()
-															$uibModalInstance
-																	.dismiss('cancel');
-														}
-													},
-													controllerAs : 'vm',
-													resolve : {
-														formData : function() {
-															return {
-																fields : getFormFields(),
-																model : model
-															}
-														}
+												function cancel() {
+													vm.formData.options
+													.resetModel()
+													$uibModalInstance
+													.dismiss('cancel');
+												}
+											},
+											controllerAs : 'vm',
+											resolve : {
+												formData : function() {
+													return {
+														fields : getFormFields(),
+														model : model
 													}
-												}).result;
+												}
+											}
+										}).result;
 
 										if (add) {
 											result
-													.then(function(formData) {
-														$scope.model[$scope.options.key] = $scope.model[$scope.options.key]
-																|| [];
-														var repeatsection = $scope.model[$scope.options.key];
-														repeatsection
-																.push(formData.model);
-													})
+											.then(function(formData) {
+												$scope.model[$scope.options.key] = $scope.model[$scope.options.key]
+												|| [];
+												var repeatsection = $scope.model[$scope.options.key];
+												repeatsection
+												.push(formData.model);
+											})
 
 										}
 									}
@@ -301,30 +301,30 @@ angular
 															repeatsection.pop();
 														}
 
-														
+
 														var newsections = createFieldsById($scope, newValue);
 														angular
-																.forEach(
-																		newsections,
-																		function(
-																				newsection) {
-																			repeatsection
-																					.push(newsection);
-																		});
+														.forEach(
+																newsections,
+																function(
+																		newsection) {
+																	repeatsection
+																	.push(newsection);
+																});
 													} else if (newValue.id == 2) {
 														while (repeatsection.length > 1) {
 															repeatsection.pop();
 														}
-														
+
 														var newsections = createFieldsById($scope, newValue);
 														angular
-																.forEach(
-																		newsections,
-																		function(
-																				newsection) {
-																			repeatsection
-																					.push(newsection);
-																		});
+														.forEach(
+																newsections,
+																function(
+																		newsection) {
+																	repeatsection
+																	.push(newsection);
+																});
 													}
 												}
 											}
@@ -332,107 +332,161 @@ angular
 									}
 								}
 							});
-				}).controller(
-				'edit-memberreport',
-				function($rootScope, $scope, $stateParams, $state,
-						formlyVersion, $uibModal, memberReportService,
-						memberExpenseTypeService) {
-					var id = ($stateParams.id) ? parseInt($stateParams.id) : 0;
-					$rootScope.title = (id > 0) ? 'Edit Report' : 'Add Report';
-					$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
-					var vm = this;
+						}).controller(
+								'edit-memberreport',
+								function($rootScope, $scope, $stateParams, $state,
+										formlyVersion, $uibModal, memberReportService,
+										memberExpenseTypeService, memberRecordService) {
+									var id = ($stateParams.reportid) ? parseInt($stateParams.reportid) : 0;
+									var recordId = ($stateParams.recordid) ? parseInt($stateParams.recordid) : 0;
 
-					$scope.vm = vm;
-					vm.onSubmit = onSubmit;
-					vm.author = {
-						name : 'pohsun',
-						url : ''
-					};
-					vm.env = {
-						angularVersion : angular.version.full,
-						formlyVersion : formlyVersion
-					};
 
-					if (id == 0) {
-						vm.model = {};
-					} else {
-						memberReportService.get(id).then(function(status) {
-							vm.model = status.data;
-						});
-					}
 
-					vm.expenseTypes = [];
-					memberExpenseTypeService.list().then(function(response) {
-						angular.forEach(response.data.content, function(val) {
-							vm.expenseTypes.push(val);
-						});
-					});
-					vm.attendRecords = [];
+									$rootScope.title = (id > 0) ? 'Edit Report' : 'Add Report';
+									$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
+									var vm = this;
+									vm.recordModel = {};
 
-					vm.fields = [ {
-						key : 'attendanceRecordId',
-						type : 'select',
-						templateOptions : {
-							label : 'AttendRecord',
-							options:vm.attendRecords,
-							"required": true
-						}
-					},{
-						key : 'reason',
-						type : 'textarea',
-						templateOptions : {
-							label : 'Reason',
-							placeholder : 'Reason',
-							"required": true
-						}
-					}, {
-						key : 'route',
-						type : 'textarea',
-						templateOptions : {
-							label : 'Route',
-							placeholder : 'Route',
-							"required": true
-						}
-					}, {
-						key : 'comment',
-						type : 'textarea',
-						templateOptions : {
-							label : 'Comment',
-							placeholder : 'Comment',
-						}
-					}, {
-						type : 'expenseSection',
-						key : 'expenses',
-						wrapper : 'panel',
-						templateOptions : {
-							label : 'Expense',
-							btnText : 'Add',
-							expenseTypes : vm.expenseTypes
-						}
-					} ];
+									$scope.vm = vm;
+									vm.onSubmit = onSubmit;
+									vm.author = {
+											name : 'pohsun',
+											url : ''
+									};
+									vm.env = {
+											angularVersion : angular.version.full,
+											formlyVersion : formlyVersion
+									};
 
-					function onSubmit() {
-						console.info('submit' + JSON.stringify(vm.model));
-						// if (vm.form.$valid) {
-						// if (id > 0) {
-						// memberReportService
-						// .update(id, vm.model)
-						// .then(
-						// function(status) {
-						// $state
-						// .go('dashboard.list-memberreports');
-						// });
-						// } else {
-						// memberReportService
-						// .insert(vm.model)
-						// .then(
-						// function(status) {
-						// $state
-						// .go('dashboard.list-memberreports');
-						// });
-						// }
-						//
-						// }
-					}
+									if (id == 0) {
+										vm.model = {};
+									} else {
+										memberReportService.get(id).then(function(status) {
+											vm.model = status.data;
+										});
+									}
 
-				});
+									memberRecordService.get(recordId).then(function(status) {
+										vm.model.attendanceRecordId = status.data.id;
+										vm.recordModel.reason = status.data.reason;
+										vm.recordModel.duration = status.data.duration;
+										vm.recordModel.startDate = status.data.startDate;
+										vm.recordModel.endDate = status.data.endDate;
+									});
+
+
+									vm.expenseTypes = [];
+									memberExpenseTypeService.list().then(function(response) {
+										angular.forEach(response.data.content, function(val) {
+											vm.expenseTypes.push(val);
+										});
+									});
+									vm.attendRecords = [];
+
+									vm.fields = [ {
+										className: 'section-label',
+										template: '<div><strong>Attend Record:</strong></div>'
+									},{
+										className: 'row',
+										fieldGroup: [
+										             {
+										            	 className: 'col-xs-4',
+										            	 type: 'input',
+										            	 key: 'startDate',
+										            	 model: vm.recordModel,
+										            	 templateOptions: {
+										            		 label: 'Start Date',
+										            		 disabled : true
+										            	 }
+										             },
+										             {
+										            	 className: 'col-xs-4',
+										            	 type: 'input',
+										            	 key: 'endDate',
+										            	 model: vm.recordModel,
+										            	 templateOptions: {
+										            		 label: 'EndDate',
+										            		 disabled : true
+										            	 }
+										             },
+										             {
+										            	 className: 'col-xs-4',
+										            	 type: 'input',
+										            	 key: 'duration',
+										            	 model: vm.recordModel,
+										            	 templateOptions: {
+										            		 label: 'Duration',
+										            		 disabled : true
+										            	 }
+										             },{
+										            	 className: 'col-xs-12',
+										            	 type: 'textarea',
+										            	 key: 'reason',
+										            	 model: vm.recordModel,
+										            	 templateOptions: {
+										            		 label: 'Reason',
+										            		 disabled : true
+										            	 }
+										             }
+										             ]
+									},{
+										template: '<hr />'
+									},{
+										key : 'reason',
+										type : 'textarea',
+										templateOptions : {
+											label : 'Reason',
+											placeholder : 'Reason',
+											"required": true
+										}
+									}, {
+										key : 'route',
+										type : 'textarea',
+										templateOptions : {
+											label : 'Route',
+											placeholder : 'Route',
+											"required": true
+										}
+									}, {
+										key : 'comment',
+										type : 'textarea',
+										templateOptions : {
+											label : 'Comment',
+											placeholder : 'Comment',
+										}
+									}, {
+										type : 'expenseSection',
+										key : 'expenses',
+										wrapper : 'panel',
+										templateOptions : {
+											label : 'Expense',
+											btnText : 'Add',
+											expenseTypes : vm.expenseTypes
+										}
+									} ];
+
+									function onSubmit() {
+										console.info('submit' + JSON.stringify(vm.model));
+										// if (vm.form.$valid) {
+										// if (id > 0) {
+										// memberReportService
+										// .update(id, vm.model)
+										// .then(
+										// function(status) {
+										// $state
+										// .go('dashboard.list-memberreports');
+										// });
+										// } else {
+										// memberReportService
+										// .insert(vm.model)
+										// .then(
+										// function(status) {
+										// $state
+										// .go('dashboard.list-memberreports');
+										// });
+										// }
+										//
+										// }
+									}
+
+								});

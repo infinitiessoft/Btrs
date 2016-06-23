@@ -18,4 +18,14 @@
 		<class>entity.UserShared</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 	</persistence-unit>
+
+	<persistence-unit name="attendancePU" transaction-type="RESOURCE_LOCAL">
+		<class>attendance.entity.Employee</class>
+		<class>attendance.entity.Role</class>
+		<class>attendance.entity.EmployeeRole</class>
+		<class>attendance.entity.Department</class>
+		<class>attendance.entity.AttendRecordType</class>
+		<class>attendance.entity.AttendRecord</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+	</persistence-unit>
 </persistence>

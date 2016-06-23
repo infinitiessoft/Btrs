@@ -8,12 +8,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.UserSharedDao;
-import entity.UserShared;
-import exceptions.UserSharedNotFoundException;
 import resources.specification.UserSharedSpecification;
 import sendto.UserSharedSendto;
 import service.UserSharedService;
+import dao.UserSharedDao;
+import entity.UserShared;
+import exceptions.UserSharedNotFoundException;
 
 public class UserSharedServiceImpl implements UserSharedService {
 
@@ -23,7 +23,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		this.userSharedDao = userSharedDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSharedSendto retrieve(long id) {
 		UserShared userShared = userSharedDao.findOne(id);
@@ -50,7 +50,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		return ret;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 		try {
@@ -64,7 +64,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSharedSendto save(UserSharedSendto userShared) {
 		userShared.setId(null);
@@ -104,7 +104,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<UserSharedSendto> findAll(UserSharedSpecification spec, Pageable pageable) {
 		List<UserSharedSendto> sendto = new ArrayList<UserSharedSendto>();
@@ -116,7 +116,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSharedSendto update(long id, UserSharedSendto updated) {
 		UserShared user = userSharedDao.findOne(id);
@@ -127,7 +127,7 @@ public class UserSharedServiceImpl implements UserSharedService {
 		return toUserSharedSendto(userSharedDao.save(user));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public UserSharedSendto findByUsername(String username) {
 		return toUserSharedSendto(userSharedDao.findByUsername(username));

@@ -8,6 +8,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import resources.specification.ParameterValueSpecification;
+import sendto.ParameterValueSendto;
+import sendto.ParameterValueSendto.TypeParameter;
+import service.ParameterValueService;
 import dao.ExpenseDao;
 import dao.ParameterValueDao;
 import dao.TypeParameterDao;
@@ -15,10 +19,6 @@ import entity.ParameterValue;
 import exceptions.ExpenseNotFoundException;
 import exceptions.ParameterNotFoundException;
 import exceptions.TypeParameterNotFoundException;
-import resources.specification.ParameterValueSpecification;
-import sendto.ParameterValueSendto;
-import sendto.ParameterValueSendto.TypeParameter;
-import service.ParameterValueService;
 
 public class ParameterValueServiceImpl implements ParameterValueService {
 
@@ -33,7 +33,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		this.expenseDao = expenseDao;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ParameterValueSendto retrieve(long id) {
 		ParameterValue parameterValue = parameterValueDao.findOne(id);
@@ -43,7 +43,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		return toParameterValueSendto(parameterValue);
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ParameterValueSendto retrieve(ParameterValueSpecification spec) {
 		ParameterValue parameterValue = parameterValueDao.findOne(spec);
@@ -71,7 +71,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public void delete(long id) {
 
@@ -86,7 +86,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		}
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ParameterValueSendto save(ParameterValueSendto parameterValue) {
 		parameterValue.setId(null);
@@ -95,7 +95,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		return toParameterValueSendto(parameterValueDao.save(newEntry));
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public Page<ParameterValueSendto> findAll(ParameterValueSpecification spec, Pageable pageable) {
 		List<ParameterValueSendto> sendto = new ArrayList<ParameterValueSendto>();
@@ -108,7 +108,7 @@ public class ParameterValueServiceImpl implements ParameterValueService {
 		return rets;
 	}
 
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
 	public ParameterValueSendto update(long id, ParameterValueSendto updated) {
 		ParameterValue parameterValue = parameterValueDao.findOne(id);

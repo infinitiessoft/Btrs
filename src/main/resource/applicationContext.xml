@@ -17,6 +17,9 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<context:annotation-config />
+	
+	<task:annotation-driven executor="executor" />
+	<task:executor id="executor" pool-size="1" />
 
 	<!-- retry advice for external service call -->
 	<bean id="mailRetryAdvice"
@@ -62,13 +65,6 @@
 	<bean class="resources.DemoData">
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
 
 	<!-- DATABASE SETUP -->
 
@@ -76,6 +72,13 @@
 		<property name="username" value="postgres" />
 		<property name="password" value="2ggudoou" />
 		<!--  <property name="password" value="1234" />-->
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/demo3" />
+	</bean>
+
+	<bean id="dataSourceAttendance" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="username" value="postgres" />
+		<property name="password" value="2ggudoou" />
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/demo3" />
 	</bean>
@@ -98,11 +101,43 @@
 		</property>
 	</bean>
 
+	<bean id="entityManagerFactoryAttendance"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSourceAttendance" />
+		<property name="persistenceUnitName" value="attendancePU" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<tx:annotation-driven/>
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<!-- <qualifier value="btrs"/> -->
 	</bean>
 
-	<jpa:repositories base-package="dao" />
+	<bean id="transactionManagerAttendance" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactoryAttendance" />
+		<!-- <qualifier value="attendance"/> -->
+	</bean>
+
+	<jpa:repositories base-package="dao"
+		transaction-manager-ref="transactionManager"
+		entity-manager-factory-ref="entityManagerFactory" />
+
+	<jpa:repositories base-package="attendance.dao"
+		transaction-manager-ref="transactionManagerAttendance"
+		entity-manager-factory-ref="entityManagerFactoryAttendance" />
 
 	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
 		<constructor-arg ref="departmentDao" />
@@ -157,20 +192,15 @@
 	</bean>
 
 
-
 	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
 		<constructor-arg ref="typeParameterDao" />
 	</bean>
-
-
 
 	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="roleDao" />
 	</bean>
-
-
 
 	<bean id="userService" class="serviceImpl.UserServiceImpl">
 		<constructor-arg ref="userDao" />
@@ -179,14 +209,17 @@
 		<constructor-arg ref="passwordEncoder" />
 	</bean>
 
-
-
 	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
 		<constructor-arg ref="userSharedDao" />
 	</bean>
 
 	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
 		<constructor-arg ref="userSharedDao" />
+	</bean>
+
+	<bean id="attendRecordService" class="serviceImpl.DBAttendRecordService">
+		<constructor-arg ref="attendRecordDao" />
+		<constructor-arg ref="reportDao" />
 	</bean>
 
 	<!-- SPRING SECURITY SETUP -->
@@ -250,7 +283,7 @@
 			/> <security:intercept-url method="POST" pattern="/rest/news/**" access="hasRole('admin')" 
 			/> <security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" 
 			/> -->
-		<security:csrf disabled="true" />
+		<security:csrf token-repository-ref="csrfTokenRepository" />
 		<security:custom-filter ref="csrfHeaderFilter"
 			after="CSRF_FILTER" />
 		<security:http-basic entry-point-ref="entryPoint" />
