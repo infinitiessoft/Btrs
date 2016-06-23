@@ -18,6 +18,10 @@ public class UserNotFoundException extends HTTPNotFoundException {
 	public UserNotFoundException(long id) {
 		super(String.format("User %s could not be found.", id));
 	}
+	
+	public UserNotFoundException(String name) {
+		super(String.format("User %s could not be found.", name));
+	}
 
 	public UserNotFoundException(Set<Report> id) {
 		super(String.format("User %s could not be found.", id));
