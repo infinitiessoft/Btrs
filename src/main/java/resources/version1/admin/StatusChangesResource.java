@@ -18,7 +18,7 @@ import org.springframework.data.domain.Page;
 
 import resources.specification.SimplePageRequest;
 import resources.specification.StatusChangesSpecification;
-import sendto.StatusChangesSendto;
+import sendto.StatusChangeSendto;
 import service.StatusChangesService;
 
 @Path(value = "/statusChanges")
@@ -31,7 +31,7 @@ public class StatusChangesResource {
 
 	@GET
 	@Path(value = "{id}")
-	public StatusChangesSendto getStatusChanges(@PathParam("id") long id) {
+	public StatusChangeSendto getStatusChanges(@PathParam("id") long id) {
 		return statusChangesService.retrieve(id);
 	}
 
@@ -44,17 +44,17 @@ public class StatusChangesResource {
 
 	@PUT
 	@Path(value = "{id}")
-	public StatusChangesSendto updateStatusChanges(@PathParam("id") long id, StatusChangesSendto statusChanges) {
+	public StatusChangeSendto updateStatusChanges(@PathParam("id") long id, StatusChangeSendto statusChanges) {
 		return statusChangesService.update(id, statusChanges);
 	}
 
 	@POST
-	public StatusChangesSendto saveStatusChanges(StatusChangesSendto statusChanges) {
+	public StatusChangeSendto saveStatusChanges(StatusChangeSendto statusChanges) {
 		return statusChangesService.save(statusChanges);
 	}
 
 	@GET
-	public Page<StatusChangesSendto> findallStatusChanges(@BeanParam SimplePageRequest pageRequest,
+	public Page<StatusChangeSendto> findallStatusChanges(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam StatusChangesSpecification spec) {
 		return statusChangesService.findAll(spec, pageRequest);
 	}

@@ -3,9 +3,9 @@ package dao;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import entity.StatusChanges;
+import entity.StatusChange;
 
-public interface StatusChangesDao
-		extends PagingAndSortingRepository<StatusChanges, Long>, JpaSpecificationExecutor<StatusChanges> {
+public interface StatusChangeDao
+		extends PagingAndSortingRepository<StatusChange, Long>, JpaSpecificationExecutor<StatusChange> {
 
 }

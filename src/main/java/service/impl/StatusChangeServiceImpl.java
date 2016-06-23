@@ -1,4 +1,4 @@
-package serviceImpl;
+package service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +11,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import resources.specification.StatusChangesSpecification;
-import sendto.StatusChangesSendto;
+import sendto.StatusChangeSendto;
 import service.StatusChangesService;
 import dao.ReportDao;
-import dao.StatusChangesDao;
+import dao.StatusChangeDao;
 import dao.UserDao;
-import entity.StatusChanges;
+import entity.StatusChange;
+import entity.StatusEnum;
 import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
 import exceptions.UserNotFoundException;
 
-public class StatusChangesServiceImpl implements StatusChangesService {
+public class StatusChangeServiceImpl implements StatusChangesService {
 
-	private static final Logger logger = LoggerFactory.getLogger(StatusChangesServiceImpl.class);
-	private StatusChangesDao statusChangesDao;
+	private static final Logger logger = LoggerFactory
+			.getLogger(StatusChangeServiceImpl.class);
+	private StatusChangeDao statusChangesDao;
 	private ReportDao reportDao;
 	private UserDao userDao;
 
-	public StatusChangesServiceImpl(StatusChangesDao statusDao, ReportDao reportDao, UserDao userDao) {
+	public StatusChangeServiceImpl(StatusChangeDao statusDao,
+			ReportDao reportDao, UserDao userDao) {
 		this.statusChangesDao = statusDao;
 		this.reportDao = reportDao;
 		this.userDao = userDao;
@@ -36,26 +39,26 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 
 	@Transactional("transactionManager")
 	@Override
-	public StatusChangesSendto retrieve(long id) {
-		StatusChanges status = statusChangesDao.findOne(id);
+	public StatusChangeSendto retrieve(long id) {
+		StatusChange status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
 		return toStatusChangesSendto(status);
 	}
 
-	private StatusChangesSendto toStatusChangesSendto(StatusChanges status) {
-		StatusChangesSendto ret = new StatusChangesSendto();
+	private StatusChangeSendto toStatusChangesSendto(StatusChange status) {
+		StatusChangeSendto ret = new StatusChangeSendto();
 		ret.setId(status.getId());
 		ret.setCreatedDate(status.getCreatedDate());
 		ret.setComment(status.getComment());
-		ret.setValue(status.getValue());
+		ret.setValue(status.getValue().name());
 
-		StatusChangesSendto.Report rpt = new StatusChangesSendto.Report();
+		StatusChangeSendto.Report rpt = new StatusChangeSendto.Report();
 		rpt.setId(status.getReport().getId());
 		ret.setReport(rpt);
 
-		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		StatusChangeSendto.User user = new StatusChangeSendto.User();
 		user.setRevisor_id(status.getUser().getId());
 		ret.setUser(user);
 
@@ -66,7 +69,7 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 	@Override
 	public void delete(long id) {
 		try {
-			StatusChanges statusChanges = statusChangesDao.findOne(id);
+			StatusChange statusChanges = statusChangesDao.findOne(id);
 			if (statusChanges == null) {
 				throw new StatusChangesNotFoundException(id);
 			}
@@ -78,29 +81,31 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 
 	@Transactional("transactionManager")
 	@Override
-	public StatusChangesSendto save(StatusChangesSendto statusChanges) {
+	public StatusChangeSendto save(StatusChangeSendto statusChanges) {
 		statusChanges.setId(null);
-		StatusChanges newEntry = new StatusChanges();
+		StatusChange newEntry = new StatusChange();
 		setUpStatusChanges(statusChanges, newEntry);
 		return toStatusChangesSendto(statusChangesDao.save(newEntry));
 	}
 
 	@Transactional("transactionManager")
 	@Override
-	public Page<StatusChangesSendto> findAll(StatusChangesSpecification spec, Pageable pageable) {
-		List<StatusChangesSendto> sendto = new ArrayList<StatusChangesSendto>();
-		Page<StatusChanges> status = statusChangesDao.findAll(spec, pageable);
-		for (StatusChanges statusChanges : status) {
+	public Page<StatusChangeSendto> findAll(StatusChangesSpecification spec,
+			Pageable pageable) {
+		List<StatusChangeSendto> sendto = new ArrayList<StatusChangeSendto>();
+		Page<StatusChange> status = statusChangesDao.findAll(spec, pageable);
+		for (StatusChange statusChanges : status) {
 			sendto.add(toStatusChangesSendto(statusChanges));
 		}
-		Page<StatusChangesSendto> rets = new PageImpl<StatusChangesSendto>(sendto, pageable, status.getTotalElements());
+		Page<StatusChangeSendto> rets = new PageImpl<StatusChangeSendto>(
+				sendto, pageable, status.getTotalElements());
 		return rets;
 	}
 
 	@Transactional("transactionManager")
 	@Override
-	public StatusChangesSendto update(long id, StatusChangesSendto updated) {
-		StatusChanges status = statusChangesDao.findOne(id);
+	public StatusChangeSendto update(long id, StatusChangeSendto updated) {
+		StatusChange status = statusChangesDao.findOne(id);
 		if (status == null) {
 			throw new StatusChangesNotFoundException(id);
 		}
@@ -108,7 +113,8 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		return toStatusChangesSendto(statusChangesDao.save(status));
 	}
 
-	private void setUpStatusChanges(StatusChangesSendto sendto, StatusChanges newEntry) {
+	private void setUpStatusChanges(StatusChangeSendto sendto,
+			StatusChange newEntry) {
 		if (sendto.isCommentSet()) {
 			newEntry.setComment(sendto.getComment());
 		}
@@ -117,25 +123,30 @@ public class StatusChangesServiceImpl implements StatusChangesService {
 		}
 		if (sendto.isReportSet()) {
 			if (sendto.getReport().isIdSet()) {
-				entity.Report report = reportDao.findOne(sendto.getReport().getId());
+				entity.Report report = reportDao.findOne(sendto.getReport()
+						.getId());
 				if (report == null) {
-					throw new ReportNotFoundException(sendto.getReport().getId());
+					throw new ReportNotFoundException(sendto.getReport()
+							.getId());
 				}
 				newEntry.setReport(report);
 			}
 		}
 		if (sendto.isUserSet()) {
 			if (sendto.getUser().isIdSet()) {
-				logger.debug("find user in setUpStatusChanges id: {}", sendto.getUser().getRevisor_id());
-				entity.User user = userDao.findOne(sendto.getUser().getRevisor_id());
+				logger.debug("find user in setUpStatusChanges id: {}", sendto
+						.getUser().getRevisor_id());
+				entity.User user = userDao.findOne(sendto.getUser()
+						.getRevisor_id());
 				if (user == null) {
-					throw new UserNotFoundException(sendto.getUser().getRevisor_id());
+					throw new UserNotFoundException(sendto.getUser()
+							.getRevisor_id());
 				}
 				newEntry.setUser(user);
 			}
 		}
 		if (sendto.isValueSet()) {
-			newEntry.setValue(sendto.getValue());
+			newEntry.setValue(StatusEnum.valueOf(sendto.getValue()));
 		}
 	}
 

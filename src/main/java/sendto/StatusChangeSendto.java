@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Strings;
 
-public class StatusChangesSendto {
+public class StatusChangeSendto {
 	private Long id;
 	private String comment;
 	private Date createdDate;
@@ -21,7 +21,7 @@ public class StatusChangesSendto {
 	private boolean isValueSet;
 	private boolean isReportSet;
 
-	public StatusChangesSendto() {
+	public StatusChangeSendto() {
 		super();
 	}
 
