@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +18,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "status_changes")
-public class StatusChanges extends AbstractEntity {
+public class StatusChange extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 
 	@Id
@@ -28,8 +30,9 @@ public class StatusChanges extends AbstractEntity {
 	@JoinColumn(name = "revisor_id")
 	private User user;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "value")
-	private String value;
+	private StatusEnum value;
 
 	@Column(length = 4000, name = "comment")
 	private String comment;
@@ -42,13 +45,13 @@ public class StatusChanges extends AbstractEntity {
 	@Column(name = "created_date")
 	private Date createdDate;
 
-	public StatusChanges() {
+	public StatusChange() {
 		super();
 
 	}
 
-	public StatusChanges(Long id, User user, String value, String comment, Report report, Date createdDate) {
-		this.id = id;
+	public StatusChange(User user, StatusEnum value, Report report,
+			String comment, Date createdDate) {
 		this.user = user;
 		this.value = value;
 		this.comment = comment;
@@ -72,11 +75,11 @@ public class StatusChanges extends AbstractEntity {
 		this.user = user;
 	}
 
-	public String getValue() {
+	public StatusEnum getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(StatusEnum value) {
 		this.value = value;
 	}
 
@@ -120,7 +123,7 @@ public class StatusChanges extends AbstractEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StatusChanges other = (StatusChanges) obj;
+		StatusChange other = (StatusChange) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
