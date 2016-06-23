@@ -8,29 +8,28 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.google.common.base.Strings;
-
 import entity.Role;
+import entity.RoleEnum;
 
 public class RoleSpecification implements Specification<Role> {
 
 	@QueryParam("value")
-	private String value;
+	private RoleEnum value;
 
 	@Override
 	public Predicate toPredicate(Root<Role> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
-		if (!Strings.isNullOrEmpty(value)) {
-			return cb.like(root.<String> get("value"), "%" + value + "%");
+		if (value != null) {
+			return cb.equal(root.<RoleEnum> get("value"), value);
 		}
 		return null;
 	}
 
-	public String getValue() {
+	public RoleEnum getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(RoleEnum value) {
 		this.value = value;
 	}
 
