@@ -17,9 +17,14 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<context:annotation-config />
-	
+
 	<task:annotation-driven executor="executor" />
 	<task:executor id="executor" pool-size="1" />
+
+	<bean id="properties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="WEB-INF/system.properties" />
+	</bean>
 
 	<!-- retry advice for external service call -->
 	<bean id="mailRetryAdvice"
@@ -54,6 +59,33 @@
 				</property>
 			</bean>
 		</property>
+	</bean>
+
+	<!-- SET default mail properties -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${smtp.host}" />
+		<property name="port" value="${smtp.port}" />
+		<property name="username" value="${smtp.username}" />
+		<property name="password" value="${smtp.password}" />
+		<property name="defaultEncoding" value="big5" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailWritter" class="util.MailWritterImpl">
+		<property name="header" value="${mail.header}" />
+		<property name="footer" value="${mail.footer}" />
+		<property name="systemUrl" value="${mail.url}" />
+	</bean>
+
+	<bean id="mailService" class="service.impl.MailServiceImpl">
+		<constructor-arg ref="mailSender" />
 	</bean>
 
 	<aop:config>
@@ -117,8 +149,8 @@
 			</props>
 		</property>
 	</bean>
-	
-	<tx:annotation-driven/>
+
+	<tx:annotation-driven />
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -138,85 +170,87 @@
 		transaction-manager-ref="transactionManagerAttendance"
 		entity-manager-factory-ref="entityManagerFactoryAttendance" />
 
-	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
+	<bean id="departmentService" class="service.impl.DepartmentServiceImpl">
 		<constructor-arg ref="departmentDao" />
 	</bean>
 
-	<bean id="roleService" class="serviceImpl.RoleServiceImpl">
+	<bean id="roleService" class="service.impl.RoleServiceImpl">
 		<constructor-arg ref="roleDao" />
 	</bean>
 
 
-	<bean id="expenseCategoryService" class="serviceImpl.ExpenseCategoryServiceImpl">
+	<bean id="expenseCategoryService" class="service.impl.ExpenseCategoryServiceImpl">
 		<constructor-arg ref="expenseCategoryDao" />
 	</bean>
 
-	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
+	<bean id="expenseService" class="service.impl.ExpenseServiceImpl">
 		<constructor-arg ref="expenseDao" />
 		<constructor-arg ref="expenseTypeDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
 
-	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
+	<bean id="expenseTypeService" class="service.impl.ExpenseTypeServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
 
 	</bean>
 
-	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
+	<bean id="expenseTypeParaService" class="service.impl.ExpenseTypeParaServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
 		<constructor-arg ref="typeParameterDao" />
 		<constructor-arg ref="expenseTypeParaDao" />
 	</bean>
 
-
-
-	<bean id="parameterValueService" class="serviceImpl.ParameterValueServiceImpl">
+	<bean id="parameterValueService" class="service.impl.ParameterValueServiceImpl">
 		<constructor-arg ref="parameterValueDao" />
 		<constructor-arg ref="typeParameterDao" />
 		<constructor-arg ref="expenseDao" />
 	</bean>
 
+	<bean id="reportService" class="service.impl.ReportServiceImpl">
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="attendRecordDao" />
+		<constructor-arg ref="expenseDao" />
+		<constructor-arg ref="expenseTypeDao" />
+		<constructor-arg ref="parameterValueDao" />
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="statusChangeDao" />
+		<constructor-arg ref="mailService" />
+		<constructor-arg ref="mailWritter" />
+	</bean>
 
-	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
+	<bean id="statusChangeService" class="service.impl.StatusChangeServiceImpl">
+		<constructor-arg ref="statusChangeDao" />
 		<constructor-arg ref="reportDao" />
 		<constructor-arg ref="userDao" />
 	</bean>
 
-
-
-	<bean id="statusChangesService" class="serviceImpl.StatusChangesServiceImpl">
-		<constructor-arg ref="statusChangesDao" />
-		<constructor-arg ref="reportDao" />
-		<constructor-arg ref="userDao" />
-	</bean>
-
-
-	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
+	<bean id="typeParameterService" class="service.impl.TypeParameterServiceImpl">
 		<constructor-arg ref="typeParameterDao" />
 	</bean>
 
-	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
+	<bean id="userRoleService" class="service.impl.UserRoleServiceImpl">
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="roleDao" />
 	</bean>
 
-	<bean id="userService" class="serviceImpl.UserServiceImpl">
+	<bean id="userService" class="service.impl.UserServiceImpl">
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="departmentDao" />
 		<constructor-arg ref="userSharedDao" />
 		<constructor-arg ref="passwordEncoder" />
 	</bean>
 
-	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
+	<bean id="userSharedService" class="service.impl.UserSharedServiceImpl">
 		<constructor-arg ref="userSharedDao" />
 	</bean>
 
-	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
+	<bean id="userDetailService" class="service.impl.UserDetailServiceImpl">
 		<constructor-arg ref="userSharedDao" />
 	</bean>
 
-	<bean id="attendRecordService" class="serviceImpl.DBAttendRecordService">
+	<bean id="attendRecordService" class="service.impl.DBAttendRecordService">
 		<constructor-arg ref="attendRecordDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
