@@ -35,7 +35,7 @@ public class UserDetail implements UserDetails {
 		Set<UserRole> roles = user.getUser().getUserRole();
 		for (UserRole userRole : roles) {
 			authorities.add(new SimpleGrantedAuthority(userRole.getRole()
-					.getValue()));
+					.getValue().name()));
 		}
 	}
 
