@@ -46,7 +46,7 @@
 						<td>{{row.route}}</td>
 						<td>{{row.startDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
 						<td>{{row.endDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
-						<td><span class="form-control {{row.currentStatus}}">
+						<td><span class="form-control {{row.currentStatus | lowercase}}">
 								{{row.currentStatus}}</span></td>
 						<td><a ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id})"
 							class="btn btn-sm btn-primary"> <i

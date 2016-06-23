@@ -491,6 +491,7 @@ angular
             				    					  };
             				    					  
             				    					  obj.get = function(id) {
+            				    						  console.info(JSON.stringify(auth));
             				    						  var url  = serviceBase + auth.user.principal.id + '/records/';
             				    						  return $http.get(url  + id);
       												};
