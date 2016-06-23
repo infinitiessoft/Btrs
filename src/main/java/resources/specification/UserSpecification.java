@@ -11,6 +11,8 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.google.common.base.Strings;
+
 import entity.Department;
 import entity.User;
 import entity.UserShared;
@@ -21,6 +23,8 @@ public class UserSpecification implements Specification<User> {
 	private Long userSharedId;
 	@QueryParam("departmentId")
 	private Long departmentId;
+	
+	private String username;
 
 	@Override
 	public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
@@ -33,6 +37,11 @@ public class UserSpecification implements Specification<User> {
 		if (departmentId != null) {
 			predicates.add(cb.equal(root.<Department> get("department")
 					.<Long> get("id"), departmentId));
+		}
+		
+		if(!Strings.isNullOrEmpty(username)){
+			predicates.add(cb.equal(root.<UserShared> get("userShared")
+					.<String> get("username"), username));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -54,6 +63,14 @@ public class UserSpecification implements Specification<User> {
 
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
