@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import serviceImpl.MailServiceImpl;
+import service.impl.MailServiceImpl;
 
 public class MailServiceImplTest extends ServiceTest {
 

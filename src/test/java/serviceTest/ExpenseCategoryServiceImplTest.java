@@ -19,7 +19,7 @@ import entity.ExpenseCategory;
 import resources.specification.ExpenseCategorySpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseCategorySendto;
-import serviceImpl.ExpenseCategoryServiceImpl;
+import service.impl.ExpenseCategoryServiceImpl;
 
 public class ExpenseCategoryServiceImplTest extends ServiceTest {
 

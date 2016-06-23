@@ -19,7 +19,7 @@ import entity.Department;
 import resources.specification.DepartmentSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.DepartmentSendto;
-import serviceImpl.DepartmentServiceImpl;
+import service.impl.DepartmentServiceImpl;
 
 public class DepartmentServiceImplTest extends ServiceTest {
 

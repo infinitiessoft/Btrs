@@ -19,7 +19,7 @@ import entity.UserShared;
 import resources.specification.SimplePageRequest;
 import resources.specification.UserSharedSpecification;
 import sendto.UserSharedSendto;
-import serviceImpl.UserSharedServiceImpl;
+import service.impl.UserSharedServiceImpl;
 
 public class UserSharedServiceImplTest extends ServiceTest {
 

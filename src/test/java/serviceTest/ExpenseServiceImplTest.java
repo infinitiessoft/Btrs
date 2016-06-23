@@ -21,7 +21,7 @@ import entity.Report;
 import resources.specification.ExpenseSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseSendto;
-import serviceImpl.ExpenseServiceImpl;
+import service.impl.ExpenseServiceImpl;
 
 public class ExpenseServiceImplTest extends ServiceTest {
 
