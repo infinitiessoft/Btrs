@@ -17,40 +17,52 @@ import resources.specification.AttendRecordSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.AttendRecordSendto;
 import service.AttendRecordService;
+import service.ReportService;
+import exceptions.AttendRecordNotFoundException;
 
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated()")
+@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
 @Path("/records")
 public class MemberAttendRecordResource {
 
 	@Autowired
 	private AttendRecordService attendRecordService;
+	@Autowired
+	private ReportService reportService;
 
 	@GET
-	@Path(value = "{recordid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public AttendRecordSendto getAttendRecord(@PathParam("recordid") long id) {
-		return attendRecordService.retrieve(id);
-	}
-
-	@GET
-	public Page<AttendRecordSendto> findallAttendRecord(
+	public Page<AttendRecordSendto> findAll(
 			@PathParam("id") long id, @BeanParam SimplePageRequest pageRequest,
 			@BeanParam AttendRecordSpecification spec) {
 		spec.setApplicantId(id);
 		return attendRecordService.findAll(spec, pageRequest);
 	}
+	
+	@GET
+	@Path(value = "{recordid}")
+	public AttendRecordSendto getAttendRecord(@PathParam("id") long id,
+			@PathParam("recordid") long recordId) {
+		AttendRecordSpecification spec = new AttendRecordSpecification();
+		spec.setApplicantId(id);
+		spec.setId(recordId);
+		AttendRecordSendto ret = attendRecordService.retrieve(spec);
+		if (ret == null) {
+			throw new AttendRecordNotFoundException(recordId);
+		}
+		return ret;
+	}
 
 	@GET
 	@Path(value = "/available")
-	public Page<AttendRecordSendto> findallAvailableAttendRecord(
+	public Page<AttendRecordSendto> findAllAvailableAttendRecord(
 			@PathParam("id") long id, @BeanParam SimplePageRequest pageRequest,
 			@BeanParam AttendRecordSpecification spec) {
-		spec.setApplicantId(12L);
+		spec.setApplicantId(id);
 		spec.setTypeName("official");
 		spec.setStatus("permit");
 		return attendRecordService.findAllAvailableRecords(spec, pageRequest);
 	}
+
 }
