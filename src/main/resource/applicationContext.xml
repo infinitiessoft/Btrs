@@ -74,9 +74,10 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="postgres" />
-		<property name="password" value="1234" />
+		<property name="password" value="2ggudoou" />
+		<!--  <property name="password" value="1234" />-->
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/demo3" />
 	</bean>
 
 	<bean id="entityManagerFactory"
@@ -92,7 +93,7 @@
 		</property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 	</bean>
