@@ -429,16 +429,15 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	@Transactional("transactionManager")
 	public ReportSendto approve(long id, StatusChangeSendto statusChange,
-			String currentUsername) {
+			long currentUserId) {
 		Report rpt = reportDao.findOne(id);
 		if (rpt == null) {
 			throw new ReportNotFoundException(id);
 		}
-		User currentUser = findCurrentUser(currentUsername);
+		User currentUser = userDao.findOne(currentUserId);
 		if (currentUser == null) {
-			throw new UserNotFoundException(currentUsername);
+			throw new UserNotFoundException(currentUserId);
 		}
-
 		rpt.setLastUpdatedDate(new Date());
 		changeStatus(rpt, currentUser, StatusEnum.APPROVED,
 				statusChange.getComment());
@@ -452,14 +451,14 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	@Transactional("transactionManager")
 	public ReportSendto reject(long id, StatusChangeSendto statusChange,
-			String currentUsername) {
+			long currentUserId) {
 		Report rpt = reportDao.findOne(id);
 		if (rpt == null) {
 			throw new ReportNotFoundException(id);
 		}
-		User currentUser = findCurrentUser(currentUsername);
+		User currentUser = userDao.findOne(currentUserId);
 		if (currentUser == null) {
-			throw new UserNotFoundException(currentUsername);
+			throw new UserNotFoundException(currentUserId);
 		}
 
 		rpt.setLastUpdatedDate(new Date());
@@ -520,6 +519,7 @@ public class ReportServiceImpl implements ReportService {
 
 		report.getStatusChanges().add(statusChange);
 		report.setCurrentStatus(status);
+		report.setReviewer(user);
 	}
 
 	private void setUpReport(ReportSendto sendto, Report newEntry) {

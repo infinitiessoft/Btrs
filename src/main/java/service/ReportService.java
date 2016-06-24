@@ -31,9 +31,9 @@ public interface ReportService {
 			long currentId);
 
 	public ReportSendto approve(long id, StatusChangeSendto statusChange,
-			String currentUsername);
+			long currentUserId);
 
 	public ReportSendto reject(long id, StatusChangeSendto statusChange,
-			String currentUsername);
+			long currentUserId);
 
 }

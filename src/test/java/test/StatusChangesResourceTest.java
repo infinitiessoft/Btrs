@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
-import resources.version1.admin.StatusChangesResource;
+import resources.version1.admin.StatusChangeResource;
 import sendto.StatusChangeSendto;
 import assertion.AssertUtils;
 import entity.PageModel;
@@ -132,7 +132,7 @@ public class StatusChangesResourceTest extends ResourceTest {
 
 	@Override
 	protected Class<?>[] getResource() {
-		return new Class<?>[] { StatusChangesResource.class };
+		return new Class<?>[] { StatusChangeResource.class };
 	}
 
 }

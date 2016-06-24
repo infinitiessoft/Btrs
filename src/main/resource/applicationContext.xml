@@ -17,7 +17,7 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<context:annotation-config />
-
+	<tx:annotation-driven />
 	<task:annotation-driven executor="executor" />
 	<task:executor id="executor" pool-size="1" />
 
@@ -150,8 +150,6 @@
 		</property>
 	</bean>
 
-	<tx:annotation-driven />
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 		<!-- <qualifier value="btrs"/> -->
@@ -254,6 +252,9 @@
 		<constructor-arg ref="attendRecordDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
+	
+	<!-- INIT REST COMPONENTS -->
+	<context:component-scan base-package="resources" />
 
 	<!-- SPRING SECURITY SETUP -->
 
