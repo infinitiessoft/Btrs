@@ -15,16 +15,18 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.SimplePageRequest;
 import resources.specification.StatusChangesSpecification;
 import sendto.StatusChangeSendto;
 import service.StatusChangesService;
 
+@Component
 @Path(value = "/statusChanges")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class StatusChangesResource {
+public class StatusChangeResource {
 
 	@Autowired
 	private StatusChangesService statusChangesService;

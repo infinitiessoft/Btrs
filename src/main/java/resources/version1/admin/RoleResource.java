@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.RoleSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.RoleSendto;
 import service.RoleService;
 
+@Component
 @Path(value = "/role")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

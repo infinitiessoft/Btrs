@@ -24,7 +24,6 @@ import service.UserRoleService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-
 public class UserRoleResource {
 	@Autowired
 	private UserRoleService userRoleService;

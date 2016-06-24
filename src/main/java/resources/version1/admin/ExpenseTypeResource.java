@@ -15,16 +15,17 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.ExpenseTypeSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseTypeSendto;
 import service.ExpenseTypeService;
 
+@Component
 @Path(value = "/expenseType")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-
 public class ExpenseTypeResource {
 	@Autowired
 	private ExpenseTypeService expenseTypeService;

@@ -5,49 +5,52 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import resources.version1.admin.AdminResource;
 import resources.version1.member.AuthResource;
 import resources.version1.member.MemberExpenseTypeResource;
 
+@Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("v1.0")
 public class Version1_1Resource {
 
+	@Autowired
+	private AdminResource adminResource;
+	@Autowired
+	private AuthResource authResource;
+	@Autowired
+	private resources.version1.member.MembersResource membersResource;
+	@Autowired
+	private resources.version1.member.MemberDepartmentsResource memberDepartmentsResource;
+	@Autowired
+	private MemberExpenseTypeResource memberExpenseTypeResource;
+
 	@Path("admin")
-	public Class<AdminResource> getAdminResource() {
-		return AdminResource.class;
+	public AdminResource getAdminResource() {
+		return adminResource;
 	}
 
 	@Path("auth")
-	public Class<AuthResource> getAuthResource() {
-		return AuthResource.class;
+	public AuthResource getAuthResource() {
+		return authResource;
 	}
 
 	@Path("users")
-	public Class<resources.version1.member.MembersResource> getEmployeesResource() {
-		return resources.version1.member.MembersResource.class;
+	public resources.version1.member.MembersResource getUsersResource() {
+		return membersResource;
 	}
 
 	@Path("departments")
-	public Class<resources.version1.member.MemberDepartmentsResource> getDepartmentsResource() {
-		return resources.version1.member.MemberDepartmentsResource.class;
+	public resources.version1.member.MemberDepartmentsResource getDepartmentsResource() {
+		return memberDepartmentsResource;
 	}
 
 	@Path("expensetypes")
-	public Class<MemberExpenseTypeResource> getExpenseTypeResource() {
-		return MemberExpenseTypeResource.class;
+	public MemberExpenseTypeResource getExpenseTypeResource() {
+		return memberExpenseTypeResource;
 	}
-	//
-	// @Path("recordtypes")
-	// public Class<resources.version1.member.MemberAttendRecordTypesResource>
-	// getAttendRecordTypesResource() {
-	// return resources.version1.member.MemberAttendRecordTypesResource.class;
-	// }
-	//
-	// @Path("general")
-	// public Class<resources.version1.general.GeneralResource>
-	// getGeneralResource() {
-	// return resources.version1.general.GeneralResource.class;
-	// }
 }

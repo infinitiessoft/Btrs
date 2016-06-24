@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
@@ -14,59 +15,82 @@ import org.springframework.stereotype.Component;
 @PreAuthorize("hasAuthority('admin')")
 public class AdminResource {
 
-	@Path("report")
-	public Class<ReportResource> getReportResource() {
-		return ReportResource.class;
+	@Autowired
+	private ReportResource reportResource;
+	@Autowired
+	private ExpenseCategoryResource expenseCategoryResource;
+	@Autowired
+	private DepartmentResource departmentResource;
+	@Autowired
+	private ExpenseTypeResource expenseTypeResource;
+	@Autowired
+	private ExpenseResource expenseResource;
+	@Autowired
+	private StatusChangeResource statusChangesResource;
+	@Autowired
+	private ParameterValueResource parameterValueResource;
+	@Autowired
+	private RoleResource roleResource;
+	@Autowired
+	private TypeParameterResource typeParameterResource;
+	@Autowired
+	private UserResource userResource;
+	@Autowired
+	private UserSharedResource userSharedResource;
+
+	@Path("reports")
+	public ReportResource getReportResource() {
+		return reportResource;
 	}
 
-	@Path("expenseCategory")
-	public Class<ExpenseCategoryResource> getExpenseCategoryResource() {
-		return ExpenseCategoryResource.class;
+	@Path("expenseCategorys")
+	public ExpenseCategoryResource getExpenseCategoryResource() {
+		return expenseCategoryResource;
 	}
 
-	@Path("department")
-	public Class<DepartmentResource> getDepartmentResource() {
-		return DepartmentResource.class;
+	@Path("departments")
+	public DepartmentResource getDepartmentResource() {
+		return departmentResource;
 	}
 
-	@Path("expenseType")
-	public Class<ExpenseTypeResource> getExpenseTypeResource() {
-		return ExpenseTypeResource.class;
+	@Path("expenseTypes")
+	public ExpenseTypeResource getExpenseTypeResource() {
+		return expenseTypeResource;
 	}
 
-	@Path("expense")
-	public Class<ExpenseResource> getExpenseResource() {
-		return ExpenseResource.class;
+	@Path("expenses")
+	public ExpenseResource getExpenseResource() {
+		return expenseResource;
 	}
 
 	@Path("statusChanges")
-	public Class<StatusChangesResource> getStatusChangesResource() {
-		return StatusChangesResource.class;
+	public StatusChangeResource getStatusChangesResource() {
+		return statusChangesResource;
 	}
 
-	@Path("parameterValue")
-	public Class<ParameterValueResource> getParameterValueResource() {
-		return ParameterValueResource.class;
+	@Path("parameterValues")
+	public ParameterValueResource getParameterValueResource() {
+		return parameterValueResource;
 	}
 
-	@Path("role")
-	public Class<RoleResource> getRoleResource() {
-		return RoleResource.class;
+	@Path("roles")
+	public RoleResource getRoleResource() {
+		return roleResource;
 	}
 
-	@Path("typeParameter")
-	public Class<TypeParameterResource> getTypeParameterResource() {
-		return TypeParameterResource.class;
+	@Path("typeParameters")
+	public TypeParameterResource getTypeParameterResource() {
+		return typeParameterResource;
 	}
 
-	@Path("user")
-	public Class<UserResource> getUserResource() {
-		return UserResource.class;
+	@Path("users")
+	public UserResource getUserResource() {
+		return userResource;
 	}
 
-	@Path("userShared")
-	public Class<UserSharedResource> getUserSharedResource() {
-		return UserSharedResource.class;
+	@Path("userShareds")
+	public UserSharedResource getUserSharedResource() {
+		return userSharedResource;
 	}
 
 }

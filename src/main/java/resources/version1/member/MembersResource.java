@@ -18,14 +18,21 @@ import service.UserService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@PreAuthorize("isAuthenticated()")
 public class MembersResource {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MemberReportResource memberReportResource;
+	@Autowired
+	private MemberAttendRecordResource memberAttendRecordResource;
+	@Autowired
+	private MemberAuditResource memberAuditResource;
 
 	@GET
 	@Path(value = "{id}")
-	@PreAuthorize("isAuthenticated() and #id == principal.id")
+	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
 	public UserSendto getUser(@PathParam("id") long id) {
 		return userService.retrieve(id);
 	}
@@ -33,7 +40,7 @@ public class MembersResource {
 	// **Method to update
 	@PUT
 	@Path(value = "{id}")
-	@PreAuthorize("isAuthenticated() and #id == principal.id")
+	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
 	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
 		if (user != null) {
 			user.setDepartment(null);
@@ -44,13 +51,18 @@ public class MembersResource {
 	}
 
 	@Path("{id}/reports")
-	public Class<MemberReportResource> getUserReportResource() {
-		return MemberReportResource.class;
+	public MemberReportResource getUserReportResource() {
+		return memberReportResource;
 	}
 
 	@Path("{id}/records")
-	public Class<MemberAttendRecordResource> getUserAttendRecordResource() {
-		return MemberAttendRecordResource.class;
+	public MemberAttendRecordResource getUserAttendRecordResource() {
+		return memberAttendRecordResource;
+	}
+
+	@Path("{id}/audits")
+	public MemberAuditResource getUserAuditResource() {
+		return memberAuditResource;
 	}
 
 }

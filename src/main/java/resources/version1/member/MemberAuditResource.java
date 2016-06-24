@@ -22,14 +22,15 @@ import resources.specification.ReportSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
 import sendto.ReportSummarySendto;
+import sendto.StatusChangeSendto;
 import service.ReportService;
 import exceptions.ReportNotFoundException;
 
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
-public class MemberReportResource {
+@PreAuthorize("isAuthenticated() and #id == principal.id and hasAuthority('ACCOUNTANT') or hasAuthority('admin')")
+public class MemberAuditResource {
 
 	@Autowired
 	private ReportService reportService;
@@ -39,7 +40,6 @@ public class MemberReportResource {
 	public ReportSendto getReport(@PathParam("id") long id,
 			@PathParam("reportid") long reportId) {
 		ReportSpecification spec = new ReportSpecification();
-		spec.setApplicantId(id);
 		spec.setId(reportId);
 		ReportSendto ret = reportService.retrieve(spec);
 		if (ret == null) {
@@ -52,7 +52,6 @@ public class MemberReportResource {
 	public Page<ReportSummarySendto> findAll(@PathParam("id") long id,
 			@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ReportSpecification spec) {
-		spec.setApplicantId(id);
 		return reportService.findAll(spec, pageRequest);
 	}
 
@@ -61,7 +60,6 @@ public class MemberReportResource {
 	public Response deleteReport(@PathParam("id") long id,
 			@PathParam("reportid") long reportId) {
 		ReportSpecification spec = new ReportSpecification();
-		spec.setApplicantId(id);
 		spec.setId(reportId);
 		reportService.delete(spec);
 		return Response.status(Status.OK).type(MediaType.APPLICATION_JSON)
@@ -73,20 +71,25 @@ public class MemberReportResource {
 	public ReportSendto updateReport(@PathParam("id") long id,
 			@PathParam("reportid") long reportId, ReportSendto report) {
 		ReportSpecification spec = new ReportSpecification();
-		spec.setApplicantId(id);
 		spec.setId(reportId);
 		report.setOwner(null);
 		report.setOwnerSet(false);
 		return reportService.update(spec, report, id);
 	}
 
-	// **Method to save or create
 	@POST
-	public ReportSendto saveReport(@PathParam("id") long id, ReportSendto report) {
-		ReportSendto.User user = new ReportSendto.User();
-		user.setId(id);
-		report.setOwner(user);
-		return reportService.save(report);
+	@Path(value = "{reportid}/approve")
+	public ReportSendto approve(@PathParam("id") long id,
+			@PathParam("reportid") long reportId,
+			StatusChangeSendto statusChange) {
+		return reportService.approve(reportId, statusChange, id);
 	}
 
+	@POST
+	@Path(value = "{reportid}/reject")
+	public ReportSendto reject(@PathParam("id") long id,
+			@PathParam("reportid") long reportId,
+			StatusChangeSendto statusChange) {
+		return reportService.reject(reportId, statusChange, id);
+	}
 }

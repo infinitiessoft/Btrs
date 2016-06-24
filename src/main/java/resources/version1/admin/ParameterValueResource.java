@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.ParameterValueSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ParameterValueSendto;
 import service.ParameterValueService;
 
+@Component
 @Path(value = "/parameterValue")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

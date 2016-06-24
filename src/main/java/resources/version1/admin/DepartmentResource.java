@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.DepartmentSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.DepartmentSendto;
 import service.DepartmentService;
 
+@Component
 @Path(value = "/department")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

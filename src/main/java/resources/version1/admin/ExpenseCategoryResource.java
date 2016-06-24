@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import resources.specification.ExpenseCategorySpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseCategorySendto;
 import service.ExpenseCategoryService;
 
+@Component
 @Path(value = "/expenseCategory")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
