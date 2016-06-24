@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="pull-right">
-				<a ui-sref="dashboard.list-memberrecords()" class="btn btn-sm btn-success"
+				<a ui-sref="dashboard.list-memberrecords({userid: userId})" class="btn btn-sm btn-success"
 					title="Create"><i class="glyphicon glyphicon-plus"></i></a>
 			</div>
 		</div>
@@ -48,7 +48,7 @@
 						<td>{{row.endDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
 						<td><span class="form-control {{row.currentStatus | lowercase}}">
 								{{row.currentStatus}}</span></td>
-						<td><a ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id})"
+						<td><a ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id, userid:userId})"
 							class="btn btn-sm btn-primary"> <i
 								class="glyphicon glyphicon-pencil"> </i>
 						</a>

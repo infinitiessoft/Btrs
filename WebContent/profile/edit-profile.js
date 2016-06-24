@@ -78,9 +78,9 @@ angular
 		.controller(
 				'edit-profile',
 				function($rootScope, $scope, $stateParams, $state,
-						formlyVersion, employee, profileService,
+						formlyVersion, profileService,
 						memberDepartmentService, auth) {
-					var id = auth.user.principal.id;
+					var id = $stateParams.userid;
 					$rootScope.title = 'Profile'
 					$rootScope.buttonText = 'Update';
 					var vm = this;
@@ -94,9 +94,16 @@ angular
 						angularVersion : angular.version.full,
 						formlyVersion : formlyVersion
 					};
-
-					vm.model = employee.data.userShared;
-					vm.model.department = employee.data.department;
+					
+					if (id == 0) {
+						vm.model = {};
+					} else {
+						profileService.get(id).then(
+								 function(status) {
+									 vm.model = status.data.userShared;
+									 vm.model.department = status.data.department;
+								 });
+					}
 					vm.confirmationModel = {};
 
 					vm.fields = [ {

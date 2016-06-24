@@ -7,11 +7,14 @@ angular
 						'$http',
 						'$stateParams',
 						'memberRecordService',
+						'auth',
 						function($scope, $http, $stateParams, memberRecordService) {
 							$scope.typeName = $stateParams.typeName;
 							$scope.statusName = $stateParams.status;
 							$scope.startDate = $stateParams.startDate;
 							$scope.endDate = $stateParams.endDate;
+							$scope.userId = $stateParams.userid;
+							var userId = $stateParams.userid;
 							
 							var lastState = {
 								pagination : {
@@ -58,7 +61,7 @@ angular
 								$scope.isLoading = true;
 								var filters = queryParams(tableState);
 								memberRecordService
-										.list(filters)
+										.list(userId, filters)
 										.then(
 												function(status) {
 													$scope.displayed = status.data.content;

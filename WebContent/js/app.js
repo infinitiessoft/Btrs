@@ -37,7 +37,7 @@ angular
 					   }).state('dashboard.edit-profile',{
                 		   templateUrl:'edit.html',
                 		   controller: 'edit-profile',
-                		   url:'/edit-profile',
+                		   url:'/:userid/edit-profile',
                 		   resolve : {
                 			   loadMyDirectives:function($ocLazyLoad){
                 				   return $ocLazyLoad.load(
@@ -47,22 +47,12 @@ angular
                 							          'profile/edit-profile.js'
                 							          ]
                 						   })
-                			   },
-                			   employee : function(
-                					   auth,
-                					   profileService) {
-
-                				   var id = auth.user.principal.id;
-                				   if(id == 0){
-                					   return {data:{}};
-                				   }
-                				   return profileService.get(id);
                 			   }
                 		   }
                 	   }).state('dashboard.edit-memberreport', {
 						   templateUrl:'edit.html',
 						   controller: 'edit-memberreport',
-						   url:'/list-memberrecords/:recordid/report/:reportid',
+						   url:'/:userid/list-memberrecords/:recordid/report/:reportid',
 						   resolve : {
 							   loadMyDirectives:function($ocLazyLoad){
 								   return $ocLazyLoad.load(
@@ -75,7 +65,7 @@ angular
 							   }
 						   }
 					   }).state('dashboard.list-memberreports', {
-						   url : '/list-memberreports',
+						   url : '/:userid/list-memberreports',
 						   controller : 'list-memberreports',
 						   templateUrl : 'report/list-memberreports.html',
 						   params : {
@@ -92,7 +82,7 @@ angular
 							   }
 						   }
 					   }).state('dashboard.list-memberrecords', {
-						   url : '/list-memberrecords',
+						   url : '/:userid/list-memberrecords',
 						   controller : 'list-memberrecords',
 						   templateUrl : 'record/list-memberrecords.html',
 						   params : {
@@ -380,9 +370,8 @@ angular
 						    		}).factory(
 				    						  'profileService',
 				    						  [
-				    						   'auth',
 				    						   '$http',
-				    						   function(auth, $http) {
+				    						   function($http) {
                   				    			 var serviceBase = 'rest/v1.0/users/';
                 				    			 var obj = {};
                 				    			 obj.list = function(queries) {
@@ -414,33 +403,33 @@ angular
                 				    		 } ]).factory(
                 				    				 'memberReportService',
                 				    				 [
-                				    				  'auth','$http',
-                				    				  function(auth, $http) {
+                				    				  '$http',
+                				    				  function($http) {
                 				    					  var serviceBase = 'rest/v1.0/users/';
                 				    					  var obj = {};
-                				    					  obj.list = function(queries) {
-                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    					  obj.list = function(userid, queries) {
+                				    						  var url  = serviceBase + userid + '/reports/';
                 				    						  return $http.get(url, {params:queries});
                 				    					  };
 
-                				    					  obj.get = function(id) {
-                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    					  obj.get = function(userid, id) {
+                				    						  var url  = serviceBase + userid + '/reports/';
                 				    						  return $http.get(url  + id);
                 				    					  };
 
-                				    					  obj.insert = function(record) {
-                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    					  obj.insert = function(userid, record) {
+                				    						  var url  = serviceBase + userid + '/reports/';
                 				    						  return $http.post(url, record);
                 				    					  };
 
-                				    					  obj.update = function(id, record) {
-                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    					  obj.update = function(userid, id, record) {
+                				    						  var url  = serviceBase + userid + '/reports/';
                 				    						  return $http.put(url  + id,
                 				    								  record);
                 				    					  };
 
-                				    					  obj.remove = function(id) {
-                				    						  var url  = serviceBase + auth.user.principal.id + '/reports/';
+                				    					  obj.remove = function(userid, id) {
+                				    						  var url  = serviceBase + userid + '/reports/';
                 				    						  return $http.delete(url + id);
                 				    					  };
 
@@ -481,18 +470,17 @@ angular
 											} ]).factory(
                				    				 'memberRecordService',
             				    				 [
-            				    				  'auth','$http',
-            				    				  function(auth, $http) {
+            				    				  '$http',
+            				    				  function($http) {
             				    					  var serviceBase = 'rest/v1.0/users/';
             				    					  var obj = {};
-            				    					  obj.list = function(queries) {
-            				    						  var url  = serviceBase + auth.user.principal.id + '/records/available';
+            				    					  obj.list = function(userId, queries) {
+            				    						  var url  = serviceBase + userId + '/records/available';
             				    						  return $http.get(url, {params:queries});
             				    					  };
             				    					  
-            				    					  obj.get = function(id) {
-            				    						  console.info(JSON.stringify(auth));
-            				    						  var url  = serviceBase + auth.user.principal.id + '/records/';
+            				    					  obj.get = function(userId, id) {
+            				    						  var url  = serviceBase + userId + '/records/';
             				    						  return $http.get(url  + id);
       												};
 

@@ -38,7 +38,7 @@
 						<td>{{row.duration}}</td>
 						<td>{{row.reason|limitTo:10}}</td>
 						<td class="input-sm"><a
-							ui-sref="dashboard.edit-memberreport({recordid:row.id})"
+							ui-sref="dashboard.edit-memberreport({userid: userId, recordid:row.id})"
 							class="btn btn-sm btn-primary"
 							ng-show="{{row.status == 'permit'}}"> <i
 								class="glyphicon glyphicon-menu-right"> </i>

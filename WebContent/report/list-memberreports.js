@@ -11,6 +11,8 @@ angular
 			 $scope.currentStatus = $stateParams.currentStatus;
 			 $scope.startDate = $stateParams.startDate;
 			 $scope.endDate = $stateParams.endDate;
+			 $scope.userId = $stateParams.userid;
+			 var userId = $stateParams.userid;
 			 var lastState = {
 					 pagination : {
 						 start : 0,
@@ -57,7 +59,7 @@ angular
 				 $scope.isLoading = true;
 				 var filters = queryParams(tableState);
 				 memberReportService
-				 .list(filters)
+				 .list(userId, filters)
 				 .then(
 						 function(status) {
 							
@@ -73,13 +75,13 @@ angular
 						 + newsEntry.id) == true) {
 					 $scope.isLoading = true;
 					 memberReportService
-					 .remove(newsEntry.id)
+					 .remove(userId, newsEntry.id)
 					 .then(
 							 function(status) {
 								 var filters = queryParams(lastState);
 
 								 memberReportService
-								 .list(filters)
+								 .list(userId, filters)
 								 .then(
 										 function(
 												 status) {
