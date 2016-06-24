@@ -17,10 +17,10 @@ import util.DateUtils;
 import com.google.common.base.Strings;
 
 import entity.Report;
-import entity.StatusChanges;
+import entity.StatusChange;
 import entity.User;
 
-public class StatusChangesSpecification implements Specification<StatusChanges> {
+public class StatusChangesSpecification implements Specification<StatusChange> {
 
 	@QueryParam("comment")
 	private String comment;
@@ -34,7 +34,7 @@ public class StatusChangesSpecification implements Specification<StatusChanges> 
 	private String createdDate;
 
 	@Override
-	public Predicate toPredicate(Root<StatusChanges> root,
+	public Predicate toPredicate(Root<StatusChange> root,
 			CriteriaQuery<?> query, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 

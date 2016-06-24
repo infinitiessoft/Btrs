@@ -11,7 +11,7 @@
 		<class>entity.Photo</class>
 		<class>entity.Report</class>
 		<class>entity.Role</class>
-		<class>entity.StatusChanges</class>
+		<class>entity.StatusChange</class>
 		<class>entity.TypeParameter</class>
 		<class>entity.User</class>
 		<class>entity.UserRole</class>

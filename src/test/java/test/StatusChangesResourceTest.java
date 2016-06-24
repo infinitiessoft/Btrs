@@ -16,7 +16,7 @@ import org.junit.runners.MethodSorters;
 
 import resources.ResourceTest;
 import resources.version1.admin.StatusChangesResource;
-import sendto.StatusChangesSendto;
+import sendto.StatusChangeSendto;
 import assertion.AssertUtils;
 import entity.PageModel;
 
@@ -28,7 +28,7 @@ public class StatusChangesResourceTest extends ResourceTest {
 		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
+		StatusChangeSendto sendto = response.readEntity(StatusChangeSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals("no", sendto.getComment());
 	}
@@ -56,21 +56,21 @@ public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
 	public void testUpdateStatusChanges() {
-		StatusChangesSendto admin = new StatusChangesSendto();
+		StatusChangeSendto admin = new StatusChangeSendto();
 		admin.setComment("Good");
 
-		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		StatusChangeSendto.Report report = new StatusChangeSendto.Report();
 		report.setId(1L);
 		admin.setReport(report);
 
-		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		StatusChangeSendto.User user = new StatusChangeSendto.User();
 		user.setRevisor_id(1L);
 		admin.setUser(user);
 
 		Response response = target("statusChanges").path("1").register(JacksonFeature.class).request()
 				.header("user", "demo").put(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
+		StatusChangeSendto sendto = response.readEntity(StatusChangeSendto.class);
 		assertEquals(1l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
 		assertEquals(admin.getReport().getId().longValue(), sendto.getReport().getId().longValue());
@@ -79,15 +79,15 @@ public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
 	public void test1UpdateStatusChangesWithNotFoundException() {
-		StatusChangesSendto admin = new StatusChangesSendto();
+		StatusChangeSendto admin = new StatusChangeSendto();
 		admin.setCreatedDate(new Date());
 		admin.setComment("Good");
 
-		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		StatusChangeSendto.Report report = new StatusChangeSendto.Report();
 		report.setId(1L);
 		admin.setReport(report);
 
-		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		StatusChangeSendto.User user = new StatusChangeSendto.User();
 		user.setRevisor_id(1L);
 		admin.setUser(user);
 		Response response = target("statusChanges").path("4").register(JacksonFeature.class).request()
@@ -97,21 +97,21 @@ public class StatusChangesResourceTest extends ResourceTest {
 
 	@Test
 	public void testSaveStatusChanges() {
-		StatusChangesSendto admin = new StatusChangesSendto();
+		StatusChangeSendto admin = new StatusChangeSendto();
 		admin.setCreatedDate(new Date());
 		admin.setComment("no");
 		admin.setValue("value");
-		StatusChangesSendto.Report report = new StatusChangesSendto.Report();
+		StatusChangeSendto.Report report = new StatusChangeSendto.Report();
 		report.setId(1L);
 		admin.setReport(report);
 
-		StatusChangesSendto.User user = new StatusChangesSendto.User();
+		StatusChangeSendto.User user = new StatusChangeSendto.User();
 		user.setRevisor_id(1L);
 		admin.setUser(user);
 		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
 				.post(Entity.json(admin));
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		StatusChangesSendto sendto = response.readEntity(StatusChangesSendto.class);
+		StatusChangeSendto sendto = response.readEntity(StatusChangeSendto.class);
 		assertEquals(3l, sendto.getId().longValue());
 		assertEquals(admin.getComment(), sendto.getComment());
 		assertEquals(admin.getCreatedDate(), sendto.getCreatedDate());
@@ -124,7 +124,7 @@ public class StatusChangesResourceTest extends ResourceTest {
 		Response response = target("statusChanges").register(JacksonFeature.class).request().header("user", "demo")
 				.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		PageModel<StatusChangesSendto> rets = response.readEntity(new GenericType<PageModel<StatusChangesSendto>>() {
+		PageModel<StatusChangeSendto> rets = response.readEntity(new GenericType<PageModel<StatusChangeSendto>>() {
 		});
 		assertEquals(2, rets.getTotalElements());
 

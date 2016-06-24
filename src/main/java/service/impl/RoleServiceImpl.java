@@ -1,4 +1,4 @@
-package serviceImpl;
+package service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import sendto.RoleSendto;
 import service.RoleService;
 import dao.RoleDao;
 import entity.Role;
+import entity.RoleEnum;
 import exceptions.RoleNotFoundException;
 
 public class RoleServiceImpl implements RoleService {
@@ -36,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
 	public static RoleSendto toRoleSendto(Role role) {
 		RoleSendto ret = new RoleSendto();
 		ret.setId(role.getId());
-		ret.setValue(role.getValue());
+		ret.setValue(role.getValue().name());
 		return ret;
 	}
 
@@ -71,7 +72,8 @@ public class RoleServiceImpl implements RoleService {
 		for (Role role : roles) {
 			sendto.add(toRoleSendto(role));
 		}
-		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable, roles.getTotalElements());
+		Page<RoleSendto> rets = new PageImpl<RoleSendto>(sendto, pageable,
+				roles.getTotalElements());
 		return rets;
 	}
 
@@ -88,7 +90,7 @@ public class RoleServiceImpl implements RoleService {
 
 	private void setUpRole(RoleSendto sendto, Role newEntry) {
 		if (sendto.isValueSet()) {
-			newEntry.setValue(sendto.getValue());
+			newEntry.setValue(RoleEnum.valueOf(sendto.getValue()));
 		}
 	}
 }

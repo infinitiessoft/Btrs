@@ -1,4 +1,4 @@
-package serviceImpl;
+package service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class MailServiceImpl implements MailService {
 		message.setTo(to);
 		message.setSubject(subject);
 		message.setText(body);
-		mailSender.send(message);
+//		mailSender.send(message);
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import org.springframework.data.jpa.domain.Specification;
 
 import entity.Role;
+import entity.RoleEnum;
 import entity.User;
 import entity.UserRole;
 
@@ -22,14 +23,23 @@ public class UserRoleSpecification implements Specification<UserRole> {
 	@QueryParam("roleId")
 	private Long roleId;
 
+	private RoleEnum roleName;
+
 	@Override
-	public Predicate toPredicate(Root<UserRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<UserRole> root, CriteriaQuery<?> query,
+			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (userId != null) {
-			predicates.add(cb.equal(root.<User> get("user").<Long> get("id"), userId));
+			predicates.add(cb.equal(root.<User> get("user").<Long> get("id"),
+					userId));
 		}
 		if (roleId != null) {
-			predicates.add(cb.equal(root.<Role> get("role").<Long> get("id"), roleId));
+			predicates.add(cb.equal(root.<Role> get("role").<Long> get("id"),
+					roleId));
+		}
+		if (roleName != null) {
+			predicates.add(cb.equal(
+					root.<Role> get("role").<RoleEnum> get("value"), roleName));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -51,6 +61,14 @@ public class UserRoleSpecification implements Specification<UserRole> {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+
+	public RoleEnum getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(RoleEnum roleName) {
+		this.roleName = roleName;
 	}
 
 }

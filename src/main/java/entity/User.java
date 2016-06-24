@@ -40,16 +40,16 @@ public class User extends AbstractEntity {
 
 	// @ManyToOne // (fetch = FetchType.LAZY)
 	// @JoinColumn(name = "user_shared_id")
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
 	// @JoinColumn(name="USER_ID", nullable=false)
 	@JoinColumn(name = "user_shared_id", unique = true, nullable = false, insertable = true, updatable = true)
 	private UserShared userShared;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Set<StatusChanges> statusChanges = new HashSet<StatusChanges>(0);
+	private Set<StatusChange> statusChanges = new HashSet<StatusChange>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
 	private Set<Report> outgoingReports = new HashSet<Report>(0);
@@ -127,11 +127,11 @@ public class User extends AbstractEntity {
 		this.userRole = userRole;
 	}
 
-	public Set<StatusChanges> getStatusChanges() {
+	public Set<StatusChange> getStatusChanges() {
 		return statusChanges;
 	}
 
-	public void setStatusChanges(Set<StatusChanges> statusChanges) {
+	public void setStatusChanges(Set<StatusChange> statusChanges) {
 		this.statusChanges = statusChanges;
 	}
 

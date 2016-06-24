@@ -19,7 +19,7 @@ import entity.TypeParameter;
 import resources.specification.SimplePageRequest;
 import resources.specification.TypeParameterSpecification;
 import sendto.TypeParameterSendto;
-import serviceImpl.TypeParameterServiceImpl;
+import service.impl.TypeParameterServiceImpl;
 
 public class TypeParameterServiceImplTest extends ServiceTest {
 

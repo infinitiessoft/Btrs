@@ -19,7 +19,7 @@ import entity.User;
 import resources.specification.ReportSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
-import serviceImpl.ReportServiceImpl;
+import service.impl.ReportServiceImpl;
 
 public class ReportServiceImplTest extends ServiceTest {
 

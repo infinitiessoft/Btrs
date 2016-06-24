@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import dao.UserSharedDao;
 import entity.UserShared;
-import serviceImpl.UserDetailServiceImpl;
+import service.impl.UserDetailServiceImpl;
 
 public class UserDetailServiceImplTest extends ServiceTest {
 

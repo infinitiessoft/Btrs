@@ -21,7 +21,7 @@ import entity.TypeParameter;
 import resources.specification.ParameterValueSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ParameterValueSendto;
-import serviceImpl.ParameterValueServiceImpl;
+import service.impl.ParameterValueServiceImpl;
 
 public class ParameterValueServiceImplTest extends ServiceTest {
 

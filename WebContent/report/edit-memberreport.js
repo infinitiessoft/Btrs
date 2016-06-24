@@ -53,8 +53,7 @@ angular
 									function createFields(model) {
 										var fields = [];
 										var typeParameter = model.typeParameter;
-										var field = createField(
-												'value',
+										var field = createField('value',
 												typeParameter.value,
 												typeParameter.dataType);
 										fields.push(field);
@@ -138,7 +137,7 @@ angular
 									function createFields(model) {
 										var expenseType = model.expenseType;
 										var fields = [];
-										var  parameterSection = {
+										var parameterSection = {
 												type : 'parameterSection',
 												key : 'parameterValues',
 												templateOptions : {
@@ -160,7 +159,8 @@ angular
 										return fields;
 									}
 
-									function createFieldsById($scope, expenseType) {
+									function createFieldsById($scope,
+											expenseType) {
 										$scope.model["parameterValues"] = $scope.model["parameterValues"]
 										|| [];
 										var repeatsection = $scope.model["parameterValues"];
@@ -172,7 +172,10 @@ angular
 												typeParameters,
 												function(typeParameter,
 														index) {
-													repeatsection.push({'typeParameter':typeParameter});
+													repeatsection
+													.push({
+														'typeParameter' : typeParameter
+													});
 												});
 										addRandomIds(fields);
 
@@ -301,8 +304,9 @@ angular
 															repeatsection.pop();
 														}
 
-
-														var newsections = createFieldsById($scope, newValue);
+														var newsections = createFieldsById(
+																$scope,
+																newValue);
 														angular
 														.forEach(
 																newsections,
@@ -316,7 +320,9 @@ angular
 															repeatsection.pop();
 														}
 
-														var newsections = createFieldsById($scope, newValue);
+														var newsections = createFieldsById(
+																$scope,
+																newValue);
 														angular
 														.forEach(
 																newsections,
@@ -332,15 +338,16 @@ angular
 									}
 								}
 							});
-						}).controller(
+						})
+						.controller(
 								'edit-memberreport',
 								function($rootScope, $scope, $stateParams, $state,
 										formlyVersion, $uibModal, memberReportService,
 										memberExpenseTypeService, memberRecordService) {
-									var id = ($stateParams.reportid) ? parseInt($stateParams.reportid) : 0;
-									var recordId = ($stateParams.recordid) ? parseInt($stateParams.recordid) : 0;
-
-
+									var id = ($stateParams.reportid) ? parseInt($stateParams.reportid)
+											: 0;
+									var recordId = ($stateParams.recordid) ? parseInt($stateParams.recordid)
+											: 0;
 
 									$rootScope.title = (id > 0) ? 'Edit Report' : 'Add Report';
 									$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
@@ -361,19 +368,24 @@ angular
 									if (id == 0) {
 										vm.model = {};
 									} else {
-										memberReportService.get(id).then(function(status) {
-											vm.model = status.data;
-										});
+										memberReportService.get(id).then(
+												function(status) {
+													vm.model = status.data;
+													console.info('getting:'
+															+ JSON.stringify(vm.model));
+												});
 									}
 
 									memberRecordService.get(recordId).then(function(status) {
 										vm.model.attendanceRecordId = status.data.id;
+										if (id == 0) {
+											vm.model.reason = status.data.reason;
+										}
 										vm.recordModel.reason = status.data.reason;
 										vm.recordModel.duration = status.data.duration;
 										vm.recordModel.startDate = status.data.startDate;
 										vm.recordModel.endDate = status.data.endDate;
 									});
-
 
 									vm.expenseTypes = [];
 									memberExpenseTypeService.list().then(function(response) {
@@ -384,60 +396,56 @@ angular
 									vm.attendRecords = [];
 
 									vm.fields = [ {
-										className: 'section-label',
-										template: '<div><strong>Attend Record:</strong></div>'
-									},{
-										className: 'row',
-										fieldGroup: [
-										             {
-										            	 className: 'col-xs-4',
-										            	 type: 'input',
-										            	 key: 'startDate',
-										            	 model: vm.recordModel,
-										            	 templateOptions: {
-										            		 label: 'Start Date',
-										            		 disabled : true
-										            	 }
-										             },
-										             {
-										            	 className: 'col-xs-4',
-										            	 type: 'input',
-										            	 key: 'endDate',
-										            	 model: vm.recordModel,
-										            	 templateOptions: {
-										            		 label: 'EndDate',
-										            		 disabled : true
-										            	 }
-										             },
-										             {
-										            	 className: 'col-xs-4',
-										            	 type: 'input',
-										            	 key: 'duration',
-										            	 model: vm.recordModel,
-										            	 templateOptions: {
-										            		 label: 'Duration',
-										            		 disabled : true
-										            	 }
-										             },{
-										            	 className: 'col-xs-12',
-										            	 type: 'textarea',
-										            	 key: 'reason',
-										            	 model: vm.recordModel,
-										            	 templateOptions: {
-										            		 label: 'Reason',
-										            		 disabled : true
-										            	 }
-										             }
-										             ]
-									},{
-										template: '<hr />'
-									},{
+										className : 'section-label',
+										template : '<div><strong>Attend Record:</strong></div>'
+									}, {
+										className : 'row',
+										fieldGroup : [ {
+											className : 'col-xs-4',
+											type : 'input',
+											key : 'startDate',
+											model : vm.recordModel,
+											templateOptions : {
+												label : 'Start Date',
+												disabled : true
+											}
+										}, {
+											className : 'col-xs-4',
+											type : 'input',
+											key : 'endDate',
+											model : vm.recordModel,
+											templateOptions : {
+												label : 'EndDate',
+												disabled : true
+											}
+										}, {
+											className : 'col-xs-4',
+											type : 'input',
+											key : 'duration',
+											model : vm.recordModel,
+											templateOptions : {
+												label : 'Duration',
+												disabled : true
+											}
+										}, {
+											className : 'col-xs-12',
+											type : 'textarea',
+											key : 'reason',
+											model : vm.recordModel,
+											templateOptions : {
+												label : 'Reason',
+												disabled : true
+											}
+										} ]
+									}, {
+										template : '<hr />'
+									}, {
 										key : 'reason',
 										type : 'textarea',
 										templateOptions : {
 											label : 'Reason',
 											placeholder : 'Reason',
-											"required": true
+											"required" : true
 										}
 									}, {
 										key : 'route',
@@ -445,7 +453,7 @@ angular
 										templateOptions : {
 											label : 'Route',
 											placeholder : 'Route',
-											"required": true
+											"required" : true
 										}
 									}, {
 										key : 'comment',
@@ -466,27 +474,37 @@ angular
 									} ];
 
 									function onSubmit() {
+										if (vm.model.expenses)
+											angular
+											.forEach(
+													vm.model.expenses,
+													function(expense) {
+														delete expense.expenseType.taxPercent;
+														delete expense.expenseType.value;
+														delete expense.expenseType.expenseCategory;
+														delete expense.expenseType.typeParameters;
+													});
 										console.info('submit' + JSON.stringify(vm.model));
-										// if (vm.form.$valid) {
-										// if (id > 0) {
-										// memberReportService
-										// .update(id, vm.model)
-										// .then(
-										// function(status) {
-										// $state
-										// .go('dashboard.list-memberreports');
-										// });
-										// } else {
-										// memberReportService
-										// .insert(vm.model)
-										// .then(
-										// function(status) {
-										// $state
-										// .go('dashboard.list-memberreports');
-										// });
-										// }
-										//
-										// }
+										if (vm.form.$valid) {
+											if (id > 0) {
+												memberReportService
+												.update(id, vm.model)
+												.then(
+														function(status) {
+															$state
+															.go('dashboard.list-memberreports');
+														});
+											} else {
+												memberReportService
+												.insert(vm.model)
+												.then(
+														function(status) {
+															$state
+															.go('dashboard.list-memberreports');
+														});
+											}
+
+										}
 									}
 
 								});

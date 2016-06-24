@@ -21,7 +21,7 @@ import entity.TypeParameter;
 import resources.specification.ExpenseTypeParaSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.TypeParameterSendto;
-import serviceImpl.ExpenseTypeParaServiceImpl;
+import service.impl.ExpenseTypeParaServiceImpl;
 
 public class ExpenseTypeParaServiceImplTest extends ServiceTest {
 

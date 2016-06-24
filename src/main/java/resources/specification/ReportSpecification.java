@@ -17,6 +17,7 @@ import util.DateUtils;
 import com.google.common.base.Strings;
 
 import entity.Report;
+import entity.StatusEnum;
 import entity.User;
 
 public class ReportSpecification implements Specification<Report> {
@@ -32,7 +33,7 @@ public class ReportSpecification implements Specification<Report> {
 	@QueryParam("startDate")
 	private String startDate;
 	@QueryParam("currentStatus")
-	private String currentStatus;
+	private StatusEnum currentStatus;
 	@QueryParam("reason")
 	private String reason;
 
@@ -45,9 +46,9 @@ public class ReportSpecification implements Specification<Report> {
 	public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (!Strings.isNullOrEmpty(currentStatus)) {
-			predicates.add(cb.like(root.<String> get("current_status"), "%"
-					+ currentStatus + "%"));
+		if (currentStatus != null) {
+			predicates.add(cb.equal(root.<StatusEnum> get("current_status"),
+					currentStatus));
 		}
 		if (!Strings.isNullOrEmpty(reason)) {
 			predicates.add(cb.like(root.<String> get("reason"), "%" + reason
@@ -156,11 +157,11 @@ public class ReportSpecification implements Specification<Report> {
 		this.id = id;
 	}
 
-	public String getCurrentStatus() {
+	public StatusEnum getCurrentStatus() {
 		return currentStatus;
 	}
 
-	public void setCurrentStatus(String currentStatus) {
+	public void setCurrentStatus(StatusEnum currentStatus) {
 		this.currentStatus = currentStatus;
 	}
 

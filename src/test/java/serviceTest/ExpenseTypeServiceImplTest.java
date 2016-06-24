@@ -19,7 +19,7 @@ import entity.ExpenseType;
 import resources.specification.ExpenseTypeSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseTypeSendto;
-import serviceImpl.ExpenseTypeServiceImpl;
+import service.impl.ExpenseTypeServiceImpl;
 
 public class ExpenseTypeServiceImplTest extends ServiceTest {
 

@@ -5,13 +5,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.stereotype.Component;
-
 import resources.version1.admin.AdminResource;
 import resources.version1.member.AuthResource;
 import resources.version1.member.MemberExpenseTypeResource;
 
-@Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("v1.0")

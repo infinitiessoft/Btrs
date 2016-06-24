@@ -19,7 +19,7 @@ import entity.Role;
 import resources.specification.RoleSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.RoleSendto;
-import serviceImpl.RoleServiceImpl;
+import service.impl.RoleServiceImpl;
 
 public class RoleServiceImplTest extends ServiceTest {
 

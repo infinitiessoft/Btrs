@@ -21,7 +21,7 @@ import entity.UserRole;
 import resources.specification.SimplePageRequest;
 import resources.specification.UserRoleSpecification;
 import sendto.RoleSendto;
-import serviceImpl.UserRoleServiceImpl;
+import service.impl.UserRoleServiceImpl;
 
 public class UserRoleServiceImplTest extends ServiceTest {
 	private UserDao userDao;

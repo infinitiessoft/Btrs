@@ -14,34 +14,34 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import dao.ReportDao;
-import dao.StatusChangesDao;
+import dao.StatusChangeDao;
 import dao.UserDao;
 import entity.Report;
-import entity.StatusChanges;
+import entity.StatusChange;
 import entity.User;
 import resources.specification.SimplePageRequest;
 import resources.specification.StatusChangesSpecification;
-import sendto.StatusChangesSendto;
-import serviceImpl.StatusChangesServiceImpl;
+import sendto.StatusChangeSendto;
+import service.impl.StatusChangeServiceImpl;
 
 public class StatusChangesServiceImplTest extends ServiceTest {
 
-	private StatusChangesDao statusChangesDao;
+	private StatusChangeDao statusChangesDao;
 	private ReportDao reportDao;
 	private UserDao userDao;
-	private StatusChangesServiceImpl statusChangesService;
+	private StatusChangeServiceImpl statusChangesService;
 
-	private StatusChanges statusChanges;
+	private StatusChange statusChanges;
 	private Report report;
 	private User user;
 
 	@Before
 	public void setUp() throws Exception {
-		statusChangesDao = context.mock(StatusChangesDao.class);
+		statusChangesDao = context.mock(StatusChangeDao.class);
 		reportDao = context.mock(ReportDao.class);
 		userDao = context.mock(UserDao.class);
-		statusChangesService = new StatusChangesServiceImpl(statusChangesDao, reportDao, userDao);
-		statusChanges = new StatusChanges();
+		statusChangesService = new StatusChangeServiceImpl(statusChangesDao, reportDao, userDao);
+		statusChanges = new StatusChange();
 		statusChanges.setId(1L);
 		statusChanges.setCreatedDate(new Date());
 		statusChanges.setComment("OKK");
@@ -68,7 +68,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 				will(returnValue(statusChanges));
 			}
 		});
-		StatusChangesSendto ret = statusChangesService.retrieve(1);
+		StatusChangeSendto ret = statusChangesService.retrieve(1);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals("OKK", ret.getComment());
 		assertEquals(report.getId(), ret.getReport().getId());
@@ -92,8 +92,8 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testSave() {
-		final StatusChangesSendto newEntry = new StatusChangesSendto();
-		StatusChangesSendto.Report reportSendto = new StatusChangesSendto.Report();
+		final StatusChangeSendto newEntry = new StatusChangeSendto();
+		StatusChangeSendto.Report reportSendto = new StatusChangeSendto.Report();
 		reportSendto.setId(report.getId());
 		newEntry.setReport(reportSendto);
 
@@ -104,12 +104,12 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 				exactly(1).of(reportDao).findOne(newEntry.getReport().getId());
 				will(returnValue(report));
 
-				exactly(1).of(statusChangesDao).save(with(any(StatusChanges.class)));
+				exactly(1).of(statusChangesDao).save(with(any(StatusChange.class)));
 				will(returnValue(statusChanges));
 
 			}
 		});
-		StatusChangesSendto ret = statusChangesService.save(newEntry);
+		StatusChangeSendto ret = statusChangesService.save(newEntry);
 		assertEquals(statusChanges.getId(), ret.getId());
 		assertEquals(statusChanges.getCreatedDate(), ret.getCreatedDate());
 		assertEquals(statusChanges.getComment(), ret.getComment());
@@ -118,7 +118,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testUpdate() {
-		final StatusChangesSendto newEntry = new StatusChangesSendto();
+		final StatusChangeSendto newEntry = new StatusChangeSendto();
 		newEntry.setComment("nooo");
 
 		context.checking(new Expectations() {
@@ -131,7 +131,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 				will(returnValue(statusChanges));
 			}
 		});
-		StatusChangesSendto ret = statusChangesService.update(1l, newEntry);
+		StatusChangeSendto ret = statusChangesService.update(1l, newEntry);
 		assertEquals(1L, ret.getId().longValue());
 		assertEquals(newEntry.getComment(), ret.getComment());
 	}
@@ -140,9 +140,9 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 	public void testFindAll() {
 		final StatusChangesSpecification spec = new StatusChangesSpecification();
 		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
-		final List<StatusChanges> status = new ArrayList<StatusChanges>();
+		final List<StatusChange> status = new ArrayList<StatusChange>();
 		status.add(statusChanges);
-		final Page<StatusChanges> page = new PageImpl<StatusChanges>(status);
+		final Page<StatusChange> page = new PageImpl<StatusChange>(status);
 		context.checking(new Expectations() {
 
 			{
@@ -150,9 +150,9 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 				will(returnValue(page));
 			}
 		});
-		Page<StatusChangesSendto> rets = statusChangesService.findAll(spec, pageable);
+		Page<StatusChangeSendto> rets = statusChangesService.findAll(spec, pageable);
 		assertEquals(1, rets.getTotalElements());
-		StatusChangesSendto ret = rets.iterator().next();
+		StatusChangeSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(statusChanges.getCreatedDate(), ret.getCreatedDate());
 		assertEquals(statusChanges.getComment(), ret.getComment());

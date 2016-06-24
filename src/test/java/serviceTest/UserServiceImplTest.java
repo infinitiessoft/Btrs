@@ -16,9 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import resources.specification.SimplePageRequest;
 import resources.specification.UserSpecification;
 import sendto.UserSendto;
-import serviceImpl.UserServiceImpl;
+import service.impl.UserServiceImpl;
 import dao.DepartmentDao;
-import dao.ReportDao;
 import dao.UserDao;
 import dao.UserSharedDao;
 import entity.Department;
@@ -31,7 +30,6 @@ public class UserServiceImplTest extends ServiceTest {
 	private DepartmentDao departmentDao;
 	private UserSharedDao userSharedDao;
 	private UserServiceImpl userService;
-	private ReportDao reportDao;
 	private PasswordEncoder passwordEncoder;
 
 	private User user;
