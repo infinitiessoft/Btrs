@@ -50,6 +50,9 @@ public class Report extends AbstractEntity {
 	@Column(name = "route")
 	private String route;
 
+	@Column(name = "firm_or_project")
+	private String firmOrProject;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date")
 	private Date startDate;
@@ -201,6 +204,14 @@ public class Report extends AbstractEntity {
 
 	public void setExpenses(Set<Expense> expenses) {
 		this.expenses = expenses;
+	}
+
+	public String getFirmOrProject() {
+		return firmOrProject;
+	}
+
+	public void setFirmOrProject(String firmOrProject) {
+		this.firmOrProject = firmOrProject;
 	}
 
 	@Override

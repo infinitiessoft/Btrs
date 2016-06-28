@@ -112,10 +112,13 @@ public class ReportServiceImpl implements ReportService {
 		ret.setRoute(report.getRoute());
 		ret.setStartDate(report.getStartDate());
 		ret.setCurrentStatus(report.getCurrentStatus().name());
+		ret.setFirmOrProject(report.getFirmOrProject());
 
 		if (detail) {
 			ReportSendto.User usr = new ReportSendto.User();
 			usr.setId(report.getOwner().getId());
+			usr.setFirstName(report.getOwner().getUserShared().getFirstName());
+			usr.setLastName(report.getOwner().getUserShared().getLastName());
 			ret.setOwner(usr);
 
 			if (report.getReviewer() != null) {
@@ -132,6 +135,8 @@ public class ReportServiceImpl implements ReportService {
 				type.setId(expense.getExpenseType().getId());
 				type.setValue(expense.getExpenseType().getValue());
 				e.setExpenseType(type);
+				e.setTotalAmount(expense.getTotalAmount());
+				e.setTaxAmount(expense.getTaxAmount());
 				for (ParameterValue parameterValue : expense
 						.getParameterValue()) {
 					ReportSendto.Expense.ParameterValue value = new ReportSendto.Expense.ParameterValue();
@@ -161,6 +166,12 @@ public class ReportServiceImpl implements ReportService {
 		ret.setRoute(report.getRoute());
 		ret.setStartDate(report.getStartDate());
 		ret.setCurrentStatus(report.getCurrentStatus().name());
+		ReportSummarySendto.User usr = new ReportSummarySendto.User();
+		usr.setId(report.getOwner().getId());
+		usr.setFirstName(report.getOwner().getUserShared().getFirstName());
+		usr.setLastName(report.getOwner().getUserShared().getLastName());
+		ret.setOwner(usr);
+		ret.setFirmOrProject(report.getFirmOrProject());
 
 		return ret;
 	}
@@ -343,6 +354,11 @@ public class ReportServiceImpl implements ReportService {
 					v.setValue(newValue.getValue());
 					parameterValueDao.save(v);
 				}
+				
+				if(e.isTaxAmountSet()){
+					old.setTaxAmount(e.getTaxAmount());
+				}
+				expenseDao.save(old);
 			} else {
 				throw new BadRequestException("invalid expense:" + e.getId());
 			}
@@ -369,6 +385,12 @@ public class ReportServiceImpl implements ReportService {
 			Expense e = new Expense();
 			if (expense.isCommentSet()) {
 				e.setComment(expense.getComment());
+			}
+			if (expense.isTotalAmountSet()) {
+				e.setTotalAmount(expense.getTotalAmount());
+			}
+			if (expense.isTaxAmountSet()) {
+				e.setTaxAmount(expense.getTaxAmount());
 			}
 			if (expense.isExpenseTypeSet()
 					|| expense.getExpenseType().isIdSet()) {
@@ -560,6 +582,10 @@ public class ReportServiceImpl implements ReportService {
 		if (sendto.isCurrentStatusSet()) {
 			newEntry.setCurrentStatus(StatusEnum.valueOf(sendto
 					.getCurrentStatus()));
+		}
+		
+		if (sendto.isFirmOrProjectSet()) {
+			newEntry.setFirmOrProject(sendto.getFirmOrProject());
 		}
 
 	}

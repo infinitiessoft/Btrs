@@ -27,6 +27,8 @@ public class ReportSendto {
 
 	private String comment;
 
+	private String firmOrProject;
+
 	private Date createdDate;
 
 	private Date lastUpdatedDate;
@@ -51,6 +53,7 @@ public class ReportSendto {
 	private boolean isCurrentStatusSet;
 	private boolean isMaxIdLastMonthSet;
 	private boolean isAttendanceRecordIdSet;
+	private boolean isFirmOrProjectSet;
 
 	public ReportSendto() {
 		super();
@@ -324,6 +327,25 @@ public class ReportSendto {
 		this.expenses = expenses;
 	}
 
+	public String getFirmOrProject() {
+		return firmOrProject;
+	}
+
+	public void setFirmOrProject(String firmOrProject) {
+		isFirmOrProjectSet = true;
+		this.firmOrProject = firmOrProject;
+	}
+
+	@XmlTransient
+	public boolean isFirmOrProjectSet() {
+		return isFirmOrProjectSet;
+	}
+
+	@XmlTransient
+	public void setFirmOrProjectSet(boolean isFirmOrProjectSet) {
+		this.isFirmOrProjectSet = isFirmOrProjectSet;
+	}
+
 	public static class Expense implements Serializable {
 
 		/**
@@ -335,10 +357,14 @@ public class ReportSendto {
 				0);
 		private Long id;
 		private String comment;
+		private Integer totalAmount;
+		private Integer taxAmount;
 
 		private boolean isIdSet;
 		private boolean isCommentSet;
 		private boolean isExpenseTypeSet;
+		private boolean isTotalAmountSet;
+		private boolean isTaxAmountSet;
 
 		public Long getId() {
 			return id;
@@ -387,6 +413,48 @@ public class ReportSendto {
 		public void setComment(String comment) {
 			isCommentSet = true;
 			this.comment = comment;
+		}
+
+		public Integer getTotalAmount() {
+			return totalAmount;
+		}
+
+		public void setTotalAmount(Integer totalAmount) {
+			if (totalAmount != null) {
+				isTotalAmountSet = true;
+			}
+			this.totalAmount = totalAmount;
+		}
+
+		public Integer getTaxAmount() {
+			return taxAmount;
+		}
+
+		public void setTaxAmount(Integer taxAmount) {
+			if (taxAmount != null) {
+				isTaxAmountSet = true;
+			}
+			this.taxAmount = taxAmount;
+		}
+
+		@XmlTransient
+		public boolean isTotalAmountSet() {
+			return isTotalAmountSet;
+		}
+
+		@XmlTransient
+		public void setTotalAmountSet(boolean isTotalAmountSet) {
+			this.isTotalAmountSet = isTotalAmountSet;
+		}
+
+		@XmlTransient
+		public boolean isTaxAmountSet() {
+			return isTaxAmountSet;
+		}
+
+		@XmlTransient
+		public void setTaxAmountSet(boolean isTaxAmountSet) {
+			this.isTaxAmountSet = isTaxAmountSet;
 		}
 
 		@XmlTransient
@@ -479,7 +547,7 @@ public class ReportSendto {
 				}
 				this.typeParameter = typeParameter;
 			}
-			
+
 			public Long getId() {
 				return id;
 			}
@@ -590,6 +658,8 @@ public class ReportSendto {
 
 		private static final long serialVersionUID = 1L;
 		private Long id;
+		private String firstName;
+		private String lastName;
 
 		private boolean isIdSet;
 
@@ -604,6 +674,22 @@ public class ReportSendto {
 		public void setId(Long id) {
 			setIdSet(true);
 			this.id = id;
+		}
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
 		}
 
 		@XmlTransient

@@ -19,11 +19,14 @@ import com.google.common.base.Strings;
 import entity.Report;
 import entity.StatusEnum;
 import entity.User;
+import entity.UserShared;
 
 public class ReportSpecification implements Specification<Report> {
 
-	// @QueryParam("applicantName")
-	// private String applicantName;
+	@QueryParam("firstName")
+	private String firstName;
+	@QueryParam("lastName")
+	private String lastName;
 	@QueryParam("applicantId")
 	private Long applicantId;
 	@QueryParam("endDate")
@@ -46,6 +49,16 @@ public class ReportSpecification implements Specification<Report> {
 	public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (!Strings.isNullOrEmpty(firstName)) {
+			predicates.add(cb.like(
+					root.<User> get("owner").<UserShared> get("userShared")
+							.<String> get("firstName"), "%" + firstName + "%"));
+		}
+		if (!Strings.isNullOrEmpty(lastName)) {
+			predicates.add(cb.like(
+					root.<User> get("owner").<UserShared> get("userShared")
+							.<String> get("lastName"), "%" + lastName + "%"));
+		}
 		if (currentStatus != null) {
 			predicates.add(cb.equal(root.<StatusEnum> get("current_status"),
 					currentStatus));
@@ -163,6 +176,22 @@ public class ReportSpecification implements Specification<Report> {
 
 	public void setCurrentStatus(StatusEnum currentStatus) {
 		this.currentStatus = currentStatus;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }
