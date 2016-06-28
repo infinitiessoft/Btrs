@@ -10,8 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import entity.User;
 import entity.UserRole;
-import entity.UserShared;
 
 public class UserDetail implements UserDetails {
 
@@ -28,11 +28,11 @@ public class UserDetail implements UserDetails {
 
 	}
 
-	public UserDetail(UserShared user) {
-		username = user.getUsername();
-		password = user.getPassword();
+	public UserDetail(String username, String password, User user) {
+		this.username = username;
+		this.password = password;
 		id = user.getId();
-		Set<UserRole> roles = user.getUser().getUserRole();
+		Set<UserRole> roles = user.getUserRole();
 		for (UserRole userRole : roles) {
 			authorities.add(new SimpleGrantedAuthority(userRole.getRole()
 					.getValue().name()));

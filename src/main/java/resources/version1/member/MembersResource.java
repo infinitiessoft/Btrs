@@ -55,9 +55,8 @@ public class MembersResource {
 	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin') or hasAuthority('ACCOUNTANT')")
 	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
 		if (user != null) {
-			user.setDepartment(null);
-			user.setDepartmentSet(false);
-			// user.setUserRole(new ArrayList<UserRole>(0));
+			user.setJobTitle(null);
+			user.setJobTitleSet(false);
 		}
 		return userService.update(id, user);
 	}

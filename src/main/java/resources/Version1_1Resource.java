@@ -25,8 +25,6 @@ public class Version1_1Resource {
 	@Autowired
 	private resources.version1.member.MembersResource membersResource;
 	@Autowired
-	private resources.version1.member.MemberDepartmentsResource memberDepartmentsResource;
-	@Autowired
 	private MemberExpenseTypeResource memberExpenseTypeResource;
 
 	@Path("admin")
@@ -42,11 +40,6 @@ public class Version1_1Resource {
 	@Path("users")
 	public resources.version1.member.MembersResource getUsersResource() {
 		return membersResource;
-	}
-
-	@Path("departments")
-	public resources.version1.member.MemberDepartmentsResource getDepartmentsResource() {
-		return memberDepartmentsResource;
 	}
 
 	@Path("expensetypes")

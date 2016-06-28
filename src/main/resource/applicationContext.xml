@@ -79,6 +79,7 @@
 	</bean>
 
 	<bean id="mailWritter" class="util.MailWritterImpl">
+		<constructor-arg ref="employeeDao" />
 		<property name="header" value="${mail.header}" />
 		<property name="footer" value="${mail.footer}" />
 		<property name="systemUrl" value="${mail.url}" />
@@ -168,14 +169,9 @@
 		transaction-manager-ref="transactionManagerAttendance"
 		entity-manager-factory-ref="entityManagerFactoryAttendance" />
 
-	<bean id="departmentService" class="service.impl.DepartmentServiceImpl">
-		<constructor-arg ref="departmentDao" />
-	</bean>
-
 	<bean id="roleService" class="service.impl.RoleServiceImpl">
 		<constructor-arg ref="roleDao" />
 	</bean>
-
 
 	<bean id="expenseCategoryService" class="service.impl.ExpenseCategoryServiceImpl">
 		<constructor-arg ref="expenseCategoryDao" />
@@ -213,14 +209,14 @@
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="statusChangeDao" />
+		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="mailService" />
 		<constructor-arg ref="mailWritter" />
 	</bean>
 
 	<bean id="statusChangeService" class="service.impl.StatusChangeServiceImpl">
 		<constructor-arg ref="statusChangeDao" />
-		<constructor-arg ref="reportDao" />
-		<constructor-arg ref="userDao" />
+		<constructor-arg ref="employeeDao" />
 	</bean>
 
 	<bean id="typeParameterService" class="service.impl.TypeParameterServiceImpl">
@@ -235,24 +231,21 @@
 
 	<bean id="userService" class="service.impl.UserServiceImpl">
 		<constructor-arg ref="userDao" />
-		<constructor-arg ref="departmentDao" />
-		<constructor-arg ref="userSharedDao" />
-		<constructor-arg ref="passwordEncoder" />
-	</bean>
-
-	<bean id="userSharedService" class="service.impl.UserSharedServiceImpl">
-		<constructor-arg ref="userSharedDao" />
+		<constructor-arg ref="employeeDao" />
+		<constructor-arg ref="jobTitleDao" />
 	</bean>
 
 	<bean id="userDetailService" class="service.impl.UserDetailServiceImpl">
-		<constructor-arg ref="userSharedDao" />
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="employeeDao" />
+		<constructor-arg ref="userService" />
 	</bean>
 
 	<bean id="attendRecordService" class="service.impl.DBAttendRecordService">
 		<constructor-arg ref="attendRecordDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
-	
+
 	<!-- INIT REST COMPONENTS -->
 	<context:component-scan base-package="resources" />
 
@@ -308,8 +301,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-		<!-- <security:intercept-url method="GET"
-			pattern="/rest/v1.0/auth" access="permitAll" /> -->
+		<!-- <security:intercept-url method="GET" pattern="/rest/v1.0/auth" access="permitAll" 
+			/> -->
 		<security:intercept-url pattern="/rest/v1.0/**"
 			access="isAuthenticated()" />
 		<!-- <security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" 

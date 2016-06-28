@@ -19,15 +19,13 @@ import com.google.common.base.Strings;
 import entity.Report;
 import entity.StatusEnum;
 import entity.User;
-import entity.UserShared;
 
 public class ReportSpecification implements Specification<Report> {
 
-	@QueryParam("firstName")
-	private String firstName;
-	@QueryParam("lastName")
-	private String lastName;
-	@QueryParam("applicantId")
+	// @QueryParam("firstName")
+	// private String firstName;
+	@QueryParam("applicantName")
+	private String applicantName;
 	private Long applicantId;
 	@QueryParam("endDate")
 	private String endDate;
@@ -39,28 +37,21 @@ public class ReportSpecification implements Specification<Report> {
 	private StatusEnum currentStatus;
 	@QueryParam("reason")
 	private String reason;
-
 	@QueryParam("route")
 	private String route;
+	@QueryParam("firmOrProject")
+	private String firmOrProject;
 
 	private Long id;
+	private List<Long> ids;
 
 	@Override
 	public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (!Strings.isNullOrEmpty(firstName)) {
-			predicates.add(cb.like(
-					root.<User> get("owner").<UserShared> get("userShared")
-							.<String> get("firstName"), "%" + firstName + "%"));
-		}
-		if (!Strings.isNullOrEmpty(lastName)) {
-			predicates.add(cb.like(
-					root.<User> get("owner").<UserShared> get("userShared")
-							.<String> get("lastName"), "%" + lastName + "%"));
-		}
+
 		if (currentStatus != null) {
-			predicates.add(cb.equal(root.<StatusEnum> get("current_status"),
+			predicates.add(cb.equal(root.<StatusEnum> get("currentStatus"),
 					currentStatus));
 		}
 		if (!Strings.isNullOrEmpty(reason)) {
@@ -69,6 +60,10 @@ public class ReportSpecification implements Specification<Report> {
 		}
 		if (!Strings.isNullOrEmpty(route)) {
 			predicates.add(cb.like(root.<String> get("route"), "%" + route
+					+ "%"));
+		}
+		if (!Strings.isNullOrEmpty(firmOrProject)) {
+			predicates.add(cb.like(root.<String> get("firmOrProject"), "%" + firmOrProject
 					+ "%"));
 		}
 		if (!Strings.isNullOrEmpty(startDate)) {
@@ -100,6 +95,9 @@ public class ReportSpecification implements Specification<Report> {
 
 		if (id != null) {
 			predicates.add(cb.equal(root.<Long> get("id"), id));
+		}
+		if (ids != null) {
+			predicates.add(root.<User> get("owner").<Long> get("id").in(ids));
 		}
 
 		// if (applicantName != null) {
@@ -178,20 +176,20 @@ public class ReportSpecification implements Specification<Report> {
 		this.currentStatus = currentStatus;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getApplicantName() {
+		return applicantName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setApplicantName(String applicantName) {
+		this.applicantName = applicantName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public List<Long> getIds() {
+		return ids;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
 	}
 
 }

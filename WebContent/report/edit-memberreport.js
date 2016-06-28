@@ -554,7 +554,6 @@ angular
 												delete expense.expenseType.expenseCategory;
 												delete expense.expenseType.typeParameters;
 											});
-						console.info('submit' + JSON.stringify(vm.model));
 						if (vm.form.$valid) {
 							if (id > 0) {
 								memberReportService

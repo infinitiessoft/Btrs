@@ -3,8 +3,6 @@ package service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,27 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 import resources.specification.StatusChangeSpecification;
 import sendto.StatusChangeSendto;
 import service.StatusChangeService;
-import dao.ReportDao;
+import attendance.dao.EmployeeDao;
+import attendance.entity.Employee;
 import dao.StatusChangeDao;
-import dao.UserDao;
 import entity.StatusChange;
-import entity.StatusEnum;
-import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
 
 public class StatusChangeServiceImpl implements StatusChangeService {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(StatusChangeServiceImpl.class);
+	// private static final Logger logger = LoggerFactory
+	// .getLogger(StatusChangeServiceImpl.class);
 	private StatusChangeDao statusChangesDao;
-	private ReportDao reportDao;
-	private UserDao userDao;
+	// private ReportDao reportDao;
+	private EmployeeDao employeeDao;
 
 	public StatusChangeServiceImpl(StatusChangeDao statusDao,
-			ReportDao reportDao, UserDao userDao) {
+			EmployeeDao employeeDao) {
 		this.statusChangesDao = statusDao;
-		this.reportDao = reportDao;
-		this.userDao = userDao;
+		this.employeeDao = employeeDao;
 	}
 
 	@Transactional("transactionManager")
@@ -58,9 +53,11 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 		ret.setReport(rpt);
 
 		StatusChangeSendto.User user = new StatusChangeSendto.User();
-		user.setId(status.getUser().getId());
-		user.setFirstname(status.getUser().getUserShared().getFirstName());
-		user.setLastname(status.getUser().getUserShared().getLastName());
+		Employee owner = employeeDao
+				.findOne(status.getUser().getUserSharedId());
+		String name = owner.getName();
+		user.setId(owner.getId());
+		user.setName(name);
 		ret.setUser(user);
 
 		return ret;
@@ -118,36 +115,6 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 			StatusChange newEntry) {
 		if (sendto.isCommentSet()) {
 			newEntry.setComment(sendto.getComment());
-		}
-		if (sendto.isCreatedDateSet()) {
-			newEntry.setCreatedDate(sendto.getCreatedDate());
-		}
-		if (sendto.isReportSet()) {
-			if (sendto.getReport().isIdSet()) {
-				entity.Report report = reportDao.findOne(sendto.getReport()
-						.getId());
-				if (report == null) {
-					throw new ReportNotFoundException(sendto.getReport()
-							.getId());
-				}
-				newEntry.setReport(report);
-			}
-		}
-		// if (sendto.isUserSet()) {
-		// if (sendto.getUser().isIdSet()) {
-		// logger.debug("find user in setUpStatusChanges id: {}", sendto
-		// .getUser().getRevisor_id());
-		// entity.User user = userDao.findOne(sendto.getUser()
-		// .getRevisor_id());
-		// if (user == null) {
-		// throw new UserNotFoundException(sendto.getUser()
-		// .getRevisor_id());
-		// }
-		// newEntry.setUser(user);
-		// }
-		// }
-		if (sendto.isValueSet()) {
-			newEntry.setValue(StatusEnum.valueOf(sendto.getValue()));
 		}
 	}
 

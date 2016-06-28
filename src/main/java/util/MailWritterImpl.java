@@ -1,5 +1,7 @@
 package util;
 
+import attendance.dao.EmployeeDao;
+import attendance.entity.Employee;
 import entity.Report;
 
 public class MailWritterImpl implements MailWritter {
@@ -7,9 +9,10 @@ public class MailWritterImpl implements MailWritter {
 	private String header;
 	private String footer;
 	private String systemUrl;
+	private EmployeeDao employeeDao;
 
-	public MailWritterImpl() {
-
+	public MailWritterImpl(EmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
 	}
 
 	/*
@@ -19,7 +22,8 @@ public class MailWritterImpl implements MailWritter {
 	 */
 	@Override
 	public String buildSubmittedSubject(Report report) {
-		String name = report.getOwner().getUserShared().getFirstName();
+		Employee owner = employeeDao.findOne(report.getOwner().getUserSharedId());
+		String name = owner.getName();
 		String subject = name
 				+ " applied for a new business trip report notice";
 		return subject;
@@ -39,7 +43,8 @@ public class MailWritterImpl implements MailWritter {
 	 */
 	@Override
 	public String buildSubmittedBody(Report report) {
-		String name = report.getOwner().getUserShared().getFirstName();
+		Employee owner = employeeDao.findOne(report.getOwner().getUserSharedId());
+		String name = owner.getName();
 		String route = report.getRoute();
 		String reason = report.getReason();
 

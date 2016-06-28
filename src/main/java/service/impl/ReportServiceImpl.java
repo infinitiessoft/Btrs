@@ -19,6 +19,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import resources.specification.AttendRecordSpecification;
+import resources.specification.EmployeeSpecification;
+import resources.specification.ReportSpecification;
 import resources.specification.UserRoleSpecification;
 import resources.specification.UserSpecification;
 import sendto.ReportSendto;
@@ -28,8 +30,11 @@ import service.MailService;
 import service.ReportService;
 import util.MailWritter;
 import attendance.dao.AttendRecordDao;
+import attendance.dao.EmployeeDao;
 import attendance.entity.AttendRecord;
+import attendance.entity.Employee;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
 import dao.ExpenseDao;
@@ -56,7 +61,7 @@ import exceptions.UserNotFoundException;
 
 public class ReportServiceImpl implements ReportService {
 
-	private static final String ADMIN_ROLE = "admin";
+	// private static final String ADMIN_ROLE = "admin";
 	private static final Logger logger = LoggerFactory
 			.getLogger(ReportServiceImpl.class);
 	private ReportDao reportDao;
@@ -67,6 +72,7 @@ public class ReportServiceImpl implements ReportService {
 	private StatusChangeDao statusChangeDao;
 	private UserDao userDao;
 	private UserRoleDao userRoleDao;
+	private EmployeeDao employeeDao;
 	private MailService mailService;
 	private MailWritter writter;
 
@@ -74,8 +80,8 @@ public class ReportServiceImpl implements ReportService {
 			ExpenseDao expenseDao, ExpenseTypeDao expenseTypeDao,
 			ParameterValueDao parameterValueDao,
 			StatusChangeDao statusChangeDao, UserDao userDao,
-			UserRoleDao userRoleDao, MailService mailService,
-			MailWritter writter) {
+			UserRoleDao userRoleDao, EmployeeDao employeeDao,
+			MailService mailService, MailWritter writter) {
 		this.reportDao = reportDao;
 		this.recordDao = recordDao;
 		this.expenseDao = expenseDao;
@@ -84,6 +90,7 @@ public class ReportServiceImpl implements ReportService {
 		this.statusChangeDao = statusChangeDao;
 		this.userDao = userDao;
 		this.userRoleDao = userRoleDao;
+		this.employeeDao = employeeDao;
 		this.mailService = mailService;
 		this.writter = writter;
 
@@ -117,8 +124,10 @@ public class ReportServiceImpl implements ReportService {
 		if (detail) {
 			ReportSendto.User usr = new ReportSendto.User();
 			usr.setId(report.getOwner().getId());
-			usr.setFirstName(report.getOwner().getUserShared().getFirstName());
-			usr.setLastName(report.getOwner().getUserShared().getLastName());
+			Employee owner = employeeDao.findOne(report.getOwner()
+					.getUserSharedId());
+			String name = owner.getName();
+			usr.setName(name);
 			ret.setOwner(usr);
 
 			if (report.getReviewer() != null) {
@@ -168,8 +177,10 @@ public class ReportServiceImpl implements ReportService {
 		ret.setCurrentStatus(report.getCurrentStatus().name());
 		ReportSummarySendto.User usr = new ReportSummarySendto.User();
 		usr.setId(report.getOwner().getId());
-		usr.setFirstName(report.getOwner().getUserShared().getFirstName());
-		usr.setLastName(report.getOwner().getUserShared().getLastName());
+		Employee owner = employeeDao.findOne(report.getOwner()
+				.getUserSharedId());
+		String name = owner.getName();
+		usr.setName(name);
 		ret.setOwner(usr);
 		ret.setFirmOrProject(report.getFirmOrProject());
 
@@ -247,10 +258,21 @@ public class ReportServiceImpl implements ReportService {
 
 	@Transactional("transactionManager")
 	@Override
-	public Page<ReportSummarySendto> findAll(Specification<Report> spec,
+	public Page<ReportSummarySendto> findAll(ReportSpecification spec,
 			Pageable pageable) {
 		List<ReportSummarySendto> sendto = new ArrayList<ReportSummarySendto>();
+		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
+			EmployeeSpecification employeeSpec = new EmployeeSpecification();
+			employeeSpec.setName(spec.getApplicantName());
+			List<Employee> employees = employeeDao.findAll(employeeSpec);
+			List<Long> ids = new ArrayList<Long>();
+			for (Employee e : employees) {
+				ids.add(e.getId());
+			}
+			spec.setIds(ids);
+		}
 		Page<Report> reports = reportDao.findAll(spec, pageable);
+
 		for (Report report : reports) {
 			sendto.add(toReportSummarySendto(report, false));
 		}
@@ -354,8 +376,8 @@ public class ReportServiceImpl implements ReportService {
 					v.setValue(newValue.getValue());
 					parameterValueDao.save(v);
 				}
-				
-				if(e.isTaxAmountSet()){
+
+				if (e.isTaxAmountSet()) {
 					old.setTaxAmount(e.getTaxAmount());
 				}
 				expenseDao.save(old);
@@ -499,8 +521,9 @@ public class ReportServiceImpl implements ReportService {
 			String body = writter.buildSubmittedBody(report);
 			List<User> accountants = getAccountants();
 			for (User accountant : accountants) {
-				mailService.sendMail(accountant.getUserShared().getEmail(),
-						subject, body);
+				Employee receiver = employeeDao.findOne(accountant
+						.getUserSharedId());
+				mailService.sendMail(receiver.getEmail(), subject, body);
 			}
 		} catch (Throwable t) {
 			logger.warn("send mail failed, ignore", t);
@@ -511,8 +534,9 @@ public class ReportServiceImpl implements ReportService {
 		try {
 			String subject = writter.buildReviewedSubject(report);
 			String body = writter.buildReviewedBody(report);
-			mailService.sendMail(report.getOwner().getUserShared().getEmail(),
-					subject, body);
+			Employee receiver = employeeDao.findOne(report.getOwner()
+					.getUserSharedId());
+			mailService.sendMail(receiver.getEmail(), subject, body);
 		} catch (Throwable t) {
 			logger.warn("send mail failed, ignore", t);
 		}
@@ -521,7 +545,8 @@ public class ReportServiceImpl implements ReportService {
 	private User findCurrentUser(String currentUsername) {
 		UserSpecification userSpec = new UserSpecification();
 		userSpec.setUsername(currentUsername);
-		User currentUser = userDao.findOne(userSpec);
+		Employee employee = employeeDao.findByUsername(currentUsername);
+		User currentUser = userDao.findByUserSharedId(employee.getId());
 		return currentUser;
 	}
 
@@ -583,7 +608,7 @@ public class ReportServiceImpl implements ReportService {
 			newEntry.setCurrentStatus(StatusEnum.valueOf(sendto
 					.getCurrentStatus()));
 		}
-		
+
 		if (sendto.isFirmOrProjectSet()) {
 			newEntry.setFirmOrProject(sendto.getFirmOrProject());
 		}
@@ -598,9 +623,6 @@ public class ReportServiceImpl implements ReportService {
 
 		for (UserRole userRole : userRoles) {
 			User accountant = userRole.getUser();
-			if (accountant.getUserShared().getUsername().equals(ADMIN_ROLE)) {
-				continue;
-			}
 			accountants.add(accountant);
 		}
 		return accountants;

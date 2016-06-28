@@ -14,13 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "user_shared_id"))
 public class User extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 
@@ -29,13 +29,7 @@ public class User extends AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	// (fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id")
-	private Department department;
-
-	@ManyToOne
-	// (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "jobtitle_id")
 	private JobTitle jobTitle;
 
@@ -43,12 +37,8 @@ public class User extends AbstractEntity {
 	@Column(name = "last_Login")
 	private Date lastLogin;
 
-	// @ManyToOne // (fetch = FetchType.LAZY)
-	// @JoinColumn(name = "user_shared_id")
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
-	// @JoinColumn(name="USER_ID", nullable=false)
-	@JoinColumn(name = "user_shared_id", unique = true, nullable = false, insertable = true, updatable = true)
-	private UserShared userShared;
+	@Column(name = "user_shared_id", nullable = false, unique = true)
+	private Long userSharedId;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
@@ -100,28 +90,12 @@ public class User extends AbstractEntity {
 		this.id = id;
 	}
 
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
 	public Date getLastLogin() {
 		return lastLogin;
 	}
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
-	}
-
-	public UserShared getUserShared() {
-		return userShared;
-	}
-
-	public void setUserShared(UserShared userShared) {
-		this.userShared = userShared;
 	}
 
 	public Set<UserRole> getUserRole() {
@@ -168,6 +142,14 @@ public class User extends AbstractEntity {
 
 	public void setJobTitle(JobTitle jobTitle) {
 		this.jobTitle = jobTitle;
+	}
+
+	public Long getUserSharedId() {
+		return userSharedId;
+	}
+
+	public void setUserSharedId(Long userSharedId) {
+		this.userSharedId = userSharedId;
 	}
 
 }

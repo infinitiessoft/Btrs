@@ -47,7 +47,7 @@ angular
 							   }
 						   }
 					   }).state('dashboard.edit-profile',{
-						   templateUrl:'edit.html',
+						   templateUrl:'profile/edit-profile.html',
 						   controller: 'edit-profile',
 						   url:'/:userid/edit-profile',
 						   resolve : {
@@ -127,20 +127,20 @@ angular
 								   })
 							   }
 						   }
-					   }).state('dashboard.audit-memberaudit', {
-						   url : '/:userid/audit-memberaudit/:reportid',
-						   controller : 'audit-memberaudit',
+					   }).state('dashboard.edit-memberaudit', {
+						   url : '/:userid/memberaudit/:reportid',
+						   controller : 'edit-memberaudit',
 						   templateUrl : 'edit.html',
 						   resolve : {
 							   loadMyDirectives : function($ocLazyLoad) {
 								   return $ocLazyLoad.load({
-									   name : 'audit-memberaudit',
-									   files : [ 'audit/audit-memberaudit.js' ]
+									   name : 'edit-memberaudit',
+									   files : [ 'audit/edit-memberaudit.js' ]
 								   })
 							   }
 						   }
 					   }).state('dashboard.view-memberaudit', {
-						   url : '/:userid/audit-memberaudit/:reportid/view',
+						   url : '/:userid/memberaudit/:reportid/view',
 						   templateUrl : 'audit/view-memberaudit.html',
 						   controller : 'view-memberaudit',
 						   resolve : {

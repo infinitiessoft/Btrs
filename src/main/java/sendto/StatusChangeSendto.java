@@ -5,21 +5,16 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.google.common.base.Strings;
-
 public class StatusChangeSendto {
 	private Long id;
 	private String comment;
 	private Date createdDate;
 	private User user;
+	private User receiver;
 	private String value;
 	private Report report;
 
 	private boolean isCommentSet;
-	private boolean isCreatedDateSet;
-	private boolean isUserSet;
-	private boolean isValueSet;
-	private boolean isReportSet;
 
 	public StatusChangeSendto() {
 		super();
@@ -38,9 +33,7 @@ public class StatusChangeSendto {
 	}
 
 	public void setComment(String comment) {
-		if (!Strings.isNullOrEmpty(comment)) {
-			isCommentSet = true;
-		}
+		isCommentSet = true;
 		this.comment = comment;
 	}
 
@@ -49,9 +42,6 @@ public class StatusChangeSendto {
 	}
 
 	public void setCreatedDate(Date createdDate) {
-		if (createdDate != null) {
-			isCreatedDateSet = true;
-		}
 		this.createdDate = createdDate;
 	}
 
@@ -60,9 +50,6 @@ public class StatusChangeSendto {
 	}
 
 	public void setUser(User user) {
-		if (user != null) {
-			isUserSet = true;
-		}
 		this.user = user;
 	}
 
@@ -71,9 +58,6 @@ public class StatusChangeSendto {
 	}
 
 	public void setValue(String value) {
-		if (!Strings.isNullOrEmpty(value)) {
-			isValueSet = true;
-		}
 		this.value = value;
 	}
 
@@ -82,9 +66,6 @@ public class StatusChangeSendto {
 	}
 
 	public void setReport(Report report) {
-		if (report != null) {
-			isReportSet = true;
-		}
 		this.report = report;
 	}
 
@@ -98,51 +79,17 @@ public class StatusChangeSendto {
 		this.isCommentSet = isCommentSet;
 	}
 
-	@XmlTransient
-	public boolean isCreatedDateSet() {
-		return isCreatedDateSet;
+	public User getReceiver() {
+		return receiver;
 	}
 
-	@XmlTransient
-	public void setCreatedDateSet(boolean isCreatedDateSet) {
-		this.isCreatedDateSet = isCreatedDateSet;
-	}
-
-	@XmlTransient
-	public boolean isUserSet() {
-		return isUserSet;
-	}
-
-	@XmlTransient
-	public void setUserSet(boolean isUserSet) {
-		this.isUserSet = isUserSet;
-	}
-
-	@XmlTransient
-	public boolean isValueSet() {
-		return isValueSet;
-	}
-
-	@XmlTransient
-	public void setValueSet(boolean isValueSet) {
-		this.isValueSet = isValueSet;
-	}
-
-	@XmlTransient
-	public boolean isReportSet() {
-		return isReportSet;
-	}
-
-	@XmlTransient
-	public void setReportSet(boolean isReportSet) {
-		this.isReportSet = isReportSet;
-
+	public void setReceiver(User receiver) {
+		this.receiver = receiver;
 	}
 
 	public static class User {
 		private Long id;
-		private String firstname;
-		private String lastname;
+		private String name;
 
 		public User() {
 			super();
@@ -156,20 +103,12 @@ public class StatusChangeSendto {
 			this.id = id;
 		}
 
-		public String getFirstname() {
-			return firstname;
+		public String getName() {
+			return name;
 		}
 
-		public void setFirstname(String firstname) {
-			this.firstname = firstname;
-		}
-
-		public String getLastname() {
-			return lastname;
-		}
-
-		public void setLastname(String lastname) {
-			this.lastname = lastname;
+		public void setName(String name) {
+			this.name = name;
 		}
 
 	}

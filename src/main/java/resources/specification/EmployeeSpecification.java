@@ -15,7 +15,7 @@ import attendance.entity.Employee;
 
 import com.google.common.base.Strings;
 
-public class UserSpecification implements Specification<Employee> {
+public class EmployeeSpecification implements Specification<Employee> {
 
 	@QueryParam("departmentName")
 	private String departmentName;

@@ -1,8 +1,6 @@
-departments
 job_titles
 expense_categories
 expense_types
-user_shared
 users
 type_parameters
 exp_types_type_parameters

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import resources.specification.ReportSpecification;
 import sendto.ReportSendto;
 import sendto.ReportSummarySendto;
 import sendto.StatusChangeSendto;
@@ -21,7 +22,7 @@ public interface ReportService {
 
 	public ReportSendto save(ReportSendto report);
 
-	public Page<ReportSummarySendto> findAll(Specification<Report> spec,
+	public Page<ReportSummarySendto> findAll(ReportSpecification spec,
 			Pageable pageable);
 
 	public ReportSendto update(long id, ReportSendto report,

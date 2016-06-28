@@ -8,8 +8,9 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="pull-right">
-				<a ui-sref="dashboard.list-memberrecords({userid: userId})" class="btn btn-sm btn-success"
-					title="Create"><i class="glyphicon glyphicon-plus"></i></a>
+				<a ui-sref="dashboard.list-memberrecords({userid: userId})"
+					class="btn btn-sm btn-success" title="Create"><i
+					class="glyphicon glyphicon-plus"></i></a>
 			</div>
 		</div>
 	</div>
@@ -20,22 +21,26 @@
 				<thead>
 					<tr>
 						<th st-sort="id" st-sort-default="reverse">id</th>
+						<th st-sort="createdDate">created date</th>
+						<th>firm/project</th>
 						<th>route</th>
-						<th st-sort="startDate">start date</th>
-						<th st-sort="endDate">end date</th>
 						<th st-sort="currentStatus">status</th>
 						<th>#Total Element: {{size}}</th>
 					</tr>
 					<tr>
 						<th></th>
+						<th><input st-search="createdDate"
+							class="input-sm form-control" st-search-default="{{createdDate}}" /></th>
+						<th><input st-search="firmOrProject" class="input-sm form-control"
+							st-search-default="{{firmOrProject}}" /></th>
 						<th><input st-search="route" class="input-sm form-control"
 							st-search-default="{{route}}" /></th>
-						<th><input st-search="startDate"
-							class="input-sm form-control" st-search-default="{{startDate}}" /></th>
-						<th><input st-search="endDate" class="input-sm form-control"
-							st-search-default="{{endDate}}" /></th>
-						<th><input st-search="currentStatus" class="input-sm form-control"
-							st-search-default="{{currentStatus}}" /></th>
+						<th><select st-search="currentStatus" st-search-default="{{currentStatus}}" st-input-event="change" st-delay="0">
+								<option value="">All</option>
+								<option value="SUBMITTED">SUBMITTED</option>
+								<option value="APPROVED">APPROVED</option>
+								<option value="REJECTED">REJECTED</option>
+						</select></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -43,12 +48,14 @@
 					<tr ng-repeat="row in displayed" popover="reason: {{row.reason}}"
 						popover-placement="top" popover-trigger="click">
 						<td>{{row.id}}</td>
+						<td>{{row.createdDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
+						<td>{{row.firmOrProject}}</td>
 						<td>{{row.route}}</td>
-						<td>{{row.startDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
-						<td>{{row.endDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
-						<td><span class="form-control {{row.currentStatus | lowercase}}">
+						<td><span
+							class="form-control {{row.currentStatus | lowercase}}">
 								{{row.currentStatus}}</span></td>
-						<td><a ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id, userid:userId})"
+						<td><a
+							ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id, userid:userId})"
 							class="btn btn-sm btn-primary"> <i
 								class="glyphicon glyphicon-pencil"> </i>
 						</a>

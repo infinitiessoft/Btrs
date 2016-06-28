@@ -20,8 +20,6 @@ public class AdminResource {
 	@Autowired
 	private ExpenseCategoryResource expenseCategoryResource;
 	@Autowired
-	private DepartmentResource departmentResource;
-	@Autowired
 	private ExpenseTypeResource expenseTypeResource;
 	@Autowired
 	private ExpenseResource expenseResource;
@@ -35,8 +33,6 @@ public class AdminResource {
 	private TypeParameterResource typeParameterResource;
 	@Autowired
 	private UserResource userResource;
-	@Autowired
-	private UserSharedResource userSharedResource;
 
 	@Path("reports")
 	public ReportResource getReportResource() {
@@ -46,11 +42,6 @@ public class AdminResource {
 	@Path("expenseCategorys")
 	public ExpenseCategoryResource getExpenseCategoryResource() {
 		return expenseCategoryResource;
-	}
-
-	@Path("departments")
-	public DepartmentResource getDepartmentResource() {
-		return departmentResource;
 	}
 
 	@Path("expenseTypes")
@@ -86,11 +77,6 @@ public class AdminResource {
 	@Path("users")
 	public UserResource getUserResource() {
 		return userResource;
-	}
-
-	@Path("userShareds")
-	public UserSharedResource getUserSharedResource() {
-		return userSharedResource;
 	}
 
 }
