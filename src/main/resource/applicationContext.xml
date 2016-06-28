@@ -308,10 +308,10 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
-		<security:intercept-url method="GET"
-			pattern="/rest/v1.0/auth" access="permitAll" />
+		<!-- <security:intercept-url method="GET"
+			pattern="/rest/v1.0/auth" access="permitAll" /> -->
 		<security:intercept-url pattern="/rest/v1.0/**"
-			access="permitAll" />
+			access="isAuthenticated()" />
 		<!-- <security:intercept-url method="GET" pattern="/rest/news/**" access="hasRole('user')" 
 			/> <security:intercept-url method="PUT" pattern="/rest/news/**" access="hasRole('admin')" 
 			/> <security:intercept-url method="POST" pattern="/rest/news/**" access="hasRole('admin')" 

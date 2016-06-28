@@ -57,7 +57,6 @@ angular
 												typeParameter.value,
 												typeParameter.dataType);
 										fields.push(field);
-
 										addRandomIds(fields);
 										return fields;
 									}
@@ -117,8 +116,7 @@ angular
 							.setType({
 								name : 'expenseSection',
 								templateUrl : 'templates/expenseSection.html',
-								controller : function($scope, $uibModal,
-										memberExpenseTypeService) {
+								controller : function($scope, $uibModal) {
 									$scope.formOptions = {
 										formState : $scope.formState
 									};
@@ -161,54 +159,12 @@ angular
 										return fields;
 									}
 
-									function createFields(model) {
-										var expenseTypeId = model.expenseType.id;
-										var fields = [];
-
-										var row = {
-											className : 'row',
-											fieldGroup : [ {
-												className : 'col-xs-2',
-												key : 'value',
-												type : 'input',
-												'model' : 'model.expenseType',
-												templateOptions : {
-													label : 'ExpenseType',
-													disabled : 'true'
-												}
-											}, {
-												className : 'col-xs-8',
-												type : 'parameterSection',
-												key : 'parameterValues',
-												templateOptions : {
-													label : 'Parameter',
-													'fields' : []
-												}
-											}, {
-												className : 'col-xs-2',
-												key : 'totalAmount',
-												type : 'input',
-												templateOptions : {
-													label : 'Total amount',
-													type : 'number',
-													required : true,
-												}
-											} ]
-										};
-
-										fields.push(row);
-
-										// fields.push(parameterSection);
-
-										addRandomIds(fields);
-										return fields;
-									}
-
 									function createFieldsById($scope,
 											expenseType) {
-										$scope.model["parameterValues"] = [];
-										
+										$scope.model["parameterValues"] = $scope.model["parameterValues"]
+												|| [];
 										var repeatsection = $scope.model["parameterValues"];
+
 										var typeParameters = expenseType.typeParameters;
 										var fields = [];
 										angular
@@ -231,18 +187,8 @@ angular
 												'fields' : []
 											}
 										};
-										
-										var totalAmount = {
-								            	  key : 'totalAmount',
-								            	  type : 'input',
-								            	  templateOptions : {
-								            		  label : 'Total amount',
-								            		  type : 'number',
-								            		  required : true,
-								            	  }
-								              };
 
-										return [ parameterSection, totalAmount ];
+										return [ parameterSection ];
 									}
 
 									function addRandomIds(fields) {
@@ -353,6 +299,7 @@ angular
 													var repeatsection = $scope.fields;
 													if (!newValue)
 														return;
+													if (newValue.id == 1) {
 														while (repeatsection.length > 1) {
 															repeatsection.pop();
 														}
@@ -361,13 +308,30 @@ angular
 																$scope,
 																newValue);
 														angular
-														.forEach(
-																newsections,
-																function(
-																		newsection) {
-																	repeatsection
-																	.push(newsection);
-																});
+																.forEach(
+																		newsections,
+																		function(
+																				newsection) {
+																			repeatsection
+																					.push(newsection);
+																		});
+													} else if (newValue.id == 2) {
+														while (repeatsection.length > 1) {
+															repeatsection.pop();
+														}
+
+														var newsections = createFieldsById(
+																$scope,
+																newValue);
+														angular
+																.forEach(
+																		newsections,
+																		function(
+																				newsection) {
+																			repeatsection
+																					.push(newsection);
+																		});
+													}
 												}
 											}
 										} ];
@@ -408,6 +372,8 @@ angular
 						memberReportService.get(userId, id).then(
 								function(status) {
 									vm.model = status.data;
+									console.info('getting:'
+											+ JSON.stringify(vm.model));
 								});
 					}
 
@@ -423,7 +389,6 @@ angular
 										vm.recordModel.duration = status.data.duration;
 										vm.recordModel.startDate = status.data.startDate;
 										vm.recordModel.endDate = status.data.endDate;
-										vm.recordModel.applicant = status.data.applicant;
 									});
 
 					vm.expenseTypes = [];
@@ -440,19 +405,34 @@ angular
 					}, {
 						className : 'row',
 						fieldGroup : [ {
-							className : 'col-xs-6',
+							className : 'col-xs-4',
 							type : 'input',
-							key : 'applicant.name',
+							key : 'startDate',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'Applicant',
+								label : 'Start Date',
 								disabled : true
 							}
-						} ]
-					}, {
-						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-6',
+						}, {
+							className : 'col-xs-4',
+							type : 'input',
+							key : 'endDate',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'EndDate',
+								disabled : true
+							}
+						}, {
+							className : 'col-xs-4',
+							type : 'input',
+							key : 'duration',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'Duration',
+								disabled : true
+							}
+						}, {
+							className : 'col-xs-12',
 							type : 'textarea',
 							key : 'reason',
 							model : vm.recordModel,
@@ -462,85 +442,36 @@ angular
 							}
 						} ]
 					}, {
-						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-2',
-							type : 'input',
-							key : 'startDate',
-							model : vm.recordModel,
-							templateOptions : {
-								label : 'Start Date',
-								disabled : true
-							}
-						}, {
-							className : 'col-xs-2',
-							type : 'input',
-							key : 'endDate',
-							model : vm.recordModel,
-							templateOptions : {
-								label : 'EndDate',
-								disabled : true
-							}
-						}, {
-							className : 'col-xs-2',
-							type : 'input',
-							key : 'duration',
-							model : vm.recordModel,
-							templateOptions : {
-								label : 'Duration',
-								disabled : true
-							}
-						} ]
-					}, {
 						template : '<hr />'
 					}, {
 						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-4',
-							key : 'firmOrProject',
-							type : 'input',
-							templateOptions : {
-								label : 'Firm/Project',
-								placeholder : 'Firm/Project',
-								"required" : false
-							}
-						} ]
+						fieldGroup : [{
+						className : 'col-xs-6',
+						key : 'route',
+						type : 'textarea',
+						templateOptions : {
+							label : 'Route',
+							placeholder : 'Route',
+							"required" : true
+						}
 					}, {
-						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-4',
-							key : 'route',
-							type : 'textarea',
-							templateOptions : {
-								label : 'Route',
-								placeholder : 'Route',
-								"required" : true
-							}
-						} ]
-					}, {
-						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-4',
-							key : 'comment',
-							type : 'textarea',
-							templateOptions : {
-								label : 'Comment',
-								placeholder : 'Comment',
-							}
-						} ]
-					}, {
-						className : 'row',
-						fieldGroup : [ {
-							className : 'col-xs-8',
-							type : 'expenseSection',
-							key : 'expenses',
-							wrapper : 'panel',
-							templateOptions : {
-								label : 'Expense',
-								btnText : 'Add',
-								expenseTypes : vm.expenseTypes,
-							}
-						} ]
+						className : 'col-xs-6',
+						key : 'comment',
+						type : 'textarea',
+						templateOptions : {
+							label : 'Comment',
+							placeholder : 'Comment',
+						}
+					}]}, {
+						className : 'col-xs-12',
+						type : 'expenseSection',
+						key : 'expenses',
+						wrapper : 'panel',
+						templateOptions : {
+							label : 'Expense',
+							btnText : 'Add',
+							expenseTypes : vm.expenseTypes
+						}
 					} ];
 
 					function onSubmit() {

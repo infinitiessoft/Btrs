@@ -86,16 +86,32 @@ angular
 								}
 							})
 
-							// Guard route changes and switch to login page if
-							// unauthenticated
-							$rootScope.$on('$routeChangeStart', function() {
-								enter();
-							});
+							
 
 						}
 
 					};
 
+					// Guard route changes and switch to login page if
+					// unauthenticated
+					$rootScope.$on('$viewContentLoaded',
+							function(event) {
+								if (!auth.authenticated) {
+									event.preventDefault();
+									$location.path(auth.loginPath);
+								} else {
+									enter();
+								}
+							});
+					
+					 $rootScope.$on('$locationChangeStart', function (event, next, current) {
+							if (!auth.authenticated) {
+								$location.path(auth.loginPath);
+							} else {
+								enter();
+							}
+				        });
+					
 					return auth;
 
 				});

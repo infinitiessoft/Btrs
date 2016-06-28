@@ -1,0 +1,78 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Audit</h1>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<table id="table" st-pipe="callServer" st-table="displayed"
+				class="table table-striped">
+				<thead>
+					<tr>
+						<th st-sort="id" st-sort-default="reverse">id</th>
+						<th>route</th>
+						<th st-sort="createdDate">created date</th>
+						<th st-sort="firstName">first name</th>
+						<th st-sort="lastName">last name</th>
+						<th st-sort="currentStatus">status</th>
+						<th>#Total Element: {{size}}</th>
+					</tr>
+					<tr>
+						<th></th>
+						<th><input st-search="route" class="input-sm form-control"
+							st-search-default="{{route}}" /></th>
+						<th><input st-search="createdDate"
+							class="input-sm form-control" st-search-default="{{createdDate}}" /></th>
+						<th><input st-search="firstName"
+							class="input-sm form-control" st-search-default="{{firstName}}" /></th>
+						<th><input st-search="lastName" class="input-sm form-control"
+							st-search-default="{{lastName}}" /></th>
+						<th><input st-search="currentStatus"
+							class="input-sm form-control"
+							st-search-default="{{currentStatus}}" /></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody ng-show="!isLoading">
+					<tr ng-repeat="row in displayed" popover="reason: {{row.reason}}"
+						popover-placement="top" popover-trigger="click">
+						<td>{{row.id}}</td>
+						<td>{{row.route}}</td>
+						<td>{{row.createdDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
+						<td>{{row.owner.firstName }}</td>
+						<td>{{row.owner.lastName }}</td>
+						<td><span
+							class="form-control {{row.currentStatus | lowercase}}">
+								{{row.currentStatus}}</span></td>
+						<td><a
+							ui-sref="dashboard.audit-memberaudit({reportid:row.id, userid:userId})"
+							class="btn btn-sm btn-primary"> <i
+								class="glyphicon glyphicon-pencil"> </i>
+						</a> <a
+							ui-sref="dashboard.view-memberaudit({reportid:row.id, userid:userId})"
+							class="btn btn-sm btn-warning"> <i
+								class="glyphicon glyphicon-eye-open"> </i>
+						</a>
+							<button type="button" ng-click="removeEntry(row)"
+								class="btn btn-sm btn-danger">
+								<i class="glyphicon glyphicon-remove"> </i>
+							</button></td>
+					</tr>
+				</tbody>
+				<tbody ng-show="isLoading">
+					<tr>
+						<td colspan="7" class="text-center">Loading ...</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="text-center" st-pagination="" st-items-by-page="10"
+							colspan="7"></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

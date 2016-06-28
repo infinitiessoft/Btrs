@@ -73,7 +73,7 @@ ng-hide {
 	border-color: #428bca;
 }
 
-.reject {
+.rejected {
 	color: white;
 	background-color: #d9534f;
 	border-color: #d9534f;
@@ -83,4 +83,28 @@ ng-hide {
 	color: white;
 	background-color: gray;
 	border-color: gray;
+}
+
+.formly-field {
+  margin-bottom: 16px;
+}
+
+.formly.row, .formly.row .formly-field {
+  margin-bottom: 0;
+}
+
+.formly.row .formly-field:first-child {
+  padding-left: 0;
+}
+
+.formly.row .formly-field:nth-last-child(2) {
+  padding-right: 0;
+}
+
+.formly-field-group ng-form {
+  margin: 0;
+}
+
+.formly-field-group {
+  margin: 0;
 }
