@@ -20,7 +20,7 @@ import entity.Report;
 import entity.StatusChange;
 import entity.User;
 
-public class StatusChangesSpecification implements Specification<StatusChange> {
+public class StatusChangeSpecification implements Specification<StatusChange> {
 
 	@QueryParam("comment")
 	private String comment;
@@ -32,6 +32,8 @@ public class StatusChangesSpecification implements Specification<StatusChange> {
 	private Long reportId;
 	@QueryParam("createdDate")
 	private String createdDate;
+
+	private Long id;
 
 	@Override
 	public Predicate toPredicate(Root<StatusChange> root,
@@ -63,6 +65,10 @@ public class StatusChangesSpecification implements Specification<StatusChange> {
 		if (reportId != null) {
 			predicates.add(cb.equal(root.<Report> get("report")
 					.<Long> get("id"), reportId));
+		}
+
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 
 		if (predicates.isEmpty()) {
@@ -110,6 +116,14 @@ public class StatusChangesSpecification implements Specification<StatusChange> {
 
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

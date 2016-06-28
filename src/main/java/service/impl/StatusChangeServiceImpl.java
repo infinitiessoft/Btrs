@@ -10,9 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import resources.specification.StatusChangesSpecification;
+import resources.specification.StatusChangeSpecification;
 import sendto.StatusChangeSendto;
-import service.StatusChangesService;
+import service.StatusChangeService;
 import dao.ReportDao;
 import dao.StatusChangeDao;
 import dao.UserDao;
@@ -20,9 +20,8 @@ import entity.StatusChange;
 import entity.StatusEnum;
 import exceptions.ReportNotFoundException;
 import exceptions.StatusChangesNotFoundException;
-import exceptions.UserNotFoundException;
 
-public class StatusChangeServiceImpl implements StatusChangesService {
+public class StatusChangeServiceImpl implements StatusChangeService {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(StatusChangeServiceImpl.class);
@@ -59,7 +58,9 @@ public class StatusChangeServiceImpl implements StatusChangesService {
 		ret.setReport(rpt);
 
 		StatusChangeSendto.User user = new StatusChangeSendto.User();
-		user.setRevisor_id(status.getUser().getId());
+		user.setId(status.getUser().getId());
+		user.setFirstname(status.getUser().getUserShared().getFirstName());
+		user.setLastname(status.getUser().getUserShared().getLastName());
 		ret.setUser(user);
 
 		return ret;
@@ -90,7 +91,7 @@ public class StatusChangeServiceImpl implements StatusChangesService {
 
 	@Transactional("transactionManager")
 	@Override
-	public Page<StatusChangeSendto> findAll(StatusChangesSpecification spec,
+	public Page<StatusChangeSendto> findAll(StatusChangeSpecification spec,
 			Pageable pageable) {
 		List<StatusChangeSendto> sendto = new ArrayList<StatusChangeSendto>();
 		Page<StatusChange> status = statusChangesDao.findAll(spec, pageable);
@@ -132,19 +133,19 @@ public class StatusChangeServiceImpl implements StatusChangesService {
 				newEntry.setReport(report);
 			}
 		}
-		if (sendto.isUserSet()) {
-			if (sendto.getUser().isIdSet()) {
-				logger.debug("find user in setUpStatusChanges id: {}", sendto
-						.getUser().getRevisor_id());
-				entity.User user = userDao.findOne(sendto.getUser()
-						.getRevisor_id());
-				if (user == null) {
-					throw new UserNotFoundException(sendto.getUser()
-							.getRevisor_id());
-				}
-				newEntry.setUser(user);
-			}
-		}
+		// if (sendto.isUserSet()) {
+		// if (sendto.getUser().isIdSet()) {
+		// logger.debug("find user in setUpStatusChanges id: {}", sendto
+		// .getUser().getRevisor_id());
+		// entity.User user = userDao.findOne(sendto.getUser()
+		// .getRevisor_id());
+		// if (user == null) {
+		// throw new UserNotFoundException(sendto.getUser()
+		// .getRevisor_id());
+		// }
+		// newEntry.setUser(user);
+		// }
+		// }
 		if (sendto.isValueSet()) {
 			newEntry.setValue(StatusEnum.valueOf(sendto.getValue()));
 		}

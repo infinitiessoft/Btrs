@@ -18,9 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import resources.specification.SimplePageRequest;
-import resources.specification.StatusChangesSpecification;
+import resources.specification.StatusChangeSpecification;
 import sendto.StatusChangeSendto;
-import service.StatusChangesService;
+import service.StatusChangeService;
 
 @Component
 @Path(value = "/statusChanges")
@@ -29,7 +29,7 @@ import service.StatusChangesService;
 public class StatusChangeResource {
 
 	@Autowired
-	private StatusChangesService statusChangesService;
+	private StatusChangeService statusChangesService;
 
 	@GET
 	@Path(value = "{id}")
@@ -57,7 +57,7 @@ public class StatusChangeResource {
 
 	@GET
 	public Page<StatusChangeSendto> findallStatusChanges(@BeanParam SimplePageRequest pageRequest,
-			@BeanParam StatusChangesSpecification spec) {
+			@BeanParam StatusChangeSpecification spec) {
 		return statusChangesService.findAll(spec, pageRequest);
 	}
 

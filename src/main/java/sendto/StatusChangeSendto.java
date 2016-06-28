@@ -140,34 +140,36 @@ public class StatusChangeSendto {
 	}
 
 	public static class User {
-		private Long revisor_id;
-
-		private Boolean isIdSet;
+		private Long id;
+		private String firstname;
+		private String lastname;
 
 		public User() {
 			super();
 		}
 
-		public Long getRevisor_id() {
-			return revisor_id;
+		public Long getId() {
+			return id;
 		}
 
-		public void setRevisor_id(Long revisor_id) {
-
-			if (revisor_id != null) {
-				isIdSet = true;
-			}
-			this.revisor_id = revisor_id;
+		public void setId(Long id) {
+			this.id = id;
 		}
 
-		@XmlTransient
-		public boolean isIdSet() {
-			return isIdSet;
+		public String getFirstname() {
+			return firstname;
 		}
 
-		@XmlTransient
-		public void setIdSet(boolean isIdSet) {
-			this.isIdSet = isIdSet;
+		public void setFirstname(String firstname) {
+			this.firstname = firstname;
+		}
+
+		public String getLastname() {
+			return lastname;
+		}
+
+		public void setLastname(String lastname) {
+			this.lastname = lastname;
 		}
 
 	}

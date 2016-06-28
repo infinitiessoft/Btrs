@@ -35,6 +35,9 @@ public class MemberAuditResource {
 	@Autowired
 	private ReportService reportService;
 
+	@Autowired
+	private MemberAuditStatusChangeResource memberAuditStatusChangeResource;
+
 	@GET
 	@Path(value = "{reportid}")
 	public ReportSendto getReport(@PathParam("id") long id,
@@ -92,4 +95,11 @@ public class MemberAuditResource {
 			StatusChangeSendto statusChange) {
 		return reportService.reject(reportId, statusChange, id);
 	}
+
+	@Path(value = "{reportid}/statusChanges")
+	@PreAuthorize("isAuthenticated() and hasAuthority('ACCOUNTANT') or hasAuthority('admin')")
+	public MemberAuditStatusChangeResource getMemberStatusChangeResource() {
+		return memberAuditStatusChangeResource;
+	}
+
 }

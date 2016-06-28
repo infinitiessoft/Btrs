@@ -20,7 +20,7 @@ import entity.Report;
 import entity.StatusChange;
 import entity.User;
 import resources.specification.SimplePageRequest;
-import resources.specification.StatusChangesSpecification;
+import resources.specification.StatusChangeSpecification;
 import sendto.StatusChangeSendto;
 import service.impl.StatusChangeServiceImpl;
 
@@ -138,7 +138,7 @@ public class StatusChangesServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testFindAll() {
-		final StatusChangesSpecification spec = new StatusChangesSpecification();
+		final StatusChangeSpecification spec = new StatusChangeSpecification();
 		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
 		final List<StatusChange> status = new ArrayList<StatusChange>();
 		status.add(statusChanges);

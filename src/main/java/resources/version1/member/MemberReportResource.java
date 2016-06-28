@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import resources.specification.ReportSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ReportSendto;
+import sendto.ReportSendto.Expense;
 import sendto.ReportSummarySendto;
 import service.ReportService;
 import exceptions.ReportNotFoundException;
@@ -33,6 +34,9 @@ public class MemberReportResource {
 
 	@Autowired
 	private ReportService reportService;
+
+	@Autowired
+	private MemberReportStatusChangeResource memberStatusChangeResource;
 
 	@GET
 	@Path(value = "{reportid}")
@@ -77,6 +81,13 @@ public class MemberReportResource {
 		spec.setId(reportId);
 		report.setOwner(null);
 		report.setOwnerSet(false);
+		if (report.getExpenses() != null) {
+			for (Expense e : report.getExpenses()) {
+				e.setTaxAmount(null);
+				e.setTotalAmountSet(false);
+			}
+		}
+
 		return reportService.update(spec, report, id);
 	}
 
@@ -87,6 +98,11 @@ public class MemberReportResource {
 		user.setId(id);
 		report.setOwner(user);
 		return reportService.save(report);
+	}
+
+	@Path(value = "{reportid}/statusChanges")
+	public MemberReportStatusChangeResource getMemberStatusChangeResource() {
+		return memberStatusChangeResource;
 	}
 
 }
