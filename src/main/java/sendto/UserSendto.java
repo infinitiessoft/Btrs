@@ -55,6 +55,50 @@ public class UserSendto implements Serializable {
 
 	}
 
+	public static class JobTitle implements Serializable {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Long id;
+		private String name;
+
+		private boolean isIdSet;
+
+		public JobTitle() {
+			super();
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
+	}
+
 	public static class UserShared implements Serializable {
 
 		/**
@@ -296,19 +340,10 @@ public class UserSendto implements Serializable {
 	private Long id;
 	private UserShared userShared;
 	private Department department;
-	// private List<UserRole> userRole = new ArrayList<UserRole>(0);
-	// private List<Report> incomingReport;// = new ArrayList<Report>(0);
-	// private List<Report> outgoingReport = new ArrayList<Report>(0);
-	// private List<StatusChanges> status = new ArrayList<StatusChanges>(0);
-
+	private JobTitle jobTitle;
 	private boolean isUserSharedSet;
 	private boolean isDepartmentSet;
-
-	// private boolean isUserRoleSet;
-
-	// private boolean isIncomingReportSet;
-	// private boolean isOutgoingReportSet;
-	// private boolean isStatusSet;
+	private boolean isJobTitleSet;
 
 	public UserSendto() {
 		super();
@@ -344,28 +379,6 @@ public class UserSendto implements Serializable {
 		this.department = department;
 	}
 
-	// @XmlTransient
-	// public List<UserRole> getUserRole() {
-	// return userRole;
-	// }
-	//
-	// public void setUserRole(List<UserRole> userRole) {
-	// if (userRole != null) {
-	// isUserRoleSet = true;
-	// }
-	// this.userRole = userRole;
-	// }
-	//
-	// @XmlTransient
-	// public boolean isUserRoleSet() {
-	// return isUserRoleSet;
-	// }
-	//
-	// @XmlTransient
-	// public void setUserRoleSet(boolean isUserRoleSet) {
-	// this.isUserRoleSet = isUserRoleSet;
-	// }
-
 	@XmlTransient
 	public boolean isUserSharedSet() {
 		return isUserSharedSet;
@@ -384,73 +397,27 @@ public class UserSendto implements Serializable {
 	@XmlTransient
 	public void setDepartmentSet(boolean isDepartmentSet) {
 		this.isDepartmentSet = isDepartmentSet;
-
 	}
 
-	// @XmlTransient
-	// public List<Report> getIncomingReport() {
-	// return incomingReport;
-	// }
-	//
-	// public void setIncomingReport(List<Report> incomingReport) {
-	// if (incomingReport != null) {
-	// isIncomingReportSet = true;
-	// }
-	// this.incomingReport = incomingReport;
-	// }
-	//
-	// @XmlTransient
-	// public List<Report> getOutgoingReport() {
-	// return outgoingReport;
-	// }
-	//
-	// public void setOutgoingReport(List<Report> outgoingReport) {
-	// if (outgoingReport != null) {
-	// isOutgoingReportSet = true;
-	// }
-	// this.outgoingReport = outgoingReport;
-	// }
+	public JobTitle getJobTitle() {
+		return jobTitle;
+	}
 
-	// @XmlTransient
-	// public boolean isIncomingReportSet() {
-	// return isIncomingReportSet;
-	// }
-	//
-	// @XmlTransient
-	// public void setIncomingReportSet(boolean isIncomingReportSet) {
-	// this.isIncomingReportSet = isIncomingReportSet;
-	// }
-	//
-	// @XmlTransient
-	// public boolean isOutgoingReportSet() {
-	// return isOutgoingReportSet;
-	// }
-	//
-	// @XmlTransient
-	// public void setOutgoingReportSet(boolean isOutgoingReportSet) {
-	// this.isOutgoingReportSet = isOutgoingReportSet;
-	// }
+	public void setJobTitle(JobTitle jobTitle) {
+		if (jobTitle != null) {
+			isJobTitleSet = true;
+		}
+		this.jobTitle = jobTitle;
+	}
 
-	// @XmlTransient
-	// public List<StatusChanges> getStatus() {
-	// return status;
-	// }
-	//
-	// public void setStatus(List<StatusChanges> status) {
-	// if (status != null) {
-	// isStatusSet = true;
-	// }
-	// this.status = status;
-	// }
-	//
-	// @XmlTransient
-	// public boolean isStatusSet() {
-	// return isStatusSet;
-	// }
-	//
-	// @XmlTransient
-	// public void setStatusSet(boolean isStatusSet) {
-	// this.isStatusSet = isStatusSet;
-	// }
+	@XmlTransient
+	public boolean isJobTitleSet() {
+		return isJobTitleSet;
+	}
+
+	@XmlTransient
+	public void setJobTitleSet(boolean isJobTitleSet) {
+		this.isJobTitleSet = isJobTitleSet;
+	}
 
 }

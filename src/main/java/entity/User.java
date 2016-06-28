@@ -34,6 +34,11 @@ public class User extends AbstractEntity {
 	@JoinColumn(name = "department_id")
 	private Department department;
 
+	@ManyToOne
+	// (fetch = FetchType.LAZY)
+	@JoinColumn(name = "jobtitle_id")
+	private JobTitle jobTitle;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_Login")
 	private Date lastLogin;
@@ -155,6 +160,14 @@ public class User extends AbstractEntity {
 
 	public void setIncomingReports(Set<Report> incomingReports) {
 		this.incomingReports = incomingReports;
+	}
+
+	public JobTitle getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(JobTitle jobTitle) {
+		this.jobTitle = jobTitle;
 	}
 
 }

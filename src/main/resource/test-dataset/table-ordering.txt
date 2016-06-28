@@ -1,4 +1,5 @@
 departments
+job_titles
 expense_categories
 expense_types
 user_shared

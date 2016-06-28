@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
 		UserSendto ret = new UserSendto();
 		ret.setId(user.getId());
 
+		UserSendto.JobTitle jobTitle = new UserSendto.JobTitle();
+		jobTitle.setId(user.getJobTitle().getId());
+		jobTitle.setName(user.getJobTitle().getName());
+		ret.setJobTitle(jobTitle);
+
 		UserSendto.Department dept = new UserSendto.Department();
 		dept.setId(user.getDepartment().getId());
 		dept.setName(user.getDepartment().getName());
