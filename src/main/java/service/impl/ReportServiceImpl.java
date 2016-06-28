@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -61,7 +62,6 @@ import exceptions.UserNotFoundException;
 
 public class ReportServiceImpl implements ReportService {
 
-	// private static final String ADMIN_ROLE = "admin";
 	private static final Logger logger = LoggerFactory
 			.getLogger(ReportServiceImpl.class);
 	private ReportDao reportDao;
@@ -230,6 +230,10 @@ public class ReportServiceImpl implements ReportService {
 		Report ret = reportDao.save(newEntry);
 
 		if (report.getExpenses() != null) {
+			for (sendto.ReportSendto.Expense e : report.getExpenses()) {
+				e.setTaxAmount(null);
+				e.setTaxAmountSet(false);
+			}
 			addExpenses(ret, report.getExpenses());
 		}
 
@@ -410,10 +414,10 @@ public class ReportServiceImpl implements ReportService {
 			}
 			if (expense.isTotalAmountSet()) {
 				e.setTotalAmount(expense.getTotalAmount());
+			} else {
+				throw new BadRequestException("invalid total amount");
 			}
-			if (expense.isTaxAmountSet()) {
-				e.setTaxAmount(expense.getTaxAmount());
-			}
+
 			if (expense.isExpenseTypeSet()
 					|| expense.getExpenseType().isIdSet()) {
 				ExpenseType expenseType = expenseTypeDao.findOne(expense
@@ -463,6 +467,16 @@ public class ReportServiceImpl implements ReportService {
 				}
 			} else {
 				throw new BadRequestException("invalid expenseType's id");
+			}
+
+			if (expense.isTaxAmountSet()) {
+				e.setTaxAmount(expense.getTaxAmount());
+			} else {
+				Double taxPercent = e.getExpenseType().getTaxPercent();
+				Integer totalAmount = expense.getTotalAmount();
+				Integer tax = new BigDecimal(totalAmount * taxPercent / 100)
+						.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+				e.setTaxAmount(tax);
 			}
 			e.setReport(rpt);
 			e = expenseDao.save(e);
