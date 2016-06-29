@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.google.common.base.Strings;
-
 public class JobTitleSendto implements Serializable {
 
 	/**
@@ -33,9 +31,7 @@ public class JobTitleSendto implements Serializable {
 	}
 
 	public void setName(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			isNameSet = true;
-		}
+		isNameSet = true;
 		this.name = name;
 	}
 
@@ -44,9 +40,7 @@ public class JobTitleSendto implements Serializable {
 	}
 
 	public void setComment(String comment) {
-		if (!Strings.isNullOrEmpty(comment)) {
-			isCommentSet = true;
-		}
+		isCommentSet = true;
 		this.comment = comment;
 	}
 

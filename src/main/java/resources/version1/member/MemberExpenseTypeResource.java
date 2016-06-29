@@ -32,7 +32,7 @@ public class MemberExpenseTypeResource {
 	}
 
 	@GET
-	public Page<ExpenseTypeSendto> findallExpenseType(
+	public Page<ExpenseTypeSendto> findAll(
 			@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ExpenseTypeSpecification spec) {
 		return expenseTypeService.findAll(spec, pageRequest);

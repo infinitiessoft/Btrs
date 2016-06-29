@@ -13,36 +13,11 @@ angular
 						function config(formlyConfigProvider, formlyExampleApiCheck) {
 							var unique = 1;
 
-							formlyConfigProvider.removeWrapperByName('bootstrapLabel');
-							formlyConfigProvider.setWrapper({
-								name : 'bootstrapLabel',
-								templateUrl : 'templates/label-wrapper.html'
-							});
-
-							// Replace formlyBootstrap input field type to implement
-							// read-only forms
-							formlyConfigProvider.setType({
-								name : 'input',
-								templateUrl : 'templates/input-template.html',
-								wrapper : [ 'bootstrapLabel', 'bootstrapHasError' ],
-								overwriteOk : true
-							});
-
-							formlyConfigProvider.setWrapper({
-								name : 'validation',
-								types : [ 'input' ],
-								templateUrl : 'templates/error-messages.html'
-							});
-
-							formlyConfigProvider.setWrapper({
-								name : 'panel',
-								templateUrl : 'templates/panel.html'
-							});
-
 							formlyConfigProvider
 							.setType({
-								name : 'parameterSection',
+								name : 'auditParameterSection',
 								templateUrl : 'templates/parameterSection.html',
+								overwriteOk : true,
 								controller : function($scope) {
 									$scope.formOptions = {
 											formState : $scope.formState
@@ -115,8 +90,9 @@ angular
 
 							formlyConfigProvider
 							.setType({
-								name : 'expenseSection',
+								name : 'auditExpenseSection',
 								templateUrl : 'templates/expenseSection.html',
+								overwriteOk : true,
 								controller : function($scope, $uibModal,
 										memberExpenseTypeService) {
 									$scope.formOptions = {
@@ -140,7 +116,7 @@ angular
 										var expenseType = model.expenseType;
 										var fields = [];
 										var parameterSection = {
-												type : 'parameterSection',
+												type : 'auditParameterSection',
 												key : 'parameterValues',
 												templateOptions : {
 													label : 'Parameter',
@@ -171,12 +147,12 @@ angular
 										.then(
 												function(response) {
 													taxPercent = parseFloat(response.data.taxPercent);
-													var totalAmount = model.totalAmount ? model.totalAmount
-															: 0;
-													model.taxAmount = Math
-													.round(taxPercent
-															* totalAmount
-															/ 100);
+//													var totalAmount = model.totalAmount ? model.totalAmount
+//															: 0;
+//													model.taxAmount = Math
+//													.round(taxPercent
+//															* totalAmount
+//															/ 100);
 												});
 
 										var row = {
@@ -194,7 +170,7 @@ angular
 												              },
 												              {
 												            	  className : 'col-xs-6',
-												            	  type : 'parameterSection',
+												            	  type : 'auditParameterSection',
 												            	  key : 'parameterValues',
 												            	  templateOptions : {
 												            		  label : 'Parameter',
@@ -274,7 +250,7 @@ angular
 										addRandomIds(fields);
 
 										var parameterSection = {
-												type : 'parameterSection',
+												type : 'auditParameterSection',
 												key : 'parameterValues',
 												templateOptions : {
 													label : 'Parameter',
@@ -576,7 +552,7 @@ angular
 										className : 'row',
 										fieldGroup : [ {
 											className : 'col-xs-12',
-											type : 'expenseSection',
+											type : 'auditExpenseSection',
 											key : 'expenses',
 											wrapper : 'panel',
 											templateOptions : {

@@ -21,7 +21,7 @@ import service.StatusChangeService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("hasAuthority('admin') or hasAuthority('ACCOUNTANT')")
+@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
 public class MemberAuditStatusChangeResource {
 
 	@Autowired

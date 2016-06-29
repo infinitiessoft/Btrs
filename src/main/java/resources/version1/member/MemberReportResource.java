@@ -29,7 +29,7 @@ import exceptions.ReportNotFoundException;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
+@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN')")
 public class MemberReportResource {
 
 	@Autowired
@@ -84,7 +84,7 @@ public class MemberReportResource {
 		if (report.getExpenses() != null) {
 			for (Expense e : report.getExpenses()) {
 				e.setTaxAmount(null);
-				e.setTotalAmountSet(false);
+				e.setTaxAmountSet(false);
 			}
 		}
 

@@ -3,7 +3,6 @@ package entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +28,7 @@ public class JobTitle extends AbstractEntity {
 	@Column(name = "comment")
 	private String comment;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jobTitle", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jobTitle")
 	private Set<User> users = new HashSet<User>(0);
 
 	public JobTitle() {

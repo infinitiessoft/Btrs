@@ -13,36 +13,11 @@ angular
 				function config(formlyConfigProvider, formlyExampleApiCheck) {
 					var unique = 1;
 
-					formlyConfigProvider.removeWrapperByName('bootstrapLabel');
-					formlyConfigProvider.setWrapper({
-						name : 'bootstrapLabel',
-						templateUrl : 'templates/label-wrapper.html'
-					});
-
-					// Replace formlyBootstrap input field type to implement
-					// read-only forms
-					formlyConfigProvider.setType({
-						name : 'input',
-						templateUrl : 'templates/input-template.html',
-						wrapper : [ 'bootstrapLabel', 'bootstrapHasError' ],
-						overwriteOk : true
-					});
-
-					formlyConfigProvider.setWrapper({
-						name : 'validation',
-						types : [ 'input' ],
-						templateUrl : 'templates/error-messages.html'
-					});
-
-					formlyConfigProvider.setWrapper({
-						name : 'panel',
-						templateUrl : 'templates/panel.html'
-					});
-
 					formlyConfigProvider
 							.setType({
-								name : 'parameterSection',
+								name : 'reportParameterSection',
 								templateUrl : 'templates/parameterSection.html',
+								overwriteOk : true,
 								controller : function($scope) {
 									$scope.formOptions = {
 										formState : $scope.formState
@@ -115,8 +90,9 @@ angular
 
 					formlyConfigProvider
 							.setType({
-								name : 'expenseSection',
+								name : 'reportExpenseSection',
 								templateUrl : 'templates/expenseSection.html',
+								overwriteOk : true,
 								controller : function($scope, $uibModal,
 										memberExpenseTypeService) {
 									$scope.formOptions = {
@@ -140,7 +116,7 @@ angular
 										var expenseType = model.expenseType;
 										var fields = [];
 										var parameterSection = {
-											type : 'parameterSection',
+											type : 'reportParameterSection',
 											key : 'parameterValues',
 											templateOptions : {
 												label : 'Parameter',
@@ -178,7 +154,7 @@ angular
 												}
 											}, {
 												className : 'col-xs-8',
-												type : 'parameterSection',
+												type : 'reportParameterSection',
 												key : 'parameterValues',
 												templateOptions : {
 													label : 'Parameter',
@@ -224,7 +200,7 @@ angular
 										addRandomIds(fields);
 
 										var parameterSection = {
-											type : 'parameterSection',
+											type : 'reportParameterSection',
 											key : 'parameterValues',
 											templateOptions : {
 												label : 'Parameter',
@@ -532,7 +508,7 @@ angular
 						className : 'row',
 						fieldGroup : [ {
 							className : 'col-xs-8',
-							type : 'expenseSection',
+							type : 'reportExpenseSection',
 							key : 'expenses',
 							wrapper : 'panel',
 							templateOptions : {

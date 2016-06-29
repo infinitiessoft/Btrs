@@ -14,9 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = "value"))
 public class Role extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -25,10 +26,10 @@ public class Role extends AbstractEntity {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "value")
+	@Column(name = "value", nullable = false, unique = true)
 	private RoleEnum value;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade = CascadeType.REMOVE)
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);;
 
 	public Role() {

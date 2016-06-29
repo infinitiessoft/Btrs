@@ -2,6 +2,6 @@ package entity;
 
 public enum RoleEnum {
 
-	EMPLOYEE, ACCOUNTANT;
+	EMPLOYEE, ACCOUNTANT, ADMIN;
 
 }

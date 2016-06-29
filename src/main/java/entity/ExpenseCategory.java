@@ -3,7 +3,6 @@ package entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +28,7 @@ public class ExpenseCategory extends AbstractEntity {
 	@Column(name = "code")
 	private String code;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseCategory")
 	private Set<ExpenseType> expenseTypes = new HashSet<ExpenseType>(0);
 
 	public ExpenseCategory() {

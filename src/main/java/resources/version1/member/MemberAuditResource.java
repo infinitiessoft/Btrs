@@ -29,7 +29,7 @@ import exceptions.ReportNotFoundException;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated() and #id == principal.id and hasAuthority('ACCOUNTANT') or hasAuthority('admin')")
+@PreAuthorize("isAuthenticated() and #id == principal.id and hasAuthority('ACCOUNTANT') or hasAuthority('ADMIN')")
 public class MemberAuditResource {
 
 	@Autowired
@@ -97,7 +97,7 @@ public class MemberAuditResource {
 	}
 
 	@Path(value = "{reportid}/statusChanges")
-	@PreAuthorize("isAuthenticated() and hasAuthority('ACCOUNTANT') or hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('ACCOUNTANT') or hasAuthority('admin')")
 	public MemberAuditStatusChangeResource getMemberStatusChangeResource() {
 		return memberAuditStatusChangeResource;
 	}

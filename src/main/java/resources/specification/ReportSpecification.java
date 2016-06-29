@@ -63,8 +63,8 @@ public class ReportSpecification implements Specification<Report> {
 					+ "%"));
 		}
 		if (!Strings.isNullOrEmpty(firmOrProject)) {
-			predicates.add(cb.like(root.<String> get("firmOrProject"), "%" + firmOrProject
-					+ "%"));
+			predicates.add(cb.like(root.<String> get("firmOrProject"), "%"
+					+ firmOrProject + "%"));
 		}
 		if (!Strings.isNullOrEmpty(startDate)) {
 			Date date = DateUtils.parseString(startDate);
@@ -96,7 +96,7 @@ public class ReportSpecification implements Specification<Report> {
 		if (id != null) {
 			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
-		if (ids != null) {
+		if (ids != null && !ids.isEmpty()) {
 			predicates.add(root.<User> get("owner").<Long> get("id").in(ids));
 		}
 

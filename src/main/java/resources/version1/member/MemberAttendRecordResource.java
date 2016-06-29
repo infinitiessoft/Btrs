@@ -23,7 +23,7 @@ import exceptions.AttendRecordNotFoundException;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
+@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN')")
 @Path("/records")
 public class MemberAttendRecordResource {
 
