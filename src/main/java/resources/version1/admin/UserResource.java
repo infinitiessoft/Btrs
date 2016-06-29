@@ -26,6 +26,8 @@ public class UserResource {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserRoleResource userRoleResource;
 
 	@GET
 	@Path(value = "{id}")
@@ -40,15 +42,14 @@ public class UserResource {
 	}
 
 	@GET
-	public Page<UserSendto> findallUser(
-			@BeanParam SimplePageRequest pageRequest,
+	public Page<UserSendto> findAll(@BeanParam SimplePageRequest pageRequest,
 			@BeanParam UserSpecification spec) {
 		return userService.findAll(spec, pageRequest);
 	}
 
-	@Path("{id}/role")
-	public Class<UserRoleResource> getUserRolesResource() {
-		return UserRoleResource.class;
+	@Path("{id}/roles")
+	public UserRoleResource getUserRolesResource() {
+		return userRoleResource;
 	}
 
 }

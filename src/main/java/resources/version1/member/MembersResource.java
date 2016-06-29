@@ -35,7 +35,7 @@ public class MembersResource {
 	private MemberAuditResource memberAuditResource;
 
 	@GET
-	@PreAuthorize("hasAuthority('admin') or hasAuthority('ACCOUNTANT')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
 	public Page<UserSendto> findallUser(
 			@BeanParam SimplePageRequest pageRequest,
 			@BeanParam UserSpecification spec) {
@@ -44,7 +44,7 @@ public class MembersResource {
 
 	@GET
 	@Path(value = "{id}")
-	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin') or hasAuthority('ACCOUNTANT')")
+	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
 	public UserSendto getUser(@PathParam("id") long id) {
 		return userService.retrieve(id);
 	}
@@ -52,7 +52,7 @@ public class MembersResource {
 	// **Method to update
 	@PUT
 	@Path(value = "{id}")
-	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin') or hasAuthority('ACCOUNTANT')")
+	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
 	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
 		if (user != null) {
 			user.setJobTitle(null);

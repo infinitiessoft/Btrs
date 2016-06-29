@@ -46,10 +46,8 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 			} else {
 				profileService.get(id).then(function(status) {
 					vm.model = status.data;
-					vm.model.jobTitle = status.data.jobTitle.name;
 				});
 			}
-			vm.confirmationModel = {};
 
 			vm.fields = [ {
 				key : 'name',
@@ -61,8 +59,9 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 					disabled : true
 				}
 			}, {
-				key : 'jobTitle',
+				key : 'name',
 				type : 'input',
+				model: vm.model.jobTitle,
 				templateOptions : {
 					label : 'Job Title',
 				}

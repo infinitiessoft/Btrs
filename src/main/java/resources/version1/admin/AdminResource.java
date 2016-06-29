@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("hasAuthority('admin')")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminResource {
 
 	@Autowired
@@ -33,6 +33,8 @@ public class AdminResource {
 	private TypeParameterResource typeParameterResource;
 	@Autowired
 	private UserResource userResource;
+	@Autowired
+	private JobTitleResource jobTitleResource;
 
 	@Path("reports")
 	public ReportResource getReportResource() {
@@ -77,6 +79,11 @@ public class AdminResource {
 	@Path("users")
 	public UserResource getUserResource() {
 		return userResource;
+	}
+
+	@Path("jobTitles")
+	public JobTitleResource getJobTitleResource() {
+		return jobTitleResource;
 	}
 
 }

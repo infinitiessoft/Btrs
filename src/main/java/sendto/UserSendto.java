@@ -1,7 +1,9 @@
 package sendto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -53,6 +55,46 @@ public class UserSendto implements Serializable {
 
 	}
 
+	public static class Role {
+
+		private Long id;
+		private String value;
+
+		private boolean isIdSet;
+
+		public Role() {
+			super();
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			setIdSet(true);
+			this.id = id;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+		@XmlTransient
+		public boolean isIdSet() {
+			return isIdSet;
+		}
+
+		@XmlTransient
+		public void setIdSet(boolean isIdSet) {
+			this.isIdSet = isIdSet;
+		}
+
+	}
+
 	private Long id;
 	private JobTitle jobTitle;
 
@@ -61,6 +103,7 @@ public class UserSendto implements Serializable {
 	private String gender;
 	private String name;
 	private Date dateofjoined;
+	private List<Role> roles = new ArrayList<Role>(0);
 
 	private boolean isJobTitleSet;
 
@@ -136,4 +179,13 @@ public class UserSendto implements Serializable {
 	public void setJobTitleSet(boolean isJobTitleSet) {
 		this.isJobTitleSet = isJobTitleSet;
 	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 }

@@ -226,6 +226,7 @@
 	<bean id="userRoleService" class="service.impl.UserRoleServiceImpl">
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="userDao" />
+		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="roleDao" />
 	</bean>
 
@@ -233,10 +234,11 @@
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="jobTitleDao" />
+		<constructor-arg ref="roleDao" />
+		<constructor-arg ref="userRoleDao" />
 	</bean>
 
 	<bean id="userDetailService" class="service.impl.UserDetailServiceImpl">
-		<constructor-arg ref="userDao" />
 		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="userService" />
 	</bean>
@@ -244,6 +246,10 @@
 	<bean id="attendRecordService" class="service.impl.DBAttendRecordService">
 		<constructor-arg ref="attendRecordDao" />
 		<constructor-arg ref="reportDao" />
+	</bean>
+	
+	<bean id="jobTitleService" class="service.impl.JobTitleServiceImpl">
+		<constructor-arg ref="jobTitleDao" />
 	</bean>
 
 	<!-- INIT REST COMPONENTS -->

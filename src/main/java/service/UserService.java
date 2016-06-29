@@ -15,5 +15,5 @@ public interface UserService {
 
 	public UserSendto update(long id, UserSendto user);
 
-	public User save(long userSharedId, UserSendto user);
+	public User findOrSave(long userSharedId);
 }

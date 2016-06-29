@@ -29,29 +29,34 @@ public class UserRoleResource {
 	private UserRoleService userRoleService;
 
 	@GET
-	public Page<RoleSendto> findAllRole(@PathParam("id") long id, @BeanParam UserRoleSpecification spec,
+	public Page<RoleSendto> findAllRole(@PathParam("id") long id,
+			@BeanParam UserRoleSpecification spec,
 			@BeanParam SimplePageRequest pageRequest) {
-		spec.setUserId(id);
 		return userRoleService.findAll(spec, pageRequest);
 	}
 
 	@GET
 	@Path(value = "{roleid}")
-	public RoleSendto findRole(@PathParam("id") long id, @PathParam("roleid") long roleId) {
+	public RoleSendto findRole(@PathParam("id") long id,
+			@PathParam("roleid") long roleId) {
 		return userRoleService.findByUserIdAndRoleId(id, roleId);
 	}
 
 	@PUT
 	@Path(value = "{roleid}")
-	public Response assignRoleToUser(@PathParam("id") long id, @PathParam("roleid") long roleId) {
+	public Response assignRoleToUser(@PathParam("id") long id,
+			@PathParam("roleid") long roleId) {
 		userRoleService.grantRoleToUser(id, roleId);
-		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
+		return Response.status(Status.NO_CONTENT)
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
 	@Path(value = "{roleid}")
-	public Response revokeRoleToUser(@PathParam("id") long id, @PathParam("roleid") long roleId) {
+	public Response revokeRoleToUser(@PathParam("id") long id,
+			@PathParam("roleid") long roleId) {
 		userRoleService.revokeRoleFromUser(id, roleId);
-		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
+		return Response.status(Status.NO_CONTENT)
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 }

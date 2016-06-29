@@ -5,24 +5,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import security.UserDetail;
-import sendto.UserSendto;
 import service.UserService;
 import attendance.dao.EmployeeDao;
 import attendance.entity.Employee;
-import dao.UserDao;
 import entity.User;
 
 public class UserDetailServiceImpl implements UserDetailsService {
 
 	private EmployeeDao employeeDao;
-	private UserDao userDao;
+//	private UserDao userDao;
 
 	private UserService userService;
 
-	public UserDetailServiceImpl(EmployeeDao employeeDao, UserDao userDao,
+	public UserDetailServiceImpl(EmployeeDao employeeDao,
 			UserService userService) {
 		this.employeeDao = employeeDao;
-		this.userDao = userDao;
 		this.userService = userService;
 	}
 
@@ -35,14 +32,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 					+ username + " was not found");
 		}
 
-		User user = userDao.findByUserSharedId(employee.getId());
-		if (null == user) {
-			UserSendto userSendto = new UserSendto();
-			UserSendto.JobTitle jobTitle = new UserSendto.JobTitle();
-			jobTitle.setId(1L);
-			userSendto.setJobTitle(jobTitle);
-			user = userService.save(employee.getId(), userSendto);
-		}
+		User user = userService.findOrSave(employee.getId());
 		return new UserDetail(employee.getUsername(), employee.getPassword(),
 				user);
 	}

@@ -1,0 +1,58 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">User</h1>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<table st-pipe="callServer" st-table="displayed"
+				class="table table-striped">
+				<thead>
+					<tr>
+						<th st-sort="id" st-sort-default="true">id</th>
+						<th st-sort="name">name</th>
+						<th>job title</th>
+						<th>roles</th>
+						<th></th>
+					</tr>
+					<tr>
+						<th></th>
+						<th><input st-search="name" class="input-sm form-control" /></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody ng-show="!isLoading">
+					<tr ng-repeat="row in displayed">
+						<td>{{row.id}}</td>
+						<td>{{row.name}}</td>
+						<td>{{row.jobTitle.name}}</td>
+						<td>{{getRoles(row.roles)}}</td>
+						<td><a ui-sref="dashboard.edit-user({id:row.id})"
+							class="btn btn-sm btn-primary"> <i
+								class="glyphicon glyphicon-pencil"> </i>
+						</a>
+							<button type="button" ng-click="removeEntry(row)"
+								class="btn btn-sm btn-danger">
+								<i class="glyphicon glyphicon-remove"> </i>
+							</button></td>
+					</tr>
+				</tbody>
+				<tbody ng-show="isLoading">
+					<tr>
+						<td colspan="3" class="text-center">Loading ...</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="text-center" st-pagination="" st-items-by-page="10"
+							colspan="3"></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

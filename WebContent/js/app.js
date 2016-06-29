@@ -16,6 +16,11 @@ angular
 						   $ocLazyLoadProvider, $httpProvider,
 						   formlyConfigProvider) {
 
+					   formlyConfigProvider.setWrapper({
+							name : 'panel',
+							templateUrl : 'templates/panel.html'
+						});
+					   
 					   $ocLazyLoadProvider.config({
 						   debug : false,
 						   events : true,
@@ -148,6 +153,66 @@ angular
 								   return $ocLazyLoad.load({
 									   name : 'view-memberaudit',
 									   files : [ 'audit/view-memberaudit.js' ]
+								   })
+							   }
+						   }
+					   }).state('dashboard.edit-jobTitle', {
+						   templateUrl:'edit.html',
+						   controller: 'edit-jobTitle',
+						   url:'/admin/jobTitles/:id',
+						   resolve : {
+							   loadMyDirectives:function($ocLazyLoad){
+								   return $ocLazyLoad.load(
+										   {
+											   name:'edit-jobTitle',
+											   files:[
+											          'jobTitle/edit-jobTitle.js'
+											          ]
+										   })
+							   }
+						   }
+					   }).state('dashboard.list-jobTitles', {
+						   url : '/admin/jobTitles',
+						   controller : 'list-jobTitles',
+						   templateUrl : 'jobTitle/list-jobTitles.html',
+						   params : {
+							   name : null
+						   },
+						   resolve : {
+							   loadMyDirectives : function($ocLazyLoad) {
+								   return $ocLazyLoad.load({
+									   name : 'list-jobTitles',
+									   files : [ 'jobTitle/list-jobTitles.js' ]
+								   })
+							   }
+						   }
+					   }).state('dashboard.edit-user', {
+						   templateUrl:'user/edit-user.html',
+						   controller: 'edit-user',
+						   url:'/admin/users/:id',
+						   resolve : {
+							   loadMyDirectives:function($ocLazyLoad){
+								   return $ocLazyLoad.load(
+										   {
+											   name:'edit-user',
+											   files:[
+											          'user/edit-user.js'
+											          ]
+										   })
+							   }
+						   }
+					   }).state('dashboard.list-users', {
+						   url : '/admin/users',
+						   controller : 'list-users',
+						   templateUrl : 'user/list-users.html',
+						   params : {
+							   name : null
+						   },
+						   resolve : {
+							   loadMyDirectives : function($ocLazyLoad) {
+								   return $ocLazyLoad.load({
+									   name : 'list-users',
+									   files : [ 'user/list-users.js' ]
 								   })
 							   }
 						   }
@@ -339,6 +404,11 @@ angular
 						    				extends: 'select',
 						    				templateUrl: 'templates/ui-select-single-async-search.html'
 						    			});
+						    			
+						    			formlyConfig.setWrapper({
+						    			      name: 'loading',
+						    			      templateUrl: 'templates/loading.html'
+						    			    });
 
 						    			formlyConfig.setType({
 						    				name : 'datepicker',
@@ -593,10 +663,92 @@ angular
 															    										   return $http.get(url, {params:queries});
 															    									   };
 
-//															    									   obj.get = function(userid, reportid, id) {
-//															    										   var url  = serviceBase + userid + '/audits/';
-//															    										   return $http.get(url  + id);
-//															    									   };
-
 															    									   return obj;
-															    								   } ]);
+															    								   } ]).factory(
+																				    						 'jobTitleService',
+																				    						 [
+																				    						  '$http',
+																				    						  function($http) {
+																				    							  var serviceBase = 'rest/v1.0/admin';
+																				    							  var obj = {};
+																				    							  obj.list = function( queries) {
+																				    								  var url  = serviceBase + '/jobTitles/';
+																				    								  return $http.get(url, {params:queries});
+																				    							  };
+
+																				    							  obj.get = function( id) {
+																				    								  var url  = serviceBase + '/jobTitles/';
+																				    								  return $http.get(url  + id);
+																				    							  };
+
+																				    							  obj.insert = function(record) {
+																				    								  var url  = serviceBase + '/jobTitles/';
+																				    								  return $http.post(url, record);
+																				    							  };
+
+																				    							  obj.update = function( id, record) {
+																				    								  var url  = serviceBase + '/jobTitles/';
+																				    								  return $http.put(url  + id,
+																				    										  record);
+																				    							  };
+
+																				    							  obj.remove = function(id) {
+																				    								  var url  = serviceBase + '/jobTitles/';
+																				    								  return $http.delete(url + id);
+																				    							  };
+
+																				    							  return obj;
+																				    						  } ]).factory(
+																							    						 'userService',
+																							    						 [
+																							    						  '$http',
+																							    						  function($http) {
+																							    							  var serviceBase = 'rest/v1.0/admin';
+																							    							  var obj = {};
+																							    							  obj.list = function( queries) {
+																							    								  var url  = serviceBase + '/users/';
+																							    								  return $http.get(url, {params:queries});
+																							    							  };
+
+																							    							  obj.get = function( id) {
+																							    								  var url  = serviceBase + '/users/';
+																							    								  return $http.get(url  + id);
+																							    							  };
+
+																							    							  obj.insert = function(record) {
+																							    								  var url  = serviceBase + '/users/';
+																							    								  return $http.post(url, record);
+																							    							  };
+
+																							    							  obj.update = function( id, record) {
+																							    								  var url  = serviceBase + '/users/';
+																							    								  return $http.put(url  + id,
+																							    										  record);
+																							    							  };
+
+																							    							  obj.remove = function(id) {
+																							    								  var url  = serviceBase + '/users/';
+																							    								  return $http.delete(url + id);
+																							    							  };
+
+																							    							  return obj;
+																							    						  } ]).factory(
+																										    						 'userRoleService',
+																										    						 [
+																										    						  '$http',
+																										    						  function($http) {
+																										    							  var serviceBase = 'rest/v1.0/admin';
+																										    							  var obj = {};
+																										    							 
+																										    							  obj.put = function(userid, roleid) {
+																										    								  var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
+																										    								  return $http.put(url);
+																										    							  };
+
+																										    							  obj.remove = function(userid, roleid) {
+																										    								  var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
+																										    								  return $http.delete(url);
+																										    							  };
+
+																										    							  return obj;
+																										    						  } ]);

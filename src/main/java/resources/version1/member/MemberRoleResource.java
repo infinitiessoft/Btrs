@@ -21,7 +21,7 @@ import service.UserRoleService;
 @Component
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('admin')")
+@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN')")
 public class MemberRoleResource {
 
 	@Autowired
