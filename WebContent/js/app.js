@@ -216,22 +216,36 @@ angular
 								   })
 							   }
 						   }
-					   }).state('dashboard.expense', {
-						   url : '/expense',
-						   controller : 'expenseController',
-						   templateUrl : 'expense/expense.html'
-					   }).state('dashboard.photo', {
-						   url : '/photo',
-						   controller : 'photoController',
-						   templateUrl : 'expense/photo.html'
-					   }).state('dashboard.category', {
-						   url : '/category',
-						   controller : 'categoryController',
-						   templateUrl : 'expenseCategory/eCategory.html'
-					   }).state('dashboard.type', {
-						   url : '/type',
-						   controller : 'typeController',
-						   templateUrl : 'expenseType/eType.html'
+					   }).state('dashboard.edit-expenseType', {
+						   templateUrl:'edit.html',
+						   controller: 'edit-expenseType',
+						   url:'/admin/expenseTypes/:id',
+						   resolve : {
+							   loadMyDirectives:function($ocLazyLoad){
+								   return $ocLazyLoad.load(
+										   {
+											   name:'edit-expenseType',
+											   files:[
+											          'expenseType/edit-expenseType.js'
+											          ]
+										   })
+							   }
+						   }
+					   }).state('dashboard.list-expenseTypes', {
+						   url : '/admin/expenseTypes',
+						   controller : 'list-expenseTypes',
+						   templateUrl : 'expenseType/list-expenseTypes.html',
+						   params : {
+							   value : null
+						   },
+						   resolve : {
+							   loadMyDirectives : function($ocLazyLoad) {
+								   return $ocLazyLoad.load({
+									   name : 'list-expenseTypes',
+									   files : [ 'expenseType/list-expenseTypes.js' ]
+								   })
+							   }
+						   }
 					   });
 
 					   $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
@@ -751,4 +765,38 @@ angular
 																										    							  };
 
 																										    							  return obj;
-																										    						  } ]);
+																										    						  } ]).factory(
+																													    						 'expenseTypeService',
+																													    						 [
+																													    						  '$http',
+																													    						  function($http) {
+																													    							  var serviceBase = 'rest/v1.0/admin';
+																													    							  var obj = {};
+																													    							  obj.list = function( queries) {
+																													    								  var url  = serviceBase + '/expenseTypes/';
+																													    								  return $http.get(url, {params:queries});
+																													    							  };
+
+																													    							  obj.get = function( id) {
+																													    								  var url  = serviceBase + '/expenseTypes/';
+																													    								  return $http.get(url  + id);
+																													    							  };
+
+																													    							  obj.insert = function(record) {
+																													    								  var url  = serviceBase + '/expenseTypes/';
+																													    								  return $http.post(url, record);
+																													    							  };
+
+																													    							  obj.update = function( id, record) {
+																													    								  var url  = serviceBase + '/expenseTypes/';
+																													    								  return $http.put(url  + id,
+																													    										  record);
+																													    							  };
+
+																													    							  obj.remove = function(id) {
+																													    								  var url  = serviceBase + '/expenseTypes/';
+																													    								  return $http.delete(url + id);
+																													    							  };
+
+																													    							  return obj;
+																													    						  } ]);

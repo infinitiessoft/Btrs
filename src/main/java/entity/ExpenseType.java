@@ -36,7 +36,7 @@ public class ExpenseType extends AbstractEntity {
 	@Column(name = "tax_percent")
 	private Double taxPercent;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType")
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
