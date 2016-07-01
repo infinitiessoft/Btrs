@@ -15,65 +15,31 @@ import org.springframework.stereotype.Component;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminResource {
 
-	@Autowired
-	private ReportResource reportResource;
-	@Autowired
-	private ExpenseCategoryResource expenseCategoryResource;
+	// @Autowired
+	// private ReportResource reportResource;
+	// @Autowired
+	// private ExpenseCategoryResource expenseCategoryResource;
+
+	// @Autowired
+	// private ExpenseResource expenseResource;
+	// @Autowired
+	// private StatusChangeResource statusChangesResource;
+	// @Autowired
+	// private ParameterValueResource parameterValueResource;
+	// @Autowired
+	// private RoleResource roleResource;
+	// @Autowired
+	// private TypeParameterResource typeParameterResource;
 	@Autowired
 	private ExpenseTypeResource expenseTypeResource;
-	@Autowired
-	private ExpenseResource expenseResource;
-	@Autowired
-	private StatusChangeResource statusChangesResource;
-	@Autowired
-	private ParameterValueResource parameterValueResource;
-	@Autowired
-	private RoleResource roleResource;
-	@Autowired
-	private TypeParameterResource typeParameterResource;
 	@Autowired
 	private UserResource userResource;
 	@Autowired
 	private JobTitleResource jobTitleResource;
 
-	@Path("reports")
-	public ReportResource getReportResource() {
-		return reportResource;
-	}
-
-	@Path("expenseCategorys")
-	public ExpenseCategoryResource getExpenseCategoryResource() {
-		return expenseCategoryResource;
-	}
-
 	@Path("expenseTypes")
 	public ExpenseTypeResource getExpenseTypeResource() {
 		return expenseTypeResource;
-	}
-
-	@Path("expenses")
-	public ExpenseResource getExpenseResource() {
-		return expenseResource;
-	}
-
-	@Path("statusChanges")
-	public StatusChangeResource getStatusChangesResource() {
-		return statusChangesResource;
-	}
-
-	@Path("parameterValues")
-	public ParameterValueResource getParameterValueResource() {
-		return parameterValueResource;
-	}
-
-	@Path("roles")
-	public RoleResource getRoleResource() {
-		return roleResource;
-	}
-
-	@Path("typeParameters")
-	public TypeParameterResource getTypeParameterResource() {
-		return typeParameterResource;
 	}
 
 	@Path("users")
@@ -85,5 +51,40 @@ public class AdminResource {
 	public JobTitleResource getJobTitleResource() {
 		return jobTitleResource;
 	}
+
+	// @Path("reports")
+	// public ReportResource getReportResource() {
+	// return reportResource;
+	// }
+
+	// @Path("expenseCategorys")
+	// public ExpenseCategoryResource getExpenseCategoryResource() {
+	// return expenseCategoryResource;
+	// }
+
+	// @Path("expenses")
+	// public ExpenseResource getExpenseResource() {
+	// return expenseResource;
+	// }
+
+	// @Path("statusChanges")
+	// public StatusChangeResource getStatusChangesResource() {
+	// return statusChangesResource;
+	// }
+
+	// @Path("parameterValues")
+	// public ParameterValueResource getParameterValueResource() {
+	// return parameterValueResource;
+	// }
+
+	// @Path("roles")
+	// public RoleResource getRoleResource() {
+	// return roleResource;
+	// }
+
+	// @Path("typeParameters")
+	// public TypeParameterResource getTypeParameterResource() {
+	// return typeParameterResource;
+	// }
 
 }

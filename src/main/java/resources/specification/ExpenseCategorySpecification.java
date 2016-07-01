@@ -18,6 +18,7 @@ import entity.ExpenseCategory;
 public class ExpenseCategorySpecification implements
 		Specification<ExpenseCategory> {
 
+	private Long id;
 	@QueryParam("name_key")
 	private String name_key;
 	@QueryParam("code")
@@ -34,6 +35,10 @@ public class ExpenseCategorySpecification implements
 		if (!Strings.isNullOrEmpty(code)) {
 			predicates
 					.add(cb.like(root.<String> get("code"), "%" + code + "%"));
+		}
+
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 
 		if (predicates.isEmpty()) {
@@ -57,6 +62,14 @@ public class ExpenseCategorySpecification implements
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

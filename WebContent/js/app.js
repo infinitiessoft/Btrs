@@ -17,10 +17,10 @@ angular
 						   formlyConfigProvider) {
 
 					   formlyConfigProvider.setWrapper({
-							name : 'panel',
-							templateUrl : 'templates/panel.html'
-						});
-					   
+						   name : 'panel',
+						   templateUrl : 'templates/panel.html'
+					   });
+
 					   $ocLazyLoadProvider.config({
 						   debug : false,
 						   events : true,
@@ -37,18 +37,20 @@ angular
 						   controller : 'navigation',
 						   templateUrl : 'main.html'
 					   }).state('dashboard.home', {
-						   url : '/home',
-						   controller : 'home',
-						   templateUrl : 'home.html',
+						   url : '/:userid/list-memberreports',
+						   controller : 'list-memberreports',
+						   templateUrl : 'report/list-memberreports.html',
+						   params : {
+							   startDate : null,
+							   endDate : null,
+							   currentStatus : null
+						   },
 						   resolve : {
-							   loadMyDirectives:function($ocLazyLoad){
-								   return $ocLazyLoad.load(
-										   {
-											   name:'home',
-											   files:[
-											          'js/home.js'
-											          ]
-										   })
+							   loadMyDirectives : function($ocLazyLoad) {
+								   return $ocLazyLoad.load({
+									   name : 'list-memberreports',
+									   files : [ 'report/list-memberreports.js' ]
+								   })
 							   }
 						   }
 					   }).state('dashboard.edit-profile',{
@@ -418,11 +420,11 @@ angular
 						    				extends: 'select',
 						    				templateUrl: 'templates/ui-select-single-async-search.html'
 						    			});
-						    			
+
 						    			formlyConfig.setWrapper({
-						    			      name: 'loading',
-						    			      templateUrl: 'templates/loading.html'
-						    			    });
+						    				name: 'loading',
+						    				templateUrl: 'templates/loading.html'
+						    			});
 
 						    			formlyConfig.setType({
 						    				name : 'datepicker',
@@ -518,10 +520,6 @@ angular
 						    						 return $http.get(serviceBase  + id);
 						    					 };
 
-						    					 obj.insert = function(employee) {
-						    						 return $http.post(serviceBase, employee);
-						    					 };
-
 						    					 obj.update = function(id, employee) {
 						    						 return $http.put(serviceBase  + id,
 						    								 employee).then(function(results) {
@@ -529,11 +527,6 @@ angular
 						    								 });
 						    					 };
 
-						    					 obj.remove = function(id) {
-						    						 return $http.delete(serviceBase + id).then(function(status) {
-						    							 return status;
-						    						 });
-						    					 };
 
 						    					 return obj;
 						    				 } ]).factory(
@@ -602,12 +595,12 @@ angular
 						    										   var url  = serviceBase + userid + '/audits/';
 						    										   return $http.delete(url + id);
 						    									   };
-						    									   
+
 						    									   obj.approve = function(userid, id, statusChange) {
 						    										   var url  = serviceBase + userid + '/audits/';
 						    										   return $http.post(url + id + "/approve", statusChange);
 						    									   };
-						    									   
+
 						    									   obj.reject = function(userid, id, statusChange) {
 						    										   var url  = serviceBase + userid + '/audits/';
 						    										   return $http.post(url + id + "/reject", statusChange);
@@ -616,11 +609,11 @@ angular
 						    									   return obj;
 						    								   } ])
 						    								   .factory(
-						    										   'memberDepartmentService',
+						    										   'memberExpenseTypeService',
 						    										   [
 						    										    '$http',
 						    										    function($http) {
-						    										    	var serviceBase = 'rest/v1.0/departments/';
+						    										    	var serviceBase = 'rest/v1.0/expensetypes/';
 						    										    	var obj = {};
 						    										    	obj.list = function(queries) {
 						    										    		return $http.get(serviceBase, {params:queries});
@@ -632,171 +625,169 @@ angular
 
 						    										    	return obj;
 						    										    } ]).factory(
-						    										    		'memberExpenseTypeService',
+						    										    		'memberRecordService',
 						    										    		[
 						    										    		 '$http',
 						    										    		 function($http) {
-						    										    			 var serviceBase = 'rest/v1.0/expensetypes/';
+						    										    			 var serviceBase = 'rest/v1.0/users/';
 						    										    			 var obj = {};
-						    										    			 obj.list = function(queries) {
-						    										    				 return $http.get(serviceBase, {params:queries});
+						    										    			 obj.list = function(userId, queries) {
+						    										    				 var url  = serviceBase + userId + '/records/available';
+						    										    				 return $http.get(url, {params:queries});
 						    										    			 };
 
-						    										    			 obj.get = function(id) {
-						    										    				 return $http.get(serviceBase  + id);
+						    										    			 obj.get = function(userId, id) {
+						    										    				 var url  = serviceBase + userId + '/records/';
+						    										    				 return $http.get(url  + id);
 						    										    			 };
 
 						    										    			 return obj;
 						    										    		 } ]).factory(
-						    										    				 'memberRecordService',
+						    										    				 'memberAuditStatusChangeService',
 						    										    				 [
 						    										    				  '$http',
 						    										    				  function($http) {
 						    										    					  var serviceBase = 'rest/v1.0/users/';
 						    										    					  var obj = {};
-						    										    					  obj.list = function(userId, queries) {
-						    										    						  var url  = serviceBase + userId + '/records/available';
+						    										    					  obj.list = function(userid, reportid, queries) {
+						    										    						  var url  = serviceBase + userid + '/audits/'+reportid+'/statusChanges';
 						    										    						  return $http.get(url, {params:queries});
-						    										    					  };
-
-						    										    					  obj.get = function(userId, id) {
-						    										    						  var url  = serviceBase + userId + '/records/';
-						    										    						  return $http.get(url  + id);
 						    										    					  };
 
 						    										    					  return obj;
 						    										    				  } ]).factory(
-									    										    				 'memberAuditStatusChangeService',
-									    										    				 [
-									    										    				  '$http',
-									    										    				  function($http) {
-									   						    									   var serviceBase = 'rest/v1.0/users/';
-															    									   var obj = {};
-															    									   obj.list = function(userid, reportid, queries) {
-															    										   var url  = serviceBase + userid + '/audits/'+reportid+'/statusChanges';
-															    										   return $http.get(url, {params:queries});
-															    									   };
+						    										    						  'jobTitleService',
+						    										    						  [
+						    										    						   '$http',
+						    										    						   function($http) {
+						    										    							   var serviceBase = 'rest/v1.0/admin';
+						    										    							   var obj = {};
+						    										    							   obj.list = function( queries) {
+						    										    								   var url  = serviceBase + '/jobTitles/';
+						    										    								   return $http.get(url, {params:queries});
+						    										    							   };
 
-															    									   return obj;
-															    								   } ]).factory(
-																				    						 'jobTitleService',
-																				    						 [
-																				    						  '$http',
-																				    						  function($http) {
-																				    							  var serviceBase = 'rest/v1.0/admin';
-																				    							  var obj = {};
-																				    							  obj.list = function( queries) {
-																				    								  var url  = serviceBase + '/jobTitles/';
-																				    								  return $http.get(url, {params:queries});
-																				    							  };
+						    										    							   obj.get = function( id) {
+						    										    								   var url  = serviceBase + '/jobTitles/';
+						    										    								   return $http.get(url  + id);
+						    										    							   };
 
-																				    							  obj.get = function( id) {
-																				    								  var url  = serviceBase + '/jobTitles/';
-																				    								  return $http.get(url  + id);
-																				    							  };
+						    										    							   obj.insert = function(record) {
+						    										    								   var url  = serviceBase + '/jobTitles/';
+						    										    								   return $http.post(url, record);
+						    										    							   };
 
-																				    							  obj.insert = function(record) {
-																				    								  var url  = serviceBase + '/jobTitles/';
-																				    								  return $http.post(url, record);
-																				    							  };
+						    										    							   obj.update = function( id, record) {
+						    										    								   var url  = serviceBase + '/jobTitles/';
+						    										    								   return $http.put(url  + id,
+						    										    										   record);
+						    										    							   };
 
-																				    							  obj.update = function( id, record) {
-																				    								  var url  = serviceBase + '/jobTitles/';
-																				    								  return $http.put(url  + id,
-																				    										  record);
-																				    							  };
+						    										    							   obj.remove = function(id) {
+						    										    								   var url  = serviceBase + '/jobTitles/';
+						    										    								   return $http.delete(url + id);
+						    										    							   };
 
-																				    							  obj.remove = function(id) {
-																				    								  var url  = serviceBase + '/jobTitles/';
-																				    								  return $http.delete(url + id);
-																				    							  };
+						    										    							   return obj;
+						    										    						   } ]).factory(
+						    										    								   'userService',
+						    										    								   [
+						    										    								    '$http',
+						    										    								    function($http) {
+						    										    								    	var serviceBase = 'rest/v1.0/admin';
+						    										    								    	var obj = {};
+						    										    								    	obj.list = function( queries) {
+						    										    								    		var url  = serviceBase + '/users/';
+						    										    								    		return $http.get(url, {params:queries});
+						    										    								    	};
 
-																				    							  return obj;
-																				    						  } ]).factory(
-																							    						 'userService',
-																							    						 [
-																							    						  '$http',
-																							    						  function($http) {
-																							    							  var serviceBase = 'rest/v1.0/admin';
-																							    							  var obj = {};
-																							    							  obj.list = function( queries) {
-																							    								  var url  = serviceBase + '/users/';
-																							    								  return $http.get(url, {params:queries});
-																							    							  };
+						    										    								    	obj.get = function( id) {
+						    										    								    		var url  = serviceBase + '/users/';
+						    										    								    		return $http.get(url  + id);
+						    										    								    	};
 
-																							    							  obj.get = function( id) {
-																							    								  var url  = serviceBase + '/users/';
-																							    								  return $http.get(url  + id);
-																							    							  };
+						    										    								    	obj.insert = function(record) {
+						    										    								    		var url  = serviceBase + '/users/';
+						    										    								    		return $http.post(url, record);
+						    										    								    	};
 
-																							    							  obj.insert = function(record) {
-																							    								  var url  = serviceBase + '/users/';
-																							    								  return $http.post(url, record);
-																							    							  };
+						    										    								    	obj.update = function( id, record) {
+						    										    								    		var url  = serviceBase + '/users/';
+						    										    								    		return $http.put(url  + id,
+						    										    								    				record);
+						    										    								    	};
 
-																							    							  obj.update = function( id, record) {
-																							    								  var url  = serviceBase + '/users/';
-																							    								  return $http.put(url  + id,
-																							    										  record);
-																							    							  };
+						    										    								    	obj.remove = function(id) {
+						    										    								    		var url  = serviceBase + '/users/';
+						    										    								    		return $http.delete(url + id);
+						    										    								    	};
 
-																							    							  obj.remove = function(id) {
-																							    								  var url  = serviceBase + '/users/';
-																							    								  return $http.delete(url + id);
-																							    							  };
+						    										    								    	return obj;
+						    										    								    } ]).factory(
+						    										    								    		'userRoleService',
+						    										    								    		[
+						    										    								    		 '$http',
+						    										    								    		 function($http) {
+						    										    								    			 var serviceBase = 'rest/v1.0/admin';
+						    										    								    			 var obj = {};
 
-																							    							  return obj;
-																							    						  } ]).factory(
-																										    						 'userRoleService',
-																										    						 [
-																										    						  '$http',
-																										    						  function($http) {
-																										    							  var serviceBase = 'rest/v1.0/admin';
-																										    							  var obj = {};
-																										    							 
-																										    							  obj.put = function(userid, roleid) {
-																										    								  var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
-																										    								  return $http.put(url);
-																										    							  };
+						    										    								    			 obj.put = function(userid, roleid) {
+						    										    								    				 var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
+						    										    								    				 return $http.put(url);
+						    										    								    			 };
 
-																										    							  obj.remove = function(userid, roleid) {
-																										    								  var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
-																										    								  return $http.delete(url);
-																										    							  };
+						    										    								    			 obj.remove = function(userid, roleid) {
+						    										    								    				 var url  = serviceBase + '/users/'+userid+'/roles/'+roleid;
+						    										    								    				 return $http.delete(url);
+						    										    								    			 };
 
-																										    							  return obj;
-																										    						  } ]).factory(
-																													    						 'expenseTypeService',
-																													    						 [
-																													    						  '$http',
-																													    						  function($http) {
-																													    							  var serviceBase = 'rest/v1.0/admin';
-																													    							  var obj = {};
-																													    							  obj.list = function( queries) {
-																													    								  var url  = serviceBase + '/expenseTypes/';
-																													    								  return $http.get(url, {params:queries});
-																													    							  };
+						    										    								    			 return obj;
+						    										    								    		 } ]).factory(
+						    										    								    				 'expenseTypeService',
+						    										    								    				 [
+						    										    								    				  '$http',
+						    										    								    				  function($http) {
+						    										    								    					  var serviceBase = 'rest/v1.0/admin';
+						    										    								    					  var obj = {};
+						    										    								    					  obj.list = function( queries) {
+						    										    								    						  var url  = serviceBase + '/expenseTypes/';
+						    										    								    						  return $http.get(url, {params:queries});
+						    										    								    					  };
 
-																													    							  obj.get = function( id) {
-																													    								  var url  = serviceBase + '/expenseTypes/';
-																													    								  return $http.get(url  + id);
-																													    							  };
+						    										    								    					  obj.get = function( id) {
+						    										    								    						  var url  = serviceBase + '/expenseTypes/';
+						    										    								    						  return $http.get(url  + id);
+						    										    								    					  };
 
-																													    							  obj.insert = function(record) {
-																													    								  var url  = serviceBase + '/expenseTypes/';
-																													    								  return $http.post(url, record);
-																													    							  };
+						    										    								    					  obj.insert = function(record) {
+						    										    								    						  var url  = serviceBase + '/expenseTypes/';
+						    										    								    						  return $http.post(url, record);
+						    										    								    					  };
 
-																													    							  obj.update = function( id, record) {
-																													    								  var url  = serviceBase + '/expenseTypes/';
-																													    								  return $http.put(url  + id,
-																													    										  record);
-																													    							  };
+						    										    								    					  obj.update = function( id, record) {
+						    										    								    						  var url  = serviceBase + '/expenseTypes/';
+						    										    								    						  return $http.put(url  + id,
+						    										    								    								  record);
+						    										    								    					  };
 
-																													    							  obj.remove = function(id) {
-																													    								  var url  = serviceBase + '/expenseTypes/';
-																													    								  return $http.delete(url + id);
-																													    							  };
+						    										    								    					  obj.remove = function(id) {
+						    										    								    						  var url  = serviceBase + '/expenseTypes/';
+						    										    								    						  return $http.delete(url + id);
+						    										    								    					  };
 
-																													    							  return obj;
-																													    						  } ]);
+						    										    								    					  return obj;
+						    										    								    				  } ]).factory(
+						    													    										    		'memberAuditAttendRecordService',
+						    													    										    		[
+						    													    										    		 '$http',
+						    													    										    		 function($http) {
+						    													    										    			 var serviceBase = 'rest/v1.0/users/';
+						    													    										    			 var obj = {};
+						    													    										    			
+						    													    										    			 obj.get = function(userId, id) {
+						    													    										    				 var url  = serviceBase + userId + '/auditAttendRecords/';
+						    													    										    				 return $http.get(url  + id);
+						    													    										    			 };
+
+						    													    										    			 return obj;
+						    													    										    		 } ]);

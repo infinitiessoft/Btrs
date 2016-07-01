@@ -19,10 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "reports", uniqueConstraints = @UniqueConstraint(columnNames = "attendance_record_id"))
+@Table(name = "reports")
 public class Report extends AbstractEntity {
 	private static final long serialVersionUID = 7711505597348200997L;
 	@Id
@@ -33,7 +32,7 @@ public class Report extends AbstractEntity {
 	@Column(name = "max_id_last_month")
 	private Long maxIdLastMonth;
 
-	@Column(name = "attendance_record_id", unique = true, nullable = false)
+	@Column(name = "attendance_record_id")
 	private Long attendanceRecordId;
 
 	@ManyToOne(fetch = FetchType.LAZY)

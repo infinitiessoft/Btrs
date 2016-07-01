@@ -143,33 +143,36 @@ angular
 
 										var row = {
 											className : 'row',
-											fieldGroup : [ {
-												className : 'col-xs-2',
-												key : 'value',
-												type : 'input',
-												'model' : 'model.expenseType',
-												templateOptions : {
-													label : 'ExpenseType',
-													disabled : 'true'
-												}
-											}, {
-												className : 'col-xs-8',
-												type : 'reportParameterSection',
-												key : 'parameterValues',
-												templateOptions : {
-													label : 'Parameter',
-													'fields' : []
-												}
-											}, {
-												className : 'col-xs-2',
-												key : 'totalAmount',
-												type : 'input',
-												templateOptions : {
-													label : 'Total amount',
-													type : 'number',
-													required : true,
-												}
-											} ]
+											fieldGroup : [
+													{
+														className : 'col-xs-2',
+														key : 'value',
+														type : 'input',
+														'model' : 'model.expenseType',
+														templateOptions : {
+															label : 'ExpenseType',
+															disabled : 'true'
+														}
+													},
+													{
+														className : 'col-xs-8',
+														type : 'reportParameterSection',
+														key : 'parameterValues',
+														templateOptions : {
+															label : 'Parameter',
+															'fields' : []
+														}
+													},
+													{
+														className : 'col-xs-2',
+														key : 'totalAmount',
+														type : 'input',
+														templateOptions : {
+															label : 'Total amount',
+															type : 'number',
+															required : true,
+														}
+													} ]
 										};
 
 										fields.push(row);
@@ -183,7 +186,7 @@ angular
 									function createFieldsById($scope,
 											expenseType) {
 										$scope.model["parameterValues"] = [];
-										
+
 										var repeatsection = $scope.model["parameterValues"];
 										var typeParameters = expenseType.typeParameters;
 										var fields = [];
@@ -207,16 +210,16 @@ angular
 												'fields' : []
 											}
 										};
-										
+
 										var totalAmount = {
-								            	  key : 'totalAmount',
-								            	  type : 'input',
-								            	  templateOptions : {
-								            		  label : 'Total amount',
-								            		  type : 'number',
-								            		  required : true,
-								            	  }
-								              };
+											key : 'totalAmount',
+											type : 'input',
+											templateOptions : {
+												label : 'Total amount',
+												type : 'number',
+												required : true,
+											}
+										};
 
 										return [ parameterSection, totalAmount ];
 									}
@@ -329,21 +332,20 @@ angular
 													var repeatsection = $scope.fields;
 													if (!newValue)
 														return;
-														while (repeatsection.length > 1) {
-															repeatsection.pop();
-														}
+													while (repeatsection.length > 1) {
+														repeatsection.pop();
+													}
 
-														var newsections = createFieldsById(
-																$scope,
-																newValue);
-														angular
-														.forEach(
-																newsections,
-																function(
-																		newsection) {
-																	repeatsection
-																	.push(newsection);
-																});
+													var newsections = createFieldsById(
+															$scope, newValue);
+													angular
+															.forEach(
+																	newsections,
+																	function(
+																			newsection) {
+																		repeatsection
+																				.push(newsection);
+																	});
 												}
 											}
 										} ];
@@ -387,26 +389,39 @@ angular
 								});
 					}
 
-					memberRecordService
-							.get(userId, recordId)
-							.then(
-									function(status) {
-										vm.model.attendanceRecordId = status.data.id;
-										if (id == 0) {
-											vm.model.reason = status.data.reason;
-										}
-										vm.recordModel.reason = status.data.reason;
-										vm.recordModel.duration = status.data.duration;
-										vm.recordModel.startDate = status.data.startDate;
-										vm.recordModel.endDate = status.data.endDate;
-										vm.recordModel.applicant = status.data.applicant;
-									});
-
+					if (recordId != 0) {
+						memberRecordService
+								.get(userId, recordId)
+								.success(
+										function(status) {
+											vm.model.attendanceRecordId = status.id;
+											if (id == 0) {
+												vm.model.reason = status.reason;
+											}
+											vm.recordModel.reason = status.reason;
+											vm.recordModel.duration = status.duration;
+											vm.recordModel.startDate = status.startDate;
+											vm.recordModel.endDate = status.endDate;
+											vm.recordModel.applicant = status.applicant;
+										}).error(function() {
+									console.debug('retrieve record failed');
+								});
+					}
 					vm.expenseTypes = [];
 					memberExpenseTypeService.list().then(function(response) {
 						angular.forEach(response.data.content, function(val) {
 							vm.expenseTypes.push(val);
 						});
+						var totalPages = response.data.totalPages;
+						if (totalPages > 1) {
+							for (var i = 1; i < totalPages; i++) {
+								memberExpenseTypeService.list({page:i}).then(function(response2) {
+									angular.forEach(response2.data.content, function(val) {
+										vm.expenseTypes.push(val);
+									});
+								});
+							}
+						}
 					});
 					vm.attendRecords = [];
 

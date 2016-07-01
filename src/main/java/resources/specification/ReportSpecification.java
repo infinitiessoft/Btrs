@@ -41,9 +41,11 @@ public class ReportSpecification implements Specification<Report> {
 	private String route;
 	@QueryParam("firmOrProject")
 	private String firmOrProject;
+	private Long userSharedId;
 
 	private Long id;
-	private List<Long> ids;
+
+	// private List<Long> ids;
 
 	@Override
 	public Predicate toPredicate(Root<Report> root, CriteriaQuery<?> query,
@@ -93,12 +95,18 @@ public class ReportSpecification implements Specification<Report> {
 					applicantId));
 		}
 
+		if (userSharedId != null) {
+			predicates.add(cb.equal(
+					root.<User> get("owner").<Long> get("userSharedId"),
+					userSharedId));
+		}
+
 		if (id != null) {
 			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
-		if (ids != null && !ids.isEmpty()) {
-			predicates.add(root.<User> get("owner").<Long> get("id").in(ids));
-		}
+		// if (ids != null && !ids.isEmpty()) {
+		// predicates.add(root.<User> get("owner").<Long> get("id").in(ids));
+		// }
 
 		// if (applicantName != null) {
 		// predicates.add(cb.like(root.<User> get("owner")
@@ -184,12 +192,12 @@ public class ReportSpecification implements Specification<Report> {
 		this.applicantName = applicantName;
 	}
 
-	public List<Long> getIds() {
-		return ids;
+	public Long getUserSharedId() {
+		return userSharedId;
 	}
 
-	public void setIds(List<Long> ids) {
-		this.ids = ids;
+	public void setUserSharedId(Long userSharedId) {
+		this.userSharedId = userSharedId;
 	}
 
 }

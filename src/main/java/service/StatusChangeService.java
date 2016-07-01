@@ -8,14 +8,16 @@ import sendto.StatusChangeSendto;
 
 public interface StatusChangeService {
 
-	public StatusChangeSendto retrieve(long id);
+	public StatusChangeSendto retrieve(StatusChangeSpecification spec);
 
-	public void delete(long id);
+	// public void delete(StatusChangeSpecification spec);
 
-	public StatusChangeSendto save(StatusChangeSendto statusChanges);
+	// public StatusChangeSendto save(StatusChangeSendto statusChanges);
 
-	public Page<StatusChangeSendto> findAll(StatusChangeSpecification spec, Pageable pageable);
+	public Page<StatusChangeSendto> findAll(StatusChangeSpecification spec,
+			Pageable pageable);
 
-	public StatusChangeSendto update(long id, StatusChangeSendto statusChanges);
+	// public StatusChangeSendto update(StatusChangeSpecification spec,
+	// StatusChangeSendto statusChanges);
 
 }

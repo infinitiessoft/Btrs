@@ -33,10 +33,10 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 
 	@Transactional("transactionManager")
 	@Override
-	public StatusChangeSendto retrieve(long id) {
-		StatusChange status = statusChangesDao.findOne(id);
+	public StatusChangeSendto retrieve(StatusChangeSpecification spec) {
+		StatusChange status = statusChangesDao.findOne(spec);
 		if (status == null) {
-			throw new StatusChangesNotFoundException(id);
+			throw new StatusChangesNotFoundException();
 		}
 		return toStatusChangesSendto(status);
 	}
@@ -56,35 +56,35 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 		Employee owner = employeeDao
 				.findOne(status.getUser().getUserSharedId());
 		String name = owner.getName();
-		user.setId(owner.getId());
+		user.setId(status.getUser().getId());
 		user.setName(name);
 		ret.setUser(user);
 
 		return ret;
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public void delete(long id) {
-		try {
-			StatusChange statusChanges = statusChangesDao.findOne(id);
-			if (statusChanges == null) {
-				throw new StatusChangesNotFoundException(id);
-			}
-			statusChangesDao.delete(statusChanges);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new StatusChangesNotFoundException(id);
-		}
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public void delete(StatusChangeSpecification spec) {
+	// try {
+	// StatusChange statusChanges = statusChangesDao.findOne(spec);
+	// if (statusChanges == null) {
+	// throw new StatusChangesNotFoundException(id);
+	// }
+	// statusChangesDao.delete(statusChanges);
+	// } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+	// throw new StatusChangesNotFoundException(id);
+	// }
+	// }
 
-	@Transactional("transactionManager")
-	@Override
-	public StatusChangeSendto save(StatusChangeSendto statusChanges) {
-		statusChanges.setId(null);
-		StatusChange newEntry = new StatusChange();
-		setUpStatusChanges(statusChanges, newEntry);
-		return toStatusChangesSendto(statusChangesDao.save(newEntry));
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public StatusChangeSendto save(StatusChangeSendto statusChanges) {
+	// statusChanges.setId(null);
+	// StatusChange newEntry = new StatusChange();
+	// setUpStatusChanges(statusChanges, newEntry);
+	// return toStatusChangesSendto(statusChangesDao.save(newEntry));
+	// }
 
 	@Transactional("transactionManager")
 	@Override
@@ -100,22 +100,22 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 		return rets;
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public StatusChangeSendto update(long id, StatusChangeSendto updated) {
-		StatusChange status = statusChangesDao.findOne(id);
-		if (status == null) {
-			throw new StatusChangesNotFoundException(id);
-		}
-		setUpStatusChanges(updated, status);
-		return toStatusChangesSendto(statusChangesDao.save(status));
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public StatusChangeSendto update(long id, StatusChangeSendto updated) {
+	// StatusChange status = statusChangesDao.findOne(id);
+	// if (status == null) {
+	// throw new StatusChangesNotFoundException(id);
+	// }
+	// setUpStatusChanges(updated, status);
+	// return toStatusChangesSendto(statusChangesDao.save(status));
+	// }
 
-	private void setUpStatusChanges(StatusChangeSendto sendto,
-			StatusChange newEntry) {
-		if (sendto.isCommentSet()) {
-			newEntry.setComment(sendto.getComment());
-		}
-	}
+	// private void setUpStatusChanges(StatusChangeSendto sendto,
+	// StatusChange newEntry) {
+	// if (sendto.isCommentSet()) {
+	// newEntry.setComment(sendto.getComment());
+	// }
+	// }
 
 }

@@ -1,6 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -40,7 +43,8 @@ public class ExpenseType extends AbstractEntity {
 	private Set<Expense> expenses = new HashSet<Expense>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expenseType", cascade = CascadeType.REMOVE)
-	private Set<ExpenseTypePara> expenseTypePara = new HashSet<ExpenseTypePara>(
+	@OrderBy("id DESC")
+	private List<ExpenseTypePara> expenseTypePara = new ArrayList<ExpenseTypePara>(
 			0);
 
 	public ExpenseType() {
@@ -79,11 +83,11 @@ public class ExpenseType extends AbstractEntity {
 		this.expenses = expenses;
 	}
 
-	public Set<ExpenseTypePara> getExpenseTypePara() {
+	public List<ExpenseTypePara> getExpenseTypePara() {
 		return expenseTypePara;
 	}
 
-	public void setExpenseTypePara(Set<ExpenseTypePara> expenseTypePara) {
+	public void setExpenseTypePara(List<ExpenseTypePara> expenseTypePara) {
 		this.expenseTypePara = expenseTypePara;
 	}
 

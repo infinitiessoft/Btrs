@@ -15,20 +15,29 @@ import entity.ExpenseType;
 import entity.ExpenseTypePara;
 import entity.ParameterValue;
 
-public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePara> {
+public class ExpenseTypeParaSpecification implements
+		Specification<ExpenseTypePara> {
+
+	private Long id;
 	@QueryParam("expenseTypeId")
 	private Long expenseTypeId;
 	@QueryParam("typeParameterId")
 	private Long typeParameterId;
 
 	@Override
-	public Predicate toPredicate(Root<ExpenseTypePara> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<ExpenseTypePara> root,
+			CriteriaQuery<?> query, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (expenseTypeId != null) {
-			predicates.add(cb.equal(root.<ExpenseType> get("expenseType").<Long> get("id"), expenseTypeId));
+			predicates.add(cb.equal(root.<ExpenseType> get("expenseType")
+					.<Long> get("id"), expenseTypeId));
 		}
 		if (typeParameterId != null) {
-			predicates.add(cb.equal(root.<ParameterValue> get("typeParameter").<Long> get("id"), typeParameterId));
+			predicates.add(cb.equal(root.<ParameterValue> get("typeParameter")
+					.<Long> get("id"), typeParameterId));
+		}
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -51,6 +60,14 @@ public class ExpenseTypeParaSpecification implements Specification<ExpenseTypePa
 
 	public void setTypeParameterId(Long typeParameterId) {
 		this.typeParameterId = typeParameterId;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

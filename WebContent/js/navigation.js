@@ -1,6 +1,17 @@
 angular.module('navigation', []).controller(
 		'navigation',
-		function($scope, auth) {
+		function($scope, $state, auth) {
+
+			auth.authenticate($scope.credentials, function(authenticated) {
+				if (authenticated) {
+					console.log("Login succeeded")
+					$state.go('dashboard.home', {
+						userid : auth.user.principal.id
+					});
+				} else {
+					console.log("Login failed")
+				}
+			});
 
 			$scope.credentials = {};
 
@@ -27,7 +38,7 @@ angular.module('navigation', []).controller(
 			$scope.user = function() {
 				return auth.user;
 			}
-			
+
 			$scope.authenticated = function() {
 				return auth.authenticated;
 			}

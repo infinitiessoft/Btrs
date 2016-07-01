@@ -17,6 +17,7 @@ import entity.JobTitle;
 
 public class JobTitleSpecification implements Specification<JobTitle> {
 
+	private Long id;
 	@QueryParam("name")
 	private String name;
 
@@ -25,7 +26,11 @@ public class JobTitleSpecification implements Specification<JobTitle> {
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(name)) {
-			return cb.like(root.<String> get("name"), "%" + name + "%");
+			predicates
+					.add(cb.like(root.<String> get("name"), "%" + name + "%"));
+		}
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -40,6 +45,14 @@ public class JobTitleSpecification implements Specification<JobTitle> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

@@ -34,8 +34,8 @@ public class MemberReportStatusChangeResource {
 		StatusChangeSpecification spec = new StatusChangeSpecification();
 		spec.setId(statusChangeid);
 		spec.setReportId(reportId);
-		spec.setUserId(id);
-		return statusChangeService.retrieve(id);
+		spec.setReportOwnerId(id);
+		return statusChangeService.retrieve(spec);
 	}
 
 	// ** Method to find All the departments in the list
@@ -46,7 +46,7 @@ public class MemberReportStatusChangeResource {
 			@BeanParam SimplePageRequest pageRequest,
 			@BeanParam StatusChangeSpecification spec) {
 		spec.setReportId(reportId);
-		spec.setUserId(id);
+		spec.setReportOwnerId(id);
 		return statusChangeService.findAll(spec, pageRequest);
 	}
 

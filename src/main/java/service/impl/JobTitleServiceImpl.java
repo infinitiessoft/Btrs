@@ -25,33 +25,22 @@ public class JobTitleServiceImpl implements JobTitleService {
 
 	@Transactional("transactionManager")
 	@Override
-	public JobTitleSendto retrieve(long id) {
-		JobTitle jobTitle = jobTitleDao.findOne(id);
+	public JobTitleSendto retrieve(Specification<JobTitle> spec) {
+		JobTitle jobTitle = jobTitleDao.findOne(spec);
 		if (jobTitle == null) {
-			throw new JobTitleNotFoundException(id);
+			throw new JobTitleNotFoundException();
 		}
 		return toJobTitleSendto(jobTitle);
 	}
 
 	@Transactional("transactionManager")
 	@Override
-	public void delete(long id) {
-		try {
-			JobTitle jobTitle = jobTitleDao.findOne(id);
-			if (jobTitle == null) {
-				throw new JobTitleNotFoundException(id);
-			}
-			jobTitleDao.delete(jobTitle);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new JobTitleNotFoundException(id);
+	public void delete(Specification<JobTitle> spec) {
+		JobTitle jobTitle = jobTitleDao.findOne(spec);
+		if (jobTitle == null) {
+			throw new JobTitleNotFoundException();
 		}
-
-	}
-
-	@Transactional("transactionManager")
-	@Override
-	public JobTitleSendto findByName(String name) {
-		return toJobTitleSendto(jobTitleDao.findByName(name));
+		jobTitleDao.delete(jobTitle);
 	}
 
 	@Transactional("transactionManager")
@@ -79,10 +68,11 @@ public class JobTitleServiceImpl implements JobTitleService {
 
 	@Transactional("transactionManager")
 	@Override
-	public JobTitleSendto update(long id, JobTitleSendto updated) {
-		JobTitle dept = jobTitleDao.findOne(id);
+	public JobTitleSendto update(Specification<JobTitle> spec,
+			JobTitleSendto updated) {
+		JobTitle dept = jobTitleDao.findOne(spec);
 		if (dept == null) {
-			throw new JobTitleNotFoundException(id);
+			throw new JobTitleNotFoundException();
 		}
 		setUpJobTitle(updated, dept);
 		return toJobTitleSendto(jobTitleDao.save(dept));

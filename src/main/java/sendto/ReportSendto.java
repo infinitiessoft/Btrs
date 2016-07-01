@@ -485,6 +485,7 @@ public class ReportSendto {
 			private static final long serialVersionUID = 1L;
 			private Long id;
 			private String value;
+			private ExpenseCategory expenseCategory;
 
 			private boolean isIdSet;
 
@@ -519,6 +520,36 @@ public class ReportSendto {
 
 			public void setValue(String value) {
 				this.value = value;
+			}
+			
+			public ExpenseCategory getExpenseCategory() {
+				return expenseCategory;
+			}
+
+			public void setExpenseCategory(ExpenseCategory expenseCategory) {
+				this.expenseCategory = expenseCategory;
+			}
+
+			public static class ExpenseCategory implements Serializable {
+				/**
+				 * 
+				 */
+
+				private static final long serialVersionUID = 1L;
+				private Long id;
+				
+				public ExpenseCategory() {
+					super();
+				}
+
+				public Long getId() {
+					return id;
+				}
+
+				public void setId(Long id) {
+					this.id = id;
+				}
+
 			}
 
 		}

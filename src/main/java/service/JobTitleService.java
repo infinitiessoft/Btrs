@@ -9,15 +9,15 @@ import entity.JobTitle;
 
 public interface JobTitleService {
 
-	public JobTitleSendto retrieve(long id);
+	public JobTitleSendto retrieve(Specification<JobTitle> spec);
 
-	public void delete(long id);
+	public void delete(Specification<JobTitle> spec);
 
-	public JobTitleSendto findByName(String name);
+	// public JobTitleSendto findByName(String name);
 
 	public JobTitleSendto save(JobTitleSendto jobTitle);
 
-	JobTitleSendto update(long id, JobTitleSendto jobTitle);
+	JobTitleSendto update(Specification<JobTitle> spec, JobTitleSendto jobTitle);
 
 	Page<JobTitleSendto> findAll(Specification<JobTitle> spec, Pageable pageable);
 

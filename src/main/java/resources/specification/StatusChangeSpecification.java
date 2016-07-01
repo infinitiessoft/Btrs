@@ -26,8 +26,8 @@ public class StatusChangeSpecification implements Specification<StatusChange> {
 	private String comment;
 	@QueryParam("value")
 	private String value;
-	@QueryParam("userId")
-	private Long userId;
+	@QueryParam("reportOwnerId")
+	private Long reportOwnerId;
 	@QueryParam("reportId")
 	private Long reportId;
 	@QueryParam("createdDate")
@@ -57,9 +57,10 @@ public class StatusChangeSpecification implements Specification<StatusChange> {
 			}
 		}
 
-		if (userId != null) {
-			predicates.add(cb.equal(root.<User> get("user").<Long> get("id"),
-					userId));
+		if (reportOwnerId != null) {
+			predicates.add(cb.equal(
+					root.<Report> get("report").<User> get("owner")
+							.<Long> get("id"), reportOwnerId));
 		}
 
 		if (reportId != null) {
@@ -94,14 +95,6 @@ public class StatusChangeSpecification implements Specification<StatusChange> {
 		this.value = value;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
 	public Long getReportId() {
 		return reportId;
 	}
@@ -124,6 +117,14 @@ public class StatusChangeSpecification implements Specification<StatusChange> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getReportOwnerId() {
+		return reportOwnerId;
+	}
+
+	public void setReportOwnerId(Long reportOwnerId) {
+		this.reportOwnerId = reportOwnerId;
 	}
 
 }

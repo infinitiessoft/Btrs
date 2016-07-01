@@ -34,13 +34,17 @@ public class JobTitleResource {
 	@GET
 	@Path(value = "{id}")
 	public JobTitleSendto getJobTitle(@PathParam("id") long id) {
-		return jobTitleService.retrieve(id);
+		JobTitleSpecification spec = new JobTitleSpecification();
+		spec.setId(id);
+		return jobTitleService.retrieve(spec);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
 	public Response deleteJobTitle(@PathParam("id") long id) {
-		jobTitleService.delete(id);
+		JobTitleSpecification spec = new JobTitleSpecification();
+		spec.setId(id);
+		jobTitleService.delete(spec);
 		return Response.status(Status.NO_CONTENT)
 				.type(MediaType.APPLICATION_JSON).build();
 	}
@@ -49,7 +53,9 @@ public class JobTitleResource {
 	@Path(value = "{id}")
 	public JobTitleSendto updateJobTitle(@PathParam("id") long id,
 			JobTitleSendto jobTitle) {
-		return jobTitleService.update(id, jobTitle);
+		JobTitleSpecification spec = new JobTitleSpecification();
+		spec.setId(id);
+		return jobTitleService.update(spec, jobTitle);
 	}
 
 	@POST

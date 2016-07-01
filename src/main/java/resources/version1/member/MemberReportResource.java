@@ -87,7 +87,6 @@ public class MemberReportResource {
 				e.setTaxAmountSet(false);
 			}
 		}
-
 		return reportService.update(spec, report, id);
 	}
 

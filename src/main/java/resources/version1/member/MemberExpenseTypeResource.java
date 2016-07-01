@@ -28,7 +28,9 @@ public class MemberExpenseTypeResource {
 	@GET
 	@Path(value = "{id}")
 	public ExpenseTypeSendto getExpenseType(@PathParam("id") long id) {
-		return expenseTypeService.retrieve(id);
+		ExpenseTypeSpecification spec = new ExpenseTypeSpecification();
+		spec.setId(id);
+		return expenseTypeService.retrieve(spec);
 	}
 
 	@GET
@@ -37,7 +39,5 @@ public class MemberExpenseTypeResource {
 			@BeanParam ExpenseTypeSpecification spec) {
 		return expenseTypeService.findAll(spec, pageRequest);
 	}
-	
-	
 
 }

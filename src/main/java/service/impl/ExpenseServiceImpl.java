@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
-import resources.specification.ExpenseSpecification;
 import sendto.ExpenseSendto;
 import service.ExpenseService;
 import dao.ExpenseDao;
@@ -25,7 +25,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 	private ExpenseTypeDao expenseTypeDao;
 	private ReportDao reportDao;
 
-	public ExpenseServiceImpl(ExpenseDao expenseDao, ExpenseTypeDao expenseTypeDao, ReportDao reportDao) {
+	public ExpenseServiceImpl(ExpenseDao expenseDao,
+			ExpenseTypeDao expenseTypeDao, ReportDao reportDao) {
 		this.expenseDao = expenseDao;
 		this.expenseTypeDao = expenseTypeDao;
 		this.reportDao = reportDao;
@@ -33,10 +34,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Transactional("transactionManager")
 	@Override
-	public ExpenseSendto retrieve(long id) {
-		Expense expense = expenseDao.findOne(id);
+	public ExpenseSendto retrieve(Specification<Expense> spec) {
+		Expense expense = expenseDao.findOne(spec);
 		if (expense == null) {
-			throw new ExpenseNotFoundException(id);
+			throw new ExpenseNotFoundException();
 		}
 
 		return toExpenseSendto(expense);
@@ -59,16 +60,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Transactional("transactionManager")
 	@Override
-	public void delete(long id) {
-		try {
-			Expense expense = expenseDao.findOne(id);
-			if (expense == null) {
-				throw new ExpenseNotFoundException(id);
-			}
-			expenseDao.delete(expense);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new ExpenseNotFoundException(id);
+	public void delete(Specification<Expense> spec) {
+		Expense expense = expenseDao.findOne(spec);
+		if (expense == null) {
+			throw new ExpenseNotFoundException();
 		}
+		expenseDao.delete(expense);
 	}
 
 	@Transactional("transactionManager")
@@ -92,18 +89,22 @@ public class ExpenseServiceImpl implements ExpenseService {
 		}
 		if (sendto.isReportSet()) {
 			if (sendto.getReport().isIdSet()) {
-				entity.Report report = reportDao.findOne(sendto.getReport().getId());
+				entity.Report report = reportDao.findOne(sendto.getReport()
+						.getId());
 				if (report == null) {
-					throw new ReportNotFoundException(sendto.getReport().getId());
+					throw new ReportNotFoundException(sendto.getReport()
+							.getId());
 				}
 				newEntry.setReport(report);
 			}
 		}
 		if (sendto.isExpenseTypeSet()) {
 			if (sendto.getExpenseType().isIdSet()) {
-				entity.ExpenseType expenseType = expenseTypeDao.findOne(sendto.getExpenseType().getId());
+				entity.ExpenseType expenseType = expenseTypeDao.findOne(sendto
+						.getExpenseType().getId());
 				if (expenseType == null) {
-					throw new ExpenseTypeNotFoundException(sendto.getExpenseType().getId());
+					throw new ExpenseTypeNotFoundException(sendto
+							.getExpenseType().getId());
 				}
 				newEntry.setExpenseType(expenseType);
 			}
@@ -113,22 +114,25 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Transactional("transactionManager")
 	@Override
-	public Page<ExpenseSendto> findAll(ExpenseSpecification spec, Pageable pageable) {
+	public Page<ExpenseSendto> findAll(Specification<Expense> spec,
+			Pageable pageable) {
 		List<ExpenseSendto> sendto = new ArrayList<ExpenseSendto>();
 		Page<Expense> expenses = expenseDao.findAll(spec, pageable);
 		for (Expense exp : expenses) {
 			sendto.add(toExpenseSendto(exp));
 		}
-		Page<ExpenseSendto> rets = new PageImpl<ExpenseSendto>(sendto, pageable, expenses.getTotalElements());
+		Page<ExpenseSendto> rets = new PageImpl<ExpenseSendto>(sendto,
+				pageable, expenses.getTotalElements());
 		return rets;
 	}
 
 	@Transactional("transactionManager")
 	@Override
-	public ExpenseSendto update(long id, ExpenseSendto updated) {
-		Expense exp = expenseDao.findOne(id);
+	public ExpenseSendto update(Specification<Expense> spec,
+			ExpenseSendto updated) {
+		Expense exp = expenseDao.findOne(spec);
 		if (exp == null) {
-			throw new ExpenseNotFoundException(id);
+			throw new ExpenseNotFoundException();
 		}
 		setUpExpense(updated, exp);
 		return toExpenseSendto(expenseDao.save(exp));

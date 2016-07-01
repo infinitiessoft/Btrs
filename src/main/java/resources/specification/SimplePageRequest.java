@@ -15,7 +15,7 @@ public class SimplePageRequest implements Pageable {
 	@DefaultValue("0")
 	private Integer page;
 	@QueryParam("pageSize")
-	@DefaultValue("5")
+	@DefaultValue("20")
 	private Integer pageSize;
 	@QueryParam("sort")
 	@DefaultValue("id")

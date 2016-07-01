@@ -4,19 +4,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import entity.ExpenseType;
 import sendto.ExpenseTypeSendto;
+import entity.ExpenseType;
 
 public interface ExpenseTypeService {
 
-	public ExpenseTypeSendto retrieve(long id);
+	public ExpenseTypeSendto retrieve(Specification<ExpenseType> spec);
 
-	public void delete(long id);
+	public void delete(Specification<ExpenseType> spec);
 
 	public ExpenseTypeSendto save(ExpenseTypeSendto expenseType);
 
-	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec, Pageable pageable);
+	public Page<ExpenseTypeSendto> findAll(Specification<ExpenseType> spec,
+			Pageable pageable);
 
-	public ExpenseTypeSendto update(long id, ExpenseTypeSendto expenseType);
+	public ExpenseTypeSendto update(Specification<ExpenseType> spec,
+			ExpenseTypeSendto expenseType);
 
 }

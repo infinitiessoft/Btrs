@@ -6,19 +6,16 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
-import resources.specification.UserSpecification;
 import sendto.UserSendto;
 import service.UserService;
 import attendance.dao.EmployeeDao;
 import attendance.entity.Employee;
 import dao.JobTitleDao;
-import dao.RoleDao;
 import dao.UserDao;
-import dao.UserRoleDao;
 import entity.JobTitle;
-import entity.Role;
-import entity.RoleEnum;
 import entity.User;
 import entity.UserRole;
 import exceptions.JobTitleNotFoundException;
@@ -29,44 +26,32 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	private EmployeeDao employeeDao;
 	private JobTitleDao jobTitleDao;
-	private RoleDao roleDao;
-	private UserRoleDao userRoleDao;
 
 	public UserServiceImpl(UserDao userDao, JobTitleDao jobTitleDao,
-			EmployeeDao employeeDao, RoleDao roleDao, UserRoleDao userRoleDao) {
+			EmployeeDao employeeDao) {
 		this.userDao = userDao;
 		this.jobTitleDao = jobTitleDao;
 		this.employeeDao = employeeDao;
-		this.roleDao = roleDao;
-		this.userRoleDao = userRoleDao;
 	}
 
+	@Transactional("transactionManager")
 	@Override
-	public UserSendto retrieve(long id) {
-		Employee employee = employeeDao.findOne(id);
-		if (employee == null) {
-			throw new UserNotFoundException(id);
-		}
-		User user = findOrSave(id);
-		return toUserSendto(employee, user);
-	}
-
-	@Override
-	public synchronized User findOrSave(long userSharedId) {
-		User user = userDao.findByUserSharedId(userSharedId);
+	public UserSendto retrieve(Specification<User> spec) {
+		User user = userDao.findOne(spec);
 		if (user == null) {
-			UserSendto userSendto = new UserSendto();
-			UserSendto.JobTitle jobTitle = new UserSendto.JobTitle();
-			jobTitle.setId(1L);
-			userSendto.setJobTitle(jobTitle);
-			user = save(userSharedId, userSendto);
+			throw new UserNotFoundException();
 		}
-		return user;
+		Employee employee = employeeDao.findOne(user.getUserSharedId());
+		if (employee == null) {
+			throw new UserNotFoundException();
+		}
+
+		return toUserSendto(employee, user);
 	}
 
 	private UserSendto toUserSendto(Employee employee, User user) {
 		UserSendto ret = new UserSendto();
-		ret.setId(employee.getId());
+		ret.setId(user.getId());
 
 		UserSendto.JobTitle jobTitle = new UserSendto.JobTitle();
 		jobTitle.setId(user.getJobTitle().getId());
@@ -89,28 +74,6 @@ public class UserServiceImpl implements UserService {
 		return ret;
 	}
 
-	private User save(long userSharedId, UserSendto user) {
-		Employee employee = employeeDao.findOne(userSharedId);
-		if (employee == null) {
-			throw new UserNotFoundException(userSharedId);
-		}
-
-		User newEntry = new User();
-		setUpUser(user, newEntry);
-		newEntry.setUserSharedId(employee.getId());
-		newEntry = userDao.save(newEntry);
-
-		Role role = roleDao.findByValue(RoleEnum.EMPLOYEE);
-		UserRole userRole = new UserRole();
-		userRole.setRole(role);
-		userRole.setUser(newEntry);
-		userRoleDao.save(userRole);
-		newEntry.getUserRole().add(userRole);
-		role.getUserRole().add(userRole);
-
-		return newEntry;
-	}
-
 	private void setUpUser(UserSendto user, User newEntry) {
 		if (user.isJobTitleSet() && user.getJobTitle().isIdSet()) {
 			JobTitle jobTitle = jobTitleDao.findOne(user.getJobTitle().getId());
@@ -121,26 +84,33 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Transactional("transactionManager")
 	@Override
-	public Page<UserSendto> findAll(UserSpecification spec, Pageable pageable) {
+	public Page<UserSendto> findAll(Specification<User> spec, Pageable pageable) {
 		List<UserSendto> sendto = new ArrayList<UserSendto>();
-		Page<Employee> employees = employeeDao.findAll(spec, pageable);
-		for (Employee employee : employees) {
-			User user = findOrSave(employee.getId());
-			sendto.add(toUserSendto(employee, user));
+		Page<User> users = userDao.findAll(spec, pageable);
+		for (User user : users) {
+			Employee employee = employeeDao.findOne(user.getUserSharedId());
+			if (employee != null) {
+				sendto.add(toUserSendto(employee, user));
+			}
 		}
 		Page<UserSendto> rets = new PageImpl<UserSendto>(sendto, pageable,
-				employees.getTotalElements());
+				users.getTotalElements());
 		return rets;
 	}
 
+	@Transactional("transactionManager")
 	@Override
-	public UserSendto update(long id, UserSendto updated) {
-		Employee employee = employeeDao.findOne(id);
-		if (employee == null) {
-			throw new UserNotFoundException(id);
+	public UserSendto update(Specification<User> spec, UserSendto updated) {
+		User user = userDao.findOne(spec);
+		if (user == null) {
+			throw new UserNotFoundException();
 		}
-		User user = findOrSave(id);
+		Employee employee = employeeDao.findOne(user.getUserSharedId());
+		if (employee == null) {
+			throw new UserNotFoundException();
+		}
 		setUpUser(updated, user);
 		return toUserSendto(employee, userDao.save(user));
 	}

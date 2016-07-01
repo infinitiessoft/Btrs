@@ -16,14 +16,6 @@ angular.module('edit-expenseType', []).controller(
 				formlyVersion : formlyVersion
 			};
 
-			vm.options = {
-				formState : {
-					horizontalLabelClass : 'col-sm-2',
-					horizontalFieldClass : 'col-sm-10',
-					readOnly : true
-				}
-			};
-
 			if (id == 0) {
 				vm.model = {};
 			} else {

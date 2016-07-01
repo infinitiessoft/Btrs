@@ -33,6 +33,8 @@ public class MembersResource {
 	private MemberAttendRecordResource memberAttendRecordResource;
 	@Autowired
 	private MemberAuditResource memberAuditResource;
+	@Autowired
+	private MemberAuditAttendRecordResource memberAuditAttendRecordResource;
 
 	@GET
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
@@ -46,7 +48,9 @@ public class MembersResource {
 	@Path(value = "{id}")
 	@PreAuthorize("isAuthenticated() and #id == principal.id or hasAuthority('ADMIN') or hasAuthority('ACCOUNTANT')")
 	public UserSendto getUser(@PathParam("id") long id) {
-		return userService.retrieve(id);
+		UserSpecification spec = new UserSpecification();
+		spec.setId(id);
+		return userService.retrieve(spec);
 	}
 
 	// **Method to update
@@ -58,7 +62,9 @@ public class MembersResource {
 			user.setJobTitle(null);
 			user.setJobTitleSet(false);
 		}
-		return userService.update(id, user);
+		UserSpecification spec = new UserSpecification();
+		spec.setId(id);
+		return userService.update(spec, user);
 	}
 
 	@Path("{id}/reports")
@@ -74,6 +80,11 @@ public class MembersResource {
 	@Path("{id}/audits")
 	public MemberAuditResource getUserAuditResource() {
 		return memberAuditResource;
+	}
+
+	@Path("{id}/auditAttendRecords")
+	public MemberAuditAttendRecordResource getAuditAttendRecordResource() {
+		return memberAuditAttendRecordResource;
 	}
 
 }

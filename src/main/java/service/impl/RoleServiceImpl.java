@@ -13,7 +13,6 @@ import sendto.RoleSendto;
 import service.RoleService;
 import dao.RoleDao;
 import entity.Role;
-import entity.RoleEnum;
 import exceptions.RoleNotFoundException;
 
 public class RoleServiceImpl implements RoleService {
@@ -26,10 +25,10 @@ public class RoleServiceImpl implements RoleService {
 
 	@Transactional("transactionManager")
 	@Override
-	public RoleSendto retrieve(long id) {
-		Role role = roleDao.findOne(id);
+	public RoleSendto retrieve(Specification<Role> spec) {
+		Role role = roleDao.findOne(spec);
 		if (role == null) {
-			throw new RoleNotFoundException(id);
+			throw new RoleNotFoundException();
 		}
 		return toRoleSendto(role);
 	}
@@ -41,28 +40,28 @@ public class RoleServiceImpl implements RoleService {
 		return ret;
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public void delete(long id) {
-		try {
-			Role role = roleDao.findOne(id);
-			if (role == null) {
-				throw new RoleNotFoundException(id);
-			}
-			roleDao.delete(role);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new RoleNotFoundException(id);
-		}
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public void delete(long id) {
+	// try {
+	// Role role = roleDao.findOne(id);
+	// if (role == null) {
+	// throw new RoleNotFoundException(id);
+	// }
+	// roleDao.delete(role);
+	// } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+	// throw new RoleNotFoundException(id);
+	// }
+	// }
 
-	@Transactional("transactionManager")
-	@Override
-	public RoleSendto save(RoleSendto role) {
-		role.setId(null);
-		Role newEntry = new Role();
-		setUpRole(role, newEntry);
-		return toRoleSendto(roleDao.save(newEntry));
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public RoleSendto save(RoleSendto role) {
+	// role.setId(null);
+	// Role newEntry = new Role();
+	// setUpRole(role, newEntry);
+	// return toRoleSendto(roleDao.save(newEntry));
+	// }
 
 	@Transactional("transactionManager")
 	@Override
@@ -77,20 +76,20 @@ public class RoleServiceImpl implements RoleService {
 		return rets;
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public RoleSendto update(long id, RoleSendto updated) {
-		Role roles = roleDao.findOne(id);
-		if (roles == null) {
-			throw new RoleNotFoundException(id);
-		}
-		setUpRole(updated, roles);
-		return toRoleSendto(roleDao.save(roles));
-	}
+	// @Transactional("transactionManager")
+	// @Override
+	// public RoleSendto update(Specification<Role> spec, RoleSendto updated) {
+	// Role roles = roleDao.findOne(spec);
+	// if (roles == null) {
+	// throw new RoleNotFoundException();
+	// }
+	// setUpRole(updated, roles);
+	// return toRoleSendto(roleDao.save(roles));
+	// }
 
-	private void setUpRole(RoleSendto sendto, Role newEntry) {
-		if (sendto.isValueSet()) {
-			newEntry.setValue(RoleEnum.valueOf(sendto.getValue()));
-		}
-	}
+	// private void setUpRole(RoleSendto sendto, Role newEntry) {
+	// if (sendto.isValueSet()) {
+	// newEntry.setValue(RoleEnum.valueOf(sendto.getValue()));
+	// }
+	// }
 }

@@ -32,13 +32,17 @@ public class UserResource {
 	@GET
 	@Path(value = "{id}")
 	public UserSendto getUser(@PathParam("id") long id) {
-		return userService.retrieve(id);
+		UserSpecification spec = new UserSpecification();
+		spec.setId(id);
+		return userService.retrieve(spec);
 	}
 
 	@PUT
 	@Path(value = "{id}")
 	public UserSendto updateUser(@PathParam("id") long id, UserSendto user) {
-		return userService.update(id, user);
+		UserSpecification spec = new UserSpecification();
+		spec.setId(id);
+		return userService.update(spec, user);
 	}
 
 	@GET

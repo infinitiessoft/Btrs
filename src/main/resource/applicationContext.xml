@@ -128,7 +128,7 @@
 		</property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 	</bean>
@@ -188,17 +188,13 @@
 
 	</bean>
 
-	<bean id="expenseTypeParaService" class="service.impl.ExpenseTypeParaServiceImpl">
-		<constructor-arg ref="expenseTypeDao" />
-		<constructor-arg ref="typeParameterDao" />
-		<constructor-arg ref="expenseTypeParaDao" />
-	</bean>
+	<!-- <bean id="expenseTypeParaService" class="service.impl.ExpenseTypeParaServiceImpl"> 
+		<constructor-arg ref="expenseTypeDao" /> <constructor-arg ref="typeParameterDao" 
+		/> <constructor-arg ref="expenseTypeParaDao" /> </bean> -->
 
-	<bean id="parameterValueService" class="service.impl.ParameterValueServiceImpl">
-		<constructor-arg ref="parameterValueDao" />
-		<constructor-arg ref="typeParameterDao" />
-		<constructor-arg ref="expenseDao" />
-	</bean>
+	<!-- <bean id="parameterValueService" class="service.impl.ParameterValueServiceImpl"> 
+		<constructor-arg ref="parameterValueDao" /> <constructor-arg ref="typeParameterDao" 
+		/> <constructor-arg ref="expenseDao" /> </bean> -->
 
 	<bean id="reportService" class="service.impl.ReportServiceImpl">
 		<constructor-arg ref="reportDao" />
@@ -219,14 +215,12 @@
 		<constructor-arg ref="employeeDao" />
 	</bean>
 
-	<bean id="typeParameterService" class="service.impl.TypeParameterServiceImpl">
-		<constructor-arg ref="typeParameterDao" />
-	</bean>
+	<!-- <bean id="typeParameterService" class="service.impl.TypeParameterServiceImpl"> 
+		<constructor-arg ref="typeParameterDao" /> </bean> -->
 
 	<bean id="userRoleService" class="service.impl.UserRoleServiceImpl">
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="userDao" />
-		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="roleDao" />
 	</bean>
 
@@ -234,20 +228,22 @@
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="employeeDao" />
 		<constructor-arg ref="jobTitleDao" />
-		<constructor-arg ref="roleDao" />
-		<constructor-arg ref="userRoleDao" />
 	</bean>
 
 	<bean id="userDetailService" class="service.impl.UserDetailServiceImpl">
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="jobTitleDao" />
+		<constructor-arg ref="roleDao" />
 		<constructor-arg ref="employeeDao" />
-		<constructor-arg ref="userService" />
+		<constructor-arg ref="userDao" />
 	</bean>
 
 	<bean id="attendRecordService" class="service.impl.DBAttendRecordService">
+		<constructor-arg ref="userDao" />
 		<constructor-arg ref="attendRecordDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
-	
+
 	<bean id="jobTitleService" class="service.impl.JobTitleServiceImpl">
 		<constructor-arg ref="jobTitleDao" />
 	</bean>

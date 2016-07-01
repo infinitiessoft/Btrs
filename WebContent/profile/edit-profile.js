@@ -40,14 +40,12 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 					readOnly : true
 				}
 			};
-
-			if (id == 0) {
-				vm.model = {};
-			} else {
-				profileService.get(id).then(function(status) {
-					vm.model = status.data;
-				});
-			}
+			vm.model = {};
+			vm.jobTitle = {};
+			profileService.get(id).then(function(status) {
+				vm.model = status.data;
+				vm.jobTitle.name = status.data.jobTitle.name;
+			});
 
 			vm.fields = [ {
 				key : 'name',
@@ -61,11 +59,14 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 			}, {
 				key : 'name',
 				type : 'input',
-				model: vm.model.jobTitle,
+				model : vm.jobTitle,
 				templateOptions : {
 					label : 'Job Title',
+					placeholder : 'jobTitle',
+					type : 'text',
+					disabled : true
 				}
-			},{
+			}, {
 				key : 'username',
 				type : 'input',
 				templateOptions : {
@@ -103,8 +104,7 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 				}
 			} ];
 			function onSubmit() {
-				$state
-				.go('dashboard.home');
+				$state.go('dashboard.home');
 			}
 
 		});

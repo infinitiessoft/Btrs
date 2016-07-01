@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -43,7 +44,9 @@ public class Expense extends AbstractEntity {
 	private Integer taxAmount;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.REMOVE)
-	private Set<ParameterValue> parameterValues = new HashSet<ParameterValue>(0);
+	@OrderBy("id DESC")
+	private List<ParameterValue> parameterValues = new ArrayList<ParameterValue>(
+			0);
 
 	public Expense() {
 		super();
@@ -97,11 +100,11 @@ public class Expense extends AbstractEntity {
 		this.taxAmount = taxAmount;
 	}
 
-	public Set<ParameterValue> getParameterValue() {
+	public List<ParameterValue> getParameterValue() {
 		return parameterValues;
 	}
 
-	public void setParameterValue(Set<ParameterValue> parameterValues) {
+	public void setParameterValue(List<ParameterValue> parameterValues) {
 		this.parameterValues = parameterValues;
 	}
 

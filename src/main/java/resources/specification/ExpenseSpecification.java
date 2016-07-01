@@ -16,6 +16,8 @@ import com.google.common.base.Strings;
 import entity.Expense;
 
 public class ExpenseSpecification implements Specification<Expense> {
+
+	private Long id;
 	@QueryParam("comment")
 	private String comment;
 	@QueryParam("totalAmount")
@@ -38,6 +40,10 @@ public class ExpenseSpecification implements Specification<Expense> {
 		if (taxAmount != null) {
 			predicates
 					.add(cb.equal(root.<Integer> get("taxAmount"), taxAmount));
+		}
+
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -68,6 +74,14 @@ public class ExpenseSpecification implements Specification<Expense> {
 
 	public void setTaxAmount(Integer taxAmount) {
 		this.taxAmount = taxAmount;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

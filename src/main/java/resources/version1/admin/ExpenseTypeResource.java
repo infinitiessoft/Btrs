@@ -33,20 +33,28 @@ public class ExpenseTypeResource {
 	@GET
 	@Path(value = "{id}")
 	public ExpenseTypeSendto getExpenseType(@PathParam("id") long id) {
-		return expenseTypeService.retrieve(id);
+		ExpenseTypeSpecification spec = new ExpenseTypeSpecification();
+		spec.setId(id);
+		return expenseTypeService.retrieve(spec);
 	}
 
 	@DELETE
 	@Path(value = "{id}")
 	public Response deleteExpenseType(@PathParam("id") long id) {
-		expenseTypeService.delete(id);
-		return Response.status(Status.NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
+		ExpenseTypeSpecification spec = new ExpenseTypeSpecification();
+		spec.setId(id);
+		expenseTypeService.delete(spec);
+		return Response.status(Status.NO_CONTENT)
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
 	@Path(value = "{id}")
-	public ExpenseTypeSendto updateExpenseType(@PathParam("id") long id, ExpenseTypeSendto expenseType) {
-		return expenseTypeService.update(id, expenseType);
+	public ExpenseTypeSendto updateExpenseType(@PathParam("id") long id,
+			ExpenseTypeSendto expenseType) {
+		ExpenseTypeSpecification spec = new ExpenseTypeSpecification();
+		spec.setId(id);
+		return expenseTypeService.update(spec, expenseType);
 	}
 
 	@POST
@@ -55,14 +63,15 @@ public class ExpenseTypeResource {
 	}
 
 	@GET
-	public Page<ExpenseTypeSendto> findallExpenseType(@BeanParam SimplePageRequest pageRequest,
+	public Page<ExpenseTypeSendto> findallExpenseType(
+			@BeanParam SimplePageRequest pageRequest,
 			@BeanParam ExpenseTypeSpecification spec) {
 		return expenseTypeService.findAll(spec, pageRequest);
 	}
 
-	@Path("{id}/typeParameter")
-	public Class<ExpenseTypeParaResource> getExpenseTypeParaResource() {
-		return ExpenseTypeParaResource.class;
-	}
+	// @Path("{id}/typeParameter")
+	// public Class<ExpenseTypeParaResource> getExpenseTypeParaResource() {
+	// return ExpenseTypeParaResource.class;
+	// }
 
 }

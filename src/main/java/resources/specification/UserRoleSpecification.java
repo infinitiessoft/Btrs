@@ -18,6 +18,7 @@ import entity.UserRole;
 
 public class UserRoleSpecification implements Specification<UserRole> {
 
+	private Long id;
 	@QueryParam("userId")
 	private Long userId;
 	@QueryParam("roleId")
@@ -40,6 +41,9 @@ public class UserRoleSpecification implements Specification<UserRole> {
 		if (roleName != null) {
 			predicates.add(cb.equal(
 					root.<Role> get("role").<RoleEnum> get("value"), roleName));
+		}
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -69,6 +73,14 @@ public class UserRoleSpecification implements Specification<UserRole> {
 
 	public void setRoleName(RoleEnum roleName) {
 		this.roleName = roleName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

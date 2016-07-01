@@ -97,6 +97,7 @@ public class AttendRecordSpecification implements Specification<AttendRecord> {
 		}
 
 		if (exclusion != null && !exclusion.isEmpty()) {
+			predicates.add(cb.isNotNull(root.<Long> get("id")));
 			predicates.add(cb.not(root.<Long> get("id").in(exclusion)));
 		}
 

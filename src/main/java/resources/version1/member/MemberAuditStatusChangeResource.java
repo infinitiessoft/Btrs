@@ -36,7 +36,7 @@ public class MemberAuditStatusChangeResource {
 		StatusChangeSpecification spec = new StatusChangeSpecification();
 		spec.setId(statusChangeid);
 		spec.setReportId(reportId);
-		return statusChangeService.retrieve(id);
+		return statusChangeService.retrieve(spec);
 	}
 
 	// ** Method to find All the departments in the list

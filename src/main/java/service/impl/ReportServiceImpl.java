@@ -16,14 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import resources.specification.AttendRecordSpecification;
 import resources.specification.EmployeeSpecification;
 import resources.specification.ReportSpecification;
 import resources.specification.UserRoleSpecification;
-import resources.specification.UserSpecification;
 import sendto.ReportSendto;
 import sendto.ReportSummarySendto;
 import sendto.StatusChangeSendto;
@@ -96,16 +94,6 @@ public class ReportServiceImpl implements ReportService {
 
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public ReportSendto retrieve(long id) {
-		Report report = reportDao.findOne(id);
-		if (report == null) {
-			throw new ReportNotFoundException(id);
-		}
-		return toReportSendto(report, true);
-	}
-
 	private ReportSendto toReportSendto(Report report, boolean detail) {
 		ReportSendto ret = new ReportSendto();
 		ret.setId(report.getId());
@@ -126,13 +114,20 @@ public class ReportServiceImpl implements ReportService {
 			usr.setId(report.getOwner().getId());
 			Employee owner = employeeDao.findOne(report.getOwner()
 					.getUserSharedId());
-			String name = owner.getName();
-			usr.setName(name);
+			if (owner != null) {
+				String name = owner.getName();
+				usr.setName(name);
+			}
 			ret.setOwner(usr);
 
 			if (report.getReviewer() != null) {
 				ReportSendto.User reviewer = new ReportSendto.User();
 				reviewer.setId(report.getReviewer().getId());
+				Employee eReviewer = employeeDao.findOne(report.getReviewer()
+						.getUserSharedId());
+				if (eReviewer != null) {
+					reviewer.setName(eReviewer.getName());
+				}
 				ret.setReviewer(reviewer);
 			}
 
@@ -141,8 +136,12 @@ public class ReportServiceImpl implements ReportService {
 				e.setId(expense.getId());
 				e.setComment(expense.getComment());
 				ReportSendto.Expense.ExpenseType type = new ReportSendto.Expense.ExpenseType();
+				ReportSendto.Expense.ExpenseType.ExpenseCategory category = new ReportSendto.Expense.ExpenseType.ExpenseCategory();
 				type.setId(expense.getExpenseType().getId());
 				type.setValue(expense.getExpenseType().getValue());
+				category.setId(expense.getExpenseType().getExpenseCategory().getId());
+				type.setExpenseCategory(category);
+				
 				e.setExpenseType(type);
 				e.setTotalAmount(expense.getTotalAmount());
 				e.setTaxAmount(expense.getTaxAmount());
@@ -179,8 +178,10 @@ public class ReportServiceImpl implements ReportService {
 		usr.setId(report.getOwner().getId());
 		Employee owner = employeeDao.findOne(report.getOwner()
 				.getUserSharedId());
-		String name = owner.getName();
-		usr.setName(name);
+		if (owner != null) {
+			String name = owner.getName();
+			usr.setName(name);
+		}
 		ret.setOwner(usr);
 		ret.setFirmOrProject(report.getFirmOrProject());
 
@@ -189,44 +190,36 @@ public class ReportServiceImpl implements ReportService {
 
 	@Transactional("transactionManager")
 	@Override
-	public void delete(long id) {
-		try {
-			Report report = reportDao.findOne(id);
-			if (report == null) {
-				throw new ReportNotFoundException(id);
-			}
-			reportDao.delete(report);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new ReportNotFoundException(id);
-		}
-	}
-
-	@Transactional("transactionManager")
-	@Override
 	public ReportSendto save(ReportSendto report) {
 		report.setId(null);
 		Report newEntry = new Report();
 		setUpReport(report, newEntry);
-		if (report.getAttendanceRecordId() == null) {
-			throw new BadRequestException("invalid attendRecordId");
-		}
+		// if (report.getAttendanceRecordId() == null) {
+		// throw new BadRequestException("invalid attendRecordId");
+		// }
 		if (!report.isOwnerSet() || !report.getOwner().isIdSet()) {
 			throw new BadRequestException("invalid ownerId");
 		}
-		AttendRecordSpecification recordSpec = new AttendRecordSpecification();
-		recordSpec.setApplicantId(report.getOwner().getId());
-		recordSpec.setId(report.getAttendanceRecordId());
-		AttendRecord record = recordDao.findOne(recordSpec);
-		if (record == null) {
-			throw new AttendRecordNotFoundException(
-					report.getAttendanceRecordId());
+		if (report.getAttendanceRecordId() != null) {
+			AttendRecordSpecification recordSpec = new AttendRecordSpecification();
+			Employee employee = employeeDao.findOne(newEntry.getOwner().getUserSharedId());
+			recordSpec.setApplicantId(employee.getId());
+			recordSpec.setId(report.getAttendanceRecordId());
+			AttendRecord record = recordDao.findOne(recordSpec);
+			if (record == null) {
+				throw new AttendRecordNotFoundException(
+						report.getAttendanceRecordId());
+			}
+			newEntry.setStartDate(record.getStartDate());
+			newEntry.setEndDate(record.getEndDate());
+		} else {
+			newEntry.setStartDate(new Date());
+			newEntry.setEndDate(new Date());
 		}
-		newEntry.setStartDate(record.getStartDate());
-		newEntry.setEndDate(record.getEndDate());
+
 		newEntry.setCreatedDate(new Date());
 		newEntry.setMaxIdLastMonth(getMaxIdLastMonth());
 		newEntry.setCurrentStatus(StatusEnum.SUBMITTED);
-
 		Report ret = reportDao.save(newEntry);
 
 		if (report.getExpenses() != null) {
@@ -268,12 +261,11 @@ public class ReportServiceImpl implements ReportService {
 		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
 			EmployeeSpecification employeeSpec = new EmployeeSpecification();
 			employeeSpec.setName(spec.getApplicantName());
-			List<Employee> employees = employeeDao.findAll(employeeSpec);
-			List<Long> ids = new ArrayList<Long>();
-			for (Employee e : employees) {
-				ids.add(e.getId());
+			Employee employee = employeeDao.findOne(employeeSpec);
+			if (employee == null) {
+				throw new UserNotFoundException(spec.getApplicantName());
 			}
-			spec.setIds(ids);
+			spec.setUserSharedId(employee.getId());
 		}
 		Page<Report> reports = reportDao.findAll(spec, pageable);
 
@@ -287,28 +279,27 @@ public class ReportServiceImpl implements ReportService {
 
 	@Transactional("transactionManager")
 	@Override
-	public ReportSendto update(Specification<Report> spec,
-			ReportSendto updated, long currentUserId) {
+	public ReportSendto update(ReportSpecification spec, ReportSendto updated,
+			String currentUsername) {
+		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
+			EmployeeSpecification employeeSpec = new EmployeeSpecification();
+			employeeSpec.setName(spec.getApplicantName());
+			Employee employee = employeeDao.findOne(employeeSpec);
+			if (employee == null) {
+				throw new UserNotFoundException(spec.getApplicantName());
+			}
+			spec.setUserSharedId(employee.getId());
+		}
+
 		Report rpt = reportDao.findOne(spec);
 		if (rpt == null) {
 			throw new ReportNotFoundException();
 		}
-		User currentUser = userDao.findOne(currentUserId);
-		if (currentUser == null) {
-			throw new UserNotFoundException(currentUserId);
+		Employee currentEmployee = employeeDao.findByUsername(currentUsername);
+		if (currentEmployee == null) {
+			throw new UserNotFoundException(currentUsername);
 		}
-		return update(rpt, updated, currentUser);
-	}
-
-	@Transactional("transactionManager")
-	@Override
-	public ReportSendto update(long id, ReportSendto updated,
-			String currentUsername) {
-		Report rpt = reportDao.findOne(id);
-		if (rpt == null) {
-			throw new ReportNotFoundException();
-		}
-		User currentUser = this.findCurrentUser(currentUsername);
+		User currentUser = userDao.findByUserSharedId(currentEmployee.getId());
 		if (currentUser == null) {
 			throw new UserNotFoundException(currentUsername);
 		}
@@ -384,6 +375,9 @@ public class ReportServiceImpl implements ReportService {
 				if (e.isTaxAmountSet()) {
 					old.setTaxAmount(e.getTaxAmount());
 				}
+				if (e.isTotalAmountSet()) {
+					old.setTotalAmount(e.getTotalAmount());
+				}
 				expenseDao.save(old);
 			} else {
 				throw new BadRequestException("invalid expense:" + e.getId());
@@ -424,7 +418,7 @@ public class ReportServiceImpl implements ReportService {
 						.getExpenseType().getId());
 				e.setExpenseType(expenseType);
 
-				Set<ExpenseTypePara> expenseTypeParas = expenseType
+				List<ExpenseTypePara> expenseTypeParas = expenseType
 						.getExpenseTypePara();
 				List<sendto.ReportSendto.Expense.ParameterValue> parameterValues = expense
 						.getParameterValues();
@@ -556,14 +550,6 @@ public class ReportServiceImpl implements ReportService {
 		}
 	}
 
-	private User findCurrentUser(String currentUsername) {
-		UserSpecification userSpec = new UserSpecification();
-		userSpec.setUsername(currentUsername);
-		Employee employee = employeeDao.findByUsername(currentUsername);
-		User currentUser = userDao.findByUserSharedId(employee.getId());
-		return currentUser;
-	}
-
 	private boolean resubmit(Report report, User user) {
 		changeStatus(report, user, StatusEnum.SUBMITTED, "resubmitted");
 		return true;
@@ -644,7 +630,17 @@ public class ReportServiceImpl implements ReportService {
 
 	@Transactional("transactionManager")
 	@Override
-	public ReportSendto retrieve(Specification<Report> spec) {
+	public ReportSendto retrieve(ReportSpecification spec) {
+		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
+			EmployeeSpecification employeeSpec = new EmployeeSpecification();
+			employeeSpec.setName(spec.getApplicantName());
+			Employee employee = employeeDao.findOne(employeeSpec);
+			if (employee == null) {
+				throw new UserNotFoundException(spec.getApplicantName());
+			}
+			spec.setUserSharedId(employee.getId());
+		}
+
 		Report rpt = reportDao.findOne(spec);
 		if (rpt == null) {
 			throw new ReportNotFoundException();
@@ -654,12 +650,47 @@ public class ReportServiceImpl implements ReportService {
 
 	@Transactional("transactionManager")
 	@Override
-	public void delete(Specification<Report> spec) {
+	public void delete(ReportSpecification spec) {
+		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
+			EmployeeSpecification employeeSpec = new EmployeeSpecification();
+			employeeSpec.setName(spec.getApplicantName());
+			Employee employee = employeeDao.findOne(employeeSpec);
+			if (employee == null) {
+				throw new UserNotFoundException(spec.getApplicantName());
+			}
+			spec.setUserSharedId(employee.getId());
+		}
 		Report rpt = reportDao.findOne(spec);
 		if (rpt == null) {
 			throw new ReportNotFoundException();
 		}
 		reportDao.delete(rpt);
+	}
+
+	@Transactional("transactionManager")
+	@Override
+	public ReportSendto update(ReportSpecification spec, ReportSendto updated,
+			long currentUseId) {
+		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
+			EmployeeSpecification employeeSpec = new EmployeeSpecification();
+			employeeSpec.setName(spec.getApplicantName());
+			Employee employee = employeeDao.findOne(employeeSpec);
+			if (employee == null) {
+				throw new UserNotFoundException(spec.getApplicantName());
+			}
+			spec.setUserSharedId(employee.getId());
+		}
+
+		Report rpt = reportDao.findOne(spec);
+		if (rpt == null) {
+			throw new ReportNotFoundException();
+		}
+
+		User currentUser = userDao.findOne(currentUseId);
+		if (currentUser == null) {
+			throw new UserNotFoundException(currentUseId);
+		}
+		return update(rpt, updated, currentUser);
 	}
 
 }

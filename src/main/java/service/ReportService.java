@@ -2,34 +2,28 @@ package service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 import resources.specification.ReportSpecification;
 import sendto.ReportSendto;
 import sendto.ReportSummarySendto;
 import sendto.StatusChangeSendto;
-import entity.Report;
 
 public interface ReportService {
 
-	public ReportSendto retrieve(long id);
+	public ReportSendto retrieve(ReportSpecification spec);
 
-	public ReportSendto retrieve(Specification<Report> spec);
-
-	public void delete(long id);
-
-	public void delete(Specification<Report> spec);
+	public void delete(ReportSpecification spec);
 
 	public ReportSendto save(ReportSendto report);
 
 	public Page<ReportSummarySendto> findAll(ReportSpecification spec,
 			Pageable pageable);
 
-	public ReportSendto update(long id, ReportSendto report,
-			String currentUseName);
+	public ReportSendto update(ReportSpecification spec, ReportSendto report,
+			long currentUseId);
 
-	public ReportSendto update(Specification<Report> spec, ReportSendto report,
-			long currentId);
+	public ReportSendto update(ReportSpecification spec, ReportSendto report,
+			String currentUsername);
 
 	public ReportSendto approve(long id, StatusChangeSendto statusChange,
 			long currentUserId);

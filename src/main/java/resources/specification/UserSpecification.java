@@ -11,84 +11,47 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import attendance.entity.Employee;
+import entity.User;
 
-import com.google.common.base.Strings;
+public class UserSpecification implements Specification<User> {
 
-public class UserSpecification implements Specification<Employee> {
-
-	@QueryParam("departmentName")
-	private String departmentName;
-	@QueryParam("name")
-	private String name;
-	@QueryParam("username")
-	private String username;
-	@QueryParam("gender")
-	private String gender;
-	@QueryParam("employeeName")
-	private String employeeName;
+	private Long id;
+	@QueryParam("userSharedId")
+	private Long userSharedId;
 
 	@Override
-	public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query,
+	public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (!Strings.isNullOrEmpty(username)) {
-			predicates.add(cb.like(root.<String> get("username"), "%"
-					+ username + "%"));
+		if (userSharedId != null) {
+			predicates.add(cb.equal(root.<Long> get("userSharedId"),
+					userSharedId));
 		}
-		if (!Strings.isNullOrEmpty(gender)) {
-			predicates.add(cb.like(root.<String> get("gender"), "%" + gender
-					+ "%"));
+
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
-		if (!Strings.isNullOrEmpty(name)) {
-			predicates
-					.add(cb.like(root.<String> get("name"), "%" + name + "%"));
-		}
-		if (!Strings.isNullOrEmpty(departmentName)) {
-			predicates.add(cb.like(root.get("department").<String> get("name"),
-					"%" + departmentName + "%"));
-		}
-		if (!Strings.isNullOrEmpty(employeeName)) {
-			predicates.add(cb.like(root.get("employee").<String> get("name"),
-					"%" + employeeName + "%"));
-		}
+
 		if (predicates.isEmpty()) {
 			return null;
 		}
-
 		return cb.and(predicates.toArray(new Predicate[0]));
 	}
 
-	public String getDepartmentName() {
-		return departmentName;
+	public Long getUserSharedId() {
+		return userSharedId;
 	}
 
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	public void setUserSharedId(Long userSharedId) {
+		this.userSharedId = userSharedId;
 	}
 
-	public String getName() {
-		return name;
+	public Long getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

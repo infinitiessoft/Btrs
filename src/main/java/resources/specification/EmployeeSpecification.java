@@ -23,35 +23,35 @@ public class EmployeeSpecification implements Specification<Employee> {
 	private String name;
 	@QueryParam("username")
 	private String username;
-	@QueryParam("gender")
-	private String gender;
-	@QueryParam("employeeName")
-	private String employeeName;
+
+	// @QueryParam("gender")
+	// private String gender;
+
+	// @QueryParam("employeeName")
+	// private String employeeName;
 
 	@Override
 	public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query,
 			CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(username)) {
-			predicates.add(cb.like(root.<String> get("username"), "%"
-					+ username + "%"));
+			predicates.add(cb.equal(root.<String> get("username"), username));
 		}
-		if (!Strings.isNullOrEmpty(gender)) {
-			predicates.add(cb.like(root.<String> get("gender"), "%" + gender
-					+ "%"));
-		}
+		// if (!Strings.isNullOrEmpty(gender)) {
+		// predicates.add(cb.like(root.<String> get("gender"), "%" + gender
+		// + "%"));
+		// }
 		if (!Strings.isNullOrEmpty(name)) {
-			predicates
-					.add(cb.like(root.<String> get("name"), "%" + name + "%"));
+			predicates.add(cb.equal(root.<String> get("name"), name));
 		}
-		if (!Strings.isNullOrEmpty(departmentName)) {
-			predicates.add(cb.like(root.get("department").<String> get("name"),
-					"%" + departmentName + "%"));
-		}
-		if (!Strings.isNullOrEmpty(employeeName)) {
-			predicates.add(cb.like(root.get("employee").<String> get("name"),
-					"%" + employeeName + "%"));
-		}
+		// if (!Strings.isNullOrEmpty(departmentName)) {
+		// predicates.add(cb.like(root.get("department").<String> get("name"),
+		// "%" + departmentName + "%"));
+		// }
+		// if (!Strings.isNullOrEmpty(employeeName)) {
+		// predicates.add(cb.equal(root.get("employee").<String> get("name"),
+		// employeeName));
+		// }
 		if (predicates.isEmpty()) {
 			return null;
 		}
@@ -83,12 +83,12 @@ public class EmployeeSpecification implements Specification<Employee> {
 		this.username = username;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+	// public String getGender() {
+	// return gender;
+	// }
+	//
+	// public void setGender(String gender) {
+	// this.gender = gender;
+	// }
 
 }

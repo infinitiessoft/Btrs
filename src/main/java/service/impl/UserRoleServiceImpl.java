@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import resources.specification.UserRoleSpecification;
 import sendto.RoleSendto;
 import service.UserRoleService;
-import attendance.dao.EmployeeDao;
-import attendance.entity.Employee;
 import dao.RoleDao;
 import dao.UserDao;
 import dao.UserRoleDao;
@@ -26,23 +24,18 @@ public class UserRoleServiceImpl implements UserRoleService {
 
 	private UserRoleDao userRoleDao;
 	private UserDao userDao;
-	private EmployeeDao employeeDao;
 	private RoleDao roleDao;
 
-	public UserRoleServiceImpl(UserRoleDao userRoleDao,
-			EmployeeDao employeeDao, UserDao userDao, RoleDao roleDao) {
+	public UserRoleServiceImpl(UserRoleDao userRoleDao, UserDao userDao,
+			RoleDao roleDao) {
 		this.userRoleDao = userRoleDao;
-		this.employeeDao = employeeDao;
 		this.userDao = userDao;
 		this.roleDao = roleDao;
 	}
 
 	@Override
 	public void revokeRoleFromUser(long userId, long roleId) {
-		
-		Employee employee = employeeDao.findOne(userId);
-		User user = userDao.findByUserSharedId(employee.getId());
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user.getId(), roleId);
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
 		if (userRole == null) {
 			throw new UserAssignmentNotFoundException(roleId, userId);
 		}
@@ -53,10 +46,6 @@ public class UserRoleServiceImpl implements UserRoleService {
 	public Page<RoleSendto> findAll(UserRoleSpecification spec,
 			Pageable pageable) {
 		List<RoleSendto> sendto = new ArrayList<RoleSendto>();
-		Employee employee = employeeDao.findOne(spec.getUserId());
-		User user = userDao.findByUserSharedId(employee.getId());
-		spec.setUserId(user.getId());
-		
 		Page<UserRole> userRoles = userRoleDao.findAll(spec, pageable);
 		for (UserRole users : userRoles) {
 			Role role = users.getRole();
@@ -69,10 +58,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
 	@Override
 	public RoleSendto findByUserIdAndRoleId(long userId, long roleId) {
-		Employee employee = employeeDao.findOne(userId);
-		User user = userDao.findByUserSharedId(employee.getId());
-		
-		UserRole userRole = userRoleDao.findByUserIdAndRoleId(user.getId(), roleId);
+		UserRole userRole = userRoleDao.findByUserIdAndRoleId(userId, roleId);
 		if (userRole == null) {
 			throw new UserAssignmentNotFoundException(userId, roleId);
 		}
@@ -81,8 +67,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
 	@Override
 	public void grantRoleToUser(long userId, long roleId) {
-		Employee employee = employeeDao.findOne(userId);
-		User user = userDao.findByUserSharedId(employee.getId());
+		User user = userDao.findOne(userId);
 		if (user == null) {
 			throw new UserNotFoundException(userId);
 		}

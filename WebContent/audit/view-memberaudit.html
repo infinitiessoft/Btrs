@@ -19,7 +19,7 @@
 					<tr ng-repeat="row in rowCollection">
 						<td>{{row.value}}</td>
 						<td>{{row.comment}}</td>
-						<td>{{row.user.firstname}}</td>
+						<td>{{row.user.name}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -56,16 +56,16 @@
 		<div class="col-lg-6 col-lg-offset-3">
 			<table class="table table-bordered">
 				<tr>
-					<td>申請人</td>
-					<td>{{model.owner.name}}</td>
-					<td colspan="2">摘要</td>
-					<td>金額</td>
+					<td style="width:15%;">申請人</td>
+					<td style="width:35%;">{{model.owner.name}}</td>
+					<td colspan="2" style="width:35%;">摘要</td>
+					<td style="width:15%;">金額</td>
 				</tr>
 				<tr>
 					<td>職稱</td>
 					<td>{{applicant.jobTitle.name}}</td>
-					<td rowspan="{{trafficSpan}}">交通費</td>
-					<td>{{traffics[0].name}}</td>
+					<td rowspan="{{trafficSpan}}" style="width:10%;">交通費</td>
+					<td style="width:25%;">{{traffics[0].name}}</td>
 					<td>{{traffics[0].totalAmount}}</td>
 				</tr>
 				<tr>
@@ -101,14 +101,14 @@
 
 
 				<tr ng-repeat="element in extraTraffics">
-					<td>...</td>
-					<td>...</td>
+					<td>{{element.name}}</td>
+					<td>{{element.totalAmount}}</td>
 				</tr>
 
 
 				<tr>
 					<td colspan="2">膳雜費</td>
-					<td>...</td>
+					<td>{{other}}</td>
 				</tr>
 
 				<tr>

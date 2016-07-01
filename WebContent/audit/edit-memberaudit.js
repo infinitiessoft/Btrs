@@ -1,26 +1,26 @@
 angular
-.module('edit-memberaudit',
-		[ 'formly', 'formlyBootstrap', 'ngAnimate', 'ngMessages' ])
+		.module('edit-memberaudit',
+				[ 'formly', 'formlyBootstrap', 'ngAnimate', 'ngMessages' ])
 		.constant('formlyExampleApiCheck', apiCheck())
 		.run(
 				function(formlyConfig, formlyValidationMessages) {
 					formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'fc.$touched || form.$submitted';
 
 					formlyValidationMessages.addStringMessage('required',
-					'This field is required');
+							'This field is required');
 				})
-				.config(
-						function config(formlyConfigProvider, formlyExampleApiCheck) {
-							var unique = 1;
+		.config(
+				function config(formlyConfigProvider, formlyExampleApiCheck) {
+					var unique = 1;
 
-							formlyConfigProvider
+					formlyConfigProvider
 							.setType({
 								name : 'auditParameterSection',
 								templateUrl : 'templates/parameterSection.html',
 								overwriteOk : true,
 								controller : function($scope) {
 									$scope.formOptions = {
-											formState : $scope.formState
+										formState : $scope.formState
 									};
 
 									$scope.createFields = createFields;
@@ -53,31 +53,31 @@ angular
 									function addRandomIds(fields) {
 										unique++;
 										angular
-										.forEach(
-												fields,
-												function(field, index) {
-													if (field.fieldGroup) {
-														addRandomIds(field.fieldGroup);
-														return; // fieldGroups
-														// don't
-														// need
-														// an ID
-													}
+												.forEach(
+														fields,
+														function(field, index) {
+															if (field.fieldGroup) {
+																addRandomIds(field.fieldGroup);
+																return; // fieldGroups
+																// don't
+																// need
+																// an ID
+															}
 
-													if (field.templateOptions
-															&& field.templateOptions.fields) {
-														addRandomIds(field.templateOptions.fields);
-													}
+															if (field.templateOptions
+																	&& field.templateOptions.fields) {
+																addRandomIds(field.templateOptions.fields);
+															}
 
-													field.id = field.id
-													|| (field.key
-															+ '_'
-															+ index
-															+ '_'
-															+ unique + getRandomInt(
-																	0,
-																	9999));
-												});
+															field.id = field.id
+																	|| (field.key
+																			+ '_'
+																			+ index
+																			+ '_'
+																			+ unique + getRandomInt(
+																			0,
+																			9999));
+														});
 									}
 
 									function getRandomInt(min, max) {
@@ -88,7 +88,7 @@ angular
 								}
 							});
 
-							formlyConfigProvider
+					formlyConfigProvider
 							.setType({
 								name : 'auditExpenseSection',
 								templateUrl : 'templates/expenseSection.html',
@@ -96,7 +96,7 @@ angular
 								controller : function($scope, $uibModal,
 										memberExpenseTypeService) {
 									$scope.formOptions = {
-											formState : $scope.formState
+										formState : $scope.formState
 									};
 
 									$scope.edit = edit;
@@ -106,7 +106,7 @@ angular
 
 									function createOptions() {
 										var options = {
-												formState : {}
+											formState : {}
 										};
 										options['formState']['readOnly'] = true;
 										return options;
@@ -116,12 +116,12 @@ angular
 										var expenseType = model.expenseType;
 										var fields = [];
 										var parameterSection = {
-												type : 'auditParameterSection',
-												key : 'parameterValues',
-												templateOptions : {
-													label : 'Parameter',
-													'fields' : []
-												}
+											type : 'auditParameterSection',
+											key : 'parameterValues',
+											templateOptions : {
+												label : 'Parameter',
+												'fields' : []
+											}
 										};
 										fields.push({
 											key : 'value',
@@ -143,83 +143,87 @@ angular
 										var taxPercent = 0;
 
 										memberExpenseTypeService
-										.get(expenseTypeId)
-										.then(
-												function(response) {
-													taxPercent = parseFloat(response.data.taxPercent);
-//													var totalAmount = model.totalAmount ? model.totalAmount
-//															: 0;
-//													model.taxAmount = Math
-//													.round(taxPercent
-//															* totalAmount
-//															/ 100);
-												});
+												.get(expenseTypeId)
+												.then(
+														function(response) {
+															taxPercent = parseFloat(response.data.taxPercent);
+															// var totalAmount =
+															// model.totalAmount
+															// ?
+															// model.totalAmount
+															// : 0;
+															// model.taxAmount =
+															// Math
+															// .round(taxPercent
+															// * totalAmount
+															// / 100);
+														});
 
 										var row = {
-												className : 'row',
-												fieldGroup : [
-												              {
-												            	  className : 'col-xs-2',
-												            	  key : 'value',
-												            	  type : 'input',
-												            	  'model' : 'model.expenseType',
-												            	  templateOptions : {
-												            		  label : 'ExpenseType',
-												            		  disabled : 'true'
-												            	  }
-												              },
-												              {
-												            	  className : 'col-xs-6',
-												            	  type : 'auditParameterSection',
-												            	  key : 'parameterValues',
-												            	  templateOptions : {
-												            		  label : 'Parameter',
-												            		  'fields' : []
-												            	  }
-												              },
-												              {
-												            	  className : 'col-xs-2',
-												            	  key : 'totalAmount',
-												            	  type : 'input',
-												            	  templateOptions : {
-												            		  label : 'Total amount',
-												            		  type : 'number',
-												            		  required : true,
-												            	  }
-												              },
-												              {
-												            	  className : 'col-xs-2',
-												            	  key : 'taxAmount',
-												            	  type : 'input',
-												            	  templateOptions : {
-												            		  label : 'Tax',
-												            		  type : 'number',
-												            		  required : true,
-												            	  },
-												            	  controller : function(
-												            			  $scope) {
-												            		  $scope
-												            		  .$watch(
-												            				  'model.totalAmount',
-												            				  function(
-												            						  newValue,
-												            						  oldValue,
-												            						  theScope) {
-												            					  if (newValue !== oldValue) {
-												            						  var totalAmount = newValue ? newValue
-												            								  : 0;
-												            						  taxAmount = Math
-												            						  .round(taxPercent
-												            								  * totalAmount
-												            								  / 100);
-												            						  $scope.model[$scope.options.key] = taxAmount;
-												            					  }
-												            				  });
+											className : 'row',
+											fieldGroup : [
+													{
+														className : 'col-xs-2',
+														key : 'value',
+														type : 'input',
+														'model' : 'model.expenseType',
+														templateOptions : {
+															label : 'ExpenseType',
+															disabled : 'true'
+														}
+													},
+													{
+														className : 'col-xs-6',
+														type : 'auditParameterSection',
+														key : 'parameterValues',
+														templateOptions : {
+															label : 'Parameter',
+															'fields' : []
+														}
+													},
+													{
+														className : 'col-xs-2',
+														key : 'totalAmount',
+														type : 'input',
+														templateOptions : {
+															label : 'Total amount',
+															type : 'number',
+															required : true,
+														}
+													},
+													{
+														className : 'col-xs-2',
+														key : 'taxAmount',
+														type : 'input',
+														templateOptions : {
+															label : 'Tax',
+															type : 'number',
+															required : true,
+														},
+														controller : function(
+																$scope) {
+															$scope
+																	.$watch(
+																			'model.totalAmount',
+																			function(
+																					newValue,
+																					oldValue,
+																					theScope) {
+																				if (newValue !== oldValue) {
+																					var totalAmount = newValue ? newValue
+																							: 0;
+																					taxAmount = Math
+																							.round(taxPercent
+																									* totalAmount
+																									/ 100);
+																					$scope.model[$scope.options.key] = taxAmount;
+																				}
+																			});
 
-												            	  }
-												              }
+														}
+													}
 
-												              ]
+											]
 										};
 
 										fields.push(row);
@@ -238,34 +242,34 @@ angular
 										var typeParameters = expenseType.typeParameters;
 										var fields = [];
 										angular
-										.forEach(
-												typeParameters,
-												function(typeParameter,
-														index) {
-													repeatsection
-													.push({
-														'typeParameter' : typeParameter
-													});
-												});
+												.forEach(
+														typeParameters,
+														function(typeParameter,
+																index) {
+															repeatsection
+																	.push({
+																		'typeParameter' : typeParameter
+																	});
+														});
 										addRandomIds(fields);
 
 										var parameterSection = {
-												type : 'auditParameterSection',
-												key : 'parameterValues',
-												templateOptions : {
-													label : 'Parameter',
-													'fields' : []
-												}
+											type : 'auditParameterSection',
+											key : 'parameterValues',
+											templateOptions : {
+												label : 'Parameter',
+												'fields' : []
+											}
 										};
 
 										var totalAmount = {
-												key : 'totalAmount',
-												type : 'input',
-												templateOptions : {
-													label : 'Total amount',
-													type : 'number',
-													required : true,
-												}
+											key : 'totalAmount',
+											type : 'input',
+											templateOptions : {
+												label : 'Total amount',
+												type : 'number',
+												required : true,
+											}
 										};
 
 										return [ parameterSection, totalAmount ];
@@ -274,31 +278,31 @@ angular
 									function addRandomIds(fields) {
 										unique++;
 										angular
-										.forEach(
-												fields,
-												function(field, index) {
-													if (field.fieldGroup) {
-														addRandomIds(field.fieldGroup);
-														return; // fieldGroups
-														// don't
-														// need
-														// an ID
-													}
+												.forEach(
+														fields,
+														function(field, index) {
+															if (field.fieldGroup) {
+																addRandomIds(field.fieldGroup);
+																return; // fieldGroups
+																// don't
+																// need
+																// an ID
+															}
 
-													if (field.templateOptions
-															&& field.templateOptions.fields) {
-														addRandomIds(field.templateOptions.fields);
-													}
+															if (field.templateOptions
+																	&& field.templateOptions.fields) {
+																addRandomIds(field.templateOptions.fields);
+															}
 
-													field.id = field.id
-													|| (field.key
-															+ '_'
-															+ index
-															+ '_'
-															+ unique + getRandomInt(
-																	0,
-																	9999));
-												});
+															field.id = field.id
+																	|| (field.key
+																			+ '_'
+																			+ index
+																			+ '_'
+																			+ unique + getRandomInt(
+																			0,
+																			9999));
+														});
 									}
 
 									function getRandomInt(min, max) {
@@ -309,56 +313,56 @@ angular
 
 									function edit(model, add) {
 										var result = $uibModal
-										.open({
-											templateUrl : 'templates/expense-categories.html',
-											controller : function(
-													$uibModalInstance,
-													formData) {
-												var vm = this;
+												.open({
+													templateUrl : 'templates/expense-categories.html',
+													controller : function(
+															$uibModalInstance,
+															formData) {
+														var vm = this;
 
-												// function assignment
-												vm.ok = ok;
-												vm.cancel = cancel;
+														// function assignment
+														vm.ok = ok;
+														vm.cancel = cancel;
 
-												// variable assignment
-												vm.formData = formData;
-												// vm.originalFields =
-												// angular
-												// .copy(vm.formData.fields);
+														// variable assignment
+														vm.formData = formData;
+														// vm.originalFields =
+														// angular
+														// .copy(vm.formData.fields);
 
-												// function definition
-												function ok() {
-													$uibModalInstance
-													.close(vm.formData);
-												}
+														// function definition
+														function ok() {
+															$uibModalInstance
+																	.close(vm.formData);
+														}
 
-												function cancel() {
-													vm.formData.options
-													.resetModel()
-													$uibModalInstance
-													.dismiss('cancel');
-												}
-											},
-											controllerAs : 'vm',
-											resolve : {
-												formData : function() {
-													return {
-														fields : getFormFields(),
-														model : model
+														function cancel() {
+															vm.formData.options
+																	.resetModel()
+															$uibModalInstance
+																	.dismiss('cancel');
+														}
+													},
+													controllerAs : 'vm',
+													resolve : {
+														formData : function() {
+															return {
+																fields : getFormFields(),
+																model : model
+															}
+														}
 													}
-												}
-											}
-										}).result;
+												}).result;
 
 										if (add) {
 											result
-											.then(function(formData) {
-												$scope.model[$scope.options.key] = $scope.model[$scope.options.key]
-												|| [];
-												var repeatsection = $scope.model[$scope.options.key];
-												repeatsection
-												.push(formData.model);
-											})
+													.then(function(formData) {
+														$scope.model[$scope.options.key] = $scope.model[$scope.options.key]
+																|| [];
+														var repeatsection = $scope.model[$scope.options.key];
+														repeatsection
+																.push(formData.model);
+													})
 
 										}
 									}
@@ -386,214 +390,232 @@ angular
 													var newsections = createFieldsById(
 															$scope, newValue);
 													angular
-													.forEach(
-															newsections,
-															function(
-																	newsection) {
-																repeatsection
-																.push(newsection);
-															});
+															.forEach(
+																	newsections,
+																	function(
+																			newsection) {
+																		repeatsection
+																				.push(newsection);
+																	});
 												}
 											}
 										} ];
 									}
 								}
 							});
-						})
-						.controller(
-								'edit-memberaudit',
-								function($rootScope, $scope, $stateParams, $state,
-										formlyVersion, $uibModal, memberAuditService,
-										memberExpenseTypeService, memberRecordService) {
-									var id = parseInt($stateParams.reportid);
-									var userId = $stateParams.userid;
+				})
+		.controller(
+				'edit-memberaudit',
+				function($rootScope, $scope, $stateParams, $state,
+						formlyVersion, $uibModal, memberAuditService,
+						memberExpenseTypeService, memberAuditAttendRecordService) {
+					var id = parseInt($stateParams.reportid);
+					var userId = $stateParams.userid;
 
-									$rootScope.title = (id > 0) ? 'Edit Report' : 'Add Report';
-									$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
-									var vm = this;
-									vm.recordModel = {};
+					$rootScope.title = (id > 0) ? 'Edit Report' : 'Add Report';
+					$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
+					var vm = this;
+					vm.recordModel = {};
 
-									$scope.vm = vm;
-									vm.onSubmit = onSubmit;
-									vm.author = {
-											name : 'pohsun',
-											url : ''
-									};
-									vm.env = {
-											angularVersion : angular.version.full,
-											formlyVersion : formlyVersion
-									};
+					$scope.vm = vm;
+					vm.onSubmit = onSubmit;
+					vm.author = {
+						name : 'pohsun',
+						url : ''
+					};
+					vm.env = {
+						angularVersion : angular.version.full,
+						formlyVersion : formlyVersion
+					};
 
-									memberAuditService
-									.get(userId, id)
-									.then(
-											function(status) {
-												vm.model = status.data;
-												var recordId = status.data.attendanceRecordId;
-												memberRecordService
-												.get(userId, recordId)
-												.then(
-														function(status) {
-															vm.model.attendanceRecordId = status.data.id;
-															if (id == 0) {
-																vm.model.reason = status.data.reason;
-															}
-															vm.recordModel.reason = status.data.reason;
-															vm.recordModel.duration = status.data.duration;
-															vm.recordModel.startDate = status.data.startDate;
-															vm.recordModel.endDate = status.data.endDate;
-															vm.recordModel.applicant = status.data.applicant;
-														});
-											});
-
-									vm.expenseTypes = [];
-									memberExpenseTypeService.list().then(function(response) {
-										angular.forEach(response.data.content, function(val) {
-											vm.expenseTypes.push(val);
-										});
+					memberAuditService
+							.get(userId, id)
+							.then(
+									function(status) {
+										vm.model = status.data;
+										var recordId = status.data.attendanceRecordId;
+										if (recordId) {
+											memberAuditAttendRecordService
+													.get(userId, recordId)
+													.success(
+															function(status) {
+																
+																vm.model.attendanceRecordId = status.id;
+																if (id == 0) {
+																	vm.model.reason = status.reason;
+																}
+																vm.recordModel.reason = status.reason;
+																vm.recordModel.duration = status.duration;
+																vm.recordModel.startDate = status.startDate;
+																vm.recordModel.endDate = status.endDate;
+																vm.recordModel.applicant = status.applicant;
+															})
+													.error(
+															function() {
+																console
+																		.debug('retrieve record failed');
+															});
+										}
 									});
-									vm.attendRecords = [];
 
-									vm.fields = [ {
-										className : 'section-label',
-										template : '<div><strong>Attend Record:</strong></div>'
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-6',
-											type : 'input',
-											key : 'applicant.name',
-											model : vm.recordModel,
-											templateOptions : {
-												label : 'Applicant',
-												disabled : true
-											}
-										} ]
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-6',
-											type : 'textarea',
-											key : 'reason',
-											model : vm.recordModel,
-											templateOptions : {
-												label : 'Reason',
-												disabled : true
-											}
-										} ]
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-2',
-											type : 'input',
-											key : 'startDate',
-											model : vm.recordModel,
-											templateOptions : {
-												label : 'Start Date',
-												disabled : true
-											}
-										}, {
-											className : 'col-xs-2',
-											type : 'input',
-											key : 'endDate',
-											model : vm.recordModel,
-											templateOptions : {
-												label : 'EndDate',
-												disabled : true
-											}
-										}, {
-											className : 'col-xs-2',
-											type : 'input',
-											key : 'duration',
-											model : vm.recordModel,
-											templateOptions : {
-												label : 'Duration',
-												disabled : true
-											}
-										} ]
-									}, {
-										template : '<hr />'
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-4',
-											key : 'firmOrProject',
-											type : 'input',
-											templateOptions : {
-												label : 'Firm/Project',
-												placeholder : 'Firm/Project',
-												"required" : false
-											}
-										} ]
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-4',
-											key : 'route',
-											type : 'textarea',
-											templateOptions : {
-												label : 'Route',
-												placeholder : 'Route',
-												"required" : true
-											}
-										} ]
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-4',
-											key : 'comment',
-											type : 'textarea',
-											templateOptions : {
-												label : 'Comment',
-												placeholder : 'Comment',
-											}
-										} ]
-									}, {
-										className : 'row',
-										fieldGroup : [ {
-											className : 'col-xs-12',
-											type : 'auditExpenseSection',
-											key : 'expenses',
-											wrapper : 'panel',
-											templateOptions : {
-												label : 'Expense',
-												btnText : 'Add',
-												expenseTypes : vm.expenseTypes,
-											}
-										} ]
-									} ];
+					vm.expenseTypes = [];
+					memberExpenseTypeService.list().then(function(response) {
+						angular.forEach(response.data.content, function(val) {
+							vm.expenseTypes.push(val);
+						});
+						var totalPages = response.data.totalPages;
+						if (totalPages > 1) {
+							for (var i = 1; i < totalPages; i++) {
+								memberExpenseTypeService.list({page:i}).then(function(response2) {
+									angular.forEach(response2.data.content, function(val) {
+										vm.expenseTypes.push(val);
+									});
+								});
+							}
+						}
+					});
+					vm.attendRecords = [];
 
-									function onSubmit() {
-										if (vm.model.expenses)
-											angular
-											.forEach(
-													vm.model.expenses,
-													function(expense) {
-														delete expense.expenseType.taxPercent;
-														delete expense.expenseType.value;
-														delete expense.expenseType.expenseCategory;
-														delete expense.expenseType.typeParameters;
-													});
-										if (vm.form.$valid) {
-											if (id > 0) {
-												memberAuditService
-												.update(userId, id, vm.model)
-												.then(
-														function(status) {
-															$state
+					vm.fields = [ {
+						className : 'section-label',
+						template : '<div><strong>Attend Record:</strong></div>'
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-6',
+							type : 'input',
+							key : 'applicant.name',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'Applicant',
+								disabled : true
+							}
+						} ]
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-6',
+							type : 'textarea',
+							key : 'reason',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'Reason',
+								disabled : true
+							}
+						} ]
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-2',
+							type : 'input',
+							key : 'startDate',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'Start Date',
+								disabled : true
+							}
+						}, {
+							className : 'col-xs-2',
+							type : 'input',
+							key : 'endDate',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'EndDate',
+								disabled : true
+							}
+						}, {
+							className : 'col-xs-2',
+							type : 'input',
+							key : 'duration',
+							model : vm.recordModel,
+							templateOptions : {
+								label : 'Duration',
+								disabled : true
+							}
+						} ]
+					}, {
+						template : '<hr />'
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-4',
+							key : 'firmOrProject',
+							type : 'input',
+							templateOptions : {
+								label : 'Firm/Project',
+								placeholder : 'Firm/Project',
+								"required" : false
+							}
+						} ]
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-4',
+							key : 'route',
+							type : 'textarea',
+							templateOptions : {
+								label : 'Route',
+								placeholder : 'Route',
+								"required" : true
+							}
+						} ]
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-4',
+							key : 'comment',
+							type : 'textarea',
+							templateOptions : {
+								label : 'Comment',
+								placeholder : 'Comment',
+							}
+						} ]
+					}, {
+						className : 'row',
+						fieldGroup : [ {
+							className : 'col-xs-12',
+							type : 'auditExpenseSection',
+							key : 'expenses',
+							wrapper : 'panel',
+							templateOptions : {
+								label : 'Expense',
+								btnText : 'Add',
+								expenseTypes : vm.expenseTypes,
+							}
+						} ]
+					} ];
+
+					function onSubmit() {
+						if (vm.model.expenses)
+							angular
+									.forEach(
+											vm.model.expenses,
+											function(expense) {
+												delete expense.expenseType.taxPercent;
+												delete expense.expenseType.value;
+												delete expense.expenseType.expenseCategory;
+												delete expense.expenseType.typeParameters;
+											});
+						if (vm.form.$valid) {
+							if (id > 0) {
+								memberAuditService
+										.update(userId, id, vm.model)
+										.then(
+												function(status) {
+													$state
 															.go(
 																	'dashboard.list-memberaudits',
 																	{
 																		userid : userId
 																	});
-														});
-											} else {
-												$state.go('dashboard.list-memberaudits', {
-													userid : userId
 												});
-											}
-
-										}
-									}
-
+							} else {
+								$state.go('dashboard.list-memberaudits', {
+									userid : userId
 								});
+							}
+
+						}
+					}
+
+				});

@@ -20,12 +20,18 @@ public class ExpenseTypeSpecification implements Specification<ExpenseType> {
 	@QueryParam("value")
 	private String value;
 
+	private Long id;
+
 	@Override
 	public Predicate toPredicate(Root<ExpenseType> root,
 			CriteriaQuery<?> query, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (!Strings.isNullOrEmpty(value)) {
-			return cb.like(root.<String> get("value"), "%" + value + "%");
+			predicates.add(cb.like(root.<String> get("value"), "%" + value
+					+ "%"));
+		}
+		if (id != null) {
+			predicates.add(cb.equal(root.<Long> get("id"), id));
 		}
 		if (predicates.isEmpty()) {
 			return null;
@@ -40,6 +46,14 @@ public class ExpenseTypeSpecification implements Specification<ExpenseType> {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

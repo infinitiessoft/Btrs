@@ -49,13 +49,14 @@ angular
 
 							$scope.displayed = [];
 							$scope.getRoles = function getRole(roles){
-								var roleNames = [];
+								var roleNames = '';
 								angular
 								.forEach(
 										roles,
 										function(role, index) {
-											roleNames.push(role.value);
+											roleNames = roleNames.concat(role.value+', ');
 										});
+								roleNames = roleNames.slice(0, -2);
 								return roleNames;
 							}
 							$scope.callServer = function callServer(tableState) {

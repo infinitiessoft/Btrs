@@ -27,10 +27,10 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	@Transactional("transactionManager")
 	@Override
-	public ExpenseTypeSendto retrieve(long id) {
-		ExpenseType expenseType = expenseTypeDao.findOne(id);
+	public ExpenseTypeSendto retrieve(Specification<ExpenseType> spec) {
+		ExpenseType expenseType = expenseTypeDao.findOne(spec);
 		if (expenseType == null) {
-			throw new ExpenseTypeNotFoundException(id);
+			throw new ExpenseTypeNotFoundException();
 		}
 		return toExpenseTypeSendto(expenseType);
 	}
@@ -59,17 +59,12 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	@Transactional("transactionManager")
 	@Override
-	public void delete(long id) {
-		try {
-			ExpenseType expenseType = expenseTypeDao.findOne(id);
-			if (expenseType == null) {
-				throw new ExpenseTypeNotFoundException(id);
-			}
-			expenseTypeDao.delete(expenseType);
-		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
-			throw new ExpenseTypeNotFoundException(id);
+	public void delete(Specification<ExpenseType> spec) {
+		ExpenseType expenseType = expenseTypeDao.findOne(spec);
+		if (expenseType == null) {
+			throw new ExpenseTypeNotFoundException();
 		}
-
+		expenseTypeDao.delete(expenseType);
 	}
 
 	@Transactional("transactionManager")
@@ -98,10 +93,11 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
 	@Transactional("transactionManager")
 	@Override
-	public ExpenseTypeSendto update(long id, ExpenseTypeSendto updated) {
-		ExpenseType exptype = expenseTypeDao.findOne(id);
+	public ExpenseTypeSendto update(Specification<ExpenseType> spec,
+			ExpenseTypeSendto updated) {
+		ExpenseType exptype = expenseTypeDao.findOne(spec);
 		if (exptype == null) {
-			throw new ExpenseTypeNotFoundException(id);
+			throw new ExpenseTypeNotFoundException();
 		}
 		setUpExpenseType(updated, exptype);
 		return toExpenseTypeSendto(expenseTypeDao.save(exptype));
