@@ -1,7 +1,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Report</h1>
+			<h1 class="page-header">{{'Report'| translate}}</h1>
 		</div>
 		<!-- /.col-lg-12 -->
 	</div>
@@ -21,11 +21,11 @@
 				<thead>
 					<tr>
 						<th st-sort="id" st-sort-default="reverse">id</th>
-						<th st-sort="createdDate">created date</th>
-						<th>firm/project</th>
-						<th>route</th>
-						<th st-sort="currentStatus">status</th>
-						<th>#Total Element: {{size}}</th>
+						<th st-sort="createdDate">{{'created date' | translate}}</th>
+						<th>{{'firm/project' | translate}}</th>
+						<th>{{'route' | translate}}</th>
+						<th st-sort="currentStatus">{{'status' | translate}}</th>
+						<th>#{{'Total Element' | translate}}: {{size}}</th>
 					</tr>
 					<tr>
 						<th></th>
@@ -36,10 +36,10 @@
 						<th><input st-search="route" class="input-sm form-control"
 							st-search-default="{{route}}" /></th>
 						<th><select st-search="currentStatus" st-search-default="{{currentStatus}}" st-input-event="change" st-delay="0">
-								<option value="">All</option>
-								<option value="SUBMITTED">SUBMITTED</option>
-								<option value="APPROVED">APPROVED</option>
-								<option value="REJECTED">REJECTED</option>
+								<option value="">{{'ALL' | translate}}</option>
+								<option value="SUBMITTED">{{'SUBMITTED' | translate}}</option>
+								<option value="APPROVED">{{'APPROVED' | translate}}</option>
+								<option value="REJECTED">{{'REJECTED' | translate}}</option>
 						</select></th>
 						<th></th>
 					</tr>
@@ -53,7 +53,7 @@
 						<td>{{row.route}}</td>
 						<td><span
 							class="form-control {{row.currentStatus | lowercase}}">
-								{{row.currentStatus}}</span></td>
+								{{row.currentStatus | translate}}</span></td>
 						<td><a
 							ui-sref="dashboard.edit-memberreport({recordid:row.attendanceRecordId, reportid:row.id, userid:userId})"
 							class="btn btn-sm btn-primary"> <i

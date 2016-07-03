@@ -9,29 +9,36 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><a
 						ui-sref="dashboard.list-memberreports({userid: user().principal.id})"><i
-							class="glyphicon glyphicon-book"></i> Report</a></li>
+							class="glyphicon glyphicon-book"></i> {{'Report'|translate}}</a></li>
 					<li><a ng-show="hasRole('ACCOUNTANT')"
 						ui-sref="dashboard.list-memberaudits({userid: user().principal.id})"><i
-							class="glyphicon glyphicon-inbox"></i> Audit</a></li>
-					<li ng-show="hasRole('ADMIN')" class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false"><i class="glyphicon glyphicon-cog"></i>Admin
-							<span class="caret"></span></a>
+							class="glyphicon glyphicon-inbox"></i> {{'Audit'|translate}}</a></li>
+					<li ng-show="hasRole('ADMIN')" class="dropdown"><a
+						class="dropdown-toggle" data-toggle="dropdown" role="button"
+						aria-haspopup="true" aria-expanded="false"><i
+							class="glyphicon glyphicon-cog"></i>{{'Admin'|translate}} <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a ui-sref="dashboard.list-users()">Users</a></li>
-							<li><a ui-sref="dashboard.list-jobTitles()">Job Titles</a></li>
-							<li><a ui-sref="dashboard.list-expenseTypes()">Expense Type</a></li>
+							<li><a ui-sref="dashboard.list-users()">{{'Users'|translate}}</a></li>
+							<li><a ui-sref="dashboard.list-jobTitles()">{{'Job Titles'|translate}}</a></li>
+							<li><a ui-sref="dashboard.list-expenseTypes()">{{'Expense
+									Types'|translate}}</a></li>
 						</ul></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false"><i class="glyphicon glyphicon-user"></i>
-							User<span class="caret"></span></a>
+							{{'User'|translate}}<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a
 								ui-sref="dashboard.edit-profile({userid: user().principal.id})">
-									Profile</a></li>
-							<li><a ng-click="logout()"> Logout</a></li>
+									{{'Profile'|translate}}</a></li>
+							<li><a ng-click="logout()"> {{'Logout'|translate}}</a></li>
 						</ul></li>
+					<li>
+						<div
+							style="display:inline-block;height:0;vertical-align:middle;">
+							<div class="locale-selector"></div>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</nav>

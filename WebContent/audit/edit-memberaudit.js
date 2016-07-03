@@ -408,7 +408,8 @@ angular
 				'edit-memberaudit',
 				function($rootScope, $scope, $stateParams, $state,
 						formlyVersion, $uibModal, memberAuditService,
-						memberExpenseTypeService, memberAuditAttendRecordService) {
+						memberExpenseTypeService,
+						memberAuditAttendRecordService) {
 					var id = parseInt($stateParams.reportid);
 					var userId = $stateParams.userid;
 
@@ -439,7 +440,7 @@ angular
 													.get(userId, recordId)
 													.success(
 															function(status) {
-																
+
 																vm.model.attendanceRecordId = status.id;
 																if (id == 0) {
 																	vm.model.reason = status.reason;
@@ -459,21 +460,36 @@ angular
 									});
 
 					vm.expenseTypes = [];
-					memberExpenseTypeService.list().then(function(response) {
-						angular.forEach(response.data.content, function(val) {
-							vm.expenseTypes.push(val);
-						});
-						var totalPages = response.data.totalPages;
-						if (totalPages > 1) {
-							for (var i = 1; i < totalPages; i++) {
-								memberExpenseTypeService.list({page:i}).then(function(response2) {
-									angular.forEach(response2.data.content, function(val) {
-										vm.expenseTypes.push(val);
+					memberExpenseTypeService
+							.list()
+							.then(
+									function(response) {
+										angular.forEach(response.data.content,
+												function(val) {
+													vm.expenseTypes.push(val);
+												});
+										var totalPages = response.data.totalPages;
+										if (totalPages > 1) {
+											for (var i = 1; i < totalPages; i++) {
+												memberExpenseTypeService
+														.list({
+															page : i
+														})
+														.then(
+																function(
+																		response2) {
+																	angular
+																			.forEach(
+																					response2.data.content,
+																					function(
+																							val) {
+																						vm.expenseTypes
+																								.push(val);
+																					});
+																});
+											}
+										}
 									});
-								});
-							}
-						}
-					});
 					vm.attendRecords = [];
 
 					vm.fields = [ {

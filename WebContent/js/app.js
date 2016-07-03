@@ -1,7 +1,7 @@
 angular
 .module(
 		'hello',
-		[ 'oc.lazyLoad', 'ui.router', 'ui.bootstrap',
+		[ 'oc.lazyLoad', 'ui.router', 'ui.bootstrap', 'ngCookies', 'pascalprecht.translate',
 		  'angular-loading-bar', 'formly', 'formlyBootstrap',
 		  'ui.select', 'ngSanitize', 'smart-table', 'auth',
 		  'navigation' ])
@@ -12,9 +12,10 @@ angular
 				   '$ocLazyLoadProvider',
 				   '$httpProvider',
 				   'formlyConfigProvider',
+				   '$translateProvider',
 				   function($stateProvider, $urlRouterProvider,
 						   $ocLazyLoadProvider, $httpProvider,
-						   formlyConfigProvider) {
+						   formlyConfigProvider,$translateProvider) {
 
 					   formlyConfigProvider.setWrapper({
 						   name : 'panel',
@@ -252,13 +253,35 @@ angular
 
 					   $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 					   /*
-					    * Register error provider that shows message on failed
-					    * requests or redirects to login page on
-					    * unauthenticated requests
-					    */
+						 * Register error provider that shows message on failed
+						 * requests or redirects to login page on
+						 * unauthenticated requests
+						 */
 					   $httpProvider.interceptors
 					   .push('authHttpResponseInterceptor');
-				   } ])
+					   
+					   $translateProvider.useCookieStorage();
+					   $translateProvider.useStaticFilesLoader({
+						    prefix: '/Btrs/lang/',
+						    suffix: '.json'
+						});
+					   $translateProvider.preferredLanguage('en');
+					   
+				   } ]).directive('localeSelector', function($translate) {
+				        return {
+				            restrict: 'C',
+				            replace: true,
+				            templateUrl: 'templates/locale-selector.html',
+				            link: function(scope, elem, attrs) {
+				                // Get active locale even if not loaded yet:
+				                scope.locale = $translate.proposedLanguage();
+				 
+				                scope.setLocale = function() {
+				                    $translate.use(scope.locale);
+				                };
+				            }
+				        };
+				    })
 				   .factory(
 						   'authHttpResponseInterceptor',
 						   [

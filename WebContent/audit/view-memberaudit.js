@@ -29,7 +29,7 @@ angular
 						} ])
 		.controller(
 				'view-memberaudit',
-				function($rootScope, $scope, $stateParams, $state,
+				function($rootScope, $scope, $stateParams, $state, $translate,
 						formlyVersion, memberAuditService,
 						memberExpenseTypeService, profileService,
 						memberAuditStatusChangeService) {
@@ -63,13 +63,27 @@ angular
 							awesomeIsForced : false
 						}
 					};
+					
+					// if you must support IE8 this might work with the
+				    // es5-shim: https://github.com/es-shims/es5-shim
+				    Object.defineProperty(vm.options.formState, 'lang', {
+				      enumerable: true,
+				      get: function() {
+				        console.log('getting ' + $translate.use());
+				        return $translate.use();
+				      },
+				      set: function(arg) {
+				        console.log('setting ' + arg);
+				        return $translate.use(arg);
+				      }
+				    });
 
 					vm.fields = [ {
 						key : 'comment',
 						type : 'textarea',
 						templateOptions : {
-							label : 'Comment',
-							placeholder : 'comment',
+							label : $translate.instant('Comment'),
+							placeholder : $translate.instant('Comment'),
 						}
 					} ];
 					function onApprove() {
@@ -156,7 +170,8 @@ angular
 																		+ expense.taxAmount;
 															}
 
-															//transportation expense
+															// transportation
+															// expense
 															if (expense.expenseType.expenseCategory.id == transportationCategoryId) {
 																var find = false;
 																// find in
@@ -187,10 +202,10 @@ angular
 																	if (tid < 6) {
 																		traffics[tid]['id'] = expense.expenseType.id;
 																		traffics[tid]['name'] = expense.expenseType.value;
-																		if(expense.totalAmount){
-																		   traffics[tid]['totalAmount'] = expense.totalAmount;
-																		}else{
-																			traffics[tid]['totalAmount'] =0;
+																		if (expense.totalAmount) {
+																			traffics[tid]['totalAmount'] = expense.totalAmount;
+																		} else {
+																			traffics[tid]['totalAmount'] = 0;
 																		}
 
 																	} else {
@@ -198,8 +213,8 @@ angular
 																		extraTraffics[etid]['id'] = expense.expenseType.id;
 																		extraTraffics[etid]['name'] = expense.expenseType.value;
 																		if (expense.totalAmount) {
-																		  extraTraffics[etid]['totalAmount'] = expense.totalAmount;
-																		}else{
+																			extraTraffics[etid]['totalAmount'] = expense.totalAmount;
+																		} else {
 																			extraTraffics[etid]['totalAmount'] = 0;
 																		}
 																	}
@@ -216,79 +231,83 @@ angular
 														});
 									});
 
-//					memberExpenseTypeService
-//							.list()
-//							.then(
-//									function(response) {
-//										var trafficSpan = 0;
-//										angular
-//												.forEach(
-//														response.data.content,
-//														function(val) {
-//															if (trafficSpan <= 6) {
-//																$scope.traffics[trafficSpan]['name'] = val.value;
-//																$scope.traffics[trafficSpan]['id'] = val.id;
-//																$scope.traffics[trafficSpan]['totalAmount'] = 0;
-//															}
-//															if (val.expenseCategory.id == 1) {
-//																trafficSpan++;
-//															}
-//															if (trafficSpan > 6) {
-//																$scope.extraTraffics
-//																		.push({
-//																			id : val.id,
-//																			name : val.value,
-//																			totalAmount : 0
-//																		});
-//															}
-//														});
-//										if (trafficSpan >= 6) {
-//											$scope.trafficSpan = trafficSpan;
-//											$scope.commentSpan = 4 + trafficSpan - 6;
-//										}
-//
-//										memberAuditService
-//												.get(userId, id)
-//												.then(
-//														function(status) {
-//															$scope.model = status.data;
-//															var expenses = status.data.expenses;
-//															angular
-//																	.forEach(
-//																			expenses,
-//																			function(
-//																					expense) {
-//																				if (expense.taxAmount) {
-//																					$scope.taxAmount = $scope.taxAmount
-//																							+ expense.taxAmount;
-//																				}
-//																				if (expense.totalAmount) {
-//																					$scope.totalAmount = $scope.totalAmount
-//																							+ expense.totalAmount
-//																							+ expense.taxAmount;
-//																				}
-//																				expense.expenseType.id;
-//																				var find = false;
-//																				var index = 0;
-//																				for (var index = 0; index < traffics.length; index++) {
-//																					if (expense.expenseType.id == traffics[index]['id']) {
-//																						find = true;
-//																						traffics[index]['totalAmount'] = traffics[index]['totalAmount']
-//																								+ expense.totalAmount;
-//																						break;
-//																					}
-//																				}
-//																				if (!find) {
-//																					for (var index = 0; index < extraTraffics.length; index++) {
-//																						if (expense.expenseType.id == extraTraffics[index]['id']) {
-//																							find = true;
-//																							extraTraffics[index]['totalAmount'] = extraTraffics[index]['totalAmount']
-//																									+ expense.totalAmount;
-//																							break;
-//																						}
-//																					}
-//																				}
-//																			});
-//														});
-//									});
+					// memberExpenseTypeService
+					// .list()
+					// .then(
+					// function(response) {
+					// var trafficSpan = 0;
+					// angular
+					// .forEach(
+					// response.data.content,
+					// function(val) {
+					// if (trafficSpan <= 6) {
+					// $scope.traffics[trafficSpan]['name'] = val.value;
+					// $scope.traffics[trafficSpan]['id'] = val.id;
+					// $scope.traffics[trafficSpan]['totalAmount'] = 0;
+					// }
+					// if (val.expenseCategory.id == 1) {
+					// trafficSpan++;
+					// }
+					// if (trafficSpan > 6) {
+					// $scope.extraTraffics
+					// .push({
+					// id : val.id,
+					// name : val.value,
+					// totalAmount : 0
+					// });
+					// }
+					// });
+					// if (trafficSpan >= 6) {
+					// $scope.trafficSpan = trafficSpan;
+					// $scope.commentSpan = 4 + trafficSpan - 6;
+					// }
+					//
+					// memberAuditService
+					// .get(userId, id)
+					// .then(
+					// function(status) {
+					// $scope.model = status.data;
+					// var expenses = status.data.expenses;
+					// angular
+					// .forEach(
+					// expenses,
+					// function(
+					// expense) {
+					// if (expense.taxAmount) {
+					// $scope.taxAmount = $scope.taxAmount
+					// + expense.taxAmount;
+					// }
+					// if (expense.totalAmount) {
+					// $scope.totalAmount = $scope.totalAmount
+					// + expense.totalAmount
+					// + expense.taxAmount;
+					// }
+					// expense.expenseType.id;
+					// var find = false;
+					// var index = 0;
+					// for (var index = 0; index < traffics.length; index++) {
+					// if (expense.expenseType.id == traffics[index]['id']) {
+					// find = true;
+					// traffics[index]['totalAmount'] =
+					// traffics[index]['totalAmount']
+					// + expense.totalAmount;
+					// break;
+					// }
+					// }
+					// if (!find) {
+					// for (var index = 0; index < extraTraffics.length;
+					// index++) {
+					// if (expense.expenseType.id == extraTraffics[index]['id'])
+					// {
+					// find = true;
+					// extraTraffics[index]['totalAmount'] =
+					// extraTraffics[index]['totalAmount']
+					// + expense.totalAmount;
+					// break;
+					// }
+					// }
+					// }
+					// });
+					// });
+					// });
 				});
