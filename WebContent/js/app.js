@@ -274,8 +274,8 @@ angular
 				            templateUrl: 'templates/locale-selector.html',
 				            link: function(scope, elem, attrs) {
 				                // Get active locale even if not loaded yet:
-				                scope.locale = $translate.proposedLanguage();
-				 
+				                scope.locale = $translate.use();
+				               
 				                scope.setLocale = function() {
 				                    $translate.use(scope.locale);
 				                };
