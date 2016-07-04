@@ -35,7 +35,7 @@
 				<tbody ng-show="!isLoading">
 					<tr ng-repeat="row in displayed">
 						<td>{{row.id}}</td>
-						<td>{{row.name|translate}}</td>
+						<td>{{row.name}}</td>
 						<td>{{row.comment}}</td>
 						<td><a ui-sref="dashboard.edit-jobTitle({id:row.id})"
 							class="btn btn-sm btn-primary"> <i

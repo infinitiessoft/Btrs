@@ -95,10 +95,6 @@
 			advice-ref="mailRetryAdvice" />
 	</aop:config>
 
-	<bean class="resources.DemoData">
-	</bean>
-
-
 	<!-- DATABASE SETUP -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">

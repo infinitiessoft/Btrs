@@ -24,19 +24,6 @@ angular.module('edit-jobTitle', []).controller(
 				}
 			};
 			
-			Object.defineProperty(vm.options.formState, 'lang', {
-				enumerable : true,
-				get : function() {
-					console.log('getting ' + $translate.use());
-					return $translate.use();
-				},
-				set : function(arg) {
-					console.log('setting ' + arg);
-					return $translate.use(arg);
-				}
-			});
-
-
 			if (id == 0) {
 				vm.model = {};
 			} else {

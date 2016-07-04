@@ -29,7 +29,7 @@
 					<tr ng-repeat="row in displayed">
 						<td>{{row.id}}</td>
 						<td>{{row.name}}</td>
-						<td>{{row.jobTitle.name|translate}}</td>
+						<td>{{row.jobTitle.name}}</td>
 						<td>{{getRoles(row.roles)}}</td>
 						<td><a ui-sref="dashboard.edit-user({id:row.id})"
 							class="btn btn-sm btn-primary"> <i

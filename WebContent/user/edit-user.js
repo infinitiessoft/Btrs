@@ -46,18 +46,6 @@ angular
 					vm.model = {
 						jobTitle : {}
 					};
-					
-//					Object.defineProperty(vm.options.formState, 'lang', {
-//						enumerable : true,
-//						get : function() {
-//							console.log('getting ' + $translate.use());
-//							return $translate.use();
-//						},
-//						set : function(arg) {
-//							console.log('setting ' + arg);
-//							return $translate.use(arg);
-//						}
-//					});
 
 					vm.origRoles = {};
 					vm.roles = {90:false,91:false,92:false};
@@ -158,12 +146,6 @@ angular
 														.then(
 																function(
 																		response) {
-																	angular
-																	.forEach(
-																			response.data.content,
-																			function(job) {
-																				job.name = $translate.instant(job.name);
-																			});
 																	$scope.to.options = response.data.content;
 																	// note, the
 																	// line

@@ -1,8 +1,0 @@
-job_titles
-expense_categories
-expense_types
-users
-type_parameters
-exp_types_type_parameters
-roles
-users_roles

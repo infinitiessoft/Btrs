@@ -61,16 +61,6 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 					disabled : true
 				}
 			}, {
-				key : 'name',
-				type : 'input',
-				model : vm.jobTitle,
-				templateOptions : {
-					label : $translate.instant('Job Title'),
-					placeholder : 'jobTitle',
-					type : 'text',
-					disabled : true
-				}
-			}, {
 				key : 'username',
 				type : 'input',
 				templateOptions : {
