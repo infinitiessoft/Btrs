@@ -13,6 +13,14 @@
 					<a class="navbar-brand" ui-sref="dashboard.home()">Business Trip Report System
 						2.0</a>
 				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<div
+							style="display:inline-block;height:0;vertical-align:middle;">
+							<div class="locale-selector"></div>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</nav>
 	</div>
@@ -21,21 +29,20 @@
 		<div class="row">
 			<div class="col-md-offset-5 col-md-3">
 				<div class="form-login">
-					<h4>Welcome To Login</h4>
-					<div class="alert alert-danger" ng-show="error">There was a
-						problem logging in. Please try again.</div>
+					<h4>{{'Welcome To Login'|translate}}</h4>
+					<div class="alert alert-danger" ng-show="error">{{'There was a problem logging in. Please try again.'|translate}}</div>
 					<form role="form" ng-submit="login()">
 						<div class="form-group">
 							<label for="username"></label> <input type="text"
 								class="form-control" id="username" name="username"
-								placeholder="username" ng-model="credentials.username" />
+								placeholder="{{'username'|translate}}" ng-model="credentials.username" />
 						</div>
 						<div class="form-group">
 							<label for="password"></label> <input type="password"
 								class="form-control" id="password" name="password"
-								placeholder="password" ng-model="credentials.password" />
+								placeholder="{{'password'|translate}}" ng-model="credentials.password" />
 						</div>
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary">{{'Submit'|translate}}</button>
 					</form>
 				</div>
 			</div>

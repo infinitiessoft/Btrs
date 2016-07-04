@@ -45,8 +45,7 @@
 					</tr>
 				</thead>
 				<tbody ng-show="!isLoading">
-					<tr ng-repeat="row in displayed" popover="reason: {{row.reason}}"
-						popover-placement="top" popover-trigger="click">
+					<tr ng-repeat="row in displayed">
 						<td>{{row.id}}</td>
 						<td>{{row.createdDate| date:'yyyy-MM-dd HH:mm:ss' }}</td>
 						<td>{{row.firmOrProject}}</td>
@@ -67,7 +66,7 @@
 				</tbody>
 				<tbody ng-show="isLoading">
 					<tr>
-						<td colspan="6" class="text-center">Loading ...</td>
+						<td colspan="6" class="text-center">{{'Loading'|translate}} ...</td>
 					</tr>
 				</tbody>
 				<tfoot>

@@ -102,17 +102,17 @@
 	<!-- DATABASE SETUP -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="username" value="postgres" />
-		<property name="password" value="2ggudoou" />
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/btrs2" />
+		<property name="username" value="${btrs_db.username}" />
+		<property name="password" value="${btrs_db.password}" />
+		<property name="driverClassName" value="${btrs_db.driver}" />
+		<property name="url" value="${btrs_db.url}" />
 	</bean>
 
 	<bean id="dataSourceAttendance" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="username" value="postgres" />
-		<property name="password" value="2ggudoou" />
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/demo3" />
+		<property name="username" value="${attandance_db.username}" />
+		<property name="password" value="${attandance_db.password}" />
+		<property name="driverClassName" value="${attandance_db.driver}" />
+		<property name="url" value="${attandance_db.url}" />
 	</bean>
 
 	<bean id="entityManagerFactory"

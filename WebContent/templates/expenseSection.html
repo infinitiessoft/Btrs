@@ -8,13 +8,13 @@
 			</formly-form>
 			<div style="margin-bottom: 20px;">
 				<button type="button" class="btn btn-sm btn-danger"
-					ng-click="model[options.key].splice($index, 1)">Remove</button>
+					ng-click="model[options.key].splice($index, 1)">{{'Remove'|translate}}</button>
 					<!-- <button type="button" class="btn btn-sm btn-danger"
 					ng-click="edit(element)">Edit</button> -->
 			</div>
 		</div>
 		<p class="AddNewButton">
-			<button type="button" class="btn btn-primary" ng-click="edit({}, true)">{{to.btnText}}</button>
+			<button type="button" class="btn btn-primary" ng-click="edit({}, true)">{{to.btnText|translate}}</button>
 		</p>
 	</div>
 </div>

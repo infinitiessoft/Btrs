@@ -1,6 +1,6 @@
 angular.module('edit-expenseType', []).controller(
 		'edit-expenseType',
-		function($rootScope, $scope, $stateParams, $state, formlyVersion, expenseTypeService) {
+		function($rootScope, $scope, $stateParams, $state, $translate, formlyVersion, expenseTypeService) {
 			var id = ($stateParams.id) ? parseInt($stateParams.id) : 0;
 			$rootScope.title = (id > 0) ? 'Edit ExpenseType' : 'Add ExpenseType';
 			$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
@@ -15,12 +15,28 @@ angular.module('edit-expenseType', []).controller(
 				angularVersion : angular.version.full,
 				formlyVersion : formlyVersion
 			};
+			
+			vm.options = {formState : {}};
+			
+			Object.defineProperty(vm.options.formState, 'lang', {
+				enumerable : true,
+				get : function() {
+					console.log('getting ' + $translate.use());
+					return $translate.use();
+				},
+				set : function(arg) {
+					console.log('setting ' + arg);
+					return $translate.use(arg);
+				}
+			});
+
 
 			if (id == 0) {
 				vm.model = {};
 			} else {
 				expenseTypeService.get(id).then(function(status) {
 					vm.model = status.data;
+					vm.model.value = $translate.instant(status.data.value);
 				});
 			}
 
@@ -28,7 +44,7 @@ angular.module('edit-expenseType', []).controller(
 				key : 'value',
 				type : 'input',
 				templateOptions : {
-					label : 'Name',
+					label : $translate.instant('Name'),
 					placeholder : 'name',
 					type : 'text',
 					required : true,
@@ -38,8 +54,8 @@ angular.module('edit-expenseType', []).controller(
 				key : 'taxPercent',
 				type : 'input',
 				templateOptions : {
-					label : 'TaxPercent',
-					placeholder : 'comment',
+					label : $translate.instant('TaxPercent'),
+					placeholder : $translate.instant('tax percent'),
 					type : 'number',
 					required : true
 				}

@@ -5,8 +5,9 @@ angular
 				[
 						'$scope',
 						'$http',
+						'$translate',
 						'userService',
-						function($scope, $http, userService) {
+						function($scope, $http,$translate, userService) {
 							var lastState = {
 								pagination : {
 									start : 0,
@@ -54,7 +55,7 @@ angular
 								.forEach(
 										roles,
 										function(role, index) {
-											roleNames = roleNames.concat(role.value+', ');
+											roleNames = roleNames.concat($translate.instant(role.value)+', ');
 										});
 								roleNames = roleNames.slice(0, -2);
 								return roleNames;

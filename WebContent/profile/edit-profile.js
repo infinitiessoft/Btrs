@@ -41,20 +41,6 @@ angular.module('edit-profile', [ 'formly', 'formlyBootstrap' ]).config(
 				}
 			};
 
-			// if you must support IE8 this might work with the
-			// es5-shim: https://github.com/es-shims/es5-shim
-			Object.defineProperty(vm.options.formState, 'lang', {
-				enumerable : true,
-				get : function() {
-					console.log('getting ' + $translate.use());
-					return $translate.use();
-				},
-				set : function(arg) {
-					console.log('setting ' + arg);
-					return $translate.use(arg);
-				}
-			});
-
 			vm.model = {};
 			vm.jobTitle = {};
 			profileService.get(id).then(

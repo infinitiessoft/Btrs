@@ -139,9 +139,10 @@ public class ReportServiceImpl implements ReportService {
 				ReportSendto.Expense.ExpenseType.ExpenseCategory category = new ReportSendto.Expense.ExpenseType.ExpenseCategory();
 				type.setId(expense.getExpenseType().getId());
 				type.setValue(expense.getExpenseType().getValue());
-				category.setId(expense.getExpenseType().getExpenseCategory().getId());
+				category.setId(expense.getExpenseType().getExpenseCategory()
+						.getId());
 				type.setExpenseCategory(category);
-				
+
 				e.setExpenseType(type);
 				e.setTotalAmount(expense.getTotalAmount());
 				e.setTaxAmount(expense.getTaxAmount());
@@ -202,7 +203,8 @@ public class ReportServiceImpl implements ReportService {
 		}
 		if (report.getAttendanceRecordId() != null) {
 			AttendRecordSpecification recordSpec = new AttendRecordSpecification();
-			Employee employee = employeeDao.findOne(newEntry.getOwner().getUserSharedId());
+			Employee employee = employeeDao.findOne(newEntry.getOwner()
+					.getUserSharedId());
 			recordSpec.setApplicantId(employee.getId());
 			recordSpec.setId(report.getAttendanceRecordId());
 			AttendRecord record = recordDao.findOne(recordSpec);
@@ -311,14 +313,16 @@ public class ReportServiceImpl implements ReportService {
 		rpt.setLastUpdatedDate(new Date());
 		setUpReport(updated, rpt);
 		boolean resubmitted = false;
-		if (currentUser.equals(rpt.getOwner())
-				&& !currentUser.equals(rpt.getReviewer())) {
+		if (currentUser.getId() == rpt.getOwner().getId()
+				&& currentUser.getId() != rpt.getReviewer().getId()) {
 			if (rpt.getCurrentStatus() == StatusEnum.REJECTED) {
 				resubmitted = resubmit(rpt, currentUser);
 			} else if (rpt.getCurrentStatus() == StatusEnum.APPROVED) {
 				resubmitted = resubmit(rpt, currentUser);
 			}
 		}
+		logger.debug("report #{} been updated, resubmitted:{}", new Object[] {
+				rpt.getId(), resubmitted });
 		rpt = reportDao.save(rpt);
 
 		Map<Long, Expense> expenseMap = new HashMap<Long, Expense>();
@@ -393,6 +397,8 @@ public class ReportServiceImpl implements ReportService {
 		addExpenses(rpt, added);
 
 		if (resubmitted) {
+			logger.debug("report #{} been updated, send mail again",
+					rpt.getId());
 			sendMailToAllAccountant(rpt);
 		}
 
@@ -524,17 +530,22 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	private void sendMailToAllAccountant(Report report) {
-		try {
-			String subject = writter.buildSubmittedSubject(report);
-			String body = writter.buildSubmittedBody(report);
-			List<User> accountants = getAccountants();
-			for (User accountant : accountants) {
+		logger.debug("start sending mail to all accountants");
+		String subject = writter.buildSubmittedSubject(report);
+		String body = writter.buildSubmittedBody(report);
+		List<User> accountants = getAccountants();
+		for (User accountant : accountants) {
+			try {
 				Employee receiver = employeeDao.findOne(accountant
 						.getUserSharedId());
-				mailService.sendMail(receiver.getEmail(), subject, body);
+				if (receiver != null) {
+					mailService.sendMail(receiver.getEmail(), subject, body);
+				} else {
+					logger.warn("accountant:{} not found", accountant.getId());
+				}
+			} catch (Throwable t) {
+				logger.warn("send mail failed, ignore", t);
 			}
-		} catch (Throwable t) {
-			logger.warn("send mail failed, ignore", t);
 		}
 	}
 
@@ -557,7 +568,7 @@ public class ReportServiceImpl implements ReportService {
 
 	private void changeStatus(Report report, User user, StatusEnum status,
 			String comment) {
-		logger.info("Changing status of Report({0}) to {1}, with comment {2}",
+		logger.info("Changing status of Report({}) to {}, with comment {}",
 				new Object[] { report, status, comment });
 
 		StatusChange statusChange = new StatusChange(user, status, report,

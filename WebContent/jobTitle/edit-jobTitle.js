@@ -1,6 +1,6 @@
 angular.module('edit-jobTitle', []).controller(
 		'edit-jobTitle',
-		function($rootScope, $scope, $stateParams, $state, formlyVersion, jobTitleService) {
+		function($rootScope, $scope, $stateParams, $state,$translate, formlyVersion, jobTitleService) {
 			var id = ($stateParams.id) ? parseInt($stateParams.id) : 0;
 			$rootScope.title = (id > 0) ? 'Edit JobTitle' : 'Add JobTitle';
 			$rootScope.buttonText = (id > 0) ? 'Update' : 'Add';
@@ -23,6 +23,19 @@ angular.module('edit-jobTitle', []).controller(
 					readOnly : true
 				}
 			};
+			
+			Object.defineProperty(vm.options.formState, 'lang', {
+				enumerable : true,
+				get : function() {
+					console.log('getting ' + $translate.use());
+					return $translate.use();
+				},
+				set : function(arg) {
+					console.log('setting ' + arg);
+					return $translate.use(arg);
+				}
+			});
+
 
 			if (id == 0) {
 				vm.model = {};
@@ -36,7 +49,7 @@ angular.module('edit-jobTitle', []).controller(
 				key : 'name',
 				type : 'input',
 				templateOptions : {
-					label : 'Name',
+					label : $translate.instant('Name'),
 					placeholder : 'name',
 					type : 'text',
 					required : true
@@ -45,10 +58,9 @@ angular.module('edit-jobTitle', []).controller(
 				key : 'comment',
 				type : 'input',
 				templateOptions : {
-					label : 'Comment',
+					label : $translate.instant('Comment'),
 					placeholder : 'comment',
-					type : 'text',
-					required : true
+					type : 'text'
 				}
 			} ];
 			function onSubmit() {

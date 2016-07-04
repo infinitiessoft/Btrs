@@ -19,7 +19,7 @@ angular
 		.constant('formlyExampleApiCheck', apiCheck())
 		.controller(
 				'edit-user',
-				function($rootScope, $scope, $stateParams, $state,
+				function($rootScope, $scope, $stateParams, $state, $translate,
 						formlyVersion, userService, jobTitleService, userRoleService) {
 					var id = parseInt($stateParams.id);
 					$rootScope.title = 'Edit User';
@@ -46,9 +46,21 @@ angular
 					vm.model = {
 						jobTitle : {}
 					};
+					
+//					Object.defineProperty(vm.options.formState, 'lang', {
+//						enumerable : true,
+//						get : function() {
+//							console.log('getting ' + $translate.use());
+//							return $translate.use();
+//						},
+//						set : function(arg) {
+//							console.log('setting ' + arg);
+//							return $translate.use(arg);
+//						}
+//					});
 
 					vm.origRoles = {};
-					vm.roles = {1:false,2:false,3:false};
+					vm.roles = {90:false,91:false,92:false};
 
 					userService.get(id).then(function(status) {
 						for ( var i in status.data) {
@@ -67,6 +79,9 @@ angular
 								});
 
 						vm.model.jobTitle.id = status.data.jobTitle.id;
+						if(vm.model.gender){
+							vm.model.gender = $translate.instant(vm.model.gender);
+						}
 					});
 
 					vm.fields = [
@@ -77,7 +92,7 @@ angular
 											key : 'name',
 											type : 'input',
 											templateOptions : {
-												label : 'Name',
+												label : $translate.instant('Name'),
 												placeholder : 'name',
 												type : 'text',
 												disabled : true
@@ -87,7 +102,7 @@ angular
 											key : 'username',
 											type : 'input',
 											templateOptions : {
-												label : 'Username',
+												label : $translate.instant('Username'),
 												placeholder : 'username',
 												type : 'text',
 												disabled : true
@@ -97,7 +112,7 @@ angular
 											key : 'email',
 											type : 'input',
 											templateOptions : {
-												label : 'E-mail',
+												label : $translate.instant('Email'),
 												placeholder : 'email',
 												type : 'text',
 												disabled : true
@@ -107,7 +122,7 @@ angular
 											key : 'gender',
 											type : 'input',
 											templateOptions : {
-												label : 'Gender',
+												label : $translate.instant('Gender'),
 												placeholder : 'gender',
 												type : 'text',
 												disabled : true
@@ -117,7 +132,7 @@ angular
 											key : 'dateofjoined',
 											type : 'input',
 											templateOptions : {
-												label : 'Joined Date',
+												label : $translate.instant('Created Date'),
 												placeholder : 'dateofjoined',
 												type : 'text',
 												disabled : true
@@ -129,7 +144,7 @@ angular
 											wrapper : 'loading',
 											model : vm.model.jobTitle,
 											templateOptions : {
-												label : 'Job Title',
+												label : $translate.instant('Job Title'),
 												options : [],
 												valueProp : 'id',
 												labelProp : 'name',
@@ -143,6 +158,12 @@ angular
 														.then(
 																function(
 																		response) {
+																	angular
+																	.forEach(
+																			response.data.content,
+																			function(job) {
+																				job.name = $translate.instant(job.name);
+																			});
 																	$scope.to.options = response.data.content;
 																	// note, the
 																	// line
@@ -162,28 +183,28 @@ angular
 								key : 'roles',
 								wrapper : 'panel',
 								templateOptions : {
-									label : 'Role'
+									label : $translate.instant('Roles')
 								},
 								fieldGroup : [ {
 									"type" : "checkbox",
-									"key" : "3",
+									"key" : "92",
 									'model' : vm.roles,
 									"templateOptions" : {
-										"label" : "Admin"
+										"label" : $translate.instant("ADMIN")
 									}
 								}, {
 									"type" : "checkbox",
-									"key" : "2",
+									"key" : "91",
 									'model' : vm.roles,
 									"templateOptions" : {
-										"label" : "Accountant"
+										"label" : $translate.instant("ACCOUNTANT")
 									}
 								}, {
 									"type" : "checkbox",
-									"key" : "1",
+									"key" : "90",
 									'model' : vm.roles,
 									"templateOptions" : {
-										"label" : "Employee"
+										"label" : $translate.instant("EMPLOYEE")
 									}
 								} ]
 							} ];

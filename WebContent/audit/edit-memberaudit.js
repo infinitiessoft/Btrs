@@ -18,7 +18,7 @@ angular
 								name : 'auditParameterSection',
 								templateUrl : 'templates/parameterSection.html',
 								overwriteOk : true,
-								controller : function($scope) {
+								controller : function($scope,$translate) {
 									$scope.formOptions = {
 										formState : $scope.formState
 									};
@@ -42,7 +42,7 @@ angular
 											key : key,
 											type : 'input',
 											templateOptions : {
-												label : label,
+												label : $translate.instant(label),
 												type : dataType,
 												required : true,
 
@@ -93,7 +93,7 @@ angular
 								name : 'auditExpenseSection',
 								templateUrl : 'templates/expenseSection.html',
 								overwriteOk : true,
-								controller : function($scope, $uibModal,
+								controller : function($scope, $uibModal, $translate,
 										memberExpenseTypeService) {
 									$scope.formOptions = {
 										formState : $scope.formState
@@ -119,7 +119,7 @@ angular
 											type : 'auditParameterSection',
 											key : 'parameterValues',
 											templateOptions : {
-												label : 'Parameter',
+												label : $translate.instant('Parameter'),
 												'fields' : []
 											}
 										};
@@ -128,7 +128,7 @@ angular
 											type : 'input',
 											'model' : 'model.expenseType',
 											templateOptions : {
-												label : 'ExpenseType',
+												label : $translate.instant('ExpenseType'),
 												disabled : 'true'
 											}
 										});
@@ -168,7 +168,7 @@ angular
 														type : 'input',
 														'model' : 'model.expenseType',
 														templateOptions : {
-															label : 'ExpenseType',
+															label : $translate.instant('ExpenseType'),
 															disabled : 'true'
 														}
 													},
@@ -177,7 +177,7 @@ angular
 														type : 'auditParameterSection',
 														key : 'parameterValues',
 														templateOptions : {
-															label : 'Parameter',
+															label : $translate.instant('Parameter'),
 															'fields' : []
 														}
 													},
@@ -186,7 +186,7 @@ angular
 														key : 'totalAmount',
 														type : 'input',
 														templateOptions : {
-															label : 'Total amount',
+															label : $translate.instant('Total amount'),
 															type : 'number',
 															required : true,
 														}
@@ -196,7 +196,7 @@ angular
 														key : 'taxAmount',
 														type : 'input',
 														templateOptions : {
-															label : 'Tax',
+															label : $translate.instant('Tax'),
 															type : 'number',
 															required : true,
 														},
@@ -257,7 +257,7 @@ angular
 											type : 'auditParameterSection',
 											key : 'parameterValues',
 											templateOptions : {
-												label : 'Parameter',
+												label : $translate.instant('Parameter'),
 												'fields' : []
 											}
 										};
@@ -266,7 +266,7 @@ angular
 											key : 'totalAmount',
 											type : 'input',
 											templateOptions : {
-												label : 'Total amount',
+												label : $translate.instant('Total amount'),
 												type : 'number',
 												required : true,
 											}
@@ -332,6 +332,14 @@ angular
 
 														// function definition
 														function ok() {
+															var taxPercent = vm.formData.model.expenseType.taxPercent;
+															var totalAmount = vm.formData.model.totalAmount ? vm.formData.model.totalAmount
+																	: 0;
+															taxAmount = Math
+																	.round(taxPercent
+																			* totalAmount
+																			/ 100);
+															vm.formData.model.taxAmount = taxAmount;
 															$uibModalInstance
 																	.close(vm.formData);
 														}
@@ -372,7 +380,7 @@ angular
 											'key' : 'expenseType',
 											'type' : 'select',
 											'templateOptions' : {
-												'label' : 'Type',
+												'label' : $translate.instant('Type'),
 												'options' : $scope.expenseTypes,
 												'ngOptions' : 'option as option.value group by option.expenseCategory.name for option in to.options'
 											},
@@ -406,7 +414,7 @@ angular
 				})
 		.controller(
 				'edit-memberaudit',
-				function($rootScope, $scope, $stateParams, $state,
+				function($rootScope, $scope, $stateParams, $state, $translate,
 						formlyVersion, $uibModal, memberAuditService,
 						memberExpenseTypeService,
 						memberAuditAttendRecordService) {
@@ -433,7 +441,11 @@ angular
 							.get(userId, id)
 							.then(
 									function(status) {
+										angular.forEach(status.data.expenses, function(val) {
+											val.expenseType.value = $translate.instant(val.expenseType.value);
+										});
 										vm.model = status.data;
+									
 										var recordId = status.data.attendanceRecordId;
 										if (recordId) {
 											memberAuditAttendRecordService
@@ -464,29 +476,21 @@ angular
 							.list()
 							.then(
 									function(response) {
-										angular.forEach(response.data.content,
-												function(val) {
-													vm.expenseTypes.push(val);
-												});
+										angular.forEach(response.data.content, function(val) {
+											val.value = $translate.instant(val.value);
+											val.expenseCategory.name = $translate.instant(val.expenseCategory.name);
+											vm.expenseTypes.push(val);
+										});
 										var totalPages = response.data.totalPages;
 										if (totalPages > 1) {
 											for (var i = 1; i < totalPages; i++) {
-												memberExpenseTypeService
-														.list({
-															page : i
-														})
-														.then(
-																function(
-																		response2) {
-																	angular
-																			.forEach(
-																					response2.data.content,
-																					function(
-																							val) {
-																						vm.expenseTypes
-																								.push(val);
-																					});
-																});
+												memberExpenseTypeService.list({page:i}).then(function(response2) {
+													angular.forEach(response2.data.content, function(val) {
+														val.value = $translate.instant(val.value);
+														val.expenseCategory.name = $translate.instant(val.expenseCategory.name);
+														vm.expenseTypes.push(val);
+													});
+												});
 											}
 										}
 									});
@@ -494,7 +498,7 @@ angular
 
 					vm.fields = [ {
 						className : 'section-label',
-						template : '<div><strong>Attend Record:</strong></div>'
+						template : '<div><strong>'+$translate.instant('Attend Record')+':</strong></div>'
 					}, {
 						className : 'row',
 						fieldGroup : [ {
@@ -503,7 +507,7 @@ angular
 							key : 'applicant.name',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'Applicant',
+								label : $translate.instant('Applicant'),
 								disabled : true
 							}
 						} ]
@@ -515,7 +519,7 @@ angular
 							key : 'reason',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'Reason',
+								label : $translate.instant('Reason'),
 								disabled : true
 							}
 						} ]
@@ -527,7 +531,7 @@ angular
 							key : 'startDate',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'Start Date',
+								label : $translate.instant('StartDate'),
 								disabled : true
 							}
 						}, {
@@ -536,7 +540,7 @@ angular
 							key : 'endDate',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'EndDate',
+								label : $translate.instant('EndDate'),
 								disabled : true
 							}
 						}, {
@@ -545,7 +549,7 @@ angular
 							key : 'duration',
 							model : vm.recordModel,
 							templateOptions : {
-								label : 'Duration',
+								label : $translate.instant('Duration'),
 								disabled : true
 							}
 						} ]
@@ -558,8 +562,8 @@ angular
 							key : 'firmOrProject',
 							type : 'input',
 							templateOptions : {
-								label : 'Firm/Project',
-								placeholder : 'Firm/Project',
+								label : $translate.instant('Firm/Project'),
+								placeholder : $translate.instant('Firm/Project'),
 								"required" : false
 							}
 						} ]
@@ -570,9 +574,8 @@ angular
 							key : 'route',
 							type : 'textarea',
 							templateOptions : {
-								label : 'Route',
-								placeholder : 'Route',
-								"required" : true
+								label : $translate.instant('Route'),
+								placeholder : $translate.instant('Source - Destination')
 							}
 						} ]
 					}, {
@@ -582,8 +585,8 @@ angular
 							key : 'comment',
 							type : 'textarea',
 							templateOptions : {
-								label : 'Comment',
-								placeholder : 'Comment',
+								label : $translate.instant('comment'),
+								placeholder : $translate.instant('comment')
 							}
 						} ]
 					}, {
@@ -594,8 +597,8 @@ angular
 							key : 'expenses',
 							wrapper : 'panel',
 							templateOptions : {
-								label : 'Expense',
-								btnText : 'Add',
+								label : $translate.instant('Expense'),
+								btnText : $translate.instant('Add'),
 								expenseTypes : vm.expenseTypes,
 							}
 						} ]

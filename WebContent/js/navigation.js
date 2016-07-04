@@ -49,6 +49,9 @@ angular.module('navigation', []).controller(
 					if (authenticated) {
 						console.log("Login succeeded")
 						$scope.error = false;
+						$state.go('dashboard.home', {
+							userid : auth.user.principal.id
+						});
 					} else {
 						console.log("Login failed")
 						$scope.error = true;
