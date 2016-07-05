@@ -543,14 +543,6 @@ angular
 						    						 return $http.get(serviceBase  + id);
 						    					 };
 
-						    					 obj.update = function(id, employee) {
-						    						 return $http.put(serviceBase  + id,
-						    								 employee).then(function(results) {
-						    									 return results;
-						    								 });
-						    					 };
-
-
 						    					 return obj;
 						    				 } ]).factory(
 						    						 'memberReportService',

@@ -17,7 +17,6 @@ import org.hibernate.HibernateException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -38,8 +37,8 @@ import org.springframework.web.filter.RequestContextFilter;
 		WithSecurityContextTestExecutionListener.class })
 public abstract class ResourceTest extends JerseyTest {
 
-	@Autowired
-	protected DemoData dbUtil;
+	// @Autowired
+	// protected DbUnitUtil dbUtil;
 
 	private static boolean isLoad = false;
 
@@ -84,11 +83,12 @@ public abstract class ResourceTest extends JerseyTest {
 		// dbUtil.createTables(new Class[] { Employee.class });
 
 		// Different functional tests require different data sets
-		if (!isLoad) {
-			isLoad = true;
-			System.err.println("load data");
-			dbUtil.loadData();
-		}
+		// if (!isLoad) {
+		// isLoad = true;
+		// System.err.println("load data");
+		// dbUtil.loadAttendanceData();
+		// dbUtil.loadBtrsData();
+		// }
 	}
 
 	@AfterClass

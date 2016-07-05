@@ -17,19 +17,6 @@ angular.module('edit-expenseType', []).controller(
 			};
 			
 			vm.options = {formState : {}};
-			
-			Object.defineProperty(vm.options.formState, 'lang', {
-				enumerable : true,
-				get : function() {
-					console.log('getting ' + $translate.use());
-					return $translate.use();
-				},
-				set : function(arg) {
-					console.log('setting ' + arg);
-					return $translate.use(arg);
-				}
-			});
-
 
 			if (id == 0) {
 				vm.model = {};
@@ -63,13 +50,13 @@ angular.module('edit-expenseType', []).controller(
 			function onSubmit() {
 				if (vm.form.$valid) {
 					if (id > 0) {
-						jobTitleService.update(id, vm.model).then(
+						 expenseTypeService.update(id, vm.model).then(
 								function(status) {
-									$state.go('dashboard.list-jobTitles');
+									$state.go('dashboard.list-expenseTypes');
 								});
 					} else {
-						jobTitleService.insert(vm.model).then(function(status) {
-							$state.go('dashboard.list-jobTitles');
+						 expenseTypeService.insert(vm.model).then(function(status) {
+							$state.go('dashboard.list-expenseTypes');
 						});
 					}
 				}

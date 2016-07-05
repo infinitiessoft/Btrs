@@ -63,20 +63,6 @@ angular
 							awesomeIsForced : false
 						}
 					};
-					
-					// if you must support IE8 this might work with the
-				    // es5-shim: https://github.com/es-shims/es5-shim
-				    Object.defineProperty(vm.options.formState, 'lang', {
-				      enumerable: true,
-				      get: function() {
-				        console.log('getting ' + $translate.use());
-				        return $translate.use();
-				      },
-				      set: function(arg) {
-				        console.log('setting ' + arg);
-				        return $translate.use(arg);
-				      }
-				    });
 
 					vm.fields = [ {
 						key : 'comment',
@@ -144,10 +130,6 @@ angular
 					$scope.applicant = {};
 					$scope.other = 0;
 
-					profileService.get(userId).then(function(status) {
-						$scope.applicant.jobTitle = status.data.jobTitle;
-					});
-
 					var transportationCategoryId = 67
 					memberAuditService
 							.get(userId, id)
@@ -155,6 +137,11 @@ angular
 									function(status) {
 										$scope.model = status.data;
 										var expenses = status.data.expenses;
+										
+										profileService.get(status.data.owner.id).then(function(status2) {
+											$scope.applicant.jobTitle = status2.data.jobTitle;
+										});
+										
 										var tid = 0;
 										angular
 												.forEach(

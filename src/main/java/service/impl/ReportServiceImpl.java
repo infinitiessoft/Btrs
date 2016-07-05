@@ -285,7 +285,8 @@ public class ReportServiceImpl implements ReportService {
 		setUpReport(updated, rpt);
 		boolean resubmitted = false;
 		if (currentUser.getId() == rpt.getOwner().getId()
-				&& currentUser.getId() != rpt.getReviewer().getId()) {
+				&& (rpt.getReviewer() != null && currentUser.getId() != rpt
+						.getReviewer().getId())) {
 			if (rpt.getCurrentStatus() == StatusEnum.REJECTED) {
 				resubmitted = resubmit(rpt, currentUser);
 			} else if (rpt.getCurrentStatus() == StatusEnum.APPROVED) {

@@ -8,7 +8,6 @@
 		<class>entity.ExpenseType</class>
 		<class>entity.ExpenseTypePara</class>
 		<class>entity.ParameterValue</class>
-		<class>entity.Photo</class>
 		<class>entity.Report</class>
 		<class>entity.Role</class>
 		<class>entity.StatusChange</class>

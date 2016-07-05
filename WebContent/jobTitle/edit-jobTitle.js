@@ -20,7 +20,7 @@ angular.module('edit-jobTitle', []).controller(
 				formState : {
 					horizontalLabelClass : 'col-sm-2',
 					horizontalFieldClass : 'col-sm-10',
-					readOnly : true
+					readOnly : false
 				}
 			};
 			
@@ -37,7 +37,7 @@ angular.module('edit-jobTitle', []).controller(
 				type : 'input',
 				templateOptions : {
 					label : $translate.instant('Name'),
-					placeholder : 'name',
+					placeholder : $translate.instant('name'),
 					type : 'text',
 					required : true
 				}
@@ -46,7 +46,7 @@ angular.module('edit-jobTitle', []).controller(
 				type : 'input',
 				templateOptions : {
 					label : $translate.instant('Comment'),
-					placeholder : 'comment',
+					placeholder : $translate.instant('comment'),
 					type : 'text'
 				}
 			} ];

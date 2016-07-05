@@ -80,7 +80,7 @@ angular
 							 function(status) {
 								 var filters = queryParams(lastState);
 
-								 memberReportService
+								 memberAuditService
 								 .list(userId, filters)
 								 .then(
 										 function(

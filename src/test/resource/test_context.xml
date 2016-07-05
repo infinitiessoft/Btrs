@@ -18,19 +18,40 @@
 
 
 	<context:annotation-config />
-	<context:component-scan base-package="resources" />
-
+	<tx:annotation-driven />
 	<task:annotation-driven executor="executor" />
 	<task:executor id="executor" pool-size="1" />
+
+	<bean id="properties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:system.properties" />
+	</bean>
+
+	<bean id="mailService" class="mock.MockMailService">
+	</bean>
+
+	<bean id="mailWritter" class="util.MailWritterImpl">
+		<constructor-arg ref="employeeDao" />
+		<property name="header" value="${mail.header}" />
+		<property name="footer" value="${mail.footer}" />
+		<property name="systemUrl" value="${mail.url}" />
+	</bean>
+
 
 	<!-- DATABASE SETUP -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:example" />
+		<property name="url" value="jdbc:hsqldb:mem:btrs" />
+	</bean>
+
+	<bean id="dataSourceAttendance" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:attendance" />
 	</bean>
 
 
@@ -48,118 +69,120 @@
 		</property>
 	</bean>
 
+	<bean id="entityManagerFactoryAttendance"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="attendancePU" />
+		<property name="persistenceXmlLocation"
+			value="file:src/main/resource/META-INF/persistence.xml"></property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<jpa:repositories base-package="dao" />
-
-	<bean id="departmentService" class="serviceImpl.DepartmentServiceImpl">
-		<constructor-arg ref="departmentDao" />
+	<bean id="transactionManagerAttendance" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactoryAttendance" />
+		<!-- <qualifier value="attendance"/> -->
 	</bean>
 
-	<bean id="roleService" class="serviceImpl.RoleServiceImpl">
+	<jpa:repositories base-package="dao"
+		transaction-manager-ref="transactionManager"
+		entity-manager-factory-ref="entityManagerFactory" />
+
+	<jpa:repositories base-package="attendance.dao"
+		transaction-manager-ref="transactionManagerAttendance"
+		entity-manager-factory-ref="entityManagerFactoryAttendance" />
+
+	<bean id="roleService" class="service.impl.RoleServiceImpl">
 		<constructor-arg ref="roleDao" />
 	</bean>
 
-
-	<bean id="expenseCategoryService" class="serviceImpl.ExpenseCategoryServiceImpl">
+	<bean id="expenseCategoryService" class="service.impl.ExpenseCategoryServiceImpl">
 		<constructor-arg ref="expenseCategoryDao" />
 	</bean>
 
-
-	<bean id="expenseCateTypeService" class="serviceImpl.ExpenseCateTypeServiceImpl">
-		<constructor-arg ref="expenseCategoryDao" />
-		<constructor-arg ref="expenseTypeDao" />
-		<constructor-arg ref="expenseCateTypeDao" />
-	</bean>
-
-
-
-	<bean id="expenseService" class="serviceImpl.ExpenseServiceImpl">
+	<bean id="expenseService" class="service.impl.ExpenseServiceImpl">
 		<constructor-arg ref="expenseDao" />
 		<constructor-arg ref="expenseTypeDao" />
 		<constructor-arg ref="reportDao" />
 	</bean>
 
-
-
-	<bean id="expenseTypeService" class="serviceImpl.ExpenseTypeServiceImpl">
+	<bean id="expenseTypeService" class="service.impl.ExpenseTypeServiceImpl">
 		<constructor-arg ref="expenseTypeDao" />
 
 	</bean>
 
+	<!-- <bean id="expenseTypeParaService" class="service.impl.ExpenseTypeParaServiceImpl"> 
+		<constructor-arg ref="expenseTypeDao" /> <constructor-arg ref="typeParameterDao" 
+		/> <constructor-arg ref="expenseTypeParaDao" /> </bean> -->
 
+	<!-- <bean id="parameterValueService" class="service.impl.ParameterValueServiceImpl"> 
+		<constructor-arg ref="parameterValueDao" /> <constructor-arg ref="typeParameterDao" 
+		/> <constructor-arg ref="expenseDao" /> </bean> -->
 
-	<bean id="expenseTypeParaService" class="serviceImpl.ExpenseTypeParaServiceImpl">
+	<bean id="reportService" class="service.impl.ReportServiceImpl">
+		<constructor-arg ref="reportDao" />
+		<constructor-arg ref="attendRecordDao" />
+		<constructor-arg ref="expenseDao" />
 		<constructor-arg ref="expenseTypeDao" />
-		<constructor-arg ref="typeParameterDao" />
-		<constructor-arg ref="expenseTypeParaDao" />
-	</bean>
-
-
-
-	<bean id="parameterValueService" class="serviceImpl.ParameterValueServiceImpl">
 		<constructor-arg ref="parameterValueDao" />
-		<constructor-arg ref="typeParameterDao" />
-		<constructor-arg ref="expenseDao" />
-	</bean>
-
-
-
-	<bean id="photoService" class="serviceImpl.PhotoServiceImpl">
-		<constructor-arg ref="photoDao" />
-		<constructor-arg ref="reportDao" />
-	</bean>
-
-
-	<bean id="reportService" class="serviceImpl.ReportServiceImpl">
-		<constructor-arg ref="reportDao" />
 		<constructor-arg ref="userDao" />
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="statusChangeDao" />
+		<constructor-arg ref="employeeDao" />
+		<constructor-arg ref="mailService" />
+		<constructor-arg ref="mailWritter" />
 	</bean>
 
-
-
-	<bean id="statusChangesService" class="serviceImpl.StatusChangesServiceImpl">
-		<constructor-arg ref="statusChangesDao" />
-		<constructor-arg ref="reportDao" />
-		<constructor-arg ref="userDao" />
+	<bean id="statusChangeService" class="service.impl.StatusChangeServiceImpl">
+		<constructor-arg ref="statusChangeDao" />
+		<constructor-arg ref="employeeDao" />
 	</bean>
 
+	<!-- <bean id="typeParameterService" class="service.impl.TypeParameterServiceImpl"> 
+		<constructor-arg ref="typeParameterDao" /> </bean> -->
 
-
-	<bean id="typeParameterService" class="serviceImpl.TypeParameterServiceImpl">
-		<constructor-arg ref="typeParameterDao" />
-	</bean>
-
-
-
-	<bean id="userRoleService" class="serviceImpl.UserRoleServiceImpl">
+	<bean id="userRoleService" class="service.impl.UserRoleServiceImpl">
 		<constructor-arg ref="userRoleDao" />
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="roleDao" />
 	</bean>
 
-
-
-	<bean id="userService" class="serviceImpl.UserServiceImpl">
+	<bean id="userService" class="service.impl.UserServiceImpl">
 		<constructor-arg ref="userDao" />
-		<constructor-arg ref="departmentDao" />
-		<constructor-arg ref="userSharedDao" />
+		<constructor-arg ref="employeeDao" />
+		<constructor-arg ref="jobTitleDao" />
+	</bean>
+
+	<bean id="userDetailService" class="service.impl.UserDetailServiceImpl">
+		<constructor-arg ref="userRoleDao" />
+		<constructor-arg ref="jobTitleDao" />
+		<constructor-arg ref="roleDao" />
+		<constructor-arg ref="employeeDao" />
+		<constructor-arg ref="userDao" />
+	</bean>
+
+	<bean id="attendRecordService" class="service.impl.DBAttendRecordService">
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="attendRecordDao" />
+		<constructor-arg ref="reportDao" />
+	</bean>
+
+	<bean id="jobTitleService" class="service.impl.JobTitleServiceImpl">
+		<constructor-arg ref="jobTitleDao" />
 	</bean>
 
 
+	<!-- INIT REST COMPONENTS -->
+	<context:component-scan base-package="resources" />
 
-	<bean id="userSharedService" class="serviceImpl.UserSharedServiceImpl">
-		<constructor-arg ref="userSharedDao" />
-	</bean>
-
-	<bean id="userDetailService" class="serviceImpl.UserDetailServiceImpl">
-		<constructor-arg ref="userSharedDao" />
-	</bean>
-
-
-	<tx:annotation-driven transaction-manager="transactionManager" />
 	<!-- SPRING SECURITY SETUP -->
 
 	<bean id="passwordEncoder" class="security.SHA1PasswordEncoder">
