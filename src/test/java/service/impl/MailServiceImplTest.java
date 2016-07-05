@@ -1,4 +1,4 @@
-package serviceTest;
+package service.impl;
 
 import org.jmock.Expectations;
 import org.junit.After;

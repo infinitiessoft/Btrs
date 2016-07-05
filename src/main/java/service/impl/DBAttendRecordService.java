@@ -34,18 +34,6 @@ public class DBAttendRecordService implements AttendRecordService {
 		this.userDao = userDao;
 	}
 
-	// @Transactional("transactionManagerAttendance")
-	// @Override
-	// public AttendRecordSendto retrieve(long id) {
-	// AttendRecord record = attendRecordDao.findOne(id);
-	//
-	// if (record == null) {
-	// throw new AttendRecordNotFoundException(id);
-	// }
-	// record.getEmployee().getId();
-	// return AttendRecordSendto.toAttendRecordSendto(record);
-	// }
-
 	@Transactional("transactionManagerAttendance")
 	@Override
 	public AttendRecordSendto retrieve(AttendRecordSpecification spec) {
@@ -109,7 +97,7 @@ public class DBAttendRecordService implements AttendRecordService {
 			spec.setApplicantId(user.getUserSharedId());
 		}
 		spec.setExclusion(ids);
-		
+
 		List<AttendRecordSendto> transfers = new ArrayList<AttendRecordSendto>();
 		Page<AttendRecord> attendRecords = attendRecordDao.findAll(spec,
 				pageable);

@@ -1,4 +1,4 @@
-package serviceTest;
+package service.impl;
 
 import static org.junit.Assert.assertEquals;
 
