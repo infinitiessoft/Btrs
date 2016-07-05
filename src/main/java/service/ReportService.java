@@ -22,9 +22,6 @@ public interface ReportService {
 	public ReportSendto update(ReportSpecification spec, ReportSendto report,
 			long currentUseId);
 
-	public ReportSendto update(ReportSpecification spec, ReportSendto report,
-			String currentUsername);
-
 	public ReportSendto approve(long id, StatusChangeSendto statusChange,
 			long currentUserId);
 

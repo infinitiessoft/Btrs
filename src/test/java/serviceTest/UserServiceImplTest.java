@@ -11,52 +11,50 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.jpa.domain.Specification;
 
 import resources.specification.SimplePageRequest;
 import resources.specification.UserSpecification;
 import sendto.UserSendto;
 import service.impl.UserServiceImpl;
-import dao.DepartmentDao;
+import attendance.dao.EmployeeDao;
+import attendance.entity.Employee;
+import dao.JobTitleDao;
 import dao.UserDao;
-import dao.UserSharedDao;
-import entity.Department;
+import entity.JobTitle;
 import entity.User;
-import entity.UserShared;
 
 public class UserServiceImplTest extends ServiceTest {
 
 	private UserDao userDao;
-	private DepartmentDao departmentDao;
-	private UserSharedDao userSharedDao;
+	private EmployeeDao employeeDao;
+	private JobTitleDao jobTitleDao;
 	private UserServiceImpl userService;
-	private PasswordEncoder passwordEncoder;
-
+	private Specification<User> spec;
 	private User user;
-	private Department department;
-	private UserShared userShared;
+	private Employee employee;
+	private JobTitle jobTitle;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
 		userDao = context.mock(UserDao.class);
-		departmentDao = context.mock(DepartmentDao.class);
-		userSharedDao = context.mock(UserSharedDao.class);
-		passwordEncoder = context.mock(PasswordEncoder.class);
-		userService = new UserServiceImpl(userDao, departmentDao,
-				userSharedDao, passwordEncoder);
+		spec = context.mock(Specification.class);
+		employeeDao = context.mock(EmployeeDao.class);
+		jobTitleDao = context.mock(JobTitleDao.class);
+		userService = new UserServiceImpl(userDao, jobTitleDao, employeeDao);
 		user = new User();
 		user.setId(1L);
+		user.setUserSharedId(1L);
 
-		user.setDepartment(department);
-		user.setUserShared(userShared);
+		employee = new Employee();
+		employee.setId(1L);
+		employee.setName("name");
 
-		department = new Department();
-		department.setId(1L);
-		user.setDepartment(department);
-
-		userShared = new UserShared();
-		userShared.setId(1L);
-		user.setUserShared(userShared);
+		jobTitle = new JobTitle();
+		jobTitle.setId(1L);
+		jobTitle.setName("name");
+		user.setJobTitle(jobTitle);
 
 	}
 
@@ -69,63 +67,16 @@ public class UserServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(userDao).findOne(1L);
+				exactly(1).of(userDao).findOne(spec);
 				will(returnValue(user));
+
+				exactly(1).of(employeeDao).findOne(user.getUserSharedId());
+				will(returnValue(employee));
 			}
 		});
-		UserSendto ret = userService.retrieve(1);
+		UserSendto ret = userService.retrieve(spec);
 		assertEquals(1l, ret.getId().longValue());
-		// assertEquals(new Date(), ret.getLastLogin());
-		assertEquals(department.getId().longValue(), ret.getDepartment()
-				.getId().longValue());
-		assertEquals(userShared.getId().longValue(), ret.getUserShared()
-				.getId().longValue());
-	}
 
-	@Test
-	public void testDelete() {
-		context.checking(new Expectations() {
-
-			{
-				exactly(1).of(userDao).delete(user);
-
-				exactly(1).of(userDao).findOne(1L);
-				will(returnValue(user));
-			}
-		});
-		userService.delete(1l);
-	}
-
-	@Test
-	public void testSave() {
-		final UserSendto newEntry = new UserSendto();
-		UserSendto.Department departmentSendto = new UserSendto.Department();
-		departmentSendto.setId(department.getId());
-		UserSendto.UserShared userSharedSendto = new UserSendto.UserShared();
-		userSharedSendto.setId(userShared.getId());
-		newEntry.setDepartment(departmentSendto);
-		newEntry.setUserShared(userSharedSendto);
-
-		context.checking(new Expectations() {
-
-			{
-				exactly(1).of(departmentDao).findOne(
-						newEntry.getDepartment().getId());
-				will(returnValue(department));
-
-				exactly(1).of(userSharedDao).findOne(
-						newEntry.getUserShared().getId());
-				will(returnValue(userShared));
-
-				exactly(1).of(userDao).save(with(any(User.class)));
-				will(returnValue(user));
-
-			}
-		});
-		UserSendto ret = userService.save(newEntry);
-		assertEquals(user.getId(), ret.getId());
-		assertEquals(department.getId(), ret.getDepartment().getId());
-		assertEquals(userShared.getId(), ret.getUserShared().getId());
 	}
 
 	@Test
@@ -138,11 +89,14 @@ public class UserServiceImplTest extends ServiceTest {
 				exactly(1).of(userDao).save(user);
 				will(returnValue(user));
 
-				exactly(1).of(userDao).findOne(1l);
+				exactly(1).of(userDao).findOne(spec);
 				will(returnValue(user));
+
+				exactly(1).of(employeeDao).findOne(user.getUserSharedId());
+				will(returnValue(employee));
 			}
 		});
-		UserSendto ret = userService.update(1l, newEntry);
+		UserSendto ret = userService.update(spec, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 
 	}
@@ -160,6 +114,9 @@ public class UserServiceImplTest extends ServiceTest {
 			{
 				exactly(1).of(userDao).findAll(spec, pageable);
 				will(returnValue(page));
+
+				exactly(1).of(employeeDao).findOne(user.getUserSharedId());
+				will(returnValue(employee));
 			}
 		});
 		Page<UserSendto> rets = userService.findAll(spec, pageable);

@@ -279,35 +279,6 @@ public class ReportServiceImpl implements ReportService {
 		return rets;
 	}
 
-	@Transactional("transactionManager")
-	@Override
-	public ReportSendto update(ReportSpecification spec, ReportSendto updated,
-			String currentUsername) {
-		if (!Strings.isNullOrEmpty(spec.getApplicantName())) {
-			EmployeeSpecification employeeSpec = new EmployeeSpecification();
-			employeeSpec.setName(spec.getApplicantName());
-			Employee employee = employeeDao.findOne(employeeSpec);
-			if (employee == null) {
-				throw new UserNotFoundException(spec.getApplicantName());
-			}
-			spec.setUserSharedId(employee.getId());
-		}
-
-		Report rpt = reportDao.findOne(spec);
-		if (rpt == null) {
-			throw new ReportNotFoundException();
-		}
-		Employee currentEmployee = employeeDao.findByUsername(currentUsername);
-		if (currentEmployee == null) {
-			throw new UserNotFoundException(currentUsername);
-		}
-		User currentUser = userDao.findByUserSharedId(currentEmployee.getId());
-		if (currentUser == null) {
-			throw new UserNotFoundException(currentUsername);
-		}
-		return update(rpt, updated, currentUser);
-	}
-
 	private ReportSendto update(Report rpt, ReportSendto updated,
 			User currentUser) {
 		rpt.setLastUpdatedDate(new Date());

@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
-import resources.specification.StatusChangeSpecification;
 import sendto.StatusChangeSendto;
 import service.StatusChangeService;
 import attendance.dao.EmployeeDao;
@@ -33,7 +33,7 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 
 	@Transactional("transactionManager")
 	@Override
-	public StatusChangeSendto retrieve(StatusChangeSpecification spec) {
+	public StatusChangeSendto retrieve(Specification<StatusChange> spec) {
 		StatusChange status = statusChangesDao.findOne(spec);
 		if (status == null) {
 			throw new StatusChangesNotFoundException();
@@ -63,32 +63,9 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 		return ret;
 	}
 
-	// @Transactional("transactionManager")
-	// @Override
-	// public void delete(StatusChangeSpecification spec) {
-	// try {
-	// StatusChange statusChanges = statusChangesDao.findOne(spec);
-	// if (statusChanges == null) {
-	// throw new StatusChangesNotFoundException(id);
-	// }
-	// statusChangesDao.delete(statusChanges);
-	// } catch (org.springframework.dao.EmptyResultDataAccessException e) {
-	// throw new StatusChangesNotFoundException(id);
-	// }
-	// }
-
-	// @Transactional("transactionManager")
-	// @Override
-	// public StatusChangeSendto save(StatusChangeSendto statusChanges) {
-	// statusChanges.setId(null);
-	// StatusChange newEntry = new StatusChange();
-	// setUpStatusChanges(statusChanges, newEntry);
-	// return toStatusChangesSendto(statusChangesDao.save(newEntry));
-	// }
-
 	@Transactional("transactionManager")
 	@Override
-	public Page<StatusChangeSendto> findAll(StatusChangeSpecification spec,
+	public Page<StatusChangeSendto> findAll(Specification<StatusChange> spec,
 			Pageable pageable) {
 		List<StatusChangeSendto> sendto = new ArrayList<StatusChangeSendto>();
 		Page<StatusChange> status = statusChangesDao.findAll(spec, pageable);
@@ -99,23 +76,5 @@ public class StatusChangeServiceImpl implements StatusChangeService {
 				sendto, pageable, status.getTotalElements());
 		return rets;
 	}
-
-	// @Transactional("transactionManager")
-	// @Override
-	// public StatusChangeSendto update(long id, StatusChangeSendto updated) {
-	// StatusChange status = statusChangesDao.findOne(id);
-	// if (status == null) {
-	// throw new StatusChangesNotFoundException(id);
-	// }
-	// setUpStatusChanges(updated, status);
-	// return toStatusChangesSendto(statusChangesDao.save(status));
-	// }
-
-	// private void setUpStatusChanges(StatusChangeSendto sendto,
-	// StatusChange newEntry) {
-	// if (sendto.isCommentSet()) {
-	// newEntry.setComment(sendto.getComment());
-	// }
-	// }
 
 }

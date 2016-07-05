@@ -12,16 +12,17 @@ import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-import dao.RoleDao;
-import dao.UserDao;
-import dao.UserRoleDao;
-import entity.Role;
-import entity.User;
-import entity.UserRole;
 import resources.specification.SimplePageRequest;
 import resources.specification.UserRoleSpecification;
 import sendto.RoleSendto;
 import service.impl.UserRoleServiceImpl;
+import dao.RoleDao;
+import dao.UserDao;
+import dao.UserRoleDao;
+import entity.Role;
+import entity.RoleEnum;
+import entity.User;
+import entity.UserRole;
 
 public class UserRoleServiceImplTest extends ServiceTest {
 	private UserDao userDao;
@@ -44,6 +45,7 @@ public class UserRoleServiceImplTest extends ServiceTest {
 		user.setId(1L);
 		admin = new Role();
 		admin.setId(1L);
+		admin.setValue(RoleEnum.EMPLOYEE);
 
 		userrole = new UserRole();
 		userrole.setId(1L);
@@ -61,11 +63,13 @@ public class UserRoleServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(userroleDao).findByUserIdAndRoleId(user.getId(), admin.getId());
+				exactly(1).of(userroleDao).findByUserIdAndRoleId(user.getId(),
+						admin.getId());
 				will(returnValue(userrole));
 			}
 		});
-		RoleSendto ret = userroleService.findByUserIdAndRoleId(user.getId(), admin.getId());
+		RoleSendto ret = userroleService.findByUserIdAndRoleId(user.getId(),
+				admin.getId());
 		assertEquals(admin.getId(), ret.getId());
 	}
 
@@ -74,7 +78,8 @@ public class UserRoleServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(userroleDao).findByUserIdAndRoleId(user.getId(), admin.getId());
+				exactly(1).of(userroleDao).findByUserIdAndRoleId(user.getId(),
+						admin.getId());
 				will(returnValue(userrole));
 
 				exactly(1).of(userroleDao).delete(userrole);
@@ -104,7 +109,8 @@ public class UserRoleServiceImplTest extends ServiceTest {
 	@Test
 	public void testFindAll() {
 		final UserRoleSpecification spec = new UserRoleSpecification();
-		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id",
+				"ASC");
 		final List<UserRole> userroles = new ArrayList<UserRole>();
 		userroles.add(userrole);
 		final Page<UserRole> page = new PageImpl<UserRole>(userroles);

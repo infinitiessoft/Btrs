@@ -11,17 +11,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.domain.Specification;
 
+import resources.specification.ExpenseSpecification;
+import resources.specification.SimplePageRequest;
+import sendto.ExpenseSendto;
+import service.impl.ExpenseServiceImpl;
 import dao.ExpenseDao;
 import dao.ExpenseTypeDao;
 import dao.ReportDao;
 import entity.Expense;
 import entity.ExpenseType;
 import entity.Report;
-import resources.specification.ExpenseSpecification;
-import resources.specification.SimplePageRequest;
-import sendto.ExpenseSendto;
-import service.impl.ExpenseServiceImpl;
 
 public class ExpenseServiceImplTest extends ServiceTest {
 
@@ -29,17 +30,20 @@ public class ExpenseServiceImplTest extends ServiceTest {
 	private ExpenseTypeDao expenseTypeDao;
 	private ReportDao reportDao;
 	private ExpenseServiceImpl expenseService;
-
+	private Specification<Expense> spec;
 	private Report report;
 	private ExpenseType expenseType;
 	private Expense expense;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
+		spec = context.mock(Specification.class);
 		expenseDao = context.mock(ExpenseDao.class);
 		reportDao = context.mock(ReportDao.class);
 		expenseTypeDao = context.mock(ExpenseTypeDao.class);
-		expenseService = new ExpenseServiceImpl(expenseDao, expenseTypeDao, reportDao);
+		expenseService = new ExpenseServiceImpl(expenseDao, expenseTypeDao,
+				reportDao);
 		expense = new Expense();
 		expense.setId(1L);
 		expense.setTaxAmount(0);
@@ -62,16 +66,17 @@ public class ExpenseServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseDao).findOne(1L);
+				exactly(1).of(expenseDao).findOne(spec);
 				will(returnValue(expense));
 			}
 		});
-		ExpenseSendto ret = expenseService.retrieve(1);
+		ExpenseSendto ret = expenseService.retrieve(spec);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(0, ret.getTaxAmount().intValue());
 		assertEquals(1234, ret.getTotalAmount().intValue());
 		assertEquals(report.getId(), ret.getReport().getId());
-		assertEquals(expenseType.getId().longValue(), ret.getExpenseType().getId().longValue());
+		assertEquals(expenseType.getId().longValue(), ret.getExpenseType()
+				.getId().longValue());
 	}
 
 	@Test
@@ -81,11 +86,11 @@ public class ExpenseServiceImplTest extends ServiceTest {
 			{
 				exactly(1).of(expenseDao).delete(expense);
 
-				exactly(1).of(expenseDao).findOne(1L);
+				exactly(1).of(expenseDao).findOne(spec);
 				will(returnValue(expense));
 			}
 		});
-		expenseService.delete(1l);
+		expenseService.delete(spec);
 	}
 
 	@Test
@@ -105,7 +110,8 @@ public class ExpenseServiceImplTest extends ServiceTest {
 				exactly(1).of(reportDao).findOne(newEntry.getReport().getId());
 				will(returnValue(report));
 
-				exactly(1).of(expenseTypeDao).findOne(newEntry.getExpenseType().getId());
+				exactly(1).of(expenseTypeDao).findOne(
+						newEntry.getExpenseType().getId());
 				will(returnValue(expenseType));
 
 				exactly(1).of(expenseDao).save(with(any(Expense.class)));
@@ -131,11 +137,11 @@ public class ExpenseServiceImplTest extends ServiceTest {
 				exactly(1).of(expenseDao).save(expense);
 				will(returnValue(expense));
 
-				exactly(1).of(expenseDao).findOne(expense.getId());
+				exactly(1).of(expenseDao).findOne(spec);
 				will(returnValue(expense));
 			}
 		});
-		ExpenseSendto ret = expenseService.update(1l, newEntry);
+		ExpenseSendto ret = expenseService.update(spec, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getTaxAmount(), ret.getTaxAmount());
 		assertEquals(newEntry.getTotalAmount(), ret.getTotalAmount());
@@ -144,7 +150,8 @@ public class ExpenseServiceImplTest extends ServiceTest {
 	@Test
 	public void testFindAll() {
 		final ExpenseSpecification spec = new ExpenseSpecification();
-		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id",
+				"ASC");
 		final List<Expense> expenses = new ArrayList<Expense>();
 		expenses.add(expense);
 		final Page<Expense> page = new PageImpl<Expense>(expenses);

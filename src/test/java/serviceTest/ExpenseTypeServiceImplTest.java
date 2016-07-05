@@ -13,29 +13,36 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.domain.Specification;
 
-import dao.ExpenseTypeDao;
-import entity.ExpenseType;
-import resources.specification.ExpenseTypeSpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseTypeSendto;
 import service.impl.ExpenseTypeServiceImpl;
+import dao.ExpenseTypeDao;
+import entity.ExpenseCategory;
+import entity.ExpenseType;
 
 public class ExpenseTypeServiceImplTest extends ServiceTest {
 
 	private ExpenseTypeDao expenseTypeDao;
 	private ExpenseTypeServiceImpl expenseTypeService;
-
+	private Specification<ExpenseType> spec;
 	private ExpenseType expenseType;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
 		expenseTypeDao = context.mock(ExpenseTypeDao.class);
+		spec = context.mock(Specification.class);
 		expenseTypeService = new ExpenseTypeServiceImpl(expenseTypeDao);
 		expenseType = new ExpenseType();
 		expenseType.setId(1L);
 		expenseType.setTaxPercent(10.5);
 		expenseType.setValue("demo");
+		ExpenseCategory cate = new ExpenseCategory();
+		cate.setId(1L);
+		cate.setName_key("name_key");
+		expenseType.setExpenseCategory(cate);
 
 	}
 
@@ -48,13 +55,14 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseTypeDao).findOne(1L);
+				exactly(1).of(expenseTypeDao).findOne(spec);
 				will(returnValue(expenseType));
 			}
 		});
-		ExpenseTypeSendto ret = expenseTypeService.retrieve(1);
+		ExpenseTypeSendto ret = expenseTypeService.retrieve(spec);
 		assertEquals(1l, ret.getId().longValue());
-		assertEquals(expenseType.getTaxPercent().doubleValue(), ret.getTaxPercent().doubleValue(), 0.1);
+		assertEquals(expenseType.getTaxPercent().doubleValue(), ret
+				.getTaxPercent().doubleValue(), 0.1);
 		assertEquals(expenseType.getValue(), ret.getValue());
 	}
 
@@ -65,12 +73,12 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 			{
 				exactly(1).of(expenseTypeDao).delete(expenseType);
 
-				exactly(1).of(expenseTypeDao).findOne(1L);
+				exactly(1).of(expenseTypeDao).findOne(spec);
 				will(returnValue(expenseType));
 
 			}
 		});
-		expenseTypeService.delete(1l);
+		expenseTypeService.delete(spec);
 	}
 
 	@Test
@@ -84,13 +92,19 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 				exactly(1).of(expenseTypeDao).findOne(1L);
 				will(returnValue(expenseType));
 
-				exactly(1).of(expenseTypeDao).save(with(any(ExpenseType.class)));
+				exactly(1).of(expenseTypeDao)
+						.save(with(any(ExpenseType.class)));
 				will(new CustomAction("save ExpenseType") {
 
 					@Override
-					public Object invoke(Invocation invocation) throws Throwable {
-						ExpenseType e = (ExpenseType) invocation.getParameter(0);
+					public Object invoke(Invocation invocation)
+							throws Throwable {
+						ExpenseType e = (ExpenseType) invocation
+								.getParameter(0);
 						e.setId(2L);
+						ExpenseCategory expenseCategory = new ExpenseCategory();
+						expenseCategory.setId(1L);
+						e.setExpenseCategory(expenseCategory);
 						return e;
 					}
 				});
@@ -114,11 +128,11 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 				exactly(1).of(expenseTypeDao).save(expenseType);
 				will(returnValue(expenseType));
 
-				exactly(1).of(expenseTypeDao).findOne(expenseType.getId());
+				exactly(1).of(expenseTypeDao).findOne(spec);
 				will(returnValue(expenseType));
 			}
 		});
-		ExpenseTypeSendto ret = expenseTypeService.update(1l, newEntry);
+		ExpenseTypeSendto ret = expenseTypeService.update(spec, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getTaxPercent(), ret.getTaxPercent());
 		assertEquals(newEntry.getValue(), ret.getValue());
@@ -127,8 +141,8 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 
 	@Test
 	public void testFindAll() {
-		final ExpenseTypeSpecification spec = new ExpenseTypeSpecification();
-		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id",
+				"ASC");
 		final List<ExpenseType> expenseTypes = new ArrayList<ExpenseType>();
 		expenseTypes.add(expenseType);
 		final Page<ExpenseType> page = new PageImpl<ExpenseType>(expenseTypes);
@@ -139,7 +153,8 @@ public class ExpenseTypeServiceImplTest extends ServiceTest {
 				will(returnValue(page));
 			}
 		});
-		Page<ExpenseTypeSendto> rets = expenseTypeService.findAll(spec, pageable);
+		Page<ExpenseTypeSendto> rets = expenseTypeService.findAll(spec,
+				pageable);
 		assertEquals(1, rets.getTotalElements());
 		ExpenseTypeSendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());

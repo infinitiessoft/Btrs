@@ -13,25 +13,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.domain.Specification;
 
-import dao.ExpenseCategoryDao;
-import entity.ExpenseCategory;
 import resources.specification.ExpenseCategorySpecification;
 import resources.specification.SimplePageRequest;
 import sendto.ExpenseCategorySendto;
 import service.impl.ExpenseCategoryServiceImpl;
+import dao.ExpenseCategoryDao;
+import entity.ExpenseCategory;
 
 public class ExpenseCategoryServiceImplTest extends ServiceTest {
 
 	private ExpenseCategoryDao expenseCategoryDao;
 	private ExpenseCategoryServiceImpl expenseCategoryService;
-
+	private Specification<ExpenseCategory> spec;
 	private ExpenseCategory expenseCategory;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
 		expenseCategoryDao = context.mock(ExpenseCategoryDao.class);
-		expenseCategoryService = new ExpenseCategoryServiceImpl(expenseCategoryDao);
+		spec = context.mock(Specification.class);
+		expenseCategoryService = new ExpenseCategoryServiceImpl(
+				expenseCategoryDao);
 		expenseCategory = new ExpenseCategory();
 		expenseCategory.setId(1L);
 		expenseCategory.setName_key("demo");
@@ -47,11 +51,11 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseCategoryDao).findOne(1L);
+				exactly(1).of(expenseCategoryDao).findOne(spec);
 				will(returnValue(expenseCategory));
 			}
 		});
-		ExpenseCategorySendto ret = expenseCategoryService.retrieve(1);
+		ExpenseCategorySendto ret = expenseCategoryService.retrieve(spec);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals("demo", ret.getName_key());
 		assertEquals("demo", ret.getCode());
@@ -62,10 +66,12 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseCategoryDao).delete(1L);
+				exactly(1).of(expenseCategoryDao).findOne(spec);
+				will(returnValue(expenseCategory));
+				exactly(1).of(expenseCategoryDao).delete(expenseCategory);
 			}
 		});
-		expenseCategoryService.delete(1l);
+		expenseCategoryService.delete(spec);
 	}
 
 	@Test
@@ -76,12 +82,15 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 		context.checking(new Expectations() {
 
 			{
-				exactly(1).of(expenseCategoryDao).save(with(any(ExpenseCategory.class)));
+				exactly(1).of(expenseCategoryDao).save(
+						with(any(ExpenseCategory.class)));
 				will(new CustomAction("save ExpenseCategory") {
 
 					@Override
-					public Object invoke(Invocation invocation) throws Throwable {
-						ExpenseCategory e = (ExpenseCategory) invocation.getParameter(0);
+					public Object invoke(Invocation invocation)
+							throws Throwable {
+						ExpenseCategory e = (ExpenseCategory) invocation
+								.getParameter(0);
 						e.setId(2L);
 						return e;
 					}
@@ -105,11 +114,11 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 				exactly(1).of(expenseCategoryDao).save(expenseCategory);
 				will(returnValue(expenseCategory));
 
-				exactly(1).of(expenseCategoryDao).findOne(1l);
+				exactly(1).of(expenseCategoryDao).findOne(spec);
 				will(returnValue(expenseCategory));
 			}
 		});
-		ExpenseCategorySendto ret = expenseCategoryService.update(1l, newEntry);
+		ExpenseCategorySendto ret = expenseCategoryService.update(spec, newEntry);
 		assertEquals(1l, ret.getId().longValue());
 		assertEquals(newEntry.getName_key(), ret.getName_key());
 		assertEquals(newEntry.getCode(), ret.getCode());
@@ -118,10 +127,12 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 	@Test
 	public void testFindAll() {
 		final ExpenseCategorySpecification spec = new ExpenseCategorySpecification();
-		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id", "ASC");
+		final SimplePageRequest pageable = new SimplePageRequest(0, 20, "id",
+				"ASC");
 		final List<ExpenseCategory> expenseCategories = new ArrayList<ExpenseCategory>();
 		expenseCategories.add(expenseCategory);
-		final Page<ExpenseCategory> page = new PageImpl<ExpenseCategory>(expenseCategories);
+		final Page<ExpenseCategory> page = new PageImpl<ExpenseCategory>(
+				expenseCategories);
 		context.checking(new Expectations() {
 
 			{
@@ -129,7 +140,8 @@ public class ExpenseCategoryServiceImplTest extends ServiceTest {
 				will(returnValue(page));
 			}
 		});
-		Page<ExpenseCategorySendto> rets = expenseCategoryService.findAll(spec, pageable);
+		Page<ExpenseCategorySendto> rets = expenseCategoryService.findAll(spec,
+				pageable);
 		assertEquals(1, rets.getTotalElements());
 		ExpenseCategorySendto ret = rets.iterator().next();
 		assertEquals(1l, ret.getId().longValue());
