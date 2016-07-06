@@ -299,6 +299,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/login"
 			access="permitAll" />
+			<security:intercept-url pattern="/logout"
+			access="permitAll" />
 		<!-- <security:intercept-url method="GET" pattern="/rest/v1.0/auth" access="permitAll" 
 			/> -->
 		<security:intercept-url pattern="/rest/v1.0/**"

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 
-	<display-name>Btrs</display-name>
+	<display-name>Business Trip Report System 2.0</display-name>
 
 	<!-- Load Spring Context -->
 	<context-param>
