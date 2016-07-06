@@ -116,9 +116,9 @@ angular
 						}
 					}
 
-					$scope.trafficSpan = 5;
+					$scope.trafficSpan = 6;
 					$scope.commentSpan = 4;
-					var extraTraffics = []
+					var extraTraffics = [];
 					$scope.extraTraffics = extraTraffics;
 					var traffics = [];
 					$scope.traffics = traffics;
@@ -137,12 +137,16 @@ angular
 									function(status) {
 										$scope.model = status.data;
 										var expenses = status.data.expenses;
-										
-										profileService.get(status.data.owner.id).then(function(status2) {
-											$scope.applicant.jobTitle = status2.data.jobTitle;
-										});
-										
+
+										profileService
+												.get(status.data.owner.id)
+												.then(
+														function(status2) {
+															$scope.applicant.jobTitle = status2.data.jobTitle;
+														});
+
 										var tid = 0;
+
 										angular
 												.forEach(
 														expenses,
@@ -216,6 +220,8 @@ angular
 															}
 
 														});
+										$scope.commentSpan = 4 + $scope.extraTraffics.length;
+										$scope.trafficSpan = 6 + $scope.extraTraffics.length;
 									});
 
 					// memberExpenseTypeService
