@@ -1,10 +1,13 @@
-angular.module('navigation', []).controller(
-		'navigation',
+angular.module('login', []).controller(
+		'login',
 		function($scope, $state, auth) {
 
 			auth.authenticate($scope.credentials, function(authenticated) {
 				if (authenticated) {
 					console.log("Login succeeded")
+					$state.go('dashboard.home', {
+						userid : auth.user.principal.id
+					});
 				} else {
 					console.log("Login failed")
 				}

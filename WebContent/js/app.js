@@ -1,10 +1,10 @@
 angular
 .module(
-		'hello',
+		'btrs',
 		[ 'oc.lazyLoad', 'ui.router', 'ui.bootstrap', 'ngCookies', 'pascalprecht.translate',
 		  'angular-loading-bar', 'formly', 'formlyBootstrap',
-		  'ui.select', 'ngSanitize', 'smart-table', 'auth',
-		  'navigation' ])
+		  'ui.select', 'ngSanitize', 'smart-table','AngularPrint', 'auth',
+		  'navigation', 'login' ])
 		  .config(
 				  [
 				   '$stateProvider',
@@ -31,7 +31,7 @@ angular
 
 					   $stateProvider.state('login', {
 						   url : '/login',
-						   controller : 'navigation',
+						   controller : 'login',
 						   templateUrl : 'login.html'
 					   }).state('dashboard', {
 						   url : '/dashboard',
@@ -262,7 +262,7 @@ angular
 					   
 					   $translateProvider.useCookieStorage();
 					   $translateProvider.useStaticFilesLoader({
-						    prefix: '/Btrs/lang/',
+						    prefix: '/btrs/lang/',
 						    suffix: '.json'
 						});
 					   $translateProvider.preferredLanguage('en');
